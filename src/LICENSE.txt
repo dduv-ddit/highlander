@@ -1,0 +1,521 @@
+﻿Highlander Licensing
+============================================
+
+This file attempts to include all licenses that apply within Highlander (this program) source tree, in particular any that are supposed to be exposed to the end user for credit requirements for instance. 
+
+Highlander connect a database centralizing NGS variant data and annotations and a client interface providing powerful filtering tools that are easily accessible to the biologist. Highlander also gives access to useful additional tools, including visualization of the alignment, an algorithm that checks all available alignments for allele-calls at specific positions, and a module to explore the ‘variant burden’ gene by gene.
+
+Copyright (C) <2012-2020> <Université catholique de Louvain (UCLouvain), Belgique>
+	
+The contributors (authors) to the development of Highlander are: 
+Helaers Raphael (Université catholique de Louvain, UCLouvain)
+
+Website of Highlander: https://sites.uclouvain.be/highlander/
+Contact: raphael.helaers@uclouvain.be
+
+Highlander General
+-----------------------------------------
+
+This program (Highlander) is free software: 
+you can redistribute it and/or modify it under the terms of the 
+GNU General Public License as published by the Free Software Foundation, 
+either version 3 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program (see COPYING file).  If not, 
+see <http://www.gnu.org/licenses/>.
+*************************************************************************
+
+The documentation for this program is under a creative commons attribution share-alike
+4.0 license.  http://creativecommons.org/licenses/by-sa/4.0/
+It can be found here:  https://sites.uclouvain.be/highlander/
+*************************************************************************
+
+This program has dependencies on other libraries and Website depedencies which are or not under GPL and that are commonly distributed with this program core libraries.
+
+Dependencies are as follows:
+
+AnimatingCardLayout		BSD						https://java.net/projects/animatingcardlayout
+Colt				MIT						https://dst.lbl.gov/ACSSoftware/colt/
+GlazedLists			LGPL & MPL					http://www.glazedlists.com/
+HikariCP			Apache 2.0					https://github.com/brettwooldridge/HikariCP
+HSQLDB				BSD-like					http://hsqldb.org/
+HTTP Client			Apache 1.1					https://hc.apache.org/httpclient-legacy/index.html
+Install4j			EULA						https://www.ej-technologies.com/products/install4j/overview.html
+JavaMail			CDDL 1.1 & GPLv2 under classpath exception	https://javaee.github.io/javamail/
+JSCH				BSD-style					http://www.jcraft.com/jsch/
+minimal-json			MIT						https://github.com/ralfstx/minimal-json
+MySQL JDBC Connector		GPLv2 under FOSS exception			https://dev.mysql.com/downloads/connector/j/
+Picard (ViewSam)		MIT						https://broadinstitute.github.io/picard/
+POI				Apache 2.0					http://poi.apache.org/download.html
+
+External executables
+---------------------
+
+External executables are also needed for a proper execution of this program. These
+executables are not part of this program and have to be used according to their own 
+license.
+
+External executables are (license are given for information purpose only) :
+IGV				LGPL						http://www.broadinstitute.org/igv/
+
+
+Licences & Credits of dependencies
+----------------------------------
+
+#####
+AnimatingCardLayout
+#####
+This project is no longer alive. Previously licensed under BSD license
+
+Copyright 1979, 1980, 1983, 1986, 1988, 1989, 1991, 1992, 1993, 1994 The Regents of the University of California. All
+rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following
+conditions are met:
+1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following
+disclaimer in the documentation and/or other materials provided with the distribution.
+3. All advertising materials mentioning features or use of this software must display the following acknowledgement:
+This product includes software developed by the University of California, Berkeley and its contributors.
+4. Neither the name of the University nor the names of its contributors may be used to endorse or promote products derived
+from this software without specific prior written permission.
+THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND ANY EXPRESS OR IMPLIED
+WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR
+CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+The Institute of Electrical and Electronics Engineers and the American National Standards Committee X3, on Information
+Processing Systems have given us permission to reprint portions of their documentation.
+In the following statement, the phrase ``this text'' refers to portions of the system documentation.
+Portions of this text are reprinted and reproduced in electronic form in the second BSD Networking Software Release, from
+IEEE Std 1003.1-1988, IEEE Standard Portable Operating System Interface for Computer Environments (POSIX), copyright
+C 1988 by the Institute of Electrical and Electronics Engineers, Inc. In the event of any discrepancy between these versions
+and the original IEEE Standard, the original IEEE Standard is the referee document.
+In the following statement, the phrase ``This material'' refers to portions of the system documentation.
+This material is reproduced with permission from American National Standards Committee X3, on Information Processing
+Systems. Computer and Business Equipment Manufacturers Association (CBEMA), 311 First St., NW, Suite 500,
+Washington, DC 20001-2178. The developmental work of Programming Language C was completed by the X3J11
+Technical Committee.
+The views and conclusions contained in the software and documentation are those of the authors and should not be
+interpreted as representing official policies, either expressed or implied, of the Regents of the University of California.
+
+
+####
+Colt
+####
+Packages cern.colt* , cern.jet*, cern.clhep
+
+Copyright (c) 1999 CERN - European Organization for Nuclear Research.
+Permission to use, copy, modify, distribute and sell this software and its documentation for any purpose is hereby granted without fee, provided that the above copyright notice appear in all copies and that both that copyright notice and this permission notice appear in supporting documentation. CERN makes no representations about the suitability of this software for any purpose. It is provided "as is" without expressed or implied warranty.
+
+
+####
+GlazedLists
+####
+Glazed Lists
+Copyright (c) 2003-2006, publicobject.com, O'Dell Engineering Ltd.
+
+Glazed Lists is free software and business friendly. It allows you to
+  * distribute Glazed Lists free of charge
+  * use Glazed Lists in a commercial or closed source application
+It does not allow you to
+  * create a fork of Glazed Lists that is closed-source
+
+It is made available under two licenses:
+  LGPL, http://creativecommons.org/licenses/LGPL/2.1/
+  MPL, http://www.mozilla.org/MPL/
+
+
+####
+HikariCP
+####
+/*
+ * Copyright (C) 2013 Brett Wooldridge
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+####
+HSQLDB
+####
+/* Copyright (c) 2001-2017, The HSQL Development Group
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ *
+ * Neither the name of the HSQL Development Group nor the names of its
+ * contributors may be used to endorse or promote products derived from this
+ * software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL HSQL DEVELOPMENT GROUP, HSQLDB.ORG,
+ * OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+
+####
+HTTP Client
+####
+/*
+ * $Header: /home/cvs/jakarta-commons/httpclient/LICENSE.txt,v 1.4 2003/01/27 15:28:26 jsdever Exp $
+ * $Revision: 1.4 $
+ * $Date: 2003/01/27 15:28:26 $
+ *
+ * ====================================================================
+ *
+ * The Apache Software License, Version 1.1
+ *
+ * Copyright (c) 1999-2003 The Apache Software Foundation.  All rights
+ * reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in
+ *    the documentation and/or other materials provided with the
+ *    distribution.
+ *
+ * 3. The end-user documentation included with the redistribution, if
+ *    any, must include the following acknowlegement:
+ *       "This product includes software developed by the
+ *        Apache Software Foundation (http://www.apache.org/)."
+ *    Alternately, this acknowlegement may appear in the software itself,
+ *    if and wherever such third-party acknowlegements normally appear.
+ *
+ * 4. The names "The Jakarta Project", "Commons", and "Apache Software
+ *    Foundation" must not be used to endorse or promote products derived
+ *    from this software without prior written permission. For written
+ *    permission, please contact apache@apache.org.
+ *
+ * 5. Products derived from this software may not be called "Apache"
+ *    nor may "Apache" appear in their names without prior written
+ *    permission of the Apache Group.
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
+ * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
+ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+ * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ * ====================================================================
+ *
+ * This software consists of voluntary contributions made by many
+ * individuals on behalf of the Apache Software Foundation.  For more
+ * information on the Apache Software Foundation, please see
+ * <http://www.apache.org/>.
+ *
+ * [Additional notices, if required by prior licensing conditions]
+ *
+ */
+
+
+####
+Install4j - Extract of EULA (End-User License Agreement) - LICENSE TO DISTRIBUTE REDISTRIBUTABLE FILES
+####
+2. LICENSE TO DISTRIBUTE REDISTRIBUTABLE FILES
+
+ej-technologies grants you a non-exclusive license to distribute all parts of
+install4j that are automatically included in files generated with install4j
+without fee ("royalty-free") provided that:
+
+- You distribute these files only within the unmodified files generated by
+  install4j
+
+- You don't manually include any other part of install4j in generated files
+  and don't violate any other part of this agreement or third-party rights
+
+- You do not remove or alter any proprietary legends or notices contained in
+  or on the redistributables
+
+- You only distribute the redistributables with a license agreement that
+  protects ej-technologies' interests consistently with the terms contained in
+  this agreement
+
+- You agree to defend and indemnify ej-technologies from and against any
+  damages, costs, liabilities, settlement amounts and/or expenses (including
+  attorneys' fees) incurred in connection with any claim, lawsuit or action by
+  any third party that arises or results from the use or distribution of any
+  redistributable files.
+
+Notice: Only files that are automatically generated are distributed. 
+ej-technologies confirms that these files can be distributed under GNU GPL v3 or later licence:
+
+	05/06/2020 12:25 - web@ej-technologies.com wrote:
+	Support request received via web form:
+	(...) I'm using install4j to generate installer for my java project 
+	(https://sites.uclouvain.be/highlander/). This project is distributed using an 
+	open source license (GPL3). (...) 
+	We were wondering if this "distribution" of this particular library of 
+	yours is compatible with the GLP3 license we use, or maybe if we have to 
+	mention something about it. Can you give us your insight on the matter ?
+
+	De : ej-technologies Support <support@ej-technologies.com>
+	Date: mer. 6 mai 2020 à 23:00
+	(...) Thanks for your email. The runtime is freely distributable, so there is no problem. (...)
+	ej-technologies GmbH
+
+
+####
+JavaMail - CLASSPATH EXCEPTION 
+####
+Oracle Corporation ("ORACLE") ENTITLEMENT for SOFTWARE
+Licensee/Company: Entity receiving Software.
+Effective Date: Date of delivery of the Software to You.
+Software: JavaMail 1.4.5
+License Term:  Perpetual (subject to termination under the SLA).
+Licensed Unit: Software Copy.
+Licensed unit Count: Unlimited.
+
+ Copyright (c) Oracle and/or its affiliates. All rights reserved.
+
+ The contents of this software are subject to the terms of either the GNU
+ General Public License Version 2 only ("GPL") or the Common Development 
+ and Distribution License("CDDL") (collectively, the "License"). You
+ may not use this file except in compliance with the License. You can
+ obtain a copy of the License at https://oss.oracle.com/licenses/CDDL+GPL-1.1.
+
+ GPL Classpath Exception:
+ Oracle designates this particular file as subject to the "Classpath"
+ exception as provided by Oracle in the GPL Version 2 section of the License
+ file that accompanied this code.
+ 
+ CLASSPATH EXCEPTION
+ Linking this library statically or dynamically with other modules is
+ making a combined work based on this library.  Thus, the terms and
+ conditions of the GNU General Public License version 2 cover the whole
+ combination.
+
+ As a special exception, the copyright holders of this library give you
+ permission to link this library with independent modules to produce an
+ executable, regardless of the license terms of these independent
+ modules, and to copy and distribute the resulting executable under
+ terms of your choice, provided that you also meet, for each linked
+ independent module, the terms and conditions of the license of that
+ module.  An independent module is a module which is not derived from or
+ based on this library.  If you modify this library, you may extend this
+ exception to your version of the library, but you are not obligated to
+ do so.  If you do not wish to do so, delete this exception statement
+ from your version.
+
+
+####
+JSCH
+####
+JSch 0.0.* was released under the GNU LGPL license.  Later, we have switched 
+over to a BSD-style license. 
+
+------------------------------------------------------------------------------
+Copyright (c) 2002-2015 Atsuhiko Yamanaka, JCraft,Inc. 
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+  1. Redistributions of source code must retain the above copyright notice,
+     this list of conditions and the following disclaimer.
+
+  2. Redistributions in binary form must reproduce the above copyright 
+     notice, this list of conditions and the following disclaimer in 
+     the documentation and/or other materials provided with the distribution.
+
+  3. The names of the authors may not be used to endorse or promote products
+     derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL JCRAFT,
+INC. OR ANY CONTRIBUTORS TO THIS SOFTWARE BE LIABLE FOR ANY DIRECT, INDIRECT,
+INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+####
+minimal-json
+####
+/*******************************************************************************
+ * Copyright (c) 2013, 2015 EclipseSource.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ ******************************************************************************/
+
+
+####
+MySQL JDBC Connector
+####
+MySQL Connector/J 5.1.30
+
+This is a release of MySQL Connector/J, Oracle's dual-
+license JDBC Driver for MySQL. For the avoidance of
+doubt, this particular copy of the software is released
+under the version 2 of the GNU General Public License.
+MySQL Connector/J is brought to you by Oracle.
+
+Copyright (c) 2000, 2013, Oracle and/or its affiliates. All rights reserved.
+
+License information can be found in the COPYING file.
+
+MySQL FOSS License Exception
+We want free and open source software applications under 
+certain licenses to be able to use the GPL-licensed MySQL 
+Connector/J (specified GPL-licensed MySQL client libraries)
+despite the fact that not all such FOSS licenses are 
+compatible with version 2 of the GNU General Public License.
+Therefore there are special exceptions to the terms and
+conditions of the GPLv2 as applied to these client libraries, 
+which are identified and described in more detail in the 
+FOSS License Exception at
+<http://www.mysql.com/about/legal/licensing/foss-exception.html>
+
+This software is OSI Certified Open Source Software.
+OSI Certified is a certification mark of the Open Source Initiative.
+
+This distribution may include materials developed by third
+parties. For license and attribution notices for these
+materials, please refer to the documentation that accompanies
+this distribution (see the "Licenses for Third-Party Components"
+appendix) or view the online documentation at 
+<http://dev.mysql.com/doc/>
+A copy of the license/notices is also reproduced below.
+
+GPLv2 Disclaimer
+For the avoidance of doubt, except that if any license choice
+other than GPL or LGPL is available it will apply instead, 
+Oracle elects to use only the General Public License version 2 
+(GPLv2) at this time for any software where a choice of GPL 
+license versions is made available with the language indicating 
+that GPLv2 or any later version may be used, or where a choice 
+of which version of the GPL is applied is otherwise unspecified.
+
+
+####
+Picard (ViewSam)
+####
+MIT License
+
+Copyright (c) 2017 Broad Institute
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+####
+POI
+####
+Apache POI
+Copyright 2009 The Apache Software Foundation
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+This product includes software developed by
+The Apache Software Foundation (http://www.apache.org/).
+
+This product contains the DOM4J library (http://www.dom4j.org).
+Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
+
+This product contains parts that were originally based on software from BEA.
+Copyright (c) 2000-2003, BEA Systems, <http://www.bea.com/>.
+
+This product contains W3C XML Schema documents. Copyright 2001-2003 (c)
+World Wide Web Consortium (Massachusetts Institute of Technology, European
+Research Consortium for Informatics and Mathematics, Keio University)
+
+This product contains the Piccolo XML Parser for Java
+(http://piccolo.sourceforge.net/). Copyright 2002 Yuval Oren.
+
+This product contains the chunks_parse_cmds.tbl file from the vsdump program.
+Copyright (C) 2006-2007 Valek Filippov (frob@df.ru)
+
+-----------------------------------------------------------------------------

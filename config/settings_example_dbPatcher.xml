@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<highlander>
+  <database> <!-- Highlander database settings -->
+	<host value="127.0.0.1:3306"/> <!-- mandatory -->
+	<user value="ngs_admin"/> <!-- mandatory -->
+	<password value="password"/> <!-- mandatory -->
+	<highlander value="Highlander"/> <!-- mandatory, name of the main Highlander schema (with administration tables) -->
+  </database>
+  <server>
+	<files> <!-- Apache server distributing files such as BAM, VCF, dbSNP and reports -->
+		<host value="127.0.0.1"/> <!-- mandatory for the updater to v17. Only give the IP or hostname (don't add http://) -->
+		<protocol value="http"/> <!-- mandatory for the updater to v17. Default value is http, but can be changed to e.g. https if necessary. -->
+		<sql value="sql"/> <!-- mandatory for the updater to v17. Path to directory where SQL files are deposited for importation. URL constructed to access SQL files will be [protocol]://[host]/[sql]. -->
+	</files>
+  </server>
+  <http_proxy> <!-- proxy configuration, if you use one. Ommit user, password and passwordpolicy if your proxy doesn't need authentication. -->
+    <host value="proxy.server"/> 
+    <port value="1111"/> 
+    <user value="user"/> 
+    <password value="pass"/> 
+    <passwordpolicy value="from_settings"/> 
+	<bypass value="localhost|127.0.0.1"/> <!-- A list of hosts (separeted by '|') for which to proxy won't be used (they are behind the proxy). -->
+  </http_proxy>
+</highlander>

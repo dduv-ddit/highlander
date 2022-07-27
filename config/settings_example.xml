@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<highlander>
+  <database> <!-- Highlander database settings -->
+	<host value="127.0.0.1:3306"/> <!-- mandatory -->
+	<user value="ngs_user"/> <!-- mandatory -->
+	<password value="password"/> <!-- mandatory -->
+	<dbms value="mysql"/> <!-- optional, default value is 'mysql' -->
+	<compression value="off"/> <!-- optional, default value is 'off' -->
+	<highlander value="Highlander"/> <!-- mandatory, name of the main Highlander schema (with administration tables) -->
+  </database>
+  <server>
+	<files> <!-- Apache server distributing files such as BAM, VCF, dbSNP and reports -->
+		<host value="192.168.50.22"/> <!-- default value can be set in database. Only give the IP or hostname (don't add http://) -->
+		<protocol value="http"/> <!-- default value is http, but can be changed to e.g. https if necessary. -->
+		<sql value="sql"/> <!-- default value can be set in database. Path to directory where SQL files are deposited for importation. URL constructed to access SQL files will be [protocol]://[host]/[sql]. -->
+		<php value="php"/> <!-- default value can be set in database. Path to PHP scripts, used for BamCheck and BamOut functionnalities. URL constructed to access PHP scripts will be [protocol]://[host]/[php]. -->
+		<dbsnp value="reference/dbsnp"/> <!-- default value can be set in database. Path to dbSNP VCF's, so they can be loaded in IGV. URL constructed to access dbsnp VCFs will be [protocol]://[host]/[dbsnp]. -->
+		<reports value="reports"/> <!-- default value can be set in database. Path to reports like fastQC or result files other than primary bam/vcf (list taken from Reports table in the database). URL constructed to access reports will be [protocol]://[host]/[reports]/[run_id]_[run_date]_[run_name]/[software]/[sample]. -->
+	</files>
+	<pipeline> <!-- Only used with administration tools, to launch scripts remotely using SSH (e.g. relaunching pipeline for a batch of runs) -->
+		<host value="192.168.50.22"/> <!-- optional, default value can be set in database, but functions using server scripts in admin tools won't work without it -->
+		<protocol value="ssh"/> <!-- optional, default value can be set in database, but functions using server scripts in admin tools won't work without it -->
+		<username value="highlander"/> <!-- optional, but functions using server scripts in admin tools won't work without it -->
+		<privatekey value="sftp.key"/> <!-- optional, but functions using server scripts in admin tools won't work without it -->
+		<scripts value="/data/highlander"/> <!-- optional, default value can be set in database, but functions using server scripts in admin tools won't work without it -->
+	</pipeline>
+	<sequencer value="NOVASEQ"> <!-- Only used with IonImporter tool currently, but could be used by future functionnalities in Administration tools. You can have this section multiple times, each time with a different value. Value must be one of those value : HISEQ, X, NOVASEQ, MINISEQ, MISEQ, NEXTSEQ, PACBIO, MINION, ION_TORRENT, PROTON, SOLID -->
+		<host value="user"/> <!-- mandatory only for IonImporter -->
+		<protocol value="ssh"/> <!-- optional, default value is 'ssh' -->
+		<username value="127.0.0.1"/> <!-- mandatory only for IonImporter -->
+		<privatekey value="sftp.key"/> <!-- mandatory only for IonImporter -->
+	</sequencer>
+  </server>
+  <email> <!-- Used to send error reports, and when sending mail to new users and after importation -->
+	<smtp value="smtp.server.com"/> <!-- optional, default value can be set in database, but emailing won't work without it -->
+	<admin value="admin@email.com"/> <!-- optional, default value can be set in database, but emailing won't work without it -->
+  </email>
+  <external> <!-- external software links, like IGV -->
+	<IGV value="IGV"/> <!-- mandatory, path in Highlander directory to IGV software -->
+  </external>
+  <http_proxy> <!-- proxy configuration, if you use one. Ommit user, password and passwordpolicy if your proxy doesn't need authentication. -->
+    <host value="proxy.server"/> <!-- optional, default value can be set in database. -->
+    <port value="1111"/> <!-- optional, default value can be set in database. -->
+    <user value="user"/> <!-- optional, default value can be set in database. -->
+    <password value="pass"/> <!-- optional, default value can be set in database. -->
+    <passwordpolicy value="from_settings"/> <!-- optional, default value can be set in database. Values can be 'ask_at_login' (password will be asked at login screen), 'same_as_highlander' (Highlander user password will be used for proxy password) or 'from_settings' (default, you have to set the password in settings file or in the database) -->
+	<bypass value="localhost|127.0.0.1"/> <!-- optional, default value can be set in database. A list of hosts (separeted by '|') for which to proxy won't be used (they are behind the proxy). -->
+  </http_proxy>
+</highlander>

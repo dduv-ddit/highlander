@@ -1,0 +1,7 @@
+Unzip the jar file or files in question (jars are just zips)
+Look in the META-INF directory for something that was not MANIFEST-MF.
+Delete that stuff.
+Open the MANIFEST-MF and remove stuff that looked like it was signature related.
+rejar.
+
+Sinon за marche aussi directement depuis WinRAR

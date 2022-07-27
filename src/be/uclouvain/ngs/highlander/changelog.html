@@ -1,0 +1,981 @@
+<p>
+<div style="font-size:12px"><strong>Version 17</strong> (November 2020)<br></div><br>
+<b>New features</b>
+<ul>
+<li>Multiple reference genomes support. Each analysis is now linked to a specific reference.</li>
+<li>Variants are now diffenriated by gene. 
+It means that if a variant is on a genomic position overlapped by 2 genes, you will see two lines in the Highlander table (with different annotations for each gene). 
+Note that VCF must be reimported to see the change in existing samples.</li>
+<li>Change and gene statistics overhaul
+<ul>
+	<li>Variant count is replaced by allele count (like gnomad, gonl, 1000G, etc).</li>
+	<li>An allele present in multiple samples from the same individual is only counted once.</li>
+	<li>'Change statistics' category becomes 'Allele frequencies'. All related fields have been replaced by new ones (but most old fields have a correspondance).</li>
+	<li>New fields are local_af (allele frequency), local_ac (allele count) and local_an (allele number), plus local_het and local_hom (count of heterozygous and homozygous).</li>
+	<li>A field local_pathologies gives the number of pathologies have at least one allele with the variant.</li>
+	<li>Same fields exist for germline and somatic alone.</li>
+	<li>New magic filter 'Allele frequency in a pathology' where you can select a pathology and a frequency filter criterion on that pathology alone.</li>
+	<li>The fields giving number of variant per pathologie have been removed. Instead you can display a table with a new detail box, or use a magic filter to combine allele frequencies per pathology.</li>
+	<li>There is no more differenciation between 'filt' and 'unfilt' (i.e. only unfilt has been kept).</li>
+	<li>Fields 'change_num_xxx_xxx_groups' and 'change_num_xxx_xxx_details_groups' have been removed. Information is still accessible in a detail box.</li>
+	<li>'Gene statistics' category has been removed, with all its related fields.</li>
+	<li>All detail boxes named 'Same change (xxx)' and 'Same gene (xxx)' have been removed.</li>
+	<li>A new detail box 'Allele Frequency per pathology (details)' gives you the same information than before in one box, with each individual presenting the allele (and the list of sample between parenthesis).
+	You can select all samples, or only germline/somatic. </li>
+	<li>A new detail box 'Allele Frequency per pathology (table)' gives that information in a summary table (showing only pathologies that have at least 1 allele).</li>
+	<li>Filters saved in your profile have been modified to fit with the new fields, but some of them could still need to be updated by hand.</li>	
+</ul>
+</li>
+<li>User annotations
+<ul>
+	<li>5 new fields have been added, on which you can filter. They are called num_evaluated_as_type_X (X = type I to V), and gives the number of samples with this variant already evaluated to X.</li>
+	<li>Private and public annotation on a variant (of_interest flag and public/private comments) are now saved for <b>all</b> samples. <i>e.g.</i>Before, putting a comment for a variant x selected on patient y was limited to that patient. Now clicking on the same variant on patient z will show the same comment.</li>
+	<li>Private and public comments can now be added for samples.</li>
+	<li>There is a new flag in variant evaluation, called 'Reporting'. It can be set to YES/NO if the variant has been reported to the patient, or should not be.</li>
+	<li>The detail box 'Samples with same evaluated variant' has been duplicated : one detailled (like before) and another with only the total count. A button allows to show only evaluations (removing all the NOT_CHECKED status from table for more visibility).</li>
+	<li>Date of evaluation has been added to the fields and the detail boxes 'Samples with same evaluated variant'.</li>
+</ul>
+</li>
+<li>List of values are now linked to a specific field.
+<ul>
+	<li>Encoding dialog colors unknow values in red.</li>
+	<li>Encoding dialog has a button to select values from the database (instead of a separate dialog).</li>
+	<li>In profile manager, lists are separated by fields. Only fields for which you have lists are shown. If you want to create a list for a new field, select the 'List of values' node.</li>
+	<li>For your existing list, field has been guessed depending on the values. If the field wasn't recognized, it been set to 'unknown' by default. You can change it in the profile manager.</li>
+	<li>You can now add comments for each value of your lists (e.g. why you added this gene to that list).</li>
+</ul>
+</li>
+<li>List of intervals are now linked to a specific reference.
+<ul>
+	<li>In profile manager, lists are separated by reference. Only references for which you have lists are shown. If you want to create a list for a new reference, select the 'List of intervals' node.</li>
+	<li>When a list of interval is needed for a specific analysis, it shown all lists with a compatible reference. For example, GRCh37 and hg19 are compatible.</li>
+	<li>For your existing list, reference has been set to GRCh37. You can change it in the profile manager.</li>
+</ul>
+</li>
+<li>New external links: Variant in Varsome, Variant in ClinVar, Variant in Franklin, Protein in UniProt, Gene in GTEx.</li>
+<li>Administration tools
+<ul>
+	<li>Project management > projects: you have new fields for family, individual, index_case, population, trimming, duplicate removal and normal sample (<i>e.g.</i> for MuTect). Reference has been moved at the analysis level.</li>
+	<li>Project management > samples: new tab to manage all samples at once, instead of per project.</li>
+	<li>Database management > Analyses: completely revamped. You can set a reference genome and sequencing target for each analysis.</li>
+	<li>Database management > References: new tab to manage reference genomes. Each reference can be linked to a set of annotation databases.</li>
+	<li>Database management > Populations: new tab to manage populations. Each individual can now be linked to a population defined there.</li>
+	<li>Database management > Fields: new tab to manage database fields. Fields description, source and annotation scheme can be changed here, as well as new custom fields and visibility per analysis.</li>
+	<li>Database management > Reports: new tab to manage files generated by pipeline and useful in Highlander. You can add software and their files there so they can be downloaded from Highlander (Tools > File downloader).</li>
+	<li>Client management > Global settings: new tab to manage settings that were in <code>settings.xml</code> file. All settings present there do no longer need to be in the <code>settings.xml</code> of each client (they are managed here for all client, like proxy settings). Note that those settings can still be defined in <code>settings.xml</code>, and they will replace global settings for this particular client.</li>
+	<li>Client management > External links: new tab to manage 'External links' detail box available in Highlander. All buttons that should display in the detail box can now be configured here, and you can easily add new ones (or remove/disable the ones you don't want).</li>
+	<li>User management > Management: a table of all users, can be use to modify user information. Users can now be put in groups, and be deactivated (they can't login anymore, but their data is kept).</li>
+	<li>User management > Mail users: new tab where you can write an email and send it to all of your Highlander users.</li>
+</ul>
+</li>
+<li>Variant importation
+<ul>
+	<li>Structural variants annotated by AnnotSV can now be imported.</li>
+	<li>When a variant span multiple genes, it is now split in multiple variants, with same chr/pos/length/ref/alt but different gene_symbol. 
+	All fields for which the annotation depends on the gene are specific to the gene_symbol of the variant.</li>
+	<li>When choosing which genes are affected by the variant, only the genes effectively present at the variant positions are taken into account (from 5' to 3' UTR included).
+	SnpEff can gives "affected" genes up to 5000 nucleotides of distance of its UTR, they are not taken into account anymore.</li>
+	<li>Field gene_number is now reflecting the real number of genes at that positions (before it was based on the number of genes selected by snpEff).</li>
+	<li>Variants like CTTT > CTT in the VCF (because of multiple alternatives) are now reduced to CT > C, which is the correct notation.</li>
+	<li>Fields specific to a variant caller (e.g. Mutect, Ion torrent) can be now be specific to an analysis (see Administration tools for custom fields).</li>
+	<li>VCF parsing informations can now be changed / added in the administration tools.</li>
+</ul>
+</li>
+<li>Update of all annotation sources
+<ul>
+	<li>Last version of Ensembl (for GRCh38, GRCh37 has been frozen since Ensembl 75)</li>
+	<li>DBNSFP 4.1</li>
+	<li>~400 new annotations from DBNSFP</li>
+	<li>Consensus prediction has changed, see column description for details. Now uses 20 different sofware for missense variants.</li>
+	<li>Allele frequency in population now has exac and gnomad detailled columns (per population, and specific datasets like non-TCGA or non-psych).</li>
+	<li>Cosmic 92 dataset</li>
+	<li>Whole new gene annotations category of columns. Contains data found only in "gene annotations" detail box (gene description, pathways, etc), but also lot of new annotations (like pLI scores from ExAC).</li>
+	<li>Some annotations have disappeared: ARIC5606_AA_AF, ARIC5606_EA_AF, ESP6500_AA_AF, ESP6500_EA_AF, the1000G_AF, consensus_MAF, ARIC5606_AA_AC, ARIC5606_EA_AC, consensus_MAC, the1000G_AC, transcript_uniprot_acc, clinvar_rs, cosmic_count, cosmic_id, unisnp_ids, lof_tolerant_or_recessive_gene, exac_an.</li>
+</ul></li>
+<li>New detail boxes
+<ul>
+	<li>Predictions spider chart now uses DBNSFP (converted) rank scores for all available predictors. In general rank scores are computed this way: predictor X scores were ranked among all predictor X scores in dbNSFP. The rankscore is the ratio of the rank the predictor X score over the total number of predictor X scores in dbNSFP. If there are multiple scores, only the most damaging (largest) rankscore is presented. The rankscores are always between 0 and 1 (but min/max score can be more/less).</li>
+	<li>Conservation spider chart. Similar to the existing spider chart for predictions, but using all conservation (converted) rank scores from DBNSFP.</li>
+	<li>Variant in family. Displays all samples from each individual of the whole family, and indicates if the variant is found in other samples, whichever the analysis.</li>
+	<li>Alignment. You can now open a menu with new feature by clicking anywhere on the alignment. You copy read information, sequence or launch a BLAT on it.</li>
+	<li>Detail boxes order and visibility is now saved per analysis (you can have a different ordering for each analysis). You can also reset the ordering with a button.</li>
+	<li>You can search fields in detail boxes. Field will be highlighted in the detail box, and a button allows to scroll vertically to the detail box containing it, and scroll horizontally to the column in the main table.</li>
+</ul></li>
+</ul>
+<b>Miscellaneous</b>
+<ul> 
+<li>New column snpeff_all_effetcs and adding +300 for consensus_prediction for variants at the first/last 3 bases of an exon.</li>
+<li>The 'Cancel query' button should work better.</li>
+<li>Reset password button added in the login window.</li>
+<li>New tool in Profile tab: comments manager. Allows to visualize, modify and complete the whole list of genes, samples and variants comments (private and public).</li>
+<li>New tool in Tools tab: variant annotator. Enter a variant chromosome, position and alternative allele to get all annotations.</li>
+<li>Coverage can now be seen per exon or per gene (or by any loci defined by the administrator), and new options are available in coverage tool.</li>  
+<li>When a variant is selected in the main table, all lines describing the same 'unique variant' are displayed in purple instead of orange (so you see at a glance when a variant is present in other samples and/or in multiple genes)</li>
+<li>There is now a default column selection for each analysis, in addition of 'all columns'.</li>
+<li>Your last column selection is saved in your profile separately for each analysis.</li>
+<li>List of values sorting/remove duplicates now take uppercase/lowercase into account.</li>
+<li>Profile manager should be faster for sharing or copying elements. A progress bar has been added.</li>
+<li>In Profile manager, when selecting an element, you now see which user has done the last modification and when.</li>
+<li>Database stability and reactivity should improve, in particular if you leave Highlander open for a long period (Highlander now uses Hikari Connection Pool).</li>
+<li>Pathologies can now have up to 1000 characters (instead of 10).</li>
+<li>Email sent when a sample is imported is now more informative, and is only sent when the sample is truly available in the list of "existing" samples.</li>
+<li>Better password management for new users.</li>
+<li>Support for http proxies with credentials. In the section <code>&lt;http_proxy&gt;</code> of <code>settings.xml</code> (or in the global settings of administration tools), add <code>&lt;user value="XXXX"&gt;</code>, <code>&lt;password value="XXXX"&gt;</code>. 
+If you don't want to expose proxy password in the settings file, you either set <code>&lt;passwordpolicy value="ask_at_login"&gt;</code> (password will be asked at login) or <code>&lt;passwordpolicy value="same_as_highlander"&gt;</code> (Highlander user password will be used for proxy password)</li>
+<li>Bundled IGV updated to 2.4.19 (last version working with Java 8). Newer versions won't be supported.</li>
+<li>Impala DBMS no longer supported.</li>
+</ul>
+<b>Bug corrections</b>
+<ul> 
+<li>Profile manager
+<ul>
+	<li>When sharing a folder, name of the sender appears to the receiver (before: receiver sees receiver as sender).</li>
+	<li>When sharing other elements than folders, name given by the sender is kept in the "save as" dialog (as before 16.1).</li>
+	<li>Drag and drop of folders now correctly moves everything inside the folder too.</li>
+</ul>
+</li>
+<li>User annotations
+<ul>
+	<li>Fields evaluation and public comments had a limit of 1000 characters. Limit has been removed, but comments are no more visible in the "from database" list of possible values in filters.</li>
+	<li>Copy/Paste from websites containing invisible characters should no more cause errors.</li>
+</ul>
+</li>
+<li>Numerous other small bug corrections</li>
+</ul>
+<br><br>
+
+<p>
+<div style="font-size:12px"><strong>Version 16</strong> (August 2019)<br></div><br>
+<b>New features</b>
+<ul>
+<li>Better consistency for gene symbols.
+	Depending on the source (HGNC, UCSC, Ensembl, RefSeq, ...) and the version, canonical gene symbols could be different, leading to problems when comparing annotation in Highlander, coverage tool, alignment, IGV and user gene lists.
+	To minimize those discrepancies, some changes and tools have been implemented. 
+	<ul>
+	<li>Ensembl is now the only source of gene data used within Highlander. The same Ensembl version is used everywhere. 
+	So be aware of the Ensembl version installed on the Highlander server, it could still show differences with older/newer versions.
+	<i>e.g.</i>If GRCh37 is used, the last version of Ensembl that supports it is 75 (Feb 2014). If you compare to a more recent GRCh38 version, some gene symbols have dissapeared, appeared, or changed their name. 
+	<li>Coverage tool: Highlander can generate a gene list file to use with GATK DepthOfCoverage (used for coverage tool in Highlander).
+		GATK uses UCSC export by default, so Highlander can generate a similar file based on the Ensembl version installed.
+		Using that file in the pipeline should align coverage tool gene symbol with everything else.</li>
+	<li>Alignments: now uses Ensembl (see next point). Highlander was using UCSC to draw genes in alignments, now it should match variant annotations and be far more complete.</li>	
+	<li>Variant annotation: it hasn't changed, it was already Ensembl used before.</li>
+	<li>User gene lists: when you encode a gene list, you can now validate it. If a gene symbol is not found in Ensembl canonical list but as a synonym in HGNC, Highlander will propose to replace it. The button is present in the 'profile' tab and in all windows where you can encode gene symbols.</li>
+	<li>Note that, by extension, the validation tool works for other fields like patient or pathology. Fields with real and natural numbers, or infinite possible text values are not available in the validation tool.</li>
+	<li>IGV: IGV still uses UCSC, so you could find discrepancies with Highlander. Alignments tools (and new Alignment Viewer) available within Highlander should be used instead.</li>
+	</ul>
+</li>
+<li>Alignment visualization box has improved:
+	<ul>
+	<li>Zoom feature.</li>	
+	<li>Navigation buttons move of a number of bases equal to half the total bases displayed.</li>	
+	<li>Button to 'frame shift' all amino acids is now completely based on selected variant and only reflects this shift, accurately.</li>
+	<li>Display a tooltip with mapping quality when hovering reads, and genomic position when hovering reference.</li>
+	<li>Size of deletions greater than 1 are indicated inside the deletion.</li>
+	<li>Use of Ensembl for gene data (instead of UCSC, see previous point).
+		More entities are now showed in different colors (processed transcript, RNAs, pseudogenes). 
+		Region displayed should now always match annotations (in precedent versions, discrepancies could arise between transcript used in annotation -Ensembl canonical transcript- and alignment -RefSeq NM transcript-).</li>	
+	<li>Gene mouse-over displays more info (gene symbol, exon/intron rank, UTR/CDS, Ensembl gene and transcript ids, RefSeq NM id and transcript biotype).</li>	
+	<li>An 'alignment viewer' is available in the tools tab. You can use it to quickly view a given position (by default corresponding to the selected variant) in different samples. 
+		You can also "pin" samples for a multiple alignment view.
+		Selecting multiple variants from a filter result will open one viewer per unique variant, and select/pin all patients having the variant from those results.
+		A second button in the tools tab (with a 'pin' icon) allows to preselect a list of patients to pin. It can be handy when you check 'de novo' variants between samples (like with magic filters sample-specific or combined heterozygous), or with trio's.</li>	
+	</ul>
+	</li>
+<li>External links box: if multiple variants are selected, buttons will open web sites for all uniques genes/variants/etc. <i>e.g.</i> If 10 variants are selected and 3 are uniques, clicking on ExAC button will open 3 tabs in your browser, one for each unique variant. [before: only the 1st variant of the selection was taken into account]</li>
+<li>Columns transcript_refseq_mrna and transcript_refseq_prot now give version number. <i>e.g.</i> NM_005529 is now noted NM_005529.5. Note that old annotations will not be updated, samples must be reimported.</li>
+<li>PedigreeChecker has tooltips for each cell of the table. Tooltips for gender column give the exact hom/het ratio.</li>
+<li>Fitlers templates: several bug corrections (folders were not sorted/searchable, lower case patient names caused problems).</li>
+</ul>
+<br><br>
+
+<p>
+<div style="font-size:12px"><strong>Version 15</strong> (February 2019)<br></div><br>
+<b>New features</b>
+<ul>
+<li>In the profile tab, you can now create 'fitlers templates'. 
+Generate one or more filters, replace patients by placeholder labels (e.g. father/mother/child or normal/tumor) and save it as a template. 
+You can then use this template to generate a folder with all filters and different selections of patients, and automatically share those with as many users as you want.</li>
+<li>Added a search function in the profile tab.</li>
+<li>New tool: export displayed variant table to VCF format (multi-sample or one VCF per sample).</li>
+<li>New tool: variants distribution charts. You can plot the distribution of a set of variants generated by a filter, for any annotation, as a bar or pie chart.</li>
+<li>Alignment visualization box has new features. You can shift the view, squish the reads, show soft-clipped bases, color by sample or read group, and see amino acids (and apply frame shift to them). You can also export the alignment to an image file, or just copy it to the clipboard to paste it somewhere else.</li>
+<li>Add an 'Haplotype Caller BamOut' alignment detail box.</li>
+<li>Add an 'Prediction spider chart' detail box. Select multiple variants to combine them in the same chart.</li>
+<li>Highlighting and Heatmaps can now be set to color whole rows</li>
+<li>z-scores added in BamCheck Tool.</li>
+<li>Download BAM/VCF tool has been improved and renamed "download original files". In addition, it can be used to download other files, like those generated by Facets and MSIsensor.</li>
+</ul>
+<b>Miscellaneous</b>
+<ul>
+<li>Shared elements are checked for every 5 minutes, not only at start. There is also a button to check manually for them in the profile tab.</li>
+<li>Better progress bar support for filters.</li>
+<li>BamCheck tool is now run server side, if possible (which is faster if you don't have a Gbit network connexion).</li>
+<li>In your profile, you can now duplicate an element in the same analysis/folder than the original, Highlander will ask you how to name it</li>
+<li>Support for http proxies. Just add a section &lt;http_proxy&gt; in settings.xml, with &lt;host value="XXXX"&gt;, &lt;port value="XXXX"&gt; and &lt;bypass value="localhost|XXXXX|YYYYY"&gt;</li>
+<li>Numerous bug corrections</li>
+</ul>
+<br><br>
+
+<p>
+<div style="font-size:12px"><strong>Version 14.10</strong> (September 2017)<br></div><br>
+<b>New features</b>
+<ul>
+<li>Improved pedigree checker tool with gender determination.</li>
+<li>Het/Hom ratio added in runs statistics charts. Charts are now precomputed at importation and are now displayed immediately.</li>
+<li>External links detail box: add buttons for gnomAD, Marrvel, MutaFrame and Mutation Taster. Also use website logo's instead of text.</li>
+<li>You can now share entire folders from your profile, and with multiple users at once.</li>
+<li>New FastQC button in tools. Open FastQC reports of selected samples or combine them in one window.</li>
+<li>In the detail boxes "Same change", you now have the zygosity in the patients sharing the variant.</li>
+<li>If no patient list is given for a given subfilter, Highlander will use the one of a parent filter. 
+It means you don't have to enter your patient the prefilter of a Magic filter for example.
+Note that if you specify a list of patients, it won't be altered.</li>
+<li>In Magic filter "Variants common to samples" you can set the zigosity to "any" for some patients.</li>
+<li>New annotations: DANN, Eigen and Deogen scores.</li>
+</ul>
+<b>Miscellaneous</b>
+<ul>
+<li>Prefiltering are now real editable nodes in the "treeview" of filters</li>
+<li>SampleTypes 'Blood' and 'Tissues'/'Cells' have respectively changed to 'Germline' and 'Somatic', to better reflect the real purpose of this differenciation.</li>
+<li>The detailled box 'Polyphen other transcripts' has been replaced by 'Prediction other transcripts', and give predictions for all software available in dbNSFP with more than one transcript.</li>  
+<li>The detailled bow 'SnpEff other transcripts' has been remove. It is replaced by a normal field/column that can be used in filters.</li>  
+<li>Run charts (run metrics available in Tools) can be sorted using different criteria, and a scrollbar appear when bars become too thin.</li>
+<li>1000G_AF and 1000G_AN fields have been renamed the1000G_AF and the the1000G_AN (it was causing probleme with non-MySQL DBMS)</li>  
+<li>Spanning deletions (star symbol for alt allele in VCF 4.3) are supported in the importation process (no variant is created in Highlander but number of allele, depths, etc reflect the presence of a spanning deletion)</li>  
+<li>Consensus prediction takes CADD and Deogen scores into account.</li>
+<li>Numerous bug corrections</li>
+</ul>
+<br><br>
+
+<p>
+<div style="font-size:12px"><strong>Version 14.9</strong> (September 2016)<br></div><br>
+<b>New features</b>
+<ul>
+<li>An HSQLdb database can be use instead of MySQL. It allows, among others, the use of an embedded database (like the demo dataset now included with Highlander).
+<li>BAM URL can contains '@' for patient id and '$' for pathology, allowing for example to have access to 1000G bam files through FTP.</li>
+<li>When you create a list of intervals from the 'profile' toolbar, selected variants positions are automatically filled in the creation interface.</li>
+<li>You can now add a comment before sending an error to the administrator.
+</ul>
+<b>Miscellaneous</b>
+<ul> 
+<li>Numerous bug corrections</li>
+</ul>
+<br><br>
+
+<p>
+<div style="font-size:12px"><strong>Version 14.8</strong> (June 2016)<br></div><br>
+<b>New features</b>
+<ul>
+<li>All magic filters now have a pre-filtering possibility.</li>
+<li>Improved interface for magic filters.</li>
+<li>Common gene variants : added the keyword "exactly".</li>
+<li>Search fields now allow to use regular expressions when activating a button. By default, it's basic search text.</li>
+<li>New stat column with percentage per pathology.</li>
+<li>Filter name is exported to Excel if saved in your profile.</li>
+<li>An SQLite database can be used to store local statistics instead of flat file, which use far less memory (but is FAR slower). It can be useful for computer with less than 8Gb of RAM and a 'big' Highlander database.</li>
+</ul>
+<b>Miscellaneous</b>
+<ul> 
+<li>Removed partitioning of MySQL database.</li>
+<li>Numerous bug corrections.</li>
+</ul>
+<br><br>
+
+<p>
+<div style="font-size:12px"><strong>Version 14</strong> (November 2015)<br></div><br>
+<b>New features</b>
+<ul>
+<li>New 'alignment' detail box: a complete 'IGV-like' view of the read 40bp around the selected variant. 
+<ul>
+<li>Informations are directly read from the BAM file, so it must be accessible for the detail box to work.</li>
+<li>Reads are ordered with selected variant alternative first, other alternatives following and ending with reference.</li>
+<li>Reads and bases use the same color code than IGV : forward reads in pink, reverse reads in blue, A in green, C in blue, G in orange, T in red and insertions in violet.</li>
+<li>Reads and mismatching bases are shaded depending on their mapping quality (MQV &lt; 60 are shaded) and base phred quality (QV &lt; 30 are shaded).</li>
+<li>Hovering over reference position of the variant show detailled read composition for this position</li>
+<li>Hovering over refseq track gives you gene symbol and exon number</li>
+<li>Hovering over an insertion of mismatching base gives you nucleotides and their phred score</li>
+</ul>
+<li>Better handling of filters combination 
+<ul>
+<li>There is a new 'kind' of filter: 'Combo Filter'.</li>
+<li>Now, you only create (and save to your profile) <b>one</b> Combo Filter.</li>
+<li>A Combo Filter is either 
+<ul>
+<li>a Custom Filter (one or more basic filtering criteria, like 'patient = X AND gene_symbol = TEK,SOX18')</li> 
+<li>a Magic Filter</li>
+<li>two or more Combo Filters combined with AND (intersection) or OR (union).</li>
+</ul>
+</li>
+<li>Custom Filter criteria combined with AND/OR are treated as usual, 
+<i>i.e.</i> intersection/union of database record, meaning that creating a filter like 'patient = X AND patient = Y' returns nothing (no record can belong to patient X AND Y).</li>
+<li>Magic Filters are combined with AND/OR at the variant level. 
+It means that combining 'Variants common to patient W and X' AND 'Variants found in Y and not in Z' could give you something (variant with same chr-pos-ref-alt found in both filters, despite their other fields value).</li>
+<li>The interface has been changed accordingly. The main 'add Custom/Magic/Loaded from profile filter' buttons add a new filter in the main Combo Filter. 
+Small + signs in each filter allow to add a new level of filters (Custom, Magic, Loaded from profile) combined with AND/OR.</li>
+<li>This new paradigm allows to create a broader range of queries, and to use different Custom Filters associate to different Magic Filter. 
+For example, you could combine ['Variants common to patient W and X' AND 'consensus_MAF &lt; 1%'] AND ['Variants found in Y and not in Z' AND 'consensus_MAF &lt; 20%'], which was not possible before.</li>
+<li>In the 'Sample specific variants' Magic Filter: you can now ask for the intersection of variants to keep, in addition of the union. It should allow to find variants following models like dominant, X-linked or imprinting.</li>
+<li>In the 'Common-gene variants' Magic filter: you can now find genes affected by AT MOST or AT LEAST X variants in a certain number of patient.</li>
+<li>In the 'Genomic intervals' Magic filter: you can now keep variant inside (default) or outside the given intervals.</li>
+<li><b>IMPORTANT</b>: Note that most of your existing saved filters won't probably work anymore. Try to load each, and if Highlander throws an error message for one, please delete it and recreate it using the new interface.</li>
+</ul>
+<li>New interface for filter creation 
+<ul>
+<li>A new button in the filter panel opens a window with a tree-like view of the filter.</li>
+<li>Expand/collpase nodes to show more/less detail on each subfilter.</li>
+<li>Buttons change depending on the selected node, corresponding to options available from the selected filter.</li>
+<li>When a specific node is selected, adding a new subfilter with the buttons will add it as a part of the selected filter.</li>
+</ul>
+<li>New profile management interface 
+<ul>
+<li>All profile management buttons of the profile panel have been removed, and replaced by a single button that open a tree-like view of your profile.</li>
+<li>Folders can now be created to organize any category.</li>
+<li>Elements are now only saved for the current analysis, but you can duplicate them for other analysis in the profile manager.</li>
+<li>Elements can be moved to other folders by dragging them with the mouse.</li>
+<li>Other operations are available through the buttons : rename, edit, delete, duplicate, share.</li>
+<li>The right panel of the manager show a complete description of the selected element.</li>
+</ul>
+<li>New gene annotation options 
+<ul>
+<li>In private annotations, you can now write comments about the gene of the selected variant. The comments will be associated to ALL variants found in this gene, for any patient. You are the only who can see or change thoses comments. Note that you can set comment for multiple genes at once if more than one are selected (you only see the comments of the first one), so be careful.</li>
+<li>In private annotations, you can mark a gene 'of_interest' like you mark a variant. The flag will be associated to ALL variants found in this gene, for any patient. You are the only who can see or change this flag. Note that you can set the flag for multiple genes at once if more than one are selected (you only see the flag value of the first one), so be careful.</li>
+<li>In public annotations, you can now write comments about the gene of the selected variant. The comments will be associated to ALL variants found in this gene, for any patient. Anyone can see or change thoses comments.</li>
+<li>Field 'of_interest' changed to 'of_interest_variant', and 'public_comments' changed to 'public_comments_variant'. New gene associated fields are 'of_interest_gene', 'private_comments_gene' and 'public_comments_gene'.</li>
+<li>In public comments (variants and genes), Highlander automatically adds who has made the last modification and when.</li>
+<li>You can now share private comments about selected variant or gene with another user. Use the share button on the right of the comment box, choose another user and he or she will have your comment with your name in addition of his/her existing comments. Note that you can't share more than one comment at a time, even if you select more than one variant/gene.</li>
+</ul>
+<li>A new button on top of detail boxes allows to bring a selected one on top of the list.</li>
+<li>New button in Navigation panel to hide rows based on a selection of patients.</li>
+<li>New button in Profile panel (and Profile manager, with edit option too) to create lists of values by choosing from database fields (to easily create/edit a list of genes of patients).</li>
+<li>External links detail box: add an Decipher button.</li>
+<li>When the horizontal blue arrows appear to scroll (like with long filters), you can now right click on them to scroll directly to end/start.</li>
+<li>You can open BAM files from multiple analysis at once in IGV.</li>
+<li>New search bar in the run statistics details.</li>
+<li>In the run statistics charts, possibility to separate SNPs from INDELs.</li>
+</ul>
+<b>Miscellaneous</b>
+<ul> 
+<li>You can now use statistics fields in the Burden Test tool, for your Highlander query</li>
+<li>dbSNP: dbsnp_id_137 changed back to dbsnp_id (so you can annotate your vcf with any version) and field dbsnp_id_141 removed (was taken from dbNSFP, but there are a lot of missing ids, causing confusion).</li>
+<li>Add a 'Cancel query' button in waiting panel to gently return to Highlander.</li>
+<li>In the detail box 'Samples with same evaluated change', you can now also see the different 'evaluation_comments' associated to the variant.</li>
+<li>In the bottom bar, you now also have the number of unique variants resulting of your query. 
+For this purpose, variants with the same chromosome, position, reference and alternative are counted only once.</li>
+<li>When you load filters from your profile, they are now added with AND or OR as if you created new ones. Delete all filters before loading for old behavior.</li>
+<li>A filter image in tree view is automatically included with Excel export.</li>
+<li>In the tools tab you can export your table to TSV file.</li>
+<li>Count variants now always works, even with statistics or magic filters.</li>
+<li>Revamped interface for creating Custom filter criterion.</li>
+<li>Better column selection window for sorting criteria.</li>
+<li>Various UI improvements</li>
+<li>Support of Impala database, in addition of MySQL</li>
+</ul>
+<b>Bugs correction</b>
+<ul>
+<li>Command-A should now work on Mac OS X instead of CTRL-A</li>
+<li>Command key will no more trigger the edition on a table cell on Mac OS X (thus allowing Command-V to paste without loosing first cell)</li>
+<li>Magic filters 'Genomic interval': using 2+ intervals now works correctly.</li>
+<li>Magic filters 'Common-gene variants': you can now select only one patient (make sense for the new functionnality introduced in 1.13)</li>
+<li>Magic filters 'Combined-heterozygous variants': correction of bug when a variant was present both in father and mother and was not discarded</li>
+<li>Fields 'evaluation_comments', 'public_comments' and 'history' now works correctly with the no value option.</li>
+<li>BAM files with huge header are now correctly taken into account for BAM Check and similar tools.</li>
+<li>Highlighting heatmaps now work correctly when null values are present.</li>
+</ul>
+<br><br>
+
+<p>
+<div style="font-size:12px"><strong>Version 1.13</strong> (May 2015)<br></div><br>
+<b>Important</b>
+<ul>
+<li>Due to the new features in magic filters 'Common-gene variants' and 'Combined-heterozygous variants', your existing saved filters using such magic filters won't work anymore. Please delete them and recreate them using the new interface.</li>
+</ul>
+<b>New features</b>
+<ul>
+<li>Magic filters 'Common-gene variants' and 'Combined-heterozygous variants': pre-filtering options have been replaced by a more complete pre-filter.</li>
+<li>Magic filters 'Common-gene variants': you can now find genes affected by multiple variants in a certain number of patient.</li>
+<li>Patient selection dialog: you can now load a list of patients from your profile.</li>
+<li>Burden test: multiple levels of zoom</li>
+<li>Add a button to show last changes in Highlander in Help toolbar</li>
+</ul>
+<br><br>
+
+<p>
+<div style="font-size:12px"><strong>Version 1.12</strong> (May 2015)<br></div><br>
+<b>New features</b>
+<ul>
+<li>New magic filter <i>Multiple variants in same codon</i>: Find all the codons affected by 2 or 3 variants for a given list of patients.</li>
+<li>
+New fields in the database
+<ul>
+<li>exac_ac: Alternative allele counts (adjusted) in the ExAC database.</li>
+<li>exac_af: Alternative allele frequency (adjusted) in the ExAC database.</li>
+<li>consensus_MAC: Sum of the alternative allele counts from fields exac_ac, 1000G_AC, gonl_ac, ARIC5606_AA_AC and ARIC5606_EA_AC.</li>
+<li>consensus_MAF: Maximum alternative allele frequency found in fields exac_af, 1000G_AF, ESP6500_AA_AF, ESP6500_EA_AF, gonl_af, ARIC5606_AA_AF and ARIC5606_EA_AF.</li>
+</ul>
+</li>
+<li>Burden test tool can be used with GoNL or ExAC.</li>
+<li>Magic Filter 'Common gene' and 'Combined heterozygous': the possibility to filter out common variants now uses fields consensus_MAC and consensus_MAF</li>
+<li>External links detail box: add an ExAC button.</li>
+<li>External links detail box: add a COSMIC button when id is available.</li>
+<li>External links detail box: add a Global Alliance 'Beacon of Beacons' button.</li>
+<li>Profile tab: you can share/delete a selection of item (instead of 1 item at a time).</li>
+<li>The field outsourcing now shows the name of the external company where the sample has been outsourced (not only a yes/no flag).</li>
+<li>The pedrigree checker now let you choose between dbSNP 129 and 137, and gives some explanation on the adjusted table.</li>
+</ul>
+<b>Bugs correction</b>
+<ul>
+<li>Burden test tool: you can now run the tool with a filter that uses only non-gonl/exac criteria.</li>
+<li>Tool check familial relationship works again.</li>
+<li>Tool coverage ration x/y should work (not crash) even when chr X and Y are not covered.</li>
+<li>Tooltip correction for evalutation buttons in Navigation toolbar.</li>
+</ul>
+<br><br>
+
+<p>
+<div style="font-size:12px"><strong>Version 1.11</strong> (February 2015)<br></div><br>
+<b>New features</b>
+<ul>
+<li>BamViewer: you can import a list of values (patients) from your profile.</li>
+<li>Magic Filter 'Common gene': possibility to filter out common variants (less than X% in 1000G/GoNL/ESP6500/ARIC5606).</li>
+<li>Magic Filter 'Combined heterozygous': possibility to filter out variants with same options that 'Common gene' filter.</li>
+</ul>
+<b>Bugs correction</b>
+<ul>
+<li>Burden test tool: you can now run the tool with a filter that uses only non-gonl criteria.</li>
+<li>Tool check familial relationship works again.</li>
+<li>Tooltip correction for evalutation buttons in Navigation toolbar.</li>
+</ul>
+<br><br>
+
+<p>
+<div style="font-size:12px"><strong>Version 1.10</strong> (January 2015)<br></div><br>
+<b>New features</b>
+<ul>
+	<li>Support for latest version of caller and annotations : GATK 3.3, snpEff 4.1, dbNSFP 2.8, Ensembl 75</li>
+	<li><b>dbNSFP 2.8</b>
+	<ul>
+		<li>dbSNP: dbsnp_id changed to dbsnp_id_137 and new field dbsnp_id_141 added.</li>
+		<li>VEST 3.0: vest_score field added. Score ranges from 0 to 1. The larger the score the more likely the mutation may cause functional change. In case there are multiple scores for the same variant, the largest score (most damaging) is presented. Please refer to Carter et al., (2013) BMC Genomics. 14(3) 1-16 for details.Please note this score is free for non-commercial use. For more details please refer to http://wiki.chasmsoftware.org/index.php/SoftwareLicense. Commercial users should contact the Johns Hopkins Technology Transfer office.</li>
+		<li>CADD: cadd_raw and cadd_phred fields added. CADD raw score for funtional prediction of a SNP. Raw CADD scores come straight from the model, and are interpretable as the extent to which the annotation profile for a given variant suggests that that variant is likely to be observed (negative values) vs simulated (positive values). These values have no absolute unit of meaning and are incomparable across distinct annotation combinations, training sets, or model parameters. However, raw values do have relative meaning, with higher values indicating that a variant is more likely to be simulated (or not observed) and therefore more likely to have deleterious effects. On the other hand CADD phred-like score (-10*log10(rank/total)) are based on whole genomeCADD raw scores. A scaled C-score of greater of equal 10 indicates that these are predicted to be the 10% most deleterious substitutions that you can do to the human genome, a score of greater or equal 20 indicates the 1% most deleterious and so on. If you would like to apply a cutoff on deleteriousness, you should put it somewhere between 10 and 20 (15). Please refer to Kircher et al.(2014) Nature Genetics 46(3):310-5 for details. The larger the score the more likelythe SNP has damaging effect. Please note the following copyright statement for CADD: CADD scores (http://cadd.gs.washington.edu/) are Copyright 2013 University of Washington and Hudson-Alpha Institute for Biotechnology (all rights reserved) but are freely available for all academic, non-commercial applications. For commercial licensing information contact Jennifer McCullar (mccullaj@uw.edu).</li>
+		<li>PhyloP: phylop field removed and fields phyloP46way_primate, phyloP46way_placental and phyloP100way_vertebrate added. phyloP (phylogenetic p-values) conservation score based on the multiple alignments of 10 primate / 33 placental mammal / 100 vertebrate genomes (including human). The larger the score, the more conserved the site.</li>
+		<li>phastCons: fields phastCons46way_primate, phastCons46way_placental and phastCons100way_vertebrate added. phastCons conservation score based on the multiple alignments of 10 primate / 33 placental mammal / 100 vertebrate genomes (including human). The larger the score, the more conserved the site.</li>
+		<li>ARIC5606: fields ARIC5606_AA_AC, ARIC5606_AA_AF, ARIC5606_EA_AC and ARIC5606_EA_AF added. Alternative allele counts/frequency in 2403 exomes of African/European Americans from the Atherosclerosis Risk in Communities Study (ARIC) cohort study.</li>
+		<li>ClinVar: fields clinvar_rs, clinvar_clnsig and clinvar_trait added. rs number from the clinvar data set and clinical significance as to the clinvar data set : 2 - Benign, 3 - Likely benign, 4 - Likely pathogenic, 5 - Pathogenic, 6 - drug response, 7 - histocompatibility. A negative score means the the score is for the ref allele.</li>
+		<li>COSMIC: fields cosmic_id and cosmic_count added. ID of the SNV at the COSMIC (Catalogue Of Somatic Mutations In Cancer) database and number of samples having this SNV in the COSMIC database.</li>
+		<li>Splicing predictions: fields is_scSNV_RefSeq, is_scSNV_Ensembl, splicing_ada_score, splicing_ada_pred, splicing_rf_score and splicing_rf_pred added. The is_scSNV fields indicate whether the SNV is a scSNV according to RefSeq/Ensembl (i.e. in splicing consensus regions, -3 to +8 at the 5’ splice site and -12 to +2 at the 3’ splice site). Scores are ensemble prediction based on ada-boost/random forests. Ranges 0 to 1. The larger the score the higher probability the scSNV will affect splicing. The suggested cutoff for a binary prediction (affecting splicing vs. not affecting splicing) is 0.6.</li>
+	</ul></li>
+	<li><b>snpEff 4.1</b>
+	<ul>
+		<li>New fields: exon_intron_rank, exon_intron_total, cdna_pos, cdna_length, cds_pos, cds_length, protein_pos, protein_length.</li>
+		<li>Fields removed: exon_id, old_aa, new_aa, old_codon, new_codon, cds_size (now cds_length), codon_number (now protein_pos), exon_number (now exon_intron_rank).</li>
+		<li>consensus_prediction now take into account CODON_CHANGE, CODON_CHANGE_PLUS_CODON_DELETION, CODON_CHANGE_PLUS_CODON_INSERTION and CODON_DELETION, CODON_INSERTION by adding +10 to the score.</li>
+		<li>consensus_prediction now take into account splice site prediction (ada and rf score > 0.6) by adding +1/+2 to the score.</li>
+	</ul></li>
+</ul>
+<b>Bugs correction</b>
+<ul>
+	<li>Statistics are now localy saved in different folders depending on configuration file (could have caused problems if you alternate between 2 different Highlander databases)</li>
+</ul>
+<br><br>
+
+<p>
+<div style="font-size:12px"><strong>Version 1.9</strong> (November 2014)<br></div><br>
+<b>New features</b>
+<ul>
+<li>Burden test tool
+	<ul>
+	<li>The number of variants selected (note that same variant in different Highlander patients is counted only once) is shown in the top toolbar.</li>
+	<li>If more than one variant are present at the same position, they are all shown vertically.</li>
+	<li>You have two zoom levels in the graphical view: windows fit (default) and full size.</li>
+	<li>When you stop the mouse on the graph, a tooltip shows various information on variants and exons.</li>
+	<li>You can select variants in the graphical view (several using CTRL), or draw a box around them, to select them in the table.</li>
+	<li>The statistics button calculate a Chi² test for the selected gene.</li>	
+	</ul></li>
+<li>New user annotation field 'check_segregation' (available in 'Variant evaluation' box). 
+This field can be used if this variant has been evaluated for segregation: SINGLE (No other sample in family), COSEG (Variant cosegregates), 
+CARRIERS (Some unaffected carrier(s)), NO_COSEG (Not in other affected(s)), NO_COSEG_OTHER (Does not cosegregate in other families) or NOT_CHECKED (Not checked for segregation, default value). 
+Only users associated with the given sample can change this field, but any user can see the assigned value.</li>
+<li>New details box: Samples with same evaluated change. For same selected change in all patients, displays the variant evaluations.</li>
+<li>Tool 'Coverage information': you can now group the data by gene or by patient.</li>
+<li>Multiple configuration files: you can now have different configuration files (settings.xml) if you put them in subdirectories of 'config' dir. 
+If you have more than one, Highlander will allow you to select one at start. 
+You can also run Hihglander with the '-c' argument followed by the full path to the config file you want to use.</li>
+</ul>
+<b>Bugs correction</b>
+<ul>
+<li>Downloading BAM and VCF now also download associated index files.</li>
+<li>Handle the detail boxes for categories with no field associated in the database.</li>
+<li>UCSC link now works correctly.</li>
+<li>GoNL frequency column is now displayed in %.</li>
+<li>Setting of_interest to true or false now correctly set it in the table.</li>
+<li>Gene annotations should throw less errors.</li>
+</ul>
+<br><br>
+
+
+<p>
+<div style="font-size:12px"><strong>Version 1.8</strong> (September 2014)<br></div><br>
+<b>Bugs correction</b>
+<ul>
+<li>Scrolling on toolbar is now handled with left/right button that appear when needed ; should be more user friendly !</li>
+<li>The evaluation field values were interverted, and are now: I - Benign - Polymorphism. II - Variant Likely Benign. III - Variant of Unknown Significance. IV - Variant Likely Pathogenic. V - Pathogenic Mutation.</li>
+<li>The run statistics graphs now take into account different analyses.</li>
+<li>Administrator email is now correctly used for Highlander emails.</li>
+</ul>
+<br><br>
+
+
+<p>
+<div style="font-size:12px"><strong>Version 1.7</strong> (September 2014)<br></div><br>
+<b>New features</b>
+<ul>
+<li>You can now manage genomic intervals inside Highlander:
+	<ul>
+	<li>Create, edit, delete and share intervals list in the profile toolbar.</li>
+	<li>You can import/export bed files from the creation/edition interface.</li>
+	<li>A new magic filter allow you to use genomic intervals in filters.</li>
+	<li>The BAM viewer tool now use genomic intervals interface.</li>
+	</ul></li>
+<li>In the filters toolbar, a new button allow you to get the number and list of patients included in your query.</li>
+<li>New fields in highlander for GoNL minor allele frequency: gonl_ac and gonl_af.</li>
+<li>Columns can now be re-sized and their width is automatically saved in your profile. A new button in the Profile tab allows to reset column widths to default values.</li>
+<li>Private comments are now available in the main table as a new column, not only in the 'private annotations' box.</li>
+<li>In the Common-gene magic filter, you can now set a minimum consensus_prediction value and a minimum number of patients 
+(e.g. if you have 10 patients you can ask for genes with variants in at least 8 patients)</li>
+<li>BAM and VCF files can now be downloaded through SFTP.</li>
+<li>The BAM Viewer can now show you more than one nucleotide:
+	<ul>
+	<li>If you give an interval, it shows all read patterns between the 2 positions (in regard of the reference).</li>
+	<li>Reads that do not contain the interval entirely are ignored (not counted in total reads, so it can differ from the VCF read_depth column).</li>
+	<li>If you give a single position, it shows insertions just before or after.</li>
+	<li>Inserted bases are displayed in lower case, so you can detect them more easily.</li>
+	<li>A deleted base is displayed as '-'.</li>
+	<li>If you select variants directly from an Highlander query result, they are converted to intervals with the size of the reference column (1 for SNP and INS, 1 + number of deleted bases for DEL).</li>
+	<li>If the reference pattern is detected, a (ref) is added just after in the column header. Note that DBNSFP is used to check the reference sequence, and so only exonic positions are covered.</li>
+	<li>Columns are ordered by number of reads (First the pattern having the greatest number of reads with it, etc).</li>
+	<li>You don't need anymore to provide the alternative allele to the BAM checker (it automatically checks all patterns present in the BAM Viewer).</li>
+	</ul></li>
+<li>The 'detected_as_error' field now also takes into account INDELs.</li>
+<li>New detail box : Variant evaluation
+	<ul>
+	<li>Annotations in this section can only be changed by users associated with the given sample, but any user can see the assigned values.</li>
+	<li>New field: evaluation field and evaluation_username. This flag can be used to assign an evaluation class to a change: I - Pathogenic Mutation. II - Variant Likely Pathogenic. III - Variant of Unknown Significance. IV - Variant Likely Benign. V - Benign - Polymorphism. A value of zero means that this variant has not been evaluated.</li>
+	<li>check_insilico, check_validated_change and check_somatic_change have been moved in this section</li>
+	<li>New field: evaluation_comments. Comments visible to all users but modifiable only by users associated with the sample.</li>
+	<li>New field: history. History of evaluation modifications, including username and date, automatically updated.</li>
+	<li>If you select several samples, you can set their value all at once. Works also for private annotations (but not for public ones).</li>
+	<li>In the navigation tab, six new buttons allow you to quickly filter in/out variants depending on their evaluation.</li>
+	</ul></li>
+<li>Link to LOVD and BIC added to External links detail box.</li>
+<li>You can now copy-paste list of values from excel to Highlander value lists.</li>
+<li>Source of annotations is now included in column description, and can be easily update in the fields table of the database.</li>
+<li>Highlander version, user name and date are now written in the exported Excel file (in the 'Filters details' sheet).</li>
+<li>Field lof_tolerant_gene has been renamed lof_tolerant_or_recessive_gene for more clarity.</li>
+</ul>
+<b>Bugs correction</b>
+<ul>
+<li>IGV is now started outside Highlander:
+	<ul>
+	<li>You will not have anymore 'strange bugs' when using it.</li>
+	<li>You are now able to have multiple IGV windows opened.</li>
+	<li>You can choose how much memory to assign to it (in addition of the memory assign to Highlander).</li>
+	<li>Jumping to a selected locus in an opened IGV is no more possible (the button has been removed).</li>
+	<li>IGV is a little bit slower to launch.</li>
+	<li>A console window has been added with IGV to see IGV console messages.</li>
+	<li>You can link any version of IGV to Highlander. Modify the setting.xml file in config directory, and change the value of the IGV key to the path of your version of IGV.</li>
+	</ul></li>
+<li>X/Y coverage for runs works again (didn't work with the new database structure).</li>
+<li>Sorting criteria order is now correctly restored from your profile.</li>
+<li>Solved a bug with statistics associator tool which disabled statistics use after closing the window.</li>
+<li>Order of elements shared between profiles is now correctly preserved.</li>
+<li>Magic filter creation dialog now always keep its size and add scroll bar when needed.</li>
+<li>Profile sharing dialog now always fit the screen.</li>
+<li>User annotations are now backuped and restored when a sample is deleted or re-imported in the database.</li>
+</ul>
+<br><br>
+
+<p>
+<div style="font-size:12px"><strong>Version 1.6</strong> (May 2014)<br></div><br>
+<b>New features</b>
+<ul>
+<li>New stat column [change/gene]_num_[blood/tissue]_num_groups : This field shows the number of different disease groups to which the change-positive samples belong. 
+e.g. for 20 change-positive samples in the database, you could have '3' in THIS field, which corresponds to 'VM, LE, CLP' in the group field .</li>
+</ul>
+<br><br>
+
+<p>
+<div style="font-size:12px"><strong>Version 1.5</strong> (April 2014)<br></div><br>
+<b>Bugs correction</b>
+<ul>
+<li>Magic filters and statistics only queries now works correctly</li>
+</ul>
+<br><br>
+
+<p>
+<div style="font-size:12px"><strong>Version 1.4</strong> (April 2014)<br></div><br>
+<b>Bugs correction</b>
+<ul>
+<li>Magic filter "Common gene" has been fixed</li>
+<li>Run chart XY has been fixed</li>
+</ul>
+<br><br>
+
+<p>
+<div style="font-size:12px"><strong>Version 1.3</strong> (April 2014)<br></div><br>
+<b>Bugs correction</b>
+<ul>
+<li>You can now move sorting criteria again</li>
+<li>Open variant in IGV works again</li>
+<li>Pedigree checker works again</li>
+<li>Selection of BAM for BAM Viewer works now as intended</li>
+</ul>
+<br><br>
+
+<p>
+<div style="font-size:12px"><strong>Version 1.2</strong> (March 2014)<br></div><br>
+<b>Annotations update</b>
+<ul>
+<li>dbNSFP 2.3
+	<ul>
+	<li>A lot of prediction errors have been corrected (Polyphen was not using the canonical transcript, errors in Mutation Taster scores, etc)</li>
+	<li>New field in Highlander for FATHMM prediction scores (weighted for human inherited-disease mutations with Disease Ontology). Please refer to Shihab et al Hum. Mut. (2013) 34(1):57-65 for details.</li>
+	<li>New field in Highlander for RadialSVM and LR ensemble prediction score (DBNSFP's support vector machine (SVM) and logistic regression (LR) based ensemble prediction score, which incorporated 10 scores (SIFT, PolyPhen-2 HDIV, PolyPhen-2 HVAR, GERP++, MutationTaster, Mutation Assessor, FATHMM, LRT, SiPhy, PhyloP) and the maximum frequency observed in the 1000 genomes populations.)</li>
+	</ul></li>
+<li>GATK 2.8
+	<ul>
+	<li>Fields strand_bias and largest_homopolymer removed (they were not working as well as GATK team would like to).</li>
+	<li>New field in Highlander for fisher_strand added (Phred-scaled p-value using Fisher's exact test to detect strand bias).</li>
+	<li>New field in Highlander for mapping_quality added (RMS Mapping Quality).</li>
+	<li>New field in Highlander for mapping_quality_zero_reads added (Total mapping quality zero reads).</li>
+	<li>GATK_STANDARD filter has heavily changed: variant_confidence_by_depth &#139; 2 + fisher_strand_bias &#155; 60 + mapping_quality &#139; 40 + haplotype_score &#155; 13 + rank_sum_test_read_mapping_qual &#139; -12.5 + rank_sum_test_read_pos_bias &#139; -8</li>
+	<li>GATK is now used for the gene coverage computation</li>
+	</ul></li>
+<li>SnpEff 3.5
+	<ul>
+	<li>New fields in Highlander for hgvs_protein and hgvs_dna (HGVS notation for mutations)</li>
+	<li>Better support for splice site mutations</li>
+	</ul></li>
+<li>dbSNP 138 for rs id annotation and dbSNP 129 for 'common SNP' filtering</li>
+<li>Ensembl 74</li>
+</ul>
+<b>Structural changes</b>
+<ul>
+<li>Analyses are now located in the database, with their icon and file paths</li>
+<li>A new analysis has been added : CRAP (Collection des Runs Anormaux et Pourris). All the WildFire and Aros runs (and the 4 SOLID runs done just before WildFire) will be added there, so data are accessible (variants and bams) but they do not 'pollute' statistics or BamChecker.</li>
+<li>A new field 'found_in_crap' has been created in each other analysis (you should update your filters, masks, column selection if you want to integrate it).</li>
+<li>There now a gene_coverage table for each analysis.</li>
+<li>There now statistics, error and other_effects tables for each analysis.</li>
+<li>Fields categories, width and alignment are now located in the database. 
+It's easy to add new fields in the database without changing anything in the code: just add the column in the analysis table, and a new entry in the fields table (you can even create new categories in the field_categories table).
+Populating those new fields must be done externally, or you can update the 'Change.java' class to have them updated with the dbBuilder tool." </li>
+<li>Some field names have been changed
+	<ul>
+	<li>gehu_group --> patholgy</li>
+	<li>gehu_partition --> partition</li>
+	<li>29way_pi --> siphy_29way_pi</li>
+	<li>29way_log_odds --> siphy_29way_log_odds</li>
+	<li>coverage_unfiltered --> read_depth</li>
+	<li>coverage_filtered has been removed</li>
+	</ul></li>
+<li>dbsnp_flagged has been replaced by unisnp_ids which is a cleaned version of dbSNP build 129 (dbSNP 129 is generally regarded as the last "clean" dbSNP without "contamination" from 1000 Genomes Project and other large-scale next-generation sequencing projects.)</li>
+<li>Administrator mail, run report path and run summary path can be set in config.xml</li>
+</ul>
+<b>New features</b>
+<ul> 
+<li>A new detail box "Gene details" show a lot of gene information, gathered by the last version of dbNSFP</li>
+<li>In the navigation tab, three new button allows you to quickly filter in/out variants tagged 'of interest' / 'not of interest'</li>
+<li>A new tool, Stat Associator, allows you to select variants and show statistics related to another analysis. For example, you can select Ion Torrent variants and look if some patients from LifeScope analyses have them too.</li>
+<li>Gene coverage information is now much faster and you can get coverage at 1x, 10x, 20x and 30x</li>
+<li>In BamViewer, you can now select the BAM files you want to view</li>
+<li>Run can be selected in the Run Statistics tools (like in the Run Charts tool)</li>
+<li>IGV tool : Highlander now checks if the selected files exist on the server before opening them with IGV (to avoir IGV 'blank' error message impossible to close)</li>
+<li>About dialog has been updated</li>
+</ul>
+<b>Bugs correction</b>
+<ul>
+<li>Column selection order is now correctly saved</li>
+<li>Other minor bugs corrected</li>
+</ul>
+<br><br>
+
+<p>
+<div style="font-size:12px"><strong>Version 1.1</strong> (Septembre 2013)<br></div><br>
+<b>Bugs correction</b>
+<ul>
+<li>Elements sharing can now correctly be renamed</li>
+<li>Other minor bugs corrected</li>
+</ul>
+<br><br>
+
+<p>
+<div style="font-size:12px"><strong>Version 1.0</strong> (Septembre 2013)<br></div><br>
+<b>Release version</b>
+<br><br>
+
+<p>
+<div style="font-size:12px"><strong>Version 0.97</strong> (August 2013)<br></div><br>
+<b>New features</b>
+<ul> 
+<li>New column in the database : 'lof_tolerant_gene' (lof-tolerant = seen in homozygous state in at least one 1000G individual; recessive = known OMIM recessive disease gene; NA = unclassified).</li>
+<li>Two new buttons (in the bottom right of the main table), allow to save/load the current variant list. All variants present in the table are saved, 
+as well as the selected columns, filters, masks, sorting and highlighting criteria. Restoring a variant list is far much faster than re-applying the filters.</li>
+<li>New magic filter <i>MNP variants</i>: Find all the MNP (Multiple Nucleotides Polymorphims) for a given list of patients. 
+MNP's are sets of two or more variants with consecutive positions.</li>
+<li>When creating a new filtering criterion, you can now set the value(s) to "no value". It means you can search for fields with "empty cells" in the table. 
+For example, you could search for variants that have no value for the dbsnp_id field (so variants that are not in dbSNP).</li>
+<li>In the profile tab, you can now share any element (columns selections, masks, filters, highlighting rules, sorting criteria, variants lists) with another user. 
+The other user will be notified the next time he or she launchs Highlander, or when he or she tries to load an element from his/her profile.</li>
+<li>In the tools tab, a new button allows to launch the "Pedigree checker" tool : select a set of patient and check if they are related. 
+Highlander is using the number of common well covered (>10x) SNP, the resulting percentage indicating the following relationships : 
+unrelated below 60-62% (red), aunt/uncle below 67-69% (dark-light orange), grand-parent below 69-71% (light orange-yellow), parents/siblings above 71% (green). 
+Note that the percentage correspond to 2x the number of common SNPs. 
+<i>e.g.</i> if patient A has 32 000 SNPs, patient B 28 000 SNPs and 20 000 SNPs are common between A and B, the total SNPs is 60 000 
+(the number between parenthesis in the table), with 40 000 common SNPs, so 66%.</li>
+<li>In the tools tab, a new button allows to get average coverage (vertical and horizontal) for a given set of genes or regions.</li>
+<li>In the tools tab, a new button allows to view run statistics bar charts. You can see any value from the run statistics displayed as a bar chart, 
+and select which runs you want to include (there are filters to easily select things like "Wildfire runs" or "Pair-end runs"). You can also show information like 
+patient sex (coverage ratio from chromosomes X and Y) and number of variants called. The red line in the chart correspond to the mean, and dashed lines to the standard
+deviation. Any bar below mean - SD is displayed in red, any bar above mean + SD in green. 
+Runs with values like ti_tv_novel_gatk that are far from the mean are probably bad runs.</li>
+<li>In the tools tab, a new button allows to download the BAM and VCF files of selected patient (for the current analysis). 
+If the VCF file opens in your browser (instead of downloading), just right-click on the page and "save as".</li>
+</ul>
+<b>Miscellaneous</b>
+<ul>
+<li>Platform column has been reorganized, new possible values are now: SOLID_5500_XL (Life Technologies Solid 5500XL), 
+SOLID_5500_WF (Life Technologies Solid 5500 with the WildFire upgrade), HISEQ_2000 (Illumina HiSeq 2000), HISEQ_2500 (Illumina HiSeq 2500), 
+MISEQ (Illumina MiSeq), ION_TORRENT (Life Technologies Ion Torrent) or PROTON (Life Technologies Proton). An additionnal column, 'outsourcing', allows you to know if the run has
+ been executed on our machine or by an external.</li>
+<li>The button used to validate the public/private comments is now on the left of the box (before it could be masked if the details column was too small).</li>
+<li>'Homozygous' column changed to 'Zigosity'</li>
+</ul>
+<b>Optimization</b>
+<ul>
+<li>Default allowed memory is now 2.5Gb (you can still allow more using Help > Memory). Note that preferred memory allowance is reset on Mac when Highlander is updated.</li>
+<li>Statistics shoukld take less memory and be loaded faster after the first time.</li>
+</ul>
+<b>Bugs correction</b>
+<ul>
+<li>The details box with change/gene statistics now correctly appears when statistics are loaded</li>
+<li>The details box with change/gene statistics are not shown when unavailable (like in LowFreq Analysis)</li>
+<li>VCF tracks are now correctly removed when you close IGV window</li>
+</ul>
+<br><br>
+
+<p>
+<div style="font-size:12px"><strong>Version 0.9</strong> (May 2013)<br></div><br>
+<b>New features: General</b>
+<ul> 
+<li>The memory bar is now updated every 0.5 second, so you can see more easily if you have memory issue during a query (if the query seems stuck and the bar is full ... it's bad omen !)</li>
+<li>In the tools tab you can view (and export) a detailled table with all runs statistics</li>
+<li>In the tools tab you can open the run report or run summary related to the selected variant, or the list of run reports/summary if none is selected</li>
+</ul>
+<b>New feature: Highlighting</b>
+<ul>
+<li>A new tab allows highlighting of cell in the table, using criteria similar to filters (called highlighting rules) or heat maps</li>
+<li>The details boxes cells are colored the same way than the main table</li>
+<li>Highlighting is also exported in Excel</li>
+<li>Highlighting rules: all cells from the selected column passing the filter are colored following your formatting (background and/or foreground color, bold and/or italic text). 
+You can create multiple rules for the same column, each with different formatting. 
+If more than one rule applies for the same cell, the different formatting are applied in order (<i>i.e.</i> like if they were linked with OR). 
+As you can't link rules with AND, new comparison operators allows you to create ranges.</li>
+<li>Heat maps: select a column, a range of color and a conversion method.
+<ul>
+<li><b>Position sorting</b>: distinct values are sorted and color is relative to the value position in this sorted list. It's exactly like in Excel. 
+<i>e.g.</i> if you have values 40, 70, 80 they will be green, yellow (middle value) and red.</li>
+<li><b>Estimated range</b>: minimum and maximum values are extracted from the data to create a range and color is relative to the value position in this range. 
+<i>e.g.</i> if you have values 40, 70, 80 they will be green (the min), orange (closer from the max) and red (the max). </li>
+<li><b>Given range</b>: minimum and maximum values given in arguments are used to create a range and color is relative to the value position in this range. 
+Useful if you want to exclude some extreme or abnormal values.
+<i>e.g.</i> if you have values 40, 70, 80 and set the min to 70 and max to 75, they will be green (below the min), green (min) and red (above the max).</li>
+</ul>
+</li>
+</ul>
+<b>New feature: BAM Viewer</b>
+<ul>
+<li>If no variant is selected, the Bam Viewer tool will ask you for a chromosome and position</li>
+<li>You can select multiple variants at once to open them all in the BAM Viewer</li>
+<li>A new button in the BAM Viewer (BAM Checker) allows you to generate a summary table with the number of BAM that exhibit each change, with a given minimum number of reads and alternative allele</li>
+<li>A <i>View in IGV</i> and <i>Switch position in IGV</i> button have been added in the BAM Viewer, allowing to open the position of the selected tab in IGV, with all selected BAM opened</li>
+</ul>
+<b>Miscellaneous</b>
+<ul>
+<li>Value list editor now shows the number of values in the list</li>
+<li>Values entered in lists or criteria are automatically trimmed (leading and trailing spaces are removed)</li>
+</ul>
+<b>Performances</b>
+<ul>
+<li>Change and gene statistics are now locally saved on your computer, and are loaded in the background when Highlander is launched. 
+You should only have 'statistics' waiting screens when the database has been updated.</li>
+</ul>
+<b>Bugs correction</b>
+<ul>
+<li>All IGV strange bugs seem to be resolved (dbSNP 135 track, sequence track that disappear, position not set, size of the tracks, window that not shows)</li>
+<li>The column 'found_in_gatk' now appears correctly in 'Calling in other analysis' category</li>
+<li>Mutalyzer links now work also on Mac</li>
+</ul>
+<br><br>
+
+<p>
+<div style="font-size:12px"><strong>Version 0.8</strong> (April 2013)<br></div><br>
+<b>New features</b>
+<ul> 
+<li>BAM Viewer (in toolbar <i>Tools</i>): allow to visualize the selected position in details in ALL available BAM files (table exportable in Excel)</li>
+<li>Brand-new right panel with detailled info on the selected variant</li>
+<li>Information is splitted amongst different boxes, each one can be expanded or collapsed (using the +/- button), and you can reorder boxes using drag and drop</li>
+<li>The boxes position and visibility (expanded or not) is automatically saved in your profile, so you don't have to reorder it all the time !</li>
+<li>You have one box for each column category, so you can see all information on a variant even if you have selected only a few columns for your query</li>
+<li>'Error detection' shows 'WARNING: this variant is detected as an error' in red or 'This variant is NOT detected as an error' in green</li>
+<li>For Change and Gene statistics, you have extra boxes that give you the exclusive list of samples in each category</li>
+<li>'Polyphen prediction for other transcripts' shows Polyphen prediction for all other 'non-canonical' transcripts (the canonical transcript is used in the table and is NOT repeated here)</li>
+<li>'SnpEff prediction for other transcripts' shows SnpEff prediction for all other 'non-canonical' transcripts (the canonical transcript is used in the table and is NOT repeated here)</li>
+<li>'Public annotations' allows you to set the fields <i>check_insilico</i>, <i>check_validated_change</i>, <i>check_somatic_change</i> and <i>public_comments</i>. 
+<ul>
+<li><i>check_insilico</i>: Any user who has checked this variant insilico (<i>e.g.</i> with IGV) can set this flag to true if it's likely a real change, or to false if it's likely a sequencing error (<i>e.g.</i> alternative allele not specific to pathology)</li>
+<li><i>check_validated_change</i>: Any user who has checked this variant can set this flag to true if the change has been confirmed in the lab, or to false otherwise</li>
+<li><i>check_somatic_change</i>: Any user who has checked this variant can set this flag to true if it's a confirmed somatic change, or to false if it's a germline change</li>
+</ul>
+Once any of these fields are set to true or false (instead of 'no value') by any user, only this user (or an administrator) can change it again.  
+The <i>public_comments</i> can be updated any time by anyone, so please avoid to erase other users comments, just add yours. 
+Note that any change made in this box is automatically updated in the database, but NOT in your table, you need to re-send your query to see the columns change.
+</li>
+<li>'Private annotations' allows you to set the fields <i>of_interest</i> and <i>private_comments</i>. 
+Those fields are user-specific and only visible by you, so if you mark a variant <i>of_interest</i>, it's only for you and it will only affect your queries. 
+It's the same for <i>private_comments</i>, no other user can see them.</li>
+<li>'Gene and sample coverage' shows the vertical and horizontal mean coverage for the selected gene in the selected sample, the gehu group and the whole database</li>
+<li>'Run statistics' shows all information and statistics relative to the run that yield the selected variant</li>
+<li>'External links' shows buttons that allow you to directly open your web browser with your variant/gene entered in different web sites 
+like dbSNP, UCSC, Ensembl, OMIM, PubMed, NCBI, Entrez or HGNC. The variant is also automatically submitted to Mutalyzer position converter and one button is available 
+for each result, showing the transcript id and cDNA positon and allowing to submit it to Mutalyzer name checker</li>
+</ul>
+<b>Bugs correction</b>
+<ul>
+<li>Highlander asks for saving your filter even if it's a new one (before it had to be loaded)</li>
+<li>Decimal coma in numbers are automatically changed to decimal point for filters (decimal coma is not recognized by the database)</li>
+<li>There were still database disconnection problems (for queries that update the database), they should be fixed now</li>
+<li>Add scroll bars in the magic filter creation dialogs, in case of large patient list</li>
+</ul>
+<br><br>
+
+<p>
+<div style="font-size:12px"><strong>Version 0.7</strong> (March 2013)<br></div><br>
+<b>New features</b>
+<ul> 
+<li>New magic filter <i>Variants common to samples</i>: keeps only the variants common to a set of samples. 
+	In addition, for each sample, you can set a (possibly different) value for some fields: zygosity, allelic depth and allelic depth proportion.
+	For example, you could obtain the common variants in a family, heterozygous in the parents and homozygous in the child.</li>
+<li>New magic filter <i>Common-gene variants</i>: Keep only variants found in `common` genes (<i>i.e.</i> genes that have at least one variant in all given samples). 
+	In addition, you can set dbsnp_flagged, consensus_prediction and filters criteria.</li>
+<li>New magic filter <i>Combined-heterozygous variants</i>: Given a trio (2 parents and their child), find all potential combined-heterozygous variants.
+	Each of the variants found in the child, should be present in only one of the parents, and at least two such variants should be present in the same gene.</li>
+<li>In the filters tab, you now have a count button to evaluate the number of variants that will be retreive by your query</li>
+<li>You can now modify a filtering criterion (custom or magic) by double-clicking it</li>
+<li>If you create a filter without saving it, or modify an existing fitler, you will be asked if you want to save the changes when you exit Highlander</li>
+<li>The IGV button has new features: you can include dbsnp tracks (132, 135 and 137) and tracks with called variants of selected patients</li>
+<li>A new IGV button in the 'tools tab' allows to jump to the chromosome and position of the selected variant in IGV, if it's open inside Highlander</li>
+<li>Highlander now informs you about the database load, using a colored ball in the bottom left bar. 
+ A green ball means that database is idle and ready for use (no query is currently being processed).
+ A pink ball means that a query is currently being processed, and the username of the first query in the queue is also shown, so you know if it's yours (if not, your query could run, but slowly).
+ An orange ball means that a set of new samples is being processed by Highlander pipeline on the cluster: the database is not yet updated, but will be in the following hours, and data integrity is not assured (<i>e.g.</i> the new samples could have already been inserted in the database, but the statistics are not yet updated).
+ A red ball means that the database is currently updated, so please don't launch queries during that time (anyway, any queries will probably take forever to finish).</li>
+<li>An email is sent to you when samples of interest for you are imported into the database and available in Highlander</li>
+</ul>
+<b>Miscellaneous</b>
+<ul> 
+<li>When you create masks, only selected column are shown, in the order you haven chosen</li>
+<li>You have now two different buttons for possible values from the database or from the actual table</li>
+<li>Filter criteria are now totally case insensitive. It will simplify your life for a lot of fields (<i>sample_type</i>, <i>filters</i>, etc), and is only problematic for <i>old_codon</i> and <i>new_codon</i> fields (<i>e.g.</i> searching for cGt gives you variant with cGt, Cgt and cgT)</li>
+<li>Queries with only statistics are no more allowed. To ensure that the entire database is not downloaded to your computer you must either: include at least one non-statistic field in your custom filter (patient or gehu_group are good candidates), or include at least one magic filter</li>
+<li>The magic filter <i>Familial relationships and zigosity</i> has been removed, but it's functionality can be achieved with the new filter <i>Variants common to samples</i> (see in New features)</li>
+<li>Statistics field have now a better description</li>
+<li>The memory bar now indicates the total amount of memory currently allowed, and is expressed in Gb</li>
+<li>Better MacOs X integration (like about, preference and quit in the menu, cut/copy/paste using command and not ctrl)</li>
+<li>Current date and time is printed with each query and error in the log</li>
+</ul>
+<b>Performances</b>
+<ul>
+<li>Asking from possible values from the database should be nearly immediate</li>
+<li>Queries containing magic filter are automatically limited to the patients selected in the magic filters (should be faster, and you don't need anymore to add a custom criterion with your patients)</li>
+</ul>
+<b>Bugs correction</b>
+<ul>
+<li>Version 0.7.1 correct some bugs with IGV (don't move to the right position after closing IGV, changing Highlander icon, patient selection) and with database load icons</li>
+<li>Corrected some database possible values list for some statistics fields that were incorrect (X_num_Y_Z fields)</li>
+<li>Highlander should reconnect to the database instead of crashing if you left it inactive 8 hours or more</li>
+<li>Sorting and possible values now work correctly even you have masked columns</li>
+<li>It's no more possible to sort a masked column, and if you mask a sorted column (or load a filter with an masked or inexistant column), it will be remove from the sorting criteria.</li>
+<li>IGV window can now be closed and reopened without problems. Bonus, the tracks should now fit to the window and you can open IGV even if no patient is selected !</li>
+<li>You get an error message if you run a query that uses a value list from your profile that doesn't exist (or was deleted/renamed/emptyied)</li>
+<li>When you click on cancel when asked for a column selection / mask name, you go back to the column selection dialog</li>
+<li>When you edit the active column selection / mask in your profile, it automatically refresh the table to reflect the changes</li>
+</ul>
+<br><br>
+
+<p>
+<div style="font-size:12px"><strong>Version 0.6</strong> (February 2013)<br></div><br>
+<b>New features</b>
+<ul> 
+<li>When you show a variant in IGV, Highlander now ask which variant (among your selection) you want to show, and which patients (among your selection and a full list) you want to include</li>
+<li>Add a 'remove all filters' button in the filters toolbar</li>
+<li>When you modify a filtering or sorting criteria list previously saved, you can now overwrite it</li>
+</ul>
+<b>Performances</b>
+<ul>
+<li>Magic filter 'Sample specific variants' should give results much more faster</li>
+</ul>
+<b>Bugs correction</b>
+<ul>
+<li>In custom filters using statistics, numbers were not recognized, causing all variant to be rejected</li>
+<li>If dialogs used to edit profile elements were closed using the close button in the top bar, the element was deleted</li>
+<li>If a query result was present, and if you create a new filter and ask possible values for a field not present in the table, Highlander crashed instead of showing an empty list</li>
+<li>Asking possible values for [change/gene]_num_[blood/tissues]_[filt/unfilt]_[dam/all]_[details]_groups will give you expected results now</li>
+<li>Corrected some bugs that happened when you load a filter or try to delete a criterion in certain cases</li>
+</ul>
+<br><br>
+
+<p>
+<div style="font-size:12px"><strong>Version 0.5</strong> (February 2013)<br></div><br>
+<b>New features</b>
+<ul> 
+<li>Export to Excel is now totally functionnal</li>
+<li>When you delete an element from your profile (columns selection, filter, columns mask, sorting criteria), 
+you will be asked if you want to also delete elements with the same name in other analyses</li>
+</ul>
+<b>Miscellaneous</b>
+<ul>
+<li>Some column descriptions have been corrected/updated</li>
+<li>The column 'gene_symbol' is now in the category 'change details' instead of 'related identifiers'</li>
+<li>In the filter creation dialog, the list for selecting the field is now editable</li>
+</ul>
+<b>Bugs correction</b>
+<ul>
+<li>Fixed crash when you switched analysis (filters were still applied on the old analysis, not the new one). 
+If some of your filters are not compatible with the new selected analysis (e.g. 'gene_num_blood_filt' is not available for 'iontorrent' analysis), 
+the whole filter will be removed, but a warning will allow you to cancel the analysis switch</li>
+<li>In the filter creation dialog, the list for selecting the field has now correct tooltips even if the list is filtered</li>
+<li>User is no more allowed to save an element to his profile without giving it a name</li>
+<li>Add a scrollbar in some toolbars (columns selections, filters, columns masks and sorting criteria) that appears when you have more elements than the length of the window</li>
+</ul>
+<br><br>
+
+<p>
+<div style="font-size:12px"><strong>Version 0.4</strong> (February 2013)<br></div><br>
+<b>New features</b>
+<ul> 
+<li>When Highlander starts, the main screen displays the last changes implemented and the last exomes imported in the databases</li>
+<li>The number of patients available in a database is now displayed in the bottom bar</li>
+<li>You can now edit your column selections and maks from the profile tab</li>
+<li>Two new buttons in the Navigation tab allow to select cells or rows in the table</li>
+</ul>
+<b>Miscellaneous</b>
+<ul>
+<li>Tooltip now stay until you move the mouse away from the GUI component</li>
+<li>Tooltip giving details on columns selections and columns masks list all columns vertically now</li>
+<li>A filter description is available in the filter loading dialog</li>
+<li>The 'send error to Raphael' button send more complete reports</li>
+</ul>
+<b>Bugs correction</b>
+<ul>
+<li>Changing the allowed memory on MacOsX wasn't working</li>
+<li>Fix crash that happened when you had fields in your query that were not present in your columns selection</li>
+</ul>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.30/mysql-connector-java-5.1.30-bin.jar" sourcepath="lib/mysql-connector-java-5.1.30/src"/>
+	<classpathentry kind="lib" path="lib/Install4j/i4jruntime.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/D:/Dropbox/Projets/Highlander/lib/Install4j/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/javamail-1.4.5/mail.jar"/>
+	<classpathentry kind="lib" path="lib/AnimatingCardLayout/AnimatingCardLayout.jar"/>
+	<classpathentry kind="lib" path="lib/HTTP Client/commons-httpclient-2.0-rc3.jar"/>
+	<classpathentry kind="lib" path="lib/poi-3.9/poi-3.9-20121203.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/D:/Dropbox/Projets/NGS Highlander/lib/poi-3.9/docs/apidocs/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/poi-3.9/poi-ooxml-3.9-20121203.jar"/>
+	<classpathentry kind="lib" path="lib/poi-3.9/poi-ooxml-schemas-3.9-20121203.jar"/>
+	<classpathentry kind="lib" path="lib/poi-3.9/lib/commons-codec-1.5.jar"/>
+	<classpathentry kind="lib" path="lib/poi-3.9/lib/commons-logging-1.1.jar"/>
+	<classpathentry kind="lib" path="lib/poi-3.9/ooxml-lib/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/poi-3.9/ooxml-lib/stax-api-1.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/poi-3.9/ooxml-lib/xmlbeans-2.3.0.jar"/>
+	<classpathentry kind="lib" path="lib/poi-3.9/lib/junit-3.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/picard-tools-1.107/ViewSam.jar"/>
+	<classpathentry kind="lib" path="lib/IGV_2.3.32/batik-codec__V1.7.jar"/>
+	<classpathentry kind="lib" path="lib/IGV_2.3.32/goby-io-igv__V1.0.jar"/>
+	<classpathentry kind="lib" path="lib/IGV_2.3.32/igv.jar" sourcepath="lib/IGV_2.3.32/src"/>
+	<classpathentry kind="lib" path="lib/colt/lib/colt.jar" sourcepath="lib/colt/src">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/D:/Dropbox/Projets/NGS Highlander/lib/colt/doc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.8.0_161"/>
+	<classpathentry kind="lib" path="lib/Cloudera_ImpalaJDBC41_2.5.24/ql.jar"/>
+	<classpathentry kind="lib" path="lib/minimal-json/minimal-json-0.9.4.jar" sourcepath="lib/minimal-json/minimal-json-0.9.4-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/Highlander/lib/minimal-json/minimal-json-0.9.4-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/hsqldb-2.3.5/hsqldb-2.3.5.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/Highlander/lib/hsqldb-2.3.5/hsqldb-2.3.5-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/jsch-0.1.54/jsch-0.1.54.jar" sourcepath="lib/jsch-0.1.54/src"/>
+	<classpathentry kind="lib" path="lib/hikaricp-3.4.2/HikariCP-3.4.2.jar" sourcepath="lib/hikaricp-3.4.2/HikariCP-3.4.2-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/Highlander/lib/hikaricp-3.4.2/HikariCP-3.4.2-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/glazedlists-1.11.0/glazedlists-1.11.0.jar" sourcepath="lib/glazedlists-1.11.0/glazedlists-1.11.0-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/Highlander/lib/glazedlists-1.11.0/glazedlists-1.11.0-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/slf4j-1.7.26/slf4j-api-1.7.26.jar" sourcepath="lib/slf4j-1.7.26/slf4j-api-1.7.26-sources.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-1.7.26/slf4j-simple-1.7.26.jar" sourcepath="lib/slf4j-1.7.26/slf4j-simple-1.7.26-sources.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
