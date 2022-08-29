@@ -235,6 +235,8 @@ public class VariantAnnotator extends JFrame {
 			va.setFieldValue(Field.length, ""+1);
 			va.setFieldValue(Field.variant_type, VariantType.SNV.toString());
 			va.setAnnotation(Annotation.GONL);
+			va.setAnnotation(Annotation.GNOMAD_WES);
+			va.setAnnotation(Annotation.GNOMAD_WGS);
 			va.setAnnotation(Annotation.COSMIC);
 			Variant variant = new Variant(
 					(String)va.getValue(Field.chr), 
@@ -459,6 +461,8 @@ public class VariantAnnotator extends JFrame {
 				case CONSENSUS:
 				case COSMIC:
 				case DBNSFP:
+				case GNOMAD_WES:
+				case GNOMAD_WGS:
 				case ENSEMBL:
 				case EXAC:
 				case GONL:

@@ -278,6 +278,8 @@ public class Field implements Serializable, Comparable<Field> {
 		FALSEPOSITIVEEXAMINER (AnnotationType.SAMPLE, null, "Software that directly update Highlander after importation (FalsePositiveExaminer in this case)."), 		
 		ENSEMBL (AnnotationType.STATIC, Schema.ENSEMBL, "Information is fetched from annotation tables, name must match an HighlanderDatabase.Schema"), 
 		DBNSFP (AnnotationType.STATIC, Schema.DBNSFP, "Information is fetched from annotation tables, name must match an HighlanderDatabase.Schema"), 
+		GNOMAD_WES (AnnotationType.STATIC, Schema.GNOMAD_WES, "Information is fetched from annotation tables, name must match an HighlanderDatabase.Schema"), 
+		GNOMAD_WGS (AnnotationType.STATIC, Schema.GNOMAD_WGS, "Information is fetched from annotation tables, name must match an HighlanderDatabase.Schema"), 
 		COSMIC (AnnotationType.STATIC, Schema.COSMIC, "Information is fetched from annotation tables, name must match an HighlanderDatabase.Schema"), 
 		GONL (AnnotationType.STATIC, Schema.GONL, "Information is fetched from annotation tables, name must match an HighlanderDatabase.Schema"), 
 		EXAC (AnnotationType.STATIC, Schema.EXAC, "Information is fetched from annotation tables, name must match an HighlanderDatabase.Schema"), 

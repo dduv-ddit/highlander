@@ -58,7 +58,7 @@ public class LocalDbGenerator {
 	HighlanderDatabase local;
 	DBMS dbms;
 
-	Schema[] schemas = new Schema[]{Schema.DBNSFP,Schema.ENSEMBL,Schema.EXAC,Schema.GONL};
+	Schema[] schemas = new Schema[]{Schema.DBNSFP,Schema.ENSEMBL,Schema.GNOMAD_WES,Schema.GNOMAD_WGS,Schema.COSMIC,Schema.EXAC,Schema.GONL};
 
 	//TODO DEMO - creation of those analyses is probably not enough, need to update analyses table after creation and add references and sequencing targets
 	public LocalDbGenerator(String configFileMysql, String configFileLocal){

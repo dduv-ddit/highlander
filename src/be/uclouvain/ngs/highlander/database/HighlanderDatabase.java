@@ -58,7 +58,7 @@ import be.uclouvain.ngs.highlander.datatype.Reference;
 public class HighlanderDatabase {
 
 	public enum DBMS {mysql,hsqldb}
-	public enum Schema {HIGHLANDER, ENSEMBL, DBNSFP, COSMIC, GONL, EXAC}
+	public enum Schema {HIGHLANDER, ENSEMBL, DBNSFP, GNOMAD_WES, GNOMAD_WGS, COSMIC, GONL, EXAC}
 	private final Map<String,List<String>> availableTables = new TreeMap<String, List<String>>();
 
 	private final Parameters parameters;

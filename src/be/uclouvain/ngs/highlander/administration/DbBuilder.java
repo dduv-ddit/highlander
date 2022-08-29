@@ -91,7 +91,7 @@ import be.uclouvain.ngs.highlander.datatype.SNPEffect.Zygosity;
 
 public class DbBuilder {
 
-	static final public String version = "17.13";
+	static final public String version = "17.15";
 
 	public enum ToolArgument {
 		input("I", "filename", "input filename"), 

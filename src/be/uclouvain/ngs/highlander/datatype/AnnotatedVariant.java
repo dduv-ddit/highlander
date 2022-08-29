@@ -254,6 +254,12 @@ public class AnnotatedVariant {
 			va.setAnnotation(Annotation.GONL);
 			time.put(Annotation.GONL, time.get(Annotation.GONL)+(System.currentTimeMillis()-t));
 			t = System.currentTimeMillis();
+			va.setAnnotation(Annotation.GNOMAD_WES);
+			time.put(Annotation.GNOMAD_WES, time.get(Annotation.GNOMAD_WES)+(System.currentTimeMillis()-t));
+			t = System.currentTimeMillis();
+			va.setAnnotation(Annotation.GNOMAD_WGS);
+			time.put(Annotation.GNOMAD_WGS, time.get(Annotation.GNOMAD_WGS)+(System.currentTimeMillis()-t));
+			t = System.currentTimeMillis();
 			Variant variant = new Variant(
 					(String)va.getValue(Field.chr), 
 					(int)va.getValue(Field.pos), 
@@ -1212,6 +1218,8 @@ public class AnnotatedVariant {
 							String where = "";
 							switch(annotation) {
 							case GONL:
+							case GNOMAD_WES:
+							case GNOMAD_WGS:
 								int pos = (entries.get(Field.pos) == null) ? -1 : (int)entries.get(Field.pos);
 								String reference = (String)entries.get(Field.reference);
 								String alternative = (String)entries.get(Field.alternative);
