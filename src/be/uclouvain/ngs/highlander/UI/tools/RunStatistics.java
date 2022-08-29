@@ -43,6 +43,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -54,12 +56,14 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -196,11 +200,14 @@ public class RunStatistics extends JFrame {
 					try{
 						textFilter = rff;
 						rowFilterExp = getTyppedText();
+						applyFilters();
+						/*
 						List<RowFilter<StatisticsTableModel,Object>> filters = new ArrayList<RowFilter<StatisticsTableModel,Object>>();
 						if (textFilter != null) filters.add(textFilter);
 						if (!filters.isEmpty()){
 							sorter.setRowFilter(RowFilter.andFilter(filters));
-						}  				
+						}
+						*/
 					}catch(Exception ex){
 						Tools.exception(ex);
 					}
@@ -211,6 +218,7 @@ public class RunStatistics extends JFrame {
 		}
 	};
 	private RowFilter<StatisticsTableModel, Object> textFilter = null;
+	private Map<String, RowFilter<StatisticsTableModel, Object>> columnFilters = new LinkedHashMap<>();
 	private String rowFilterExp = null;
 
 	static private WaitingPanel waitingPanel;
@@ -285,6 +293,48 @@ public class RunStatistics extends JFrame {
 		searchPanel.add(searchField, new GridBagConstraints(0,1,1,1,1.0,0.0,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0,30,0,10), 0, 0));
 		panel_north.add(searchPanel);
 
+		columnFilters.put("sequencing_target", null);
+		columnFilters.put("pathology", null);
+		columnFilters.put("population", null);
+		columnFilters.put("index_case", null);
+		columnFilters.put("sample_type", null);
+		
+		for (String field : columnFilters.keySet()) {
+			JPanel filterPanel = new JPanel(new GridBagLayout());		
+			JComboBox<String> boxFilter = new JComboBox<String>(getPossibleValues(field));
+			//boxFilter.setPrototypeDisplayValue("AZERTYUIOPQSDFGHJKLM"); //to limit combobox size to this text, and not the longest item
+			boxFilter.addItemListener(new ItemListener() {
+				@Override
+				public void itemStateChanged(ItemEvent e) {
+					if (e.getStateChange() == ItemEvent.SELECTED) {
+						if (boxFilter.getSelectedItem().toString().equals("All")) {
+							columnFilters.put(field, null);											
+						}else {
+							RowFilter<StatisticsTableModel, Object> rowFilter = new RowFilter<StatisticsTableModel, Object>() {
+								@Override
+								public boolean include(javax.swing.RowFilter.Entry<? extends StatisticsTableModel, ? extends Object> entry) {
+									StatisticsTableModel model = entry.getModel();
+									int colIndex = model.getColumnIndex(field);
+									if (colIndex != -1) {
+											Object value = model.getValueAt((Integer)entry.getIdentifier(), colIndex);
+											if (value != null && value.toString().equals(boxFilter.getSelectedItem().toString())){
+												return true;
+											}				
+									}
+									return false;
+								}
+							};
+							columnFilters.put(field, rowFilter);				
+						}
+						applyFilters();
+					}
+				}
+			});
+			filterPanel.add(new JLabel(field), new GridBagConstraints(0,0,1,1,1.0,0.0,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0,30,0,10), 0, 0));
+			filterPanel.add(boxFilter, new GridBagConstraints(0,1,1,1,1.0,0.0,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0,30,0,10), 0, 0));
+			panel_north.add(filterPanel);		
+		}
+			
 		JPanel panel = new JPanel();	
 		getContentPane().add(panel, BorderLayout.SOUTH);
 
@@ -439,8 +489,36 @@ public class RunStatistics extends JFrame {
 			return false;
 		}
 
+		public int getColumnIndex(String columnName) {
+			for (int i=0 ; i < headers.length ; i++) {
+				if (headers[i].equals(columnName)) return i;
+			}
+			return -1;
+		}
+
 	}
 
+	private String[] getPossibleValues(String field) {
+		Set<String> values = new TreeSet<String>();
+		try (Results res = Highlander.getDB().select(Schema.HIGHLANDER, "SELECT DISTINCT(`"+field+"`) FROM projects JOIN pathologies USING (pathology_id) LEFT JOIN populations USING (population_id)")) {
+			while (res.next()){
+				if (res.getString(1) != null){
+					values.add(res.getString(1));
+				}
+			}
+		}catch(Exception ex){
+			Tools.exception(ex);
+			JOptionPane.showMessageDialog(this, Tools.getMessage("Can't retrieve field values from the database", ex), "Fill available values", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+		}
+		String[] res = new String[values.size()+1];
+		res[0] = "All";
+		int i=1;
+		for (String value : values) {
+			res[i++] = value;
+		}
+		return res;
+	}
+	
 	private void fillTable(){
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -463,11 +541,72 @@ public class RunStatistics extends JFrame {
 			int row = 0;
 			int colCount = 0;
 			Object[][] data = null;
-			try (Results res = Highlander.getDB().select(Schema.HIGHLANDER, "SELECT GROUP_CONCAT(DISTINCT u.username) as users, GROUP_CONCAT(DISTINCT a.analysis) as analyses, p.* " +
-					"FROM projects as p " +
-					"LEFT JOIN projects_users as u USING (project_id) " +
-					"LEFT JOIN projects_analyses as a USING (project_id) " +
-					"WHERE " + selection.toString() + " AND run_path IS NOT NULL GROUP BY p.project_id")){
+			try (Results res = Highlander.getDB().select(Schema.HIGHLANDER, 
+					"SELECT "
+					+ "p.`project_id`, "
+					+ "p.`sequencing_target`, "
+					+ "p.`platform`, "
+					+ "p.`outsourcing`, "
+					+ "p.`family`, "
+					+ "p.`individual`, "
+					+ "p.`sample`, "
+					+ "MIN(a.gene_coverage_ratio_chr_xy) as ratio_xy, "
+					+ "(CASE WHEN MIN(a.gene_coverage_ratio_chr_xy) < 1 THEN '?' WHEN MIN(a.gene_coverage_ratio_chr_xy) < 65 THEN 'M' ELSE 'F' END) as gender_xy, "
+					+ "p.`index_case`, "
+					+ "pathology, "
+					+ "pathology_description, "
+					+ "population, "
+					+ "population_description, "
+					+ "p.`sample_type`, "
+					+ "p2.`sample` as normal, "
+					+ "GROUP_CONCAT(DISTINCT a.analysis) as analyses, "
+					+ "GROUP_CONCAT(DISTINCT u.username) as users, "
+					+ "p.`barcode`, "
+					+ "p.`kit`, "
+					+ "p.`read_length`, "
+					+ "p.`pair_end`, "
+					+ "p.`trim`, "
+					+ "p.`remove_duplicates`, "
+					+ "p.`run_id`, "
+					+ "p.`run_date`, "
+					+ "p.`run_name`, "
+					+ "p.`run_label`, "
+					+ "p.`per_base_sequence_quality`, "
+					+ "p.`per_tile_sequence_quality`, "
+					+ "p.`per_sequence_quality_scores`, "
+					+ "p.`per_sequence_GC_content`, "
+					+ "p.`per_base_N_content`, "
+					+ "p.`sequence_length_distribution`, "
+					+ "p.`sequence_duplication_levels`, "
+					+ "p.`sequence_duplication_prop`, "
+					+ "p.`over-represented_sequences`, "
+					+ "p.`adapter_content`, "
+					+ "p.`percent_of_target_covered_meq_1X`, "
+					+ "p.`percent_of_target_covered_meq_5X`, "
+					+ "p.`percent_of_target_covered_meq_10X`, "
+					+ "p.`percent_of_target_covered_meq_20X`, "
+					+ "p.`average_depth_of_target_coverage`, "
+					+ "p.`coverage_wo_dup`, "
+					+ "p.`percent_of_target_covered_meq_1X_wo_dup`, "
+					+ "p.`percent_of_target_covered_meq_5X_wo_dup`, "
+					+ "p.`percent_of_target_covered_meq_10X_wo_dup`, "
+					+ "p.`percent_of_target_covered_meq_20X_wo_dup`, "
+					+ "p.`percent_of_target_covered_meq_30X_wo_dup`, "
+					+ "p.`coverage_exome_wo_dup`, "
+					+ "p.`percent_of_exome_covered_meq_1X_wo_dup`, "
+					+ "p.`percent_of_exome_covered_meq_5X_wo_dup`, "
+					+ "p.`percent_of_exome_covered_meq_10X_wo_dup`, "
+					+ "p.`percent_of_exome_covered_meq_20X_wo_dup`, "
+					+ "p.`percent_of_exome_covered_meq_30X_wo_dup`, "
+					+ "p.`percent_duplicates_picard`, "
+					+ "p.`comments` "
+					+ "FROM projects as p "
+					+ "JOIN pathologies USING (pathology_id) "
+					+ "LEFT JOIN populations USING (population_id) "
+					+ "LEFT JOIN projects_users as u USING (project_id) "
+					+ "LEFT JOIN projects_analyses as a USING (project_id) "
+					+ "LEFT JOIN projects as p2 ON p.normal_id = p2.project_id "
+					+ "WHERE " + selection.toString() + " AND run_path IS NOT NULL GROUP BY p.project_id")){
 				ResultSetMetaData meta = res.getMetaData();
 				colCount = meta.getColumnCount();
 				final int max = res.getResultSetSize();
@@ -480,7 +619,7 @@ public class RunStatistics extends JFrame {
 				headers = new String[colCount];
 				classes = new Class<?>[colCount];
 				for (int c = 1 ; c <= meta.getColumnCount() ; c++){
-					headers[c-1] = meta.getColumnName(c);
+					headers[c-1] = meta.getColumnLabel(c);
 					switch (meta.getColumnType(c)){
 					case java.sql.Types.CHAR:
 					case java.sql.Types.VARCHAR:
@@ -617,8 +756,13 @@ public class RunStatistics extends JFrame {
 	public void applyFilters(){
 		List<RowFilter<StatisticsTableModel,Object>> filters = new ArrayList<RowFilter<StatisticsTableModel,Object>>();
 		if (textFilter != null) filters.add(textFilter);
+		for (RowFilter<StatisticsTableModel,Object> columnFiler : columnFilters.values()) {
+			if (columnFiler != null) filters.add(columnFiler);			
+		}
 		if (!filters.isEmpty()){
 			sorter.setRowFilter(RowFilter.andFilter(filters));
+		}else{
+			sorter.setRowFilter(null);
 		}
 	}
 
