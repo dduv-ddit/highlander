@@ -1185,7 +1185,7 @@ public class AnnotatedVariant {
 	 * Set annotations from a 'small' annotation database (few columns to fetch, few treatment to process the annotation).
 	 * This method only works for databases that just need the table and column names to fetch, and few or no treatment of the results.
 	 * 
-	 * @param annotation GONL, COSMIC (other annotations have their own specialized method)
+	 * @param annotation GNOMAD_WES, GNOMAD_WGS, GONL, COSMIC (other annotations have their own specialized method)
 	 */
 	public void setAnnotation(Annotation annotation){
 		if (annotation.hasDatabaseSchema()) {
@@ -1241,10 +1241,11 @@ public class AnnotatedVariant {
 								if (res.next()){
 									for (String column : parser.get(table).keySet()) {
 										Field field = parser.get(table).get(column);
-										if (entries.get(field) == null) {
+										//I don't remember why I put this check, but it's problematic for dbUpdater (there you want to replace any existing annotation by the new one) ... Keep it commented in case it poses a problem in another situation I can't think off righ now
+										//if (entries.get(field) == null) {
 											String value = res.getString(column);
 											setFieldValue(field, value);
-										}
+										//}
 									}
 								}
 							}

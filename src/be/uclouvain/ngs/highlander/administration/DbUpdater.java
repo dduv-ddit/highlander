@@ -70,7 +70,7 @@ import be.uclouvain.ngs.highlander.datatype.SNPEffect.VariantType;
 
 public class DbUpdater {
 
-	static final public String version = "17.15";
+	static final public String version = "17.15.1";
 
 	public enum ToolArgument {
 		analysis("A", "analysis", "analysis program(s), corresponding to a database table prefix (e.g. exomes_haplotype_caller or exomes_lifescope). "
