@@ -3191,7 +3191,7 @@ public class DbBuilder {
 		}
 		if (!existingLinks.contains("Mutalyzer")) new ExternalLink("Mutalyzer", "Mutalyzer name checker", "http://mutalyzer.nl/check?name=","[transcript_refseq_mrna]:[hgvs_dna]").insert(Highlander.class.getResourceAsStream("resources/ext_mutalyzer.png"));
 		if (!existingLinks.contains("UCSC CNV")) {
-			new ExternalLink("UCSC CNV", "UCSC interval", "http://genome.ucsc.edu/cgi-bin/hgTracks?db=[genome]&position=chr[chr]:[sv_start]:[sv_end]","").insert(Highlander.class.getResourceAsStream("resources/ext_ucsc.png"));
+			new ExternalLink("UCSC CNV", "UCSC interval", "http://genome.ucsc.edu/cgi-bin/hgTracks?db=[genome]&position=chr[chr]:[sv_start]-[sv_end]","").insert(Highlander.class.getResourceAsStream("resources/ext_ucsc.png"));
 			Highlander.getDB().update(Schema.HIGHLANDER, "UPDATE `external_links` SET `url_genome` = 'b37_decoy=hg19;hg19_lifescope=hg19;b37=hg19;hg19=hg19;GRCh38=hg38;GRCh37=hg19' WHERE `name` = 'UCSC CNV'");
 		}
 		if (!existingLinks.contains("UCSC")) {
