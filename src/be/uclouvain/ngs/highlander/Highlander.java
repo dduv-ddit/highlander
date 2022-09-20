@@ -97,7 +97,7 @@ import javax.swing.text.DefaultEditorKit;
 
 public class Highlander extends JFrame {
 
-	static final public String version = "17.15";
+	static final public String version = "17.16";
 	static final public String databaseRequiredVersion = "17.13";
 
 	//TODO I've removed libs for Impala and Log4j (poi), but added slf4j-1.7.26 (for Hikari) -- everything seems OK but keep that message to remind me just in case ...

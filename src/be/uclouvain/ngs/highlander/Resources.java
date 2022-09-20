@@ -655,6 +655,7 @@ public class Resources {
   public final static ImageIcon iRunSummary = new ImageIcon(Highlander.class.getResource("resources/run_summary.png"));
   public final static ImageIcon iRunReport = new ImageIcon(Highlander.class.getResource("resources/run_report.png"));
   public final static ImageIcon iCTDNA = new ImageIcon(Highlander.class.getResource("resources/ctDNA.png"));
+  public final static ImageIcon iHGMD = new ImageIcon(Highlander.class.getResource("resources/HGMD.png"));
   public final static ImageIcon iAlignmentPinned = new ImageIcon(Highlander.class.getResource("resources/alignment_pinned.png"));
 
   //Burden Test

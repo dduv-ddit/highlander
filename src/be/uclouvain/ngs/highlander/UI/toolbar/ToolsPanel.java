@@ -77,6 +77,7 @@ import be.uclouvain.ngs.highlander.UI.tools.RunStatistics;
 import be.uclouvain.ngs.highlander.UI.tools.VariantAnnotator;
 import be.uclouvain.ngs.highlander.UI.tools.VariantDistributionCharts;
 import be.uclouvain.ngs.highlander.UI.tools.BurdenTest.Source;
+import be.uclouvain.ngs.highlander.UI.tools.ConverterHGMD;
 import be.uclouvain.ngs.highlander.database.Field;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase;
 import be.uclouvain.ngs.highlander.database.Results;
@@ -308,6 +309,19 @@ public class ToolsPanel extends JPanel {
 			}
 		});
 
+		JButton importHGMD = new JButton(Resources.getScaledIcon(Resources.iHGMD, 40));
+		importHGMD.setPreferredSize(new Dimension(54,54));
+		importHGMD.setToolTipText("Import an HTML file from HGMD batch results to Highlander public comments");
+		importHGMD.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new Thread(new Runnable(){
+					public void run(){
+						importHGMD();
+					}
+				}, "ToolsPanel.importHGMD").start();
+			}
+		});
+		
 		JButton viewRunStatisticsDetails = new JButton(Resources.getScaledIcon(Resources.iRunStatisticsDetails, 40));
 		viewRunStatisticsDetails.setPreferredSize(new Dimension(54,54));
 		viewRunStatisticsDetails.setToolTipText("View ALL runs detailled statistics");
@@ -390,6 +404,7 @@ public class ToolsPanel extends JPanel {
 		if(Highlander.getDB().isBetaFunctionalitiesActivated())  panel.add(exportToExcelWithNormalRC);
 		panel.add(exportToTSV);
 		panel.add(exportToVCF);
+		panel.add(importHGMD);
 		panel.add(viewRunStatisticsDetails);
 		panel.add(viewRunStatisticsCharts);
 		panel.add(viewVariantsDistributionCharts);
@@ -516,6 +531,16 @@ public class ToolsPanel extends JPanel {
 		}
 	}
 
+	public void importHGMD() {
+		FileDialog chooser = new FileDialog(new JFrame(), "Choose an HTML file saved from HGMD", FileDialog.LOAD);
+		chooser.setVisible(true);
+		if (chooser.getFile() != null) {			
+				int results = ConverterHGMD.converterHGMD(new File(chooser.getDirectory() + "/" + chooser.getFile()));
+				JOptionPane.showMessageDialog(new JFrame(),  results + " annotations have been imported from HGMD into public comments", "Importing HGMD",
+						JOptionPane.INFORMATION_MESSAGE, Resources.getScaledIcon(Resources.iHGMD,64));
+		}
+	}
+	
 	public void viewAlignment(boolean pinned) {
 		Set<String> pinnedSamples = new TreeSet<>();
 		if (pinned) {
