@@ -551,7 +551,7 @@ public class RunStatistics extends JFrame {
 					+ "p.`individual`, "
 					+ "p.`sample`, "
 					+ "MIN(a.gene_coverage_ratio_chr_xy) as ratio_xy, "
-					+ "(CASE WHEN MIN(a.gene_coverage_ratio_chr_xy) < 1 THEN '?' WHEN MIN(a.gene_coverage_ratio_chr_xy) < 65 THEN 'M' ELSE 'F' END) as gender_xy, "
+					+ "(CASE WHEN MIN(a.gene_coverage_ratio_chr_xy) IS NULL THEN '?' WHEN MIN(a.gene_coverage_ratio_chr_xy) = 0 THEN 'F' WHEN MIN(a.gene_coverage_ratio_chr_xy) < 65 THEN 'M' ELSE 'F' END) as gender_xy, "
 					+ "p.`index_case`, "
 					+ "pathology, "
 					+ "pathology_description, "
