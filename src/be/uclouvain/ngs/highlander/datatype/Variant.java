@@ -418,8 +418,10 @@ public class Variant implements Comparable<Variant> {
 	 * @throws Exception
 	 */
 	public Variant liftOver(Reference from, Reference to) throws Exception {
+		System.out.println("Submiting to rest.ensembl.org liftover of " + toString() + " from " + from + " to " + to);
 		String result = Tools.httpGet("https://rest.ensembl.org/map/"+from.getSpecies()+"/GRC"+from.getSpecies().charAt(0)+from.getGenomeVersion()+"/"+chr+":"+pos+".."+pos+"/GRC"+to.getSpecies().charAt(0)+to.getGenomeVersion()+"?content-type=application/json");
 		JsonObject json = new JsonParser().parse(result).getAsJsonObject();
+		System.out.println("DONE: liftover of " + toString() + " from " + from + " to " + to);
 		if (json.getAsJsonArray("mappings").size() > 0) {
 			JsonObject mapped = json.getAsJsonArray("mappings").get(0).getAsJsonObject().getAsJsonObject("mapped");
 			String chr = mapped.getAsJsonPrimitive("seq_region_name").getAsString();
@@ -451,10 +453,11 @@ public class Variant implements Comparable<Variant> {
 		if (chr.equals(v.chr)){
 			if (pos == v.pos){
 				if (variantType == v.variantType){
-					if (ref.equals(v.ref)){
-						return alt.compareTo(alt);
+					if ((ref == null && v.ref == null) || ref.equals(v.ref)){
+						if (alt == null && v.alt == null) return 0;
+						else return alt.compareTo(v.alt);
 					}else{
-						return ref.compareTo(ref);
+						return ref.compareTo(v.ref);
 					}
 				}else{
 					return variantType.compareTo(variantType);
