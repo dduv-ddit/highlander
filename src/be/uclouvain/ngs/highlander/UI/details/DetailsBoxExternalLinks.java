@@ -122,6 +122,7 @@ public class DetailsBoxExternalLinks extends DetailsBox {
 		//panel.add(currentLine);
 		
 		for (ExternalLink link : Highlander.getAvailableExternalLinks()) {
+			//System.out.println("Preparing external link: " + link);
 			if (link.isEnable()) {
 				Optional<ActionListener> listener = link.getActionListener(variantIds);
 				if (listener.isPresent()) {
@@ -131,6 +132,7 @@ public class DetailsBoxExternalLinks extends DetailsBox {
 					panel.add(button);
 				}
 			}
+			//System.out.println("DONE external link: " + link);
 		}
 			
 		try{

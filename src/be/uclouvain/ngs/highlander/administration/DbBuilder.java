@@ -3178,7 +3178,7 @@ public class DbBuilder {
 			new ExternalLink("ClinVar", "Variant in ClinVar using ClinVarMiner", "https://clinvarminer.genetics.utah.edu/submissions-by-variant/","[transcript_refseq_mrna]([gene_symbol]):[hgvs_dna] ([hgvs_protein])").insert(Highlander.class.getResourceAsStream("resources/ext_clinvar.png"));
 			Highlander.getDB().update(Schema.HIGHLANDER, "UPDATE `external_links` SET `url_genome` = 'GRCh37=GRCh37;hg19=GRCh37;b37=GRCh37;b37_decoy=GRCh37;GRCh38=GRCh38;hg19_lifescope=GRCh37' WHERE `name` = 'ClinVar'");
 		}
-		if (!existingLinks.contains("Franklin")) new ExternalLink("Franklin", "Variant in Franklin", "https://franklin.genoox.com/clinical-db/variant/snp/chr[chr_grch37]-[pos_grch37]-[reference]-[alternative]","").insert(Highlander.class.getResourceAsStream("resources/ext_franklin.png"));
+		if (!existingLinks.contains("Franklin")) new ExternalLink("Franklin", "Variant in Franklin", "https://franklin.genoox.com/clinical-db/variant/snp/chr[chr]-[pos]-[reference]-[alternative]-hg38","").insert(Highlander.class.getResourceAsStream("resources/ext_franklin.png"));
 		if (!existingLinks.contains("gnomAD")) {
 			new ExternalLink("gnomAD", "Variant in gnomAD", "http://gnomad.broadinstitute.org/variant/[chr]-[pos]-[reference]-[alternative]?dataset=gnomad_[genome]","").insert(Highlander.class.getResourceAsStream("resources/ext_gnomad.png"));
 			Highlander.getDB().update(Schema.HIGHLANDER, "UPDATE `external_links` SET `url_genome` = 'GRCh37=r2_1;hg19=r2_1;b37=r2_1;b37_decoy=r2_1;GRCh38=r3;hg19_lifescope=r2_1' WHERE `name` = 'gnomAD'");		}

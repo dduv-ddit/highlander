@@ -69,6 +69,8 @@ public class ExternalLink implements Comparable<ExternalLink> {
 	
 	private final int HEIGHT = 36;
 
+	private static Map<Reference, Variant> lastLiftOver = new HashMap<>();
+
 	private int id = -1;
 	private String name;
 	private int ordering = -1;
@@ -456,7 +458,7 @@ public class ExternalLink implements Comparable<ExternalLink> {
 											}
 										}
 										if (grch37 != null) {
-											Variant liftover = variant.liftOver(analysis.getReference(), grch37);
+											Variant liftover = liftOver(variant, analysis.getReference(), grch37);
 											if (liftover != null) {
 												variantAnnot.put("chr_grch37", liftover.getChromosome());											
 												variantAnnot.put("pos_grch37", liftover.getPosition()+"");
@@ -487,7 +489,7 @@ public class ExternalLink implements Comparable<ExternalLink> {
 											}
 										}
 										if (grch38 != null) {
-											Variant liftover = variant.liftOver(analysis.getReference(), grch38);
+											Variant liftover = liftOver(variant, analysis.getReference(), grch38);
 											if (liftover != null) {
 												variantAnnot.put("chr_grch38", liftover.getChromosome());											
 												variantAnnot.put("pos_grch38", liftover.getPosition()+"");
@@ -561,6 +563,29 @@ public class ExternalLink implements Comparable<ExternalLink> {
 			}
 		}
 		return annotations;
+	}
+	
+	/**
+	 * As liftover is performed using Ensembl web service (rest.ensembl.org), it can sometimes be slow.
+	 * To avoid converting the same variant multiple times (for each external link that needs it), the last liftover is saved.
+	 * This method first check if the saved liftover is the good one, and only call the liftover method if it's not the case.
+	 * 
+	 * @param variant variant to liftover
+	 * @param from source reference
+	 * @param to	destination reference
+	 * @return the variant with position in destination reference or null if the position doesn't exist in destination reference
+	 * @throws Exception
+	 */
+	private Variant liftOver(Variant variant, Reference from, Reference to) throws Exception {
+		if (lastLiftOver.containsKey(from) && lastLiftOver.get(from).equals(variant)) {
+			if (lastLiftOver.containsKey(to)) 
+				return lastLiftOver.get(to);
+		}		
+		Variant liftover = variant.liftOver(from, to);
+		lastLiftOver.clear();
+		lastLiftOver.put(from, variant);
+		lastLiftOver.put(to, liftover);
+		return liftover;
 	}
 	
 	public List<URI> getURIs(List<Integer> variantIds){
