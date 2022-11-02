@@ -530,7 +530,7 @@ public class RunStatistics extends JFrame {
 			StringBuilder selection = new StringBuilder();
 			selection.append("(");
 			for (RunNGS run : selectedRuns){
-				selection.append("(run_id = " + run.getRun_id() + " AND run_date = '"+run.getRun_date()+"' AND run_name = '"+run.getRun_name()+"') OR");
+				selection.append("(p.run_id = " + run.getRun_id() + " AND p.run_date = '"+run.getRun_date()+"' AND p.run_name = '"+run.getRun_name()+"') OR");
 			}
 			if (selection.length() > 1) selection.delete(selection.length()-3, selection.length());
 			else selection.append("run_path IS NOT NULL");
