@@ -82,6 +82,7 @@ public class Parameters {
 	private Document doc;
 
 	private String config = "Default";
+	private String configPath = "config";
 
 	private HighlanderDataSource dataSource;
 	
@@ -184,6 +185,7 @@ public class Parameters {
 			if (selectedOp != null) config = selectedOp.toString();
 		}
 		selection = available.get(config);
+		configPath = selection.getParent();
 		try{
 			readSettingsFromXML(selection);
 		}catch (Exception ex){
@@ -197,6 +199,7 @@ public class Parameters {
 	}
 
 	public Parameters(boolean GUI, File settings) {
+		configPath = settings.getParent();
 		try{
 			readSettingsFromXML(settings);
 		}catch (Exception ex){
@@ -431,6 +434,14 @@ public class Parameters {
 		this.config = config;
 	}
 
+	public String getConfigPath() {
+		return configPath;
+	}
+	
+	public void setConfigPath(String configPath) {
+		this.configPath = configPath;
+	}
+	
 	public String getDbMainHost() {
 		return dbMainHost;
 	}

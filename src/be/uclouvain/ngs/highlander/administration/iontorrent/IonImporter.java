@@ -1561,7 +1561,7 @@ public class IonImporter extends JFrame {
 		});
 		try {
 			sequencerJsch.put(platform, new JSch());
-			sequencerJsch.get(platform).addIdentity("config/"+parameters.getServerSequencerPrivateKey().get(platform));
+			sequencerJsch.get(platform).addIdentity(parameters.getConfigPath()+"/"+parameters.getServerSequencerPrivateKey().get(platform));
 			sequencerSession.put(platform, sequencerJsch.get(platform).getSession(parameters.getServerSequencerUsername().get(platform), parameters.getServerSequencerHost().get(platform), 22));
 			sequencerSession.get(platform).setConfig("StrictHostKeyChecking", "no");
 			sequencerSession.get(platform).setTimeout(3000);
@@ -1603,7 +1603,7 @@ public class IonImporter extends JFrame {
 		});
 		try {
 			hlJsch = new JSch();
-			hlJsch.addIdentity("config/"+parameters.getServerPipelinePrivateKey());
+			hlJsch.addIdentity(parameters.getConfigPath()+"/"+parameters.getServerPipelinePrivateKey());
 			hlSession = hlJsch.getSession(parameters.getServerPipelineUsername(), parameters.getServerPipelineHost(), 22);
 			hlSession.setConfig("StrictHostKeyChecking", "no");
 			hlSession.setTimeout(3000);
