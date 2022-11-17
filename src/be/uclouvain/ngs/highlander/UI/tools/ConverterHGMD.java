@@ -68,10 +68,11 @@ public class ConverterHGMD {
 					String allResults = "";
 					String version = "";
 					while ((line = br.readLine()) != null) {
+						System.out.println(line);
 						if (line.contains("<input type=\"hidden\" name=\"batch")){
 							query = true;
 						}					
-						if (query && line.endsWith("\">")) {
+						if (query && (line.endsWith("\">") || line.endsWith("'>") || line.endsWith("\"&gt;") || line.endsWith("'&gt;"))) {
 							query = false;
 							queryDone = true;
 							Highlander.waitingPanel.setProgressString("Importing "+Tools.doubleToString(queries.size(), 0, false)+" results", false);
