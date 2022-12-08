@@ -1117,7 +1117,7 @@ public class VariantsTable extends JPanel {
 			//INFO
 			for (int info : cINFO) {
 				Field f = Field.getField(table.getColumnName(info));
-				fw.write("##INFO=<ID="+f+",Number=A,Type="+f.getVcfClass()+",Description=\""+f.getDescription()+"\">" + endline);
+				fw.write("##INFO=<ID="+f+",Number=A,Type="+f.getVcfClass()+",Description=\""+f.getDescription().replaceAll("\"", "'")+"\">" + endline);
 			}
 			fw.write("##HighlanderVersion=\""+Highlander.version+", by Raphael Helaers\"" + endline);
 			//Headers
