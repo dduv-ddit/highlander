@@ -158,7 +158,7 @@ public class FileDownloader extends JFrame {
 		JPanel outputDirPanel = new JPanel(new GridBagLayout());
 		outputPanel.add(outputDirPanel, BorderLayout.NORTH);
 		outputDirPanel.add(new JLabel("Local directory"), new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(2, 0, 0, 0), 0, 0));
-		txtFieldOutputDir = new JTextField("");
+		txtFieldOutputDir = new JTextField(Tools.getHomeDirectory().toString());
 		outputDirPanel.add(txtFieldOutputDir, new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(2, 5, 0, 5), 0, 0));
 		JButton browseDir = new JButton(Resources.getScaledIcon(Resources.iFolder, 24));
 		browseDir.setPreferredSize(new Dimension(32,32));
@@ -167,7 +167,7 @@ public class FileDownloader extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
 					public void run(){
-						JFileChooser chooser = new JFileChooser();
+						JFileChooser chooser = new JFileChooser(Tools.getHomeDirectory().toString()	);
 						chooser.setDialogTitle("Select the download directory");
 						chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 						chooser.setMultiSelectionEnabled(false);

@@ -83,7 +83,6 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -418,8 +417,8 @@ public class Tools {
 	}
 
 	public static File getHomeDirectory(){
-		//return System.getProperty("user.home");
-		return new JFileChooser().getFileSystemView().getDefaultDirectory();
+		return new File(System.getProperty("user.home"));
+		//return new JFileChooser().getFileSystemView().getDefaultDirectory();
 	}
 
 	public static String formatFilename(String filename){

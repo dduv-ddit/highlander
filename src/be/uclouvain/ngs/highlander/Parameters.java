@@ -126,6 +126,7 @@ public class Parameters {
 
 	//External
 	private String IGV;
+	private String pavian;
 
 	//Proxy
 	private String httpProxyHost;
@@ -272,6 +273,7 @@ public class Parameters {
 
 		//External
 		IGV = readParameterInXml("external", "IGV", false);
+		pavian = readParameterInXml("external", "pavian", false);
 
 		//Proxy
 		httpProxyHost = readParameterInXml("http_proxy", "host", false);
@@ -420,9 +422,6 @@ public class Parameters {
 
 	public String getUrlForReports() {
 		if (serverFileProtocol == null || serverFileHost == null || serverFileReports == null) return null;
-		System.out.println(serverFileProtocol);
-		System.out.println(serverFileHost);
-		System.out.println(serverFileReports);
 		return serverFileProtocol + "://" + serverFileHost + "/" + serverFileReports;
 	}
 
@@ -654,6 +653,14 @@ public class Parameters {
 		IGV = iGV;
 	}
 
+	public String getPavian() {
+		return pavian;
+	}
+	
+	public void setPavian(String pavian) {
+		this.pavian = pavian;
+	}
+	
 	public String getHttpProxyHost() {
 		return httpProxyHost;
 	}

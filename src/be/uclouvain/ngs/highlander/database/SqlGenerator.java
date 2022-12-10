@@ -349,6 +349,7 @@ public class SqlGenerator {
 		fw.append("INSERT INTO `settings` (`ordering`,`section`, `setting`, `description`) VALUES (440,'http_proxy','password','Ommited if your proxy doesn\\'t need authentication.');\n");
 		fw.append("INSERT INTO `settings` (`ordering`,`section`, `setting`, `value`, `description`) VALUES (450,'http_proxy','passwordpolicy','from_settings','Ommited if your proxy doesn\\'t need authentication. Values can be \\'ask_at_login\\' (password will be asked at login screen), \\'same_as_highlander\\' (Highlander user password will be used for proxy password) or \\'from_settings\\' (default, you have to set the password in settings file or in the database).');\n");
 		fw.append("INSERT INTO `settings` (`ordering`,`section`, `setting`, `value`, `description`) VALUES (460,'http_proxy','bypass','localhost|127.0.0.1','A list of hosts (separeted by \\'|\\') for which to proxy won\\'t be used (they are behind the proxy).');\n");
+		fw.append("INSERT INTO `settings` (`ordering`,`section`, `setting`, `value`, `description`) VALUES (510,'external','pavian','https://ccb.jhu.edu/software/pavian/','URL to a Pavian webserver');\n");
 		return fw;
 	}
 

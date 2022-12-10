@@ -112,7 +112,7 @@ import java.util.TreeSet;
 
 public class ProjectManager extends JFrame {
 
-	static final public String version = "17.15.1";
+	static final public String version = "17.17";
 
 	enum FastqcResult {pass, warn, fail}
 
