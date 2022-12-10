@@ -79,6 +79,7 @@ import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
 import be.uclouvain.ngs.highlander.datatype.Analysis;
 import be.uclouvain.ngs.highlander.datatype.FiltersTemplate;
+import be.uclouvain.ngs.highlander.datatype.HPOTerm;
 import be.uclouvain.ngs.highlander.datatype.HeatMapCriterion;
 import be.uclouvain.ngs.highlander.datatype.HighlightCriterion;
 import be.uclouvain.ngs.highlander.datatype.HighlightingRule;
@@ -102,6 +103,7 @@ public class User implements Comparable<User> {
 		HISTORY("history",UserDataLink.NONE,Resources.iEditWrench,Resources.iUsers),
 		VALUES("list of values",UserDataLink.FIELD,Resources.iList,Resources.iUserListShare), 
 		INTERVALS("list of intervals",UserDataLink.REFERENCE,Resources.iInterval,Resources.iUserIntervalsShare), 
+		PHENOTYPES("list of HPO terms",UserDataLink.REFERENCE,Resources.iHPO,Resources.iUserHPOShare), 
 		COLUMN_SELECTION("columns selection",UserDataLink.ANALYSIS,Resources.iColumnSelection,Resources.iUserColumnSelectionShare), 
 		FILTER("filter",UserDataLink.ANALYSIS,Resources.iFilter,Resources.iUserFilterShare), 
 		COLUMN_MASK("columns mask",UserDataLink.ANALYSIS,Resources.iColumnMask,Resources.iUserColumnMaskShare), 
@@ -512,7 +514,7 @@ public class User implements Comparable<User> {
 	public void renameData(UserData userData, String oldListName, String newListName) throws Exception {
 		DB.update(Schema.HIGHLANDER, "UPDATE `users_data` SET `key` = '"+DB.format(Schema.HIGHLANDER, newListName)+"' WHERE `username` = '"+DB.format(Schema.HIGHLANDER, username)+"' " +
 				"AND `type` = '"+DB.format(Schema.HIGHLANDER, userData.toString())+"' AND `key` = '"+DB.format(Schema.HIGHLANDER, oldListName)+"'");
-		if (userData == UserData.VALUES || userData == UserData.INTERVALS){
+		if (userData == UserData.VALUES || userData == UserData.INTERVALS || userData == UserData.PHENOTYPES){
 			DB.update(Schema.HIGHLANDER, "UPDATE `users_data` SET `value` = REPLACE(`value`,'"+DB.format(Schema.HIGHLANDER, oldListName)+"','"+DB.format(Schema.HIGHLANDER, newListName)+"') WHERE `username` = '"+DB.format(Schema.HIGHLANDER, username)+"' " +
 					"AND (`type` = 'FILTER' OR `type` = 'HIGHLIGHTING') AND INSTR(`value`, '"+DB.format(Schema.HIGHLANDER, oldListName)+"') > 0");
 		}
@@ -601,6 +603,24 @@ public class User implements Comparable<User> {
 		Set<Reference> set = new TreeSet<>();
 		try (Results res = DB.select(Schema.HIGHLANDER, "SELECT DISTINCT(`analysis`) FROM `users_data` " +
 				"WHERE `username` = '"+DB.format(Schema.HIGHLANDER, username)+"' AND `type` = '"+DB.format(Schema.HIGHLANDER, UserData.INTERVALS.toString())+"'")){
+			while (res.next()){
+				String referenceName = res.getString(1);
+				try {
+					set.add(ProfileTree.getReference(referenceName));
+				}catch(Exception ex1) {
+					ex1.printStackTrace();
+				}
+			}
+		}catch(Exception ex2) {
+			ex2.printStackTrace();
+		}
+		return set;
+	}
+	
+	public Set<Reference> getExistingListOfPhenotypesReferences() {
+		Set<Reference> set = new TreeSet<>();
+		try (Results res = DB.select(Schema.HIGHLANDER, "SELECT DISTINCT(`analysis`) FROM `users_data` " +
+				"WHERE `username` = '"+DB.format(Schema.HIGHLANDER, username)+"' AND `type` = '"+DB.format(Schema.HIGHLANDER, UserData.PHENOTYPES.toString())+"'")){
 			while (res.next()){
 				String referenceName = res.getString(1);
 				try {
@@ -737,6 +757,23 @@ public class User implements Comparable<User> {
 		}
 	}
 
+	public void savePhenotypes(String listName, Reference reference, List<HPOTerm> values) throws Exception {
+		deleteData(UserData.PHENOTYPES, reference.getName(), listName);
+		StringBuilder sb = new StringBuilder();
+		for (HPOTerm val : values){
+			sb.append(" (" +
+					"'"+DB.format(Schema.HIGHLANDER, username)+"'," +
+					"'"+DB.format(Schema.HIGHLANDER, UserData.PHENOTYPES.toString())+"'," +
+					"'"+DB.format(Schema.HIGHLANDER, reference.getName())+"'," +
+					"'"+DB.format(Schema.HIGHLANDER, listName)+"'," +
+					"'"+DB.format(Schema.HIGHLANDER, val.getOntologyId())+"'),");
+		}
+		if(!values.isEmpty()) {
+			DB.update(Schema.HIGHLANDER, "INSERT INTO `users_data` (`username`, `type`, `analysis`, `key`, `value`) VALUES" + sb.deleteCharAt(sb.length()-1).toString());
+			updateHistory(UserData.PHENOTYPES, reference.getName(), listName);
+		}
+	}
+	
 	public List<Interval> loadIntervals(String listName) throws Exception {
 		List<Interval> list = new ArrayList<Interval>();
 		try (Results res = DB.select(Schema.HIGHLANDER, "SELECT `value`, `analysis` FROM `users_data` " +
@@ -745,6 +782,20 @@ public class User implements Comparable<User> {
 				"AND `key` = '"+DB.format(Schema.HIGHLANDER, listName)+"'")){
 			while (res.next()){
 				list.add(new Interval(Reference.getReference(res.getString("analysis")), res.getString("value")));
+			}
+		}
+		Collections.sort(list);
+		return list;
+	}
+	
+	public List<HPOTerm> loadPhenotypes(String listName) throws Exception {
+		List<HPOTerm> list = new ArrayList<HPOTerm>();
+		try (Results res = DB.select(Schema.HIGHLANDER, "SELECT `value`, `analysis` FROM `users_data` " +
+				"WHERE `username` = '"+DB.format(Schema.HIGHLANDER, username)+"' " +
+				"AND `type` = '"+DB.format(Schema.HIGHLANDER, UserData.PHENOTYPES.toString())+"' " +
+				"AND `key` = '"+DB.format(Schema.HIGHLANDER, listName)+"'")){
+			while (res.next()){
+				list.add(new HPOTerm(res.getString("value"), Reference.getReference(res.getString("analysis"))));
 			}
 		}
 		Collections.sort(list);
@@ -766,6 +817,21 @@ public class User implements Comparable<User> {
 		return list;
 	}
 
+	public List<HPOTerm> loadPhenotypes(Reference reference, String listName) throws Exception {
+		List<HPOTerm> list = new ArrayList<HPOTerm>();
+		try (Results res = DB.select(Schema.HIGHLANDER, "SELECT `value`, `analysis` FROM `users_data` " +
+				"WHERE `username` = '"+DB.format(Schema.HIGHLANDER, username)+"' " +
+				"AND `type` = '"+DB.format(Schema.HIGHLANDER, UserData.PHENOTYPES.toString())+"' " +
+				"AND `analysis` = '"+DB.format(Schema.HIGHLANDER, reference.getName())+"' " +
+				"AND `key` = '"+DB.format(Schema.HIGHLANDER, listName)+"'")){
+			while (res.next()){
+				list.add(new HPOTerm(res.getString("value"), reference));
+			}
+		}
+		Collections.sort(list);
+		return list;
+	}
+	
 	public void saveColumnSelection(String selectionName, Analysis analysis, List<Field> headers) throws Exception {
 		deleteData(UserData.COLUMN_SELECTION, analysis.toString(), selectionName);
 		StringBuilder sb = new StringBuilder();

@@ -137,6 +137,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 	private JButton btnShare;
 	private JButton createUserValueList;
 	private JButton createUserIntervalsList;
+	private JButton createUserPhenotypesList;
 	private JButton createUserTemplateList;
 	private JButton okButton;
 	private JButton cancelButton;
@@ -223,7 +224,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 					if (userDataFilter == UserData.VALUES && ((filterField != null) ? n.getKey().equals(filterField.getName()) : true)){
 						target = n;
 						break;
-					}else if (userDataFilter == UserData.INTERVALS && ((filterReference != null) ? n.getKey().equals(filterReference.getName()) : true)){
+					}else if ((userDataFilter == UserData.INTERVALS || userDataFilter == UserData.PHENOTYPES) && ((filterReference != null) ? n.getKey().equals(filterReference.getName()) : true)){
 						target = n;
 						break;						
 					}else if (n.getKey().equals((analysisFilter != null) ? analysisFilter.toString() : defaultAnalysis)){
@@ -449,6 +450,22 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 	  });
 		northPanel.add(createUserIntervalsList);	  
 		if (action != Action.MANAGE) createUserIntervalsList.setVisible(false);
+		
+		createUserPhenotypesList = new JButton(Resources.getScaledIcon(Resources.iUserHPONew, 40));
+		createUserPhenotypesList.setPreferredSize(new Dimension(54,54));
+		createUserPhenotypesList.setToolTipText("Create a new list of phenotypes (HPO terms)");
+		createUserPhenotypesList.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new Thread(new Runnable(){
+					public void run(){
+						if (canCreateElement((ProfileNode) tree.getLastSelectedPathComponent(), UserData.PHENOTYPES))
+							createPhenotypesList((ProfileNode) tree.getLastSelectedPathComponent());
+					}
+				}, "ProfileTree.createPhenotypesList").start();
+			}
+		});
+		northPanel.add(createUserPhenotypesList);	  
+		if (action != Action.MANAGE) createUserPhenotypesList.setVisible(false);
 		
 		createUserTemplateList = new JButton(Resources.getScaledIcon(Resources.iUserTemplateNew, 40));
 		createUserTemplateList.setPreferredSize(new Dimension(54,54));
@@ -690,6 +707,13 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 			askInterval.setVisible(true);
 			if (!askInterval.getSelection().isEmpty()) askInterval.saveList();
 			break;
+		case PHENOTYPES:
+			AskListOfHPOTermDialog askPhenotype = new AskListOfHPOTermDialog(node.getReference());
+			Tools.centerWindow(askPhenotype, false);
+			askPhenotype.loadList(node.getFullPath());
+			askPhenotype.setVisible(true);
+			if (!askPhenotype.getSelection().isEmpty()) askPhenotype.saveList();
+			break;
 		case VALUES:
 			AskListOfFreeValuesDialog askValues = new AskListOfFreeValuesDialog(node.getField());
 			Tools.centerWindow(askValues, false);
@@ -744,6 +768,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 					switch(node.getUserData()){
 					case VALUES:
 					case INTERVALS:
+					case PHENOTYPES:
 					case COLUMN_MASK:
 					case COLUMN_SELECTION:
 					case FILTER:
@@ -992,6 +1017,9 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 		case INTERVALS:
 			targetUser.saveIntervals(newFullPath, target.getReference(), Highlander.getLoggedUser().loadIntervals(node.getReference(), node.getFullPath()));
 			break;
+		case PHENOTYPES:
+			targetUser.savePhenotypes(newFullPath, target.getReference(), Highlander.getLoggedUser().loadPhenotypes(node.getReference(), node.getFullPath()));
+			break;
 		case COLUMN_MASK:
 			List<Field> mask = Highlander.getLoggedUser().loadColumnMask(node.getAnalysis(), node.getFullPath());
 			if (!target.getAnalysis().equals(node.getAnalysis())){
@@ -1210,6 +1238,54 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 		}
 	}
 	
+	private void createPhenotypesList(ProfileNode node){
+		if (node.getUserData() != UserData.FOLDER) node = (ProfileNode)node.getParent();
+		Reference reference = node.getReference();
+		if (reference == null) {
+			reference = (Reference)JOptionPane.showInputDialog(new JFrame(), "Select a reference genome", "Create list of phenotypes", 
+					JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iReference, 64), 
+					Reference.getAvailableReferences().toArray(new Reference[0]), 
+					Highlander.getCurrentAnalysis().getReference());
+		}
+		if (reference != null) {
+			AskListOfHPOTermDialog ask = new AskListOfHPOTermDialog(reference);
+			Tools.centerWindow(ask, false);
+			ask.setVisible(true);
+			if (!ask.getSelection().isEmpty()) {
+				Object res = JOptionPane.showInputDialog(ProfileTree.this,  "List name", "New phenotypes list",
+						JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iUserListNew,64), null, null);
+				if (res != null){
+					String fullPath = node.getFullPath();
+					if (fullPath.length() > 0) fullPath += "~";
+					fullPath += res.toString();
+					//If we are at level 1, user has selected the reference with a dialog
+					if (node.getLevel() == 1) {
+						//Check if a child node of this reference already exist
+						for (int j=0 ; j < node.getChildCount() ; j++){
+							if (((ProfileNode)node.getChildAt(j)).getKey().equals(reference.getName())){
+								node = (ProfileNode)node.getChildAt(j);
+								break;
+							}
+						}
+						//We are still at level 1, meaning no node of this reference exists, create it
+						if (node.getLevel() == 1) {
+							ProfileNode newFieldNode = new ProfileNode(UserData.FOLDER, reference, "", reference.toString(), null, Resources.getScaledIcon(Resources.iReference, 24));
+							model.insertNodeInto(newFieldNode, node, node.getChildCount());
+							linkedData.put(newFieldNode, UserData.PHENOTYPES);
+							node = newFieldNode;
+						}
+						tree.expandPath(new TreePath(model.getPathToRoot(node)));//if tree is not expanded and a new node is added in collapsed subtree, it will be present two times (the second being loaded from the database at the expansion of this node)
+					}
+					ask.saveList(fullPath);
+					ProfileNode newNode = new ProfileNode(UserData.PHENOTYPES, reference, fullPath, res.toString(), null, UserData.PHENOTYPES.getIcon());
+					model.insertNodeInto(newNode, node, node.getChildCount());
+					tree.expandPath(new TreePath(model.getPathToRoot(newNode)));
+					tree.setSelectionPath(new TreePath(model.getPathToRoot(newNode)));
+				}
+			}
+		}
+	}
+	
 	private void createFiltersTemplate(ProfileNode node){
 		if (node.getUserData() != UserData.FOLDER) node = (ProfileNode)node.getParent();
 		CreateTemplate ask = new CreateTemplate(node.getAnalysis());
@@ -1272,6 +1348,11 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 			createUserIntervalsList.setEnabled(true);
 		}else{
 			createUserIntervalsList.setEnabled(false);
+		}
+		if (canCreateElement((ProfileNode)tree.getLastSelectedPathComponent(), UserData.PHENOTYPES)){
+			createUserPhenotypesList.setEnabled(true);
+		}else{
+			createUserPhenotypesList.setEnabled(false);
 		}
 		if (canCreateElement((ProfileNode)tree.getLastSelectedPathComponent(), UserData.FILTERS_TEMPLATE)){
 			createUserTemplateList.setEnabled(true);
@@ -1520,6 +1601,8 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 				return getDescriptionHighlighting(Highlander.getLoggedUser().loadHighlighting(null, new Analysis(category), listFullPath), title);
 			case INTERVALS:
 				return getDescriptionValueList(Highlander.getLoggedUser().loadIntervals(ProfileTree.getReference(category), listFullPath), title);
+			case PHENOTYPES:
+				return getDescriptionValueList(Highlander.getLoggedUser().loadPhenotypes(ProfileTree.getReference(category), listFullPath), title);
 			case SORTING:
 				return getDescriptionSorting(Highlander.getLoggedUser().loadSorting(null, new Analysis(category), listFullPath), title);
 			case VALUES:
@@ -1964,6 +2047,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 			case VALUES:
 				return getField().getName();
 			case INTERVALS:
+			case PHENOTYPES:
 				return getReference().getName();
 			case FOLDER:
 				if (analysis != null) return analysis.toString();

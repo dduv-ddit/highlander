@@ -463,6 +463,7 @@ public class Resources {
   public final static ImageIcon iPin = new ImageIcon(Highlander.class.getResource("resources/pin.png"));
   public final static ImageIcon iUnpin = new ImageIcon(Highlander.class.getResource("resources/unpin.png"));
   public final static ImageIcon iReset = new ImageIcon(Highlander.class.getResource("resources/reset.png"));
+  public final static ImageIcon iRun = new ImageIcon(Highlander.class.getResource("resources/run.png"));
 
   //Main add/remove button
   public final static ImageIcon i3dPlus = new ImageIcon(Highlander.class.getResource("resources/pm_3d_plus.png"));
@@ -589,6 +590,7 @@ public class Resources {
 
   public final static ImageIcon iList = new ImageIcon(Highlander.class.getResource("resources/list symbol.png"));
   public final static ImageIcon iInterval = new ImageIcon(Highlander.class.getResource("resources/interval.png"));
+  public final static ImageIcon iHPO = new ImageIcon(Highlander.class.getResource("resources/hpo.png"));
   public final static ImageIcon iTemplate = new ImageIcon(Highlander.class.getResource("resources/template_filter.png"));
   public final static ImageIcon iUserList = new ImageIcon(Highlander.class.getResource("resources/user_list.png"));
   public final static ImageIcon iUserListEdit = new ImageIcon(Highlander.class.getResource("resources/user_list_edit.png"));
@@ -617,6 +619,11 @@ public class Resources {
   public final static ImageIcon iUserIntervalsEdit = new ImageIcon(Highlander.class.getResource("resources/user_intervals_edit.png"));
   public final static ImageIcon iUserIntervalsDelete = new ImageIcon(Highlander.class.getResource("resources/user_intervals_delete.png"));
   public final static ImageIcon iUserIntervalsShare = new ImageIcon(Highlander.class.getResource("resources/user_intervals_share.png"));
+  public final static ImageIcon iUserHPO = new ImageIcon(Highlander.class.getResource("resources/user_hpo.png"));
+  public final static ImageIcon iUserHPONew = new ImageIcon(Highlander.class.getResource("resources/user_hpo_new.png"));
+  public final static ImageIcon iUserHPOEdit = new ImageIcon(Highlander.class.getResource("resources/user_hpo_edit.png"));
+  public final static ImageIcon iUserHPODelete = new ImageIcon(Highlander.class.getResource("resources/user_hpo_delete.png"));
+  public final static ImageIcon iUserHPOShare = new ImageIcon(Highlander.class.getResource("resources/user_hpo_share.png"));
   public final static ImageIcon iUserTemplate = new ImageIcon(Highlander.class.getResource("resources/user_template.png"));
   public final static ImageIcon iUserTemplateNew = new ImageIcon(Highlander.class.getResource("resources/user_template_new.png"));
   public final static ImageIcon iUserTemplateEdit = new ImageIcon(Highlander.class.getResource("resources/user_template_edit.png"));
@@ -629,6 +636,7 @@ public class Resources {
   
   //Tools toolbar
   public final static ImageIcon iTools = new ImageIcon(Highlander.class.getResource("resources/tools.png")); 
+  public final static ImageIcon iPavian = new ImageIcon(Highlander.class.getResource("resources/pavian.png"));
   public final static ImageIcon iIGV = new ImageIcon(Highlander.class.getResource("resources/igv.png"));
   public final static ImageIcon iIGVpos = new ImageIcon(Highlander.class.getResource("resources/igv_position.png"));
   public final static ImageIcon iExcel = new ImageIcon(Highlander.class.getResource("resources/excel.png"));
@@ -656,6 +664,8 @@ public class Resources {
   public final static ImageIcon iRunReport = new ImageIcon(Highlander.class.getResource("resources/run_report.png"));
   public final static ImageIcon iCTDNA = new ImageIcon(Highlander.class.getResource("resources/ctDNA.png"));
   public final static ImageIcon iHGMD = new ImageIcon(Highlander.class.getResource("resources/HGMD.png"));
+  public final static ImageIcon iExomiser = new ImageIcon(Highlander.class.getResource("resources/exomiser.png"));
+  public final static ImageIcon iKraken = new ImageIcon(Highlander.class.getResource("resources/krona.png"));
   public final static ImageIcon iAlignmentPinned = new ImageIcon(Highlander.class.getResource("resources/alignment_pinned.png"));
 
   //Burden Test
@@ -752,4 +762,5 @@ public class Resources {
 		g.drawRect(1, 1, size, size);
 		return new ImageIcon(image);
   }
+  
 }

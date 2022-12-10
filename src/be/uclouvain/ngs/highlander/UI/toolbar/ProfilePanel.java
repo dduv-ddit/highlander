@@ -48,6 +48,7 @@ import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Resources;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.Resources.Palette;
+import be.uclouvain.ngs.highlander.UI.dialog.AskListOfHPOTermDialog;
 import be.uclouvain.ngs.highlander.UI.dialog.AskListOfFreeValuesDialog;
 import be.uclouvain.ngs.highlander.UI.dialog.AskListOfIntervalsDialog;
 import be.uclouvain.ngs.highlander.UI.dialog.CommentsManager;
@@ -213,6 +214,19 @@ public class ProfilePanel extends JPanel {
 	  	}
 	  });
 	  
+	  JButton createUserPhenotypesList = new JButton(Resources.getScaledIcon(Resources.iUserHPONew, 40));
+	  createUserPhenotypesList.setPreferredSize(new Dimension(54,54));
+	  createUserPhenotypesList.setToolTipText("Create a list of HPO terms in your profile");
+	  createUserPhenotypesList.addActionListener(new ActionListener() {
+	  	public void actionPerformed(ActionEvent e) {
+	  		new Thread(new Runnable(){
+	  			public void run(){
+	  				createPhenotypesList();
+	  			}
+	  		}, "ProfilePanel.createPhenotypesList").start();
+	  	}
+	  });
+	  
 	  JButton createUserTemplateList = new JButton(Resources.getScaledIcon(Resources.iUserTemplateNew, 40));
 	  createUserTemplateList.setPreferredSize(new Dimension(54,54));
 	  createUserTemplateList.setToolTipText("Create a filters template in your profile");
@@ -291,6 +305,7 @@ public class ProfilePanel extends JPanel {
 	  
 	  panel.add(createUserValueList);
 	  panel.add(createUserIntervalsList);
+	  panel.add(createUserPhenotypesList);
 	  
 	  addSeparator(panel);
 	  
@@ -348,6 +363,20 @@ public class ProfilePanel extends JPanel {
 		}
 		if (!intervals.isEmpty() || reference != null) {
 			AskListOfIntervalsDialog ask = (intervals.isEmpty()) ? new AskListOfIntervalsDialog(reference) : new AskListOfIntervalsDialog(Highlander.getCurrentAnalysis().getReference(), intervals);
+			Tools.centerWindow(ask, false);
+			ask.setVisible(true);
+			if (!ask.getSelection().isEmpty()) ask.saveList();
+		}
+	}
+	
+	public static void createPhenotypesList(){
+		Reference reference = null;
+		reference = (Reference)JOptionPane.showInputDialog(new JFrame(), "Select a reference genome", "Create list of HPO terms", 
+				JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iReference, 64), 
+				Reference.getAvailableReferences().toArray(new Reference[0]), 
+				Highlander.getCurrentAnalysis().getReference());
+		if (reference != null) {
+			AskListOfHPOTermDialog ask = new AskListOfHPOTermDialog(reference);
 			Tools.centerWindow(ask, false);
 			ask.setVisible(true);
 			if (!ask.getSelection().isEmpty()) ask.saveList();
