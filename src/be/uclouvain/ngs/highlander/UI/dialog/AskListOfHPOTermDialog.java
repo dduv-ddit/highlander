@@ -146,7 +146,7 @@ public class AskListOfHPOTermDialog extends JDialog {
 		this.reference = reference;
 		selection.addAll(phenotypes);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int width = screenSize.width - (screenSize.width/3*2);
+		int width = screenSize.width - (int)(screenSize.width * 0.06);
 		int height = screenSize.height - (screenSize.height/6);
 		setSize(new Dimension(width,height));
 		initUI();
@@ -206,13 +206,13 @@ public class AskListOfHPOTermDialog extends JDialog {
 		JPanel northPanel = new JPanel(gbl_center);
 		getContentPane().add(northPanel, BorderLayout.NORTH);
 
-		northPanel.add(getPanelFullSearch(), new GridBagConstraints(0, 0, 1, 1, 1.0, 1.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));		
+		northPanel.add(getPanelFullSearch(), new GridBagConstraints(0, 0, 1, 1, 0.7, 1.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));		
 		northPanel.add(getPanelAddRemove(), new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
 		
 		JPanel selectionPanel = new JPanel(new BorderLayout());
 		selectionPanel.add(getPanelSelectionControls(), BorderLayout.NORTH);
 		selectionPanel.add(getPanelSelection(), BorderLayout.CENTER);
-		northPanel.add(selectionPanel, new GridBagConstraints(2, 0, 1, 1, 1.0, 1.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
+		northPanel.add(selectionPanel, new GridBagConstraints(2, 0, 1, 1, 0.3, 1.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
 		
 		getContentPane().add(getPanelFullDescription(), BorderLayout.CENTER);
 
