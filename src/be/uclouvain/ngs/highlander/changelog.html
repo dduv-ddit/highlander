@@ -1,4 +1,48 @@
 <p>
+<div style="font-size:12px"><strong>Version 17.18</strong> (December 2022)<br></div><br>
+<b>New features</b>
+<ul>
+<li>HPO terms support (see in profile tab and profile manager).
+	<ul>
+	<li>You can create lists of HPO terms using a built-in term browser.</li>
+	<li>A new profile tool can create gene lists derived from lists of HPO terms.</li>
+	</ul></li>
+<li>Integration of Exomiser in tools.
+	<ul>
+	<li>The Exomiser is a Java program that finds potential disease-causing variants from whole-exome or whole-genome sequencing data. Starting from a VCF file and a set of phenotypes encoded using the Human Phenotype Ontology (HPO) it will annotate, filter and prioritise likely causative variants. The program does this based on user-defined criteria such as a variant's predicted pathogenicity, frequency of occurrence in a population and also how closely the given phenotype matches the known phenotype of diseased genes from human and model organism data.</li>
+	<li>Note that you can use Exomiser in two ways:<ul>
+	<li>Sample mode: each sample is analyzed separately, but you can run a batch of samples at once with the same HPO terms.</li>
+	<li>Family mode: you analyze a family as a whole (specifying the pedigree), but one at a time.</li></ul>
+	<li>After that select your samples or families.</li>
+	<li>For each one, you'll see if you already have Exomiser results or if you need to run it.</li>
+	<li>If you have to run it, it will be on the cluster, not on your computer. You'll get an email when results are ready.</li>
+	</ul></li>
+<li>Integration of Kraken in tools.
+	<ul>
+	<li>Kraken is a system for assigning taxonomic labels to short DNA sequences.</li>
+	<li>Select your samples.</li>
+	<li>For each one, you'll see if you already have Kraken results or if you need to run it.</li>
+	<li>If you have to run it, it will be on the cluster, not on your computer. You'll get an email when results are ready.</li>
+	</ul></li>
+<li>HGMD importation tool.
+	<ul>
+	<li>HGMD license doesn't allow Highlander to have their annotations in columns, but they can be saved in <i>public comments</i>.</li>
+	<li>To import HGMD annotations for a set of variants, proceed as follow:</li>
+	<li>Export your Highlander results as a VCF (using <i>export to VCF</i> tool in Highlander)</li>
+	<li>Submit that VCF to HGMD as <i>batch results</i></li>
+	<li>Save the batch results as an HTML file (right click outside the table in your browser, and hit <i>save as...</i>)</li>
+	<li>Use this tool to import the HTML file in Highlander</li>
+	<li>HGMD annotations for those variants will be visible in Highlander public comments, for any matching variant</li>
+	</ul></li>
+<li>Gnomad internal annotation databases support.
+	<ul>
+	<li>Gnomad frequencies are not anymore retreived from DBNSFP.</li>
+	<li>It means you will now see the gnomad frequency for ANY variant having one (even if it's not a non-synonymous coding SNV or an INDEL).</li>
+	</ul></li>
+</ul>
+<br><br>
+
+<p>
 <div style="font-size:12px"><strong>Version 17</strong> (November 2020)<br></div><br>
 <b>New features</b>
 <ul>
