@@ -591,6 +591,7 @@ public class Resources {
   public final static ImageIcon iList = new ImageIcon(Highlander.class.getResource("resources/list symbol.png"));
   public final static ImageIcon iInterval = new ImageIcon(Highlander.class.getResource("resources/interval.png"));
   public final static ImageIcon iHPO = new ImageIcon(Highlander.class.getResource("resources/hpo.png"));
+  public final static ImageIcon iHPOToGenes = new ImageIcon(Highlander.class.getResource("resources/hpo_to_genes.png"));
   public final static ImageIcon iTemplate = new ImageIcon(Highlander.class.getResource("resources/template_filter.png"));
   public final static ImageIcon iUserList = new ImageIcon(Highlander.class.getResource("resources/user_list.png"));
   public final static ImageIcon iUserListEdit = new ImageIcon(Highlander.class.getResource("resources/user_list_edit.png"));

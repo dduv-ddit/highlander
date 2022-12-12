@@ -36,6 +36,8 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JButton;
@@ -61,6 +63,8 @@ import be.uclouvain.ngs.highlander.administration.users.User;
 import be.uclouvain.ngs.highlander.administration.users.User.Settings;
 import be.uclouvain.ngs.highlander.administration.users.User.TargetColor;
 import be.uclouvain.ngs.highlander.administration.users.User.UserData;
+import be.uclouvain.ngs.highlander.database.Field;
+import be.uclouvain.ngs.highlander.datatype.HPOTerm;
 import be.uclouvain.ngs.highlander.datatype.Interval;
 import be.uclouvain.ngs.highlander.datatype.Reference;
 
@@ -227,6 +231,19 @@ public class ProfilePanel extends JPanel {
 	  	}
 	  });
 	  
+	  JButton createGeneListFromHPO = new JButton(Resources.getScaledIcon(Resources.iHPOToGenes, 40));
+	  createGeneListFromHPO.setPreferredSize(new Dimension(54,54));
+	  createGeneListFromHPO.setToolTipText("Create a gene list in your profile derived from a selection of HPO terms");
+	  createGeneListFromHPO.addActionListener(new ActionListener() {
+	  	public void actionPerformed(ActionEvent e) {
+	  		new Thread(new Runnable(){
+	  			public void run(){
+	  				createGeneListFromHPO();
+	  			}
+	  		}, "ProfilePanel.createGeneListFromHPO").start();
+	  	}
+	  });
+	  
 	  JButton createUserTemplateList = new JButton(Resources.getScaledIcon(Resources.iUserTemplateNew, 40));
 	  createUserTemplateList.setPreferredSize(new Dimension(54,54));
 	  createUserTemplateList.setToolTipText("Create a filters template in your profile");
@@ -306,6 +323,7 @@ public class ProfilePanel extends JPanel {
 	  panel.add(createUserValueList);
 	  panel.add(createUserIntervalsList);
 	  panel.add(createUserPhenotypesList);
+	  panel.add(createGeneListFromHPO);
 	  
 	  addSeparator(panel);
 	  
@@ -383,6 +401,51 @@ public class ProfilePanel extends JPanel {
 		}
 	}
 	
+	public void createGeneListFromHPO(){
+		Reference reference = null;
+		reference = (Reference)JOptionPane.showInputDialog(new JFrame(), "Select a reference genome", "Create gene list from HPO terms", 
+				JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iReference, 64), 
+				Reference.getAvailableReferences().toArray(new Reference[0]), 
+				Highlander.getCurrentAnalysis().getReference());
+		if (reference != null) {
+			AskListOfHPOTermDialog ask = new AskListOfHPOTermDialog(reference);
+			Tools.centerWindow(ask, false);
+			ask.setVisible(true);
+			if (!ask.getSelection().isEmpty()) {
+				try {
+					String name = ProfileTree.showProfileDialog(mainFrame, Action.SAVE, UserData.VALUES, Field.gene_symbol.getName(), "Create gene list from HPO terms");
+					if (name != null) { 
+						if (Highlander.getLoggedUser().doesPersonalDataExists(UserData.VALUES, Field.gene_symbol.getName(), name)){
+							int yesno = JOptionPane.showConfirmDialog(new JFrame(), 
+									"You already have a "+UserData.VALUES.getName()+" named '"+name.replace("~", " -> ")+"', do you want to overwrite it ?", 
+									"Overwriting element in your profile", JOptionPane.YES_NO_OPTION , JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iDbSave,64));
+							if (yesno == JOptionPane.NO_OPTION)	return;						
+						}
+						Map<String,String> map = new LinkedHashMap<>();
+						for (HPOTerm hpo : ask.getSelection()) {
+							for (String gene : hpo.getAssociatedGenes()) {
+								if (!map.containsKey(gene)) {
+									map.put(gene, "");
+								}
+								String comment = map.get(gene);
+								if (comment.length() == 0) {
+									comment = hpo.toString();
+								}else {
+									comment += ", " + hpo.toString();
+								}
+								map.put(gene, comment);
+							}
+						}
+						Highlander.getLoggedUser().saveValues(name, Field.gene_symbol, map);
+					}
+				} catch (Exception ex) {
+					Tools.exception(ex);
+					JOptionPane.showMessageDialog(mainFrame, Tools.getMessage("Error", ex), "Create gene list from HPO terms", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				}
+			}
+		}
+	}
+
 	public static void createFiltersTemplate(){
 		CreateTemplate ask = new CreateTemplate(Highlander.getCurrentAnalysis());
 		Tools.centerWindow(ask, false);
