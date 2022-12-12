@@ -37,7 +37,7 @@
   </email>
   <external> <!-- external software links, like IGV -->
 	<IGV value="IGV"/> <!-- mandatory, path in Highlander directory to IGV software -->
-	<Pavian value="https://ccb.jhu.edu/software/pavian/"/> <!-- optional, default value can be set in database, URL to a Pavian webserver -->
+	<pavian value="https://ccb.jhu.edu/software/pavian/"/> <!-- optional, default value can be set in database, URL to a Pavian webserver -->
   </external>
   <http_proxy> <!-- proxy configuration, if you use one. Ommit user, password and passwordpolicy if your proxy doesn't need authentication. -->
     <host value="proxy.server"/> <!-- optional, default value can be set in database. -->
