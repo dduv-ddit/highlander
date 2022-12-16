@@ -654,7 +654,7 @@ public class ToolsPanel extends JPanel {
 							JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
 				}
 			}else {
-				JOptionPane.showMessageDialog(new JFrame(),  "No report named 'kraken' has been found in Highlander, please contact your administrator", "Exomiser",
+				JOptionPane.showMessageDialog(new JFrame(),  "No report named 'exomiser' has been found in Highlander, please contact your administrator", "Exomiser",
 						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
 			}
 		}catch (Exception ex){
