@@ -106,6 +106,7 @@ import org.apache.commons.httpclient.NTCredentials;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.io.FileUtils;
 
 import ca.odell.glazedlists.EventList;
 import ca.odell.glazedlists.GlazedLists;
@@ -172,6 +173,7 @@ public class IonImporter extends JFrame {
 	private static User user;
 	private static HighlanderDatabase DB;
 
+	//TODO JSch cannot connect on new cluster - protocol too old
 	private JSch hlJsch;
 	private Map<Platform, JSch> sequencerJsch = new HashMap<Platform, JSch>();
 	private Session hlSession;
@@ -181,9 +183,9 @@ public class IonImporter extends JFrame {
 
 	private Map<Platform, String> sequencerResults = new HashMap<Platform, String>();
 	private Map<Platform, String> sequencerReferences = new HashMap<Platform, String>();
-	private final String hlWorking = "/data/highlander/iontorrent";
-	private final String hlScript = "/data/highlander";
-	private final String hlReferences = "/data/highlander/reference";
+	private final String hlWorking = "/storage/ngs/highlander/iontorrent";
+	private final String hlScript = "/storage/ngs/highlander";
+	private final String hlReferences = "/storage/ngs/highlander/reference";
 
 	private final Set<Platform> availablePlatforms = new TreeSet<>();
 	
@@ -1603,7 +1605,7 @@ public class IonImporter extends JFrame {
 		});
 		try {
 			hlJsch = new JSch();
-			hlJsch.addIdentity(parameters.getConfigPath()+"/"+parameters.getServerPipelinePrivateKey());
+			hlJsch.addIdentity(parameters.getConfigPath()+"/"+parameters.getServerPipelinePrivateKey());			
 			hlSession = hlJsch.getSession(parameters.getServerPipelineUsername(), parameters.getServerPipelineHost(), 22);
 			hlSession.setConfig("StrictHostKeyChecking", "no");
 			hlSession.setTimeout(3000);
@@ -2043,7 +2045,7 @@ public class IonImporter extends JFrame {
 															//Launch convader script
 															System.out.println("Launching Convader create panel script");
 															ChannelExec channelExec = (ChannelExec)hlSession.openChannel("exec");
-															String command = hlScript+"/convader/scripts/create_panel.sh " + reference.getName() + " " + code;
+															String command = hlScript+"/software/convader/scripts/create_panel.sh " + reference.getName() + " " + code;
 															channelExec.setCommand(command);
 															channelExec.connect();
 															channelExec.setInputStream(null);
@@ -2071,6 +2073,14 @@ public class IonImporter extends JFrame {
 															panelReferenceList.setSelectedValue(reference, true);
 															panelPanelList.setSelectedValue(code, true);
 															if (analysisBox.getSelectedItem() != null && ((AnalysisFull)analysisBox.getSelectedItem()).getReference().equals(reference)) panelBox1.addItem(code);
+														}else{
+															FileUtils.copyFile(tmp, new File(Tools.getHomeDirectory().toString()+"/Downloads/"+code+".bed"));
+															FileUtils.copyFile(tmpfull, new File(Tools.getHomeDirectory().toString()+"/Downloads/"+code+".fullgenes.bed"));
+															FileUtils.copyFile(tmpgenes, new File(Tools.getHomeDirectory().toString()+"/Downloads/"+code+".genes"));
+															System.err.println("No connexion to Highlander server");
+															System.err.println("Files in " + Tools.getHomeDirectory().toString()+"/Downloads/" + " must be copied to '"+hlReferences+"/"+reference.getName()+"/panels'");
+															System.err.println("You must launching Convader create panel script: ");
+															System.err.println(hlScript+"/software/convader/scripts/create_panel.sh " + reference.getName() + " " + code);
 														}
 													}
 													//}
