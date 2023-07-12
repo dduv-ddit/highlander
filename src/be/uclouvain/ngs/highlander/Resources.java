@@ -640,6 +640,7 @@ public class Resources {
   public final static ImageIcon iPavian = new ImageIcon(Highlander.class.getResource("resources/pavian.png"));
   public final static ImageIcon iIGV = new ImageIcon(Highlander.class.getResource("resources/igv.png"));
   public final static ImageIcon iIGVpos = new ImageIcon(Highlander.class.getResource("resources/igv_position.png"));
+  public final static ImageIcon iExportSequence = new ImageIcon(Highlander.class.getResource("resources/export_mutated_sequence.png"));
   public final static ImageIcon iExcel = new ImageIcon(Highlander.class.getResource("resources/excel.png"));
   public final static ImageIcon iExcelTN = new ImageIcon(Highlander.class.getResource("resources/excel_TN.png"));
   public final static ImageIcon iTSV = new ImageIcon(Highlander.class.getResource("resources/tsv_export.png"));

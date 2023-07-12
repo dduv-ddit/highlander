@@ -305,9 +305,10 @@ public class Tests {
 		}
 	}
 	
+	
 	public static void main(String[] args) {
 		try {
-			Highlander.initialize(new Parameters(false, new File("config\\GEHU admin\\settings.xml")), 20);
+			Highlander.initialize(new Parameters(false, new File("..\\config\\GEHU admin\\settings.xml")), 20);			
 			/*
 			reimportAllFastQC(true);
 			*/
@@ -329,6 +330,7 @@ public class Tests {
 			fillIndividualFieldForGEHUSamples();
 			*/
 			/*
+			testPHPWithApacheHttpClient();
 			testPHPWithHttpURLConnection();
 			*/
 			/*

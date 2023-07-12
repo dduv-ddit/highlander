@@ -36,6 +36,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import java.text.DateFormat;
@@ -54,6 +55,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.broad.igv.ui.IGVAccess;
 
 import be.uclouvain.ngs.highlander.Highlander;
@@ -87,6 +94,8 @@ import be.uclouvain.ngs.highlander.database.HighlanderDatabase;
 import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
 import be.uclouvain.ngs.highlander.datatype.AnalysisFull;
+import be.uclouvain.ngs.highlander.datatype.Gene;
+import be.uclouvain.ngs.highlander.datatype.MutatedSequence;
 import be.uclouvain.ngs.highlander.datatype.Reference;
 import be.uclouvain.ngs.highlander.datatype.Report;
 import be.uclouvain.ngs.highlander.datatype.Variant;
@@ -198,6 +207,20 @@ public class ToolsPanel extends JPanel {
 				}, "ToolsPanel.bamView").start();
 			}
 		});
+
+		JButton exportSequence = new JButton(Resources.getScaledIcon(Resources.iExportSequence, 40));
+		exportSequence.setPreferredSize(new Dimension(54,54));
+		exportSequence.setToolTipText("Export mutated DNA/AA sequences of selected variant(s)");
+		exportSequence.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new Thread(new Runnable(){
+					public void run(){
+						exportSequence();
+					}
+				}, "ToolsPanel.exportSequence").start();
+			}
+		});
+
 
 		JButton exportToExcelWithNormalRC = new JButton(Resources.getScaledIcon(Resources.iExcelTN, 40));
 		exportToExcelWithNormalRC.setPreferredSize(new Dimension(54,54));
@@ -490,6 +513,7 @@ public class ToolsPanel extends JPanel {
 		panel.add(showInIGV);
 		//panel.add(posInIGV);
 		panel.add(viewBam);
+		panel.add(exportSequence);		
 		panel.add(getSeparator());
 		
 		//Annotation Tools
@@ -610,7 +634,132 @@ public class ToolsPanel extends JPanel {
 		}
 	}
 
-
+	public void exportSequence() {
+		if (mainFrame.getVariantTable().getSelectedVariantsId().isEmpty()) {
+			JOptionPane.showMessageDialog(new JFrame(), "Please select at least 1 variant", "Export mutated sequences",
+					JOptionPane.INFORMATION_MESSAGE, Resources.getScaledIcon(Resources.iExportSequence,64));
+		}else {
+			Highlander.waitingPanel.start();
+			int selection = mainFrame.getVariantTable().getSelectedVariantsId().size();
+			Highlander.waitingPanel.setProgressString("Exporting "+Tools.doubleToString(selection, 0, false)+" sequences", false);
+			Highlander.waitingPanel.setProgressMaximum(selection);
+			Object range = JOptionPane.showInputDialog(mainFrame, "How many amino acids around the reference do you want?", "Sequence range", 
+					JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iExportSequence,64), null, 12);
+			if (range != null) {
+				try {
+					int rangeAA = Integer.parseInt(range.toString());
+					FileDialog chooser = new FileDialog(new JFrame(), "Output Excel file", FileDialog.SAVE) ;
+					DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+					chooser.setFile("sequences_" + df.format(System.currentTimeMillis())+".xlsx");		
+					Tools.centerWindow(chooser, false);
+					chooser.setVisible(true) ;
+					if (chooser.getFile() != null) {
+						String filename = chooser.getDirectory() + chooser.getFile();
+						if (!filename.endsWith(".xlsx")) filename += ".xlsx";
+						File xls = new File(filename);
+						try{
+							Workbook wb = new SXSSFWorkbook(100);  		
+							Sheet sheet = wb.createSheet(Highlander.getCurrentAnalysis() + " " + df.format(System.currentTimeMillis()));
+							sheet.createFreezePane(0, 1);		
+							int r = 0;
+							Row row = sheet.createRow(r++);
+							String[] headers = new String[] {
+									"variantSampleId",
+									"sample",
+									"chr",
+									"pos",
+									"ref",
+									"alt",
+									"gene",
+									"hgvs",
+									"reference",
+									"nucleotides",
+									"amino acids"
+							};
+							for (int c = 0 ; c < headers.length ; c++){
+								Cell cell = row.createCell(c);
+								cell.setCellValue(headers[c]);
+							}
+							sheet.setAutoFilter(new CellRangeAddress(0, 0, 0, headers.length));							
+							for (int id : mainFrame.getVariantTable().getSelectedVariantsId()) {
+								Highlander.waitingPanel.setProgressValue(r);
+								String sample = "?";
+								String ensg = "?";
+								String hgvs = "?";
+								try (Results res = Highlander.getDB().select(Schema.HIGHLANDER, 
+										"SELECT " + Field.sample + ", " + Field.transcript_ensembl + ", " + Field.hgvs_protein + " "
+												+ "FROM " + Highlander.getCurrentAnalysis().getFromSampleAnnotations()
+												+ Highlander.getCurrentAnalysis().getJoinStaticAnnotations()
+												+ Highlander.getCurrentAnalysis().getJoinGeneAnnotations()
+												+ Highlander.getCurrentAnalysis().getJoinProjects()
+												+ "WHERE "+Field.variant_sample_id.getQueryWhereName(Highlander.getCurrentAnalysis(), false)+" = " + id
+										)) {
+									if (res.next()){
+										sample = res.getString(1);
+										ensg = res.getString(2);
+										hgvs = res.getString(3);
+									}else{
+										throw new Exception("Id " + id + " not found in the database");
+									}
+								}
+								Variant variant = new Variant(id);
+								Reference genome = Highlander.getCurrentAnalysis().getReference();
+								MutatedSequence seq = new MutatedSequence(variant, new Gene(ensg, genome, variant.getChromosome(), true), genome, rangeAA);
+								System.out.println(id + "\t" + sample + "\t" + seq.getVariant().getChromosome() + "\t" + seq.getVariant().getPosition() + "\t" + seq.getVariant().getReference() + "\t" + seq.getVariant().getAlternative() + "\t" + seq.getGene().getGeneSymbol() + "\t" + hgvs + "\t" + seq.getReference() + "\t" + seq.getNucleotides() + "\t" + seq.getAminoacids());
+								row = sheet.createRow(r++);								
+								int c=0;
+								Cell cell = row.createCell(c++);
+								cell.setCellValue(id);
+								cell = row.createCell(c++);
+								cell.setCellValue(sample);
+								cell = row.createCell(c++);
+								cell.setCellValue(seq.getVariant().getChromosome() );
+								cell = row.createCell(c++);
+								cell.setCellValue(seq.getVariant().getPosition());
+								cell = row.createCell(c++);
+								cell.setCellValue(seq.getVariant().getReference());
+								cell = row.createCell(c++);
+								cell.setCellValue(seq.getVariant().getAlternative());
+								cell = row.createCell(c++);
+								cell.setCellValue(seq.getGene().getGeneSymbol());
+								cell = row.createCell(c++);
+								cell.setCellValue(hgvs);
+								cell = row.createCell(c++);
+								cell.setCellValue(seq.getReference());
+								cell = row.createCell(c++);
+								cell.setCellValue(seq.getNucleotides());
+								cell = row.createCell(c++);
+								cell.setCellValue(seq.getAminoacids());
+							}
+							Highlander.waitingPanel.setProgressValue(selection);
+							Highlander.waitingPanel.setProgressString("Writing file ...",true);		
+							try (FileOutputStream fileOut = new FileOutputStream(xls)){
+								wb.write(fileOut);
+							}
+							Highlander.waitingPanel.setProgressDone();
+						}catch (IOException ex){
+							Highlander.waitingPanel.forceStop();
+							Tools.exception(ex);
+							JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("I/O error when creating file", ex), "Export mutated sequences",
+									JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						}catch (Exception ex){
+							Highlander.waitingPanel.forceStop();
+							Tools.exception(ex);
+							JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error during export", ex), "Export mutated sequences",
+									JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						}
+					}	
+				}catch (NumberFormatException ex) {
+					Highlander.waitingPanel.forceStop();
+					Tools.exception(ex);
+					JOptionPane.showMessageDialog(new JFrame(),  range + " is not a valid number of amino acids", "Export mutated sequences",
+							JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				}
+			}	
+			Highlander.waitingPanel.stop();
+		}
+	}
+	
 	/**
 	 * Annotation Tools
 	 */
