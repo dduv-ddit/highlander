@@ -3164,26 +3164,34 @@ public class DbBuilder {
 				existingLinks.add(res.getString("name"));
 			}
 		}
-		if (!existingLinks.contains("CliniPhenome")) new ExternalLink("CliniPhenome", "Patient in CliniPhenome", "http://bridgeiris.ulb.ac.be/cliniphenome/login/login_sample_search?sample_id=","[sample]").insert(Highlander.class.getResourceAsStream("resources/ext_cliniphenome.png"));
+		//if (!existingLinks.contains("CliniPhenome")) new ExternalLink("CliniPhenome", "Patient in CliniPhenome", "http://bridgeiris.ulb.ac.be/cliniphenome/login/login_sample_search?sample_id=","[sample]").insert(Highlander.class.getResourceAsStream("resources/ext_cliniphenome.png"));
 		if (!existingLinks.contains("Varsome")) {
 			new ExternalLink("Varsome", "Variant in Varsome", "https://varsome.com/variant/[genome]/[chr]-[pos]-[reference]-[alternative]","").insert(Highlander.class.getResourceAsStream("resources/ext_varsome.png"));
 			Highlander.getDB().update(Schema.HIGHLANDER, "UPDATE `external_links` SET `url_genome` = 'GRCh37=hg19;hg19=hg19;b37=hg19;b37_decoy=hg19;GRCh38=hg38;hg19_lifescope=hg19' WHERE `name` = 'Varsome'");
 		}
-		if (!existingLinks.contains("MutaFrame")) new ExternalLink("MutaFrame", "Variant in MutaFrame", "http://deogen2.mutaframe.com/api?k=7221a82151b7f348394a13ec389cdc0d&m=[protein_change]&p=[transcript_uniprot_id]","").insert(Highlander.class.getResourceAsStream("resources/ext_mutaframe.png"));
+		if (!existingLinks.contains("InterVar")) {
+			new ExternalLink("InterVar", "Clinical Interpretation of genetic variants by ACMG/AMP 2015 guideline", "http://wintervar.wglab.org/results.pos.php?queryType=position&chr=[chr]&pos=[pos]&ref=[reference]&alt=[alternative]&build=[genome]","").insert(Highlander.class.getResourceAsStream("resources/ext_intervar.png"));
+			Highlander.getDB().update(Schema.HIGHLANDER, "UPDATE `external_links` SET `url_genome` = 'b37_decoy=hg19;hg19_lifescope=hg19;b37=hg19;hg19=hg19;GRCh38=hg38;GRCh37=hg19' WHERE `name` = 'InterVar'");
+		}
+		//API Key doesn't work on new hosting
+		//if (!existingLinks.contains("MutaFrame")) new ExternalLink("MutaFrame", "Variant in MutaFrame", "http://babylone.3bio.ulb.ac.be/MutaFrame/api?k=7221a82151b7f348394a13ec389cdc0d&m=[protein_change]&p=[transcript_uniprot_id]","").insert(Highlander.class.getResourceAsStream("resources/ext_mutaframe.png"));
 		if (!existingLinks.contains("Mutation Taster")) new ExternalLink("Mutation Taster", "Predictions in Mutation Taster (all transcripts)", "http://www.mutationtaster.org/cgi-bin/MutationTaster/MT_ChrPos.cgi?chromosome=[chr_grch37]&position=[pos_grch37]&ref=[reference]&alt=[alternative]","").insert(Highlander.class.getResourceAsStream("resources/ext_mutation_taster.png"));
+		if (!existingLinks.contains("SpliceAI")) new ExternalLink("SpliceAI", "Predicting Splicing from Primary Sequence with Deep Learning", "https://spliceailookup.broadinstitute.org/#variant=chr[chr]-[pos]-[reference]-[alternative]&hg=[genome]&distance=100&mask=1&precomputed=1","").insert(Highlander.class.getResourceAsStream("resources/ext_spliceai.png"));
 		if (!existingLinks.contains("Marrvel 1")) new ExternalLink("Marrvel 1", "Variant and gene in Marrvel 1", "http://v1.marrvel.org/search/variant/","[chr_grch37]:[pos_grch37] [reference]>[alternative]").insert(Highlander.class.getResourceAsStream("resources/ext_marrvel1.png"));
 		if (!existingLinks.contains("Marrvel 2")) new ExternalLink("Marrvel 2", "Gene in Marrvel 2", "http://marrvel.org/human/variant/","[chr_grch37]:[pos_grch37][reference]>[alternative]").insert(Highlander.class.getResourceAsStream("resources/ext_marrvel2.png"));
-		if (!existingLinks.contains("ClinVarMiner")) new ExternalLink("ClinVarMiner", "Variant in ClinVar", "https://www.ncbi.nlm.nih.gov/clinvar?term=%28[chr]%5BChromosome%5D%29%20AND%20[pos]%5BBase%20Position%20for%20Assembly%20[genome]%5D","").insert(Highlander.class.getResourceAsStream("resources/ext_clinvarminer.png"));		
-		if (!existingLinks.contains("ClinVar")) {
-			new ExternalLink("ClinVar", "Variant in ClinVar using ClinVarMiner", "https://clinvarminer.genetics.utah.edu/submissions-by-variant/","[transcript_refseq_mrna]([gene_symbol]):[hgvs_dna] ([hgvs_protein])").insert(Highlander.class.getResourceAsStream("resources/ext_clinvar.png"));
-			Highlander.getDB().update(Schema.HIGHLANDER, "UPDATE `external_links` SET `url_genome` = 'GRCh37=GRCh37;hg19=GRCh37;b37=GRCh37;b37_decoy=GRCh37;GRCh38=GRCh38;hg19_lifescope=GRCh37' WHERE `name` = 'ClinVar'");
-		}
+		if (!existingLinks.contains("ClinVar")) new ExternalLink("ClinVar", "Variant in ClinVar", "https://www.ncbi.nlm.nih.gov/clinvar?term=%28[chr]%5BChromosome%5D%29%20AND%20[pos]%5BBase%20Position%20for%20Assembly%20[genome]%5D","").insert(Highlander.class.getResourceAsStream("resources/ext_clinvar.png"));		
+		//Doesn't seem to work anymore
+		//if (!existingLinks.contains("ClinVarMiner")) {
+		//	new ExternalLink("ClinVarMiner", "Variant in ClinVar using ClinVarMiner", "https://clinvarminer.genetics.utah.edu/submissions-by-variant/","[transcript_refseq_mrna]([gene_symbol]):[hgvs_dna] ([hgvs_protein])").insert(Highlander.class.getResourceAsStream("resources/ext_clinvarminer.png"));
+		//	Highlander.getDB().update(Schema.HIGHLANDER, "UPDATE `external_links` SET `url_genome` = 'GRCh37=GRCh37;hg19=GRCh37;b37=GRCh37;b37_decoy=GRCh37;GRCh38=GRCh38;hg19_lifescope=GRCh37' WHERE `name` = 'ClinVar'");
+		//}
 		if (!existingLinks.contains("Franklin")) new ExternalLink("Franklin", "Variant in Franklin", "https://franklin.genoox.com/clinical-db/variant/snp/chr[chr]-[pos]-[reference]-[alternative]-hg38","").insert(Highlander.class.getResourceAsStream("resources/ext_franklin.png"));
+		if (!existingLinks.contains("deCAF")) new ExternalLink("deCAF", "deCODE AlIele Frequency Browser", "https://decaf.decode.com/variant/chr[chr_grch38]:[pos_grch38]:SG","").insert(Highlander.class.getResourceAsStream("resources/ext_decaf.png"));
 		if (!existingLinks.contains("gnomAD")) {
 			new ExternalLink("gnomAD", "Variant in gnomAD", "http://gnomad.broadinstitute.org/variant/[chr]-[pos]-[reference]-[alternative]?dataset=gnomad_[genome]","").insert(Highlander.class.getResourceAsStream("resources/ext_gnomad.png"));
 			Highlander.getDB().update(Schema.HIGHLANDER, "UPDATE `external_links` SET `url_genome` = 'GRCh37=r2_1;hg19=r2_1;b37=r2_1;b37_decoy=r2_1;GRCh38=r3;hg19_lifescope=r2_1' WHERE `name` = 'gnomAD'");		}
 		if (!existingLinks.contains("ExAC")) new ExternalLink("ExAC", "Variant in ExAC", "http://gnomad.broadinstitute.org/variant/[chr_grch37]-[pos_grch37]-[reference]-[alternative]?dataset=exac","").insert(Highlander.class.getResourceAsStream("resources/ext_exac.png"));
-		if (!existingLinks.contains("RGC Million Exome")) new ExternalLink("RGC Million Exome", "RGC Million Exome variants", "https://rgc-research.regeneron.com/me/variant/[chr_grch38]:[pos_grch38]:[reference]:[alternative]","").insert(Highlander.class.getResourceAsStream("resources/ext_regeneron.png"));
+		if (!existingLinks.contains("RGC Million Exome")) new ExternalLink("RGC Million Exome", "RGC Million Exome variants", "https://rgc-mcps.regeneron.com/variant/[chr_grch38]:[pos_grch38]:[reference]:[alternative]","").insert(Highlander.class.getResourceAsStream("resources/ext_regeneron.png"));
 		if (!existingLinks.contains("dbSNP")) new ExternalLink("dbSNP", "Variant in dbSNP", "http://www.ncbi.nlm.nih.gov/projects/SNP/snp_ref.cgi?rs=","[dbsnp_id:2]").insert(Highlander.class.getResourceAsStream("resources/ext_dbsnp.png"));
 		if (!existingLinks.contains("COSMIC")) new ExternalLink("COSMIC", "Variant in COSMIC", "http://cancer.sanger.ac.uk/cosmic/search?q=","[cosmic_id]").insert(Highlander.class.getResourceAsStream("resources/ext_cosmic.png"));
 		if (!existingLinks.contains("Beacon of Beacons")) {
@@ -3206,6 +3214,7 @@ public class DbBuilder {
 		if (!existingLinks.contains("Uniprot")) new ExternalLink("Uniprot", "Protein in UniProt", "https://www.uniprot.org/uniprot/[transcript_uniprot_id]","").insert(Highlander.class.getResourceAsStream("resources/ext_uniprot.png"));
 		if (!existingLinks.contains("OMIM")) new ExternalLink("OMIM", "Gene in OMIM", "http://www.ncbi.nlm.nih.gov/omim/?term=","[gene_symbol]").insert(Highlander.class.getResourceAsStream("resources/ext_omim.png"));
 		if (!existingLinks.contains("GTEx")) new ExternalLink("GTEx", "Gene in GTEx", "https://www.gtexportal.org/home/gene/[gene_symbol]","").insert(Highlander.class.getResourceAsStream("resources/ext_gtex.png"));
+		if (!existingLinks.contains("LitVar2")) new ExternalLink("LitVar2", "LitVar allows the search and retrieval of variant specific information from relevant studies in the literature, with related concept (e.g., diseases) annotations. By normalizing variant names, LitVar returns the same results regardless of which name of a variant (e.g. BRCA1 p.P871L or c.2612C>T) is used in the query.", "https://www.ncbi.nlm.nih.gov/research/litvar2/docsum?variant=litvar@%23[entrez_gene_id]%23p.[protein_change]&query=p.[protein_change]%20[gene_symbol]","").insert(Highlander.class.getResourceAsStream("resources/ext_livar2.png"));
 		if (!existingLinks.contains("PubMed")) new ExternalLink("PubMed", "Gene in PubMed", "http://www.ncbi.nlm.nih.gov/pubmed/?term=","[gene_symbol]").insert(Highlander.class.getResourceAsStream("resources/ext_pubmed.png"));
 		if (!existingLinks.contains("NCBI")) new ExternalLink("NCBI", "Gene in NCBI", "http://www.ncbi.nlm.nih.gov/gene/?term=","[gene_symbol]").insert(Highlander.class.getResourceAsStream("resources/ext_ncbi.png"));
 		if (!existingLinks.contains("Entrez")) new ExternalLink("Entrez", "Gene in Entrez", "http://www.ncbi.nlm.nih.gov/gquery/?term=","[gene_symbol]").insert(Highlander.class.getResourceAsStream("resources/ext_entrez.png"));

@@ -697,39 +697,57 @@ public class ToolsPanel extends JPanel {
 									if (res.next()){
 										sample = res.getString(1);
 										ensg = res.getString(2);
-										hgvs = res.getString(3);
+										hgvs = (res.getObject(3) != null) ? res.getString(3) : "";
 									}else{
 										throw new Exception("Id " + id + " not found in the database");
 									}
 								}
 								Variant variant = new Variant(id);
 								Reference genome = Highlander.getCurrentAnalysis().getReference();
-								MutatedSequence seq = new MutatedSequence(variant, new Gene(ensg, genome, variant.getChromosome(), true), genome, rangeAA);
-								System.out.println(id + "\t" + sample + "\t" + seq.getVariant().getChromosome() + "\t" + seq.getVariant().getPosition() + "\t" + seq.getVariant().getReference() + "\t" + seq.getVariant().getAlternative() + "\t" + seq.getGene().getGeneSymbol() + "\t" + hgvs + "\t" + seq.getReference() + "\t" + seq.getNucleotides() + "\t" + seq.getAminoacids());
-								row = sheet.createRow(r++);								
-								int c=0;
-								Cell cell = row.createCell(c++);
-								cell.setCellValue(id);
-								cell = row.createCell(c++);
-								cell.setCellValue(sample);
-								cell = row.createCell(c++);
-								cell.setCellValue(seq.getVariant().getChromosome() );
-								cell = row.createCell(c++);
-								cell.setCellValue(seq.getVariant().getPosition());
-								cell = row.createCell(c++);
-								cell.setCellValue(seq.getVariant().getReference());
-								cell = row.createCell(c++);
-								cell.setCellValue(seq.getVariant().getAlternative());
-								cell = row.createCell(c++);
-								cell.setCellValue(seq.getGene().getGeneSymbol());
-								cell = row.createCell(c++);
-								cell.setCellValue(hgvs);
-								cell = row.createCell(c++);
-								cell.setCellValue(seq.getReference());
-								cell = row.createCell(c++);
-								cell.setCellValue(seq.getNucleotides());
-								cell = row.createCell(c++);
-								cell.setCellValue(seq.getAminoacids());
+								if (ensg != null) {
+									MutatedSequence seq = new MutatedSequence(variant, new Gene(ensg, genome, variant.getChromosome(), true), genome, rangeAA);
+									System.out.println(id + "\t" + sample + "\t" + seq.getVariant().getChromosome() + "\t" + seq.getVariant().getPosition() + "\t" + seq.getVariant().getReference() + "\t" + seq.getVariant().getAlternative() + "\t" + seq.getGene().getGeneSymbol() + "\t" + hgvs + "\t" + seq.getReference() + "\t" + seq.getNucleotides() + "\t" + seq.getAminoacids());
+									row = sheet.createRow(r++);								
+									int c=0;
+									Cell cell = row.createCell(c++);
+									cell.setCellValue(id);
+									cell = row.createCell(c++);
+									cell.setCellValue(sample);
+									cell = row.createCell(c++);
+									cell.setCellValue(seq.getVariant().getChromosome() );
+									cell = row.createCell(c++);
+									cell.setCellValue(seq.getVariant().getPosition());
+									cell = row.createCell(c++);
+									cell.setCellValue(seq.getVariant().getReference());
+									cell = row.createCell(c++);
+									cell.setCellValue(seq.getVariant().getAlternative());
+									cell = row.createCell(c++);
+									cell.setCellValue(seq.getGene().getGeneSymbol());
+									cell = row.createCell(c++);
+									cell.setCellValue(hgvs);
+									cell = row.createCell(c++);
+									cell.setCellValue(seq.getReference());
+									cell = row.createCell(c++);
+									cell.setCellValue(seq.getNucleotides());
+									cell = row.createCell(c++);
+									cell.setCellValue(seq.getAminoacids());									
+								}else {
+									System.out.println(id + "\t" + sample + "\t" + variant.getChromosome() + "\t" + variant.getPosition() + "\t" + variant.getReference() + "\t" + variant.getAlternative() + "\t" + "NO GENE");
+									row = sheet.createRow(r++);								
+									int c=0;
+									Cell cell = row.createCell(c++);
+									cell.setCellValue(id);
+									cell = row.createCell(c++);
+									cell.setCellValue(sample);
+									cell = row.createCell(c++);
+									cell.setCellValue(variant.getChromosome() );
+									cell = row.createCell(c++);
+									cell.setCellValue(variant.getPosition());
+									cell = row.createCell(c++);
+									cell.setCellValue(variant.getReference());
+									cell = row.createCell(c++);
+									cell.setCellValue(variant.getAlternative());
+								}
 							}
 							Highlander.waitingPanel.setProgressValue(selection);
 							Highlander.waitingPanel.setProgressString("Writing file ...",true);		
