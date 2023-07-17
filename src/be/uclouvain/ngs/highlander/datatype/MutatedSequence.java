@@ -26,7 +26,7 @@ package be.uclouvain.ngs.highlander.datatype;
 import java.util.ArrayList;
 import java.util.List;
 
-import be.uclouvain.ngs.highlander.database.DBUtils;
+import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.datatype.SNPEffect.VariantType;
 
 /**
@@ -35,13 +35,21 @@ import be.uclouvain.ngs.highlander.datatype.SNPEffect.VariantType;
 
 public class MutatedSequence {
 
+	public enum Type {NUCLEOTIDES, AMINO_ACIDS}
+	
 	private int rangeAA;
 	private Variant variant;
 	private Gene gene;
 	private Reference genome;
-	private String reference = "";
-	private String nucleotides = "";
-	private String aminoacids = "";		
+	private String nucl_ref = "";
+	private String nucl_mut = "";
+	private String nucl_rev_ref = "";
+	private String nucl_rev_mut = "";
+	private String aa_ref = "";		
+	private String aa_mut = "";		
+	
+	private boolean stopReached = false;
+	private boolean insDone = false;
 	
 	public MutatedSequence(Variant variant, Gene gene, Reference genome, int rangeAA) throws Exception {
 		this.variant = variant;
@@ -133,37 +141,73 @@ public class MutatedSequence {
 					thisright=0;
 				}
 			}
-			for (Interval interval : intervals) {
-				reference += DBUtils.getSequence(interval.getReferenceGenome(), interval.getChromosome(), interval.getStart(), interval.getEnd());
-				boolean insDone = false;
-				for (int pos = interval.getStart() ; pos <= interval.getEnd() ; pos++){
-					codonPos = gene.getCodonPos(pos, variant);
-					AAs = gene.getAminoAcid(pos, variant);
-					if (!AAs.equals("#") && AAs.length() == 1) {
-						char AA = AAs.charAt(0);
-						if((codonPos == 0 && gene.isStrandPositive()) || (codonPos == 2 && !gene.isStrandPositive())) {
-							//codon pos 1 do nothing
-						}else if((codonPos == 2 && gene.isStrandPositive()) || (codonPos == 0 && !gene.isStrandPositive())) {
-							//codon pos 3 do nothing
-						}else {
-							aminoacids += AA;
-						}
-					}else if (!AAs.equals("#") && AAs.length() > 1 && !insDone) {
-						aminoacids += AAs;
-						insDone = true;
+			stopReached = false;
+			insDone = false;
+			if (gene.isStrandPositive()) {
+				for (Interval interval : intervals) {
+					for (int pos = interval.getStart() ; pos <= interval.getEnd() && !stopReached ; pos++){
+						processReference(pos, true);
+						processMutant(pos, true);
 					}
-					if (pos == variant.getPosition()) {
-						nucleotides += variant.getAlternative();
-					}else if (variant.getVariantType() == VariantType.DEL && pos > variant.getPosition() && pos <= variant.getPosition() + variant.getLength()) {
-						//do nothing, deleted nucleotide
-					}else {
-						nucleotides += gene.getNucleotide(pos);
-					}
-				}				
+				}
+			}else {
+				for (int i=intervals.size()-1 ; i >= 0 ; i--) {
+					Interval interval = intervals.get(i);
+					for (int pos = interval.getEnd() ; pos >= interval.getStart() && !stopReached ; pos--){
+						processReference(pos, false);
+						processMutant(pos, false);
+					}									
+				}
+				nucl_rev_ref = Tools.reverseComplement(nucl_ref);
+				nucl_rev_mut = Tools.reverseComplement(nucl_mut);
 			}
 		}
 	}
 
+	private void processReference(int pos, boolean fwd) {
+		int codonPos = gene.getCodonPos(pos);
+		String AAs = gene.getAminoAcid(pos);
+		if (!AAs.equals("#") && codonPos == 2) {
+			aa_ref += AAs.charAt(0);			
+		}		
+		if (fwd) {
+			nucl_ref += gene.getNucleotide(pos);
+		}else {
+			nucl_ref = gene.getNucleotide(pos) + nucl_ref;
+		}
+	}
+	
+	private void processMutant(int pos, boolean fwd) {
+		int codonPos = gene.getCodonPos(pos, variant);
+		String AAs = gene.getAminoAcid(pos, variant);
+		if (!AAs.equals("#") && AAs.length() == 1) {
+			char AA = AAs.charAt(0);
+			if(codonPos == 2) {
+				aa_mut += AA;
+				stopReached = (AA == '*');
+			}
+		} else if (!AAs.equals("#") && AAs.length() > 1 && !insDone) {
+			aa_mut += AAs;
+			insDone = true;
+			stopReached = AAs.contains("*");
+		}	
+		if (pos == variant.getPosition()) {
+			if (fwd) {
+				nucl_mut += variant.getAlternative();
+			} else  {
+				nucl_mut = variant.getAlternative() + nucl_mut;
+			}
+		} else if (variant.getVariantType() == VariantType.DEL && pos > variant.getPosition() && pos <= variant.getPosition() + variant.getLength()) {
+			//do nothing, deleted nucleotide
+		} else {
+			if (fwd) {
+				nucl_mut += gene.getNucleotide(pos);
+			} else {
+				nucl_mut = gene.getNucleotide(pos) + nucl_mut;
+			}
+		}
+	}
+	
 	public int getRangeAA() {
 		return rangeAA;
 	}
@@ -180,16 +224,22 @@ public class MutatedSequence {
 		return genome;
 	}
 
-	public String getReference() {
-		return reference;
-	}
-
-	public String getNucleotides() {
-		return nucleotides;
-	}
-
-	public String getAminoacids() {
-		return aminoacids;
+	public String getSequence(Type type, boolean mutation, boolean reverseComplementIfGeneIsInReverse) {
+		switch (type) {
+		case AMINO_ACIDS:
+			if (mutation) return aa_mut;
+			else return aa_ref;
+		case NUCLEOTIDES:
+			if (mutation) {
+				if (reverseComplementIfGeneIsInReverse) return nucl_rev_mut;
+				else return nucl_mut;
+			}else {
+				if (reverseComplementIfGeneIsInReverse) return nucl_rev_ref;
+				else return nucl_ref;				
+			}
+		default:
+			return "?";
+		}
 	}
 
 }

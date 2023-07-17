@@ -96,6 +96,7 @@ import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
 import be.uclouvain.ngs.highlander.datatype.AnalysisFull;
 import be.uclouvain.ngs.highlander.datatype.Gene;
 import be.uclouvain.ngs.highlander.datatype.MutatedSequence;
+import be.uclouvain.ngs.highlander.datatype.MutatedSequence.Type;
 import be.uclouvain.ngs.highlander.datatype.Reference;
 import be.uclouvain.ngs.highlander.datatype.Report;
 import be.uclouvain.ngs.highlander.datatype.Variant;
@@ -671,10 +672,15 @@ public class ToolsPanel extends JPanel {
 									"ref",
 									"alt",
 									"gene",
+									"strand",
 									"hgvs",
-									"reference",
-									"nucleotides",
-									"amino acids"
+									"effect",
+									"nucleotides reference (forward)",
+									"nucleotides mutation (forward)",
+									"nucleotides reference (reverse complement)",
+									"nucleotides mutation (reverse complement)",
+									"amino acids reference",
+									"amino acids mutation",
 							};
 							for (int c = 0 ; c < headers.length ; c++){
 								Cell cell = row.createCell(c);
@@ -686,8 +692,10 @@ public class ToolsPanel extends JPanel {
 								String sample = "?";
 								String ensg = "?";
 								String hgvs = "?";
+								String eff = "?";
+								String strand = "?";
 								try (Results res = Highlander.getDB().select(Schema.HIGHLANDER, 
-										"SELECT " + Field.sample + ", " + Field.transcript_ensembl + ", " + Field.hgvs_protein + " "
+										"SELECT " + Field.sample + ", " + Field.transcript_ensembl + ", " + Field.hgvs_protein + ", " + Field.snpeff_effect + " "
 												+ "FROM " + Highlander.getCurrentAnalysis().getFromSampleAnnotations()
 												+ Highlander.getCurrentAnalysis().getJoinStaticAnnotations()
 												+ Highlander.getCurrentAnalysis().getJoinGeneAnnotations()
@@ -698,6 +706,7 @@ public class ToolsPanel extends JPanel {
 										sample = res.getString(1);
 										ensg = res.getString(2);
 										hgvs = (res.getObject(3) != null) ? res.getString(3) : "";
+										eff = (res.getObject(4) != null) ? res.getString(4) : "";
 									}else{
 										throw new Exception("Id " + id + " not found in the database");
 									}
@@ -705,8 +714,10 @@ public class ToolsPanel extends JPanel {
 								Variant variant = new Variant(id);
 								Reference genome = Highlander.getCurrentAnalysis().getReference();
 								if (ensg != null) {
-									MutatedSequence seq = new MutatedSequence(variant, new Gene(ensg, genome, variant.getChromosome(), true), genome, rangeAA);
-									System.out.println(id + "\t" + sample + "\t" + seq.getVariant().getChromosome() + "\t" + seq.getVariant().getPosition() + "\t" + seq.getVariant().getReference() + "\t" + seq.getVariant().getAlternative() + "\t" + seq.getGene().getGeneSymbol() + "\t" + hgvs + "\t" + seq.getReference() + "\t" + seq.getNucleotides() + "\t" + seq.getAminoacids());
+									Gene gene = new Gene(ensg, genome, variant.getChromosome(), true);
+									strand = (gene.isStrandPositive()) ? "+" : "-";
+									MutatedSequence seq = new MutatedSequence(variant, gene, genome, rangeAA);
+									System.out.println(id + "\t" + sample + "\t" + seq.getVariant().getChromosome() + "\t" + seq.getVariant().getPosition() + "\t" + seq.getVariant().getReference() + "\t" + seq.getVariant().getAlternative() + "\t" + seq.getGene().getGeneSymbol() + "\t" + strand + "\t" + hgvs + "\t" + eff + "\t" + seq.getSequence(Type.NUCLEOTIDES, false, false) + "\t" + seq.getSequence(Type.NUCLEOTIDES, true, false) + "\t" + seq.getSequence(Type.NUCLEOTIDES, false, true) + "\t" + seq.getSequence(Type.NUCLEOTIDES, true, true) + "\t" + seq.getSequence(Type.AMINO_ACIDS, false, false) + "\t" + seq.getSequence(Type.AMINO_ACIDS, true, false));
 									row = sheet.createRow(r++);								
 									int c=0;
 									Cell cell = row.createCell(c++);
@@ -724,13 +735,23 @@ public class ToolsPanel extends JPanel {
 									cell = row.createCell(c++);
 									cell.setCellValue(seq.getGene().getGeneSymbol());
 									cell = row.createCell(c++);
+									cell.setCellValue(strand);
+									cell = row.createCell(c++);
 									cell.setCellValue(hgvs);
 									cell = row.createCell(c++);
-									cell.setCellValue(seq.getReference());
+									cell.setCellValue(eff);
 									cell = row.createCell(c++);
-									cell.setCellValue(seq.getNucleotides());
+									cell.setCellValue(seq.getSequence(Type.NUCLEOTIDES, false, false));
 									cell = row.createCell(c++);
-									cell.setCellValue(seq.getAminoacids());									
+									cell.setCellValue(seq.getSequence(Type.NUCLEOTIDES, true, false));
+									cell = row.createCell(c++);
+									cell.setCellValue(seq.getSequence(Type.NUCLEOTIDES, false, true));
+									cell = row.createCell(c++);
+									cell.setCellValue(seq.getSequence(Type.NUCLEOTIDES, true, true));
+									cell = row.createCell(c++);
+									cell.setCellValue(seq.getSequence(Type.AMINO_ACIDS, false, false));
+									cell = row.createCell(c++);
+									cell.setCellValue(seq.getSequence(Type.AMINO_ACIDS, true, false));
 								}else {
 									System.out.println(id + "\t" + sample + "\t" + variant.getChromosome() + "\t" + variant.getPosition() + "\t" + variant.getReference() + "\t" + variant.getAlternative() + "\t" + "NO GENE");
 									row = sheet.createRow(r++);								
