@@ -100,8 +100,8 @@ import javax.swing.text.DefaultEditorKit;
 
 public class Highlander extends JFrame {
 
-	static final public String version = "17.18";
-	static final public String databaseRequiredVersion = "17.13";
+	static final public String version = "18";
+	static final public String databaseRequiredVersion = "18";
 
 	private static Parameters parameters;
 	private static User user = null;
