@@ -80,6 +80,7 @@ public class LoginBox extends JDialog {
 		OKButton.setText("Login");
 		OKButton.setIcon(Resources.getScaledIcon(Resources.iButtonApply, 16));
 		OKButton.addActionListener(new ActionListener(){
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				OKButton_actionPerformed(e);
 			}
@@ -87,6 +88,7 @@ public class LoginBox extends JDialog {
 		cancelButton.setText("Exit");
 		cancelButton.setIcon(Resources.getScaledIcon(Resources.iExit, 16));
 		cancelButton.addActionListener(new ActionListener(){
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				cancelButton_actionPerformed(e);
 			}
@@ -94,6 +96,7 @@ public class LoginBox extends JDialog {
 		resetButton.setText("Reset my password");
 		resetButton.setIcon(Resources.getScaledIcon(Resources.iUserLock, 16));
 		resetButton.addActionListener(new ActionListener(){
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				resetButton_actionPerformed(e);
 			}
@@ -102,18 +105,21 @@ public class LoginBox extends JDialog {
 		loginTextField.setColumns(15);
 		loginTextField.setText("");
 		loginTextField.addKeyListener(new KeyAdapter(){
+			@Override
 			public void keyPressed(KeyEvent e) {
 				textFieldKeyPressed(e);
 			}
 		});
 		PasswordField.setText("");
 		PasswordField.addKeyListener(new KeyAdapter(){
+			@Override
 			public void keyPressed(KeyEvent e) {
 				textFieldKeyPressed(e);
 			}
 		});
 		proxyPasswordField.setText("");
 		proxyPasswordField.addKeyListener(new KeyAdapter(){
+			@Override
 			public void keyPressed(KeyEvent e) {
 				textFieldKeyPressed(e);
 			}

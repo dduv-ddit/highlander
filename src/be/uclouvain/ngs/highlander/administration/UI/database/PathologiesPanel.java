@@ -24,6 +24,7 @@
 package be.uclouvain.ngs.highlander.administration.UI.database;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -63,8 +64,10 @@ public class PathologiesPanel extends ManagerPanel {
 		super(manager);
 		
 		pathologiesTable = new JTable(pathologiesTableModel){
+			@Override
 			protected JTableHeader createDefaultTableHeader() {
 				return new JTableHeader(columnModel) {
+					@Override
 					public String getToolTipText(MouseEvent e) {
 						java.awt.Point p = e.getPoint();
 						int index = columnModel.getColumnIndexAtX(p.x);
@@ -87,7 +90,7 @@ public class PathologiesPanel extends ManagerPanel {
 
 		fill();
 
-		JPanel southPanel = new JPanel(new WrapLayout(WrapLayout.CENTER));
+		JPanel southPanel = new JPanel(new WrapLayout(FlowLayout.CENTER));
 		add(southPanel, BorderLayout.SOUTH);
 
 		JButton createNewButton = new JButton("Create new pathology", Resources.getScaledIcon(Resources.i3dPlus, 16));
@@ -203,6 +206,7 @@ public class PathologiesPanel extends ManagerPanel {
 
 	private void refresh(){
 		SwingUtilities.invokeLater(new Runnable(){
+			@Override
 			public void run(){
 				try{
 					pathologiesTableModel.fireTableRowsUpdated(0,pathologiesTableModel.getRowCount()-1);
@@ -223,6 +227,7 @@ public class PathologiesPanel extends ManagerPanel {
 				JOptionPane.showMessageDialog(this, "Pathology name can only contain alphanumeric caracters and '_'", "Error", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross, 64));
 			}else{
 				SwingUtilities.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						waitingPanel.setVisible(true);
 						waitingPanel.start();
@@ -257,6 +262,7 @@ public class PathologiesPanel extends ManagerPanel {
 					ProjectManager.toConsole(ex);
 				}
 				SwingUtilities.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						waitingPanel.setVisible(false);
 						waitingPanel.stop();
@@ -276,6 +282,7 @@ public class PathologiesPanel extends ManagerPanel {
 				JOptionPane.showMessageDialog(this, "Pathology name can only contain alphanumeric caracters and '_'", "Error", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross, 64));
 			}else if (!pathology.equals(name)){
 				SwingUtilities.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						waitingPanel.setVisible(true);
 						waitingPanel.start();
@@ -307,6 +314,7 @@ public class PathologiesPanel extends ManagerPanel {
 					}
 				});
 				SwingUtilities.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						waitingPanel.setVisible(false);
 						waitingPanel.stop();
@@ -322,6 +330,7 @@ public class PathologiesPanel extends ManagerPanel {
 			String description = descriptionAsk.toString().trim();
 			if (!currentDescription.equals(description)){
 				SwingUtilities.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						waitingPanel.setVisible(true);
 						waitingPanel.start();
@@ -341,6 +350,7 @@ public class PathologiesPanel extends ManagerPanel {
 					}
 				});
 				SwingUtilities.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						waitingPanel.setVisible(false);
 						waitingPanel.stop();

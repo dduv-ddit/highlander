@@ -29,6 +29,7 @@ import java.beans.PropertyChangeListener;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JViewport;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.TableColumn;
@@ -96,7 +97,7 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener
 
 		fixed.setPreferredScrollableViewportSize(fixed.getPreferredSize());
 		scrollPane.setRowHeaderView( fixed );
-		scrollPane.setCorner(JScrollPane.UPPER_LEFT_CORNER, fixed.getTableHeader());
+		scrollPane.setCorner(ScrollPaneConstants.UPPER_LEFT_CORNER, fixed.getTableHeader());
 
 		// Synchronize scrolling of the row header with the main table
 
@@ -112,6 +113,7 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener
 		return fixed;
 	}
 
+	@Override
 	public void stateChanged(ChangeEvent e)
 	{
 		//  Sync the scroll pane scrollbar with the row header
@@ -119,6 +121,7 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener
 		scrollPane.getVerticalScrollBar().setValue(viewport.getViewPosition().y);
 	}
 
+	@Override
 	public void propertyChange(PropertyChangeEvent e)
 	{
 		//  Keep the fixed table in sync with the main table

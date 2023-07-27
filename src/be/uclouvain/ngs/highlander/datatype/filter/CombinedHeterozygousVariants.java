@@ -72,10 +72,12 @@ public class CombinedHeterozygousVariants extends MagicFilter {
 		mother = null;
 	}
 
+	@Override
 	public FilterType getFilterType(){
 		return FilterType.COMBINED_HETEROZYGOUS_VARIANTS;
 	}
 
+	@Override
 	public Set<String> getIncludedSamples(){
 		Set<String> set = new HashSet<String>();
 		set.add(child);
@@ -84,6 +86,7 @@ public class CombinedHeterozygousVariants extends MagicFilter {
 		return set;
 	}
 
+	@Override
 	public Set<String> getExcludedSamples(){
 		return new TreeSet<String>();
 	}
@@ -100,6 +103,7 @@ public class CombinedHeterozygousVariants extends MagicFilter {
 		return mother;
 	}
 
+	@Override
 	public String toString(){
 		StringBuilder sb = new StringBuilder();
 		sb.append(getFilterType().getName() + ": ");
@@ -110,6 +114,7 @@ public class CombinedHeterozygousVariants extends MagicFilter {
 		return sb.toString();
 	}
 
+	@Override
 	public String toHtmlString(){
 		StringBuilder sb = new StringBuilder();
 		sb.append("<html>");
@@ -126,6 +131,7 @@ public class CombinedHeterozygousVariants extends MagicFilter {
 		return sb.toString();
 	}
 
+	@Override
 	public boolean isFilterValid(){
 		if (preFiltering != null){
 			return preFiltering.isFilterValid();
@@ -134,6 +140,7 @@ public class CombinedHeterozygousVariants extends MagicFilter {
 		}
 	}
 
+	@Override
 	public List<String> getValidationProblems(){
 		List<String> problems = new ArrayList<String>();
 		if (preFiltering != null){
@@ -142,6 +149,7 @@ public class CombinedHeterozygousVariants extends MagicFilter {
 		return problems;
 	}
 
+	@Override
 	public String getSaveString(){
 		StringBuilder sb = new StringBuilder();
 		sb.append(child);
@@ -158,6 +166,7 @@ public class CombinedHeterozygousVariants extends MagicFilter {
 		return sb.toString();
 	}
 
+	@Override
 	public String parseSaveString(String saveString){
 		StringBuilder sb = new StringBuilder();
 		sb.append(getFilterType().getName() + ": ");
@@ -178,6 +187,7 @@ public class CombinedHeterozygousVariants extends MagicFilter {
 		return sb.toString();
 	}
 
+	@Override
 	public Filter loadCriterion(FilteringPanel filteringPanel, String saveString) throws Exception {
 		int beginIndex = 0;
 		int endIndex = saveString.indexOf("#");
@@ -196,6 +206,7 @@ public class CombinedHeterozygousVariants extends MagicFilter {
 		return new CombinedHeterozygousVariants(filteringPanel, loadChild, loadFather, loadMother, loadPreFiltering);
 	}
 
+	@Override
 	public boolean checkFieldCompatibility(Analysis analysis){
 		if (!Field.variant_sample_id.hasAnalysis(analysis)) return false;
 		if (!Field.chr.hasAnalysis(analysis)) return false;
@@ -209,11 +220,13 @@ public class CombinedHeterozygousVariants extends MagicFilter {
 		return true;
 	}
 
+	@Override
 	public boolean changeAnalysis(Analysis analysis){
 		if (preFiltering != null) return preFiltering.changeAnalysis(analysis);
 		return (checkFieldCompatibility(analysis));
 	}
 
+	@Override
 	public void editFilter(){
 		CreateMagicFilter cmf = new CreateMagicFilter(filteringPanel, this);
 		Tools.centerWindow(cmf, false);
@@ -228,10 +241,12 @@ public class CombinedHeterozygousVariants extends MagicFilter {
 		}
 	}
 
+	@Override
 	public int getNumberOfVariants() {
 		return nVariants;
 	}
 
+	@Override
 	public Map<Integer,String> getResultIds(Set<String> autoSamples) throws Exception {
 		nVariants = -1;
 		Highlander.waitingPanel.start(true);

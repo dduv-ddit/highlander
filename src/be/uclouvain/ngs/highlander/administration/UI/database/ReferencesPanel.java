@@ -335,6 +335,7 @@ public class ReferencesPanel extends ManagerPanel {
 		if (resu != null){
 			String name = resu.toString();
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(true);
 					waitingPanel.start();
@@ -389,6 +390,7 @@ public class ReferencesPanel extends ManagerPanel {
 				ProjectManager.toConsole(ex);
 			}
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(false);
 					waitingPanel.stop();
@@ -402,6 +404,7 @@ public class ReferencesPanel extends ManagerPanel {
 		if (resu != null){
 			String name = resu.toString();
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(true);
 					waitingPanel.start();
@@ -433,6 +436,7 @@ public class ReferencesPanel extends ManagerPanel {
 				ProjectManager.toConsole(ex);
 			}
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(false);
 					waitingPanel.stop();

@@ -178,6 +178,7 @@ public class Tools {
 		panel.add(scrollPane, BorderLayout.CENTER);
 		JButton sendError = new JButton("Send this error to Highlander administrator");
 		sendError.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				JTextArea commentArea = new JTextArea(8,40);
 				JPanel p = new JPanel(new BorderLayout());
@@ -195,7 +196,7 @@ public class Tools {
 						header.append("Address : " + addr.getHostAddress() +"\n");
 						header.append("Hostname : " + addr.getHostName()+"\n");
 						header.append("OS : " + System.getProperty("os.name") +"("+ System.getProperty("os.arch") + ") version "+System.getProperty("os.version") +"\n");
-						header.append("RAM : " + Tools.doubleToString(((double)Tools.getUsedMemoryInMb()), 0, false) + " Mb / "+ (Tools.doubleToString(((double)(Runtime.getRuntime().maxMemory() / 1024 /1024)), 0, false)) + " Mb" +"\n");
+						header.append("RAM : " + Tools.doubleToString((Tools.getUsedMemoryInMb()), 0, false) + " Mb / "+ (Tools.doubleToString((Runtime.getRuntime().maxMemory() / 1024 /1024), 0, false)) + " Mb" +"\n");
 						header.append("Java version : " + System.getProperty("java.version") +"\n");
 						header.append("Current directory : " + System.getProperty("user.dir") +"\n");
 						header.append("\nComments : \n---\n" + commentArea.getText() +"\n---\n");
@@ -255,7 +256,7 @@ public class Tools {
 				header.append("Address : " + addr.getHostAddress() +"\n");
 				header.append("Hostname : " + addr.getHostName()+"\n");
 				header.append("OS : " + System.getProperty("os.name") +"("+ System.getProperty("os.arch") + ") version "+System.getProperty("os.version") +"\n");
-				header.append("RAM : " + Tools.doubleToString(((double)Tools.getUsedMemoryInMb()), 0, false) + " Mb / "+ (Tools.doubleToString(((double)(Runtime.getRuntime().maxMemory() / 1024 /1024)), 0, false)) + " Mb" +"\n");
+				header.append("RAM : " + Tools.doubleToString((Tools.getUsedMemoryInMb()), 0, false) + " Mb / "+ (Tools.doubleToString((Runtime.getRuntime().maxMemory() / 1024 /1024), 0, false)) + " Mb" +"\n");
 				header.append("Java version : " + System.getProperty("java.version") +"\n");
 				header.append("Current directory : " + System.getProperty("user.dir") +"\n");
 				header.append("\nComments : \n---\n" + commentArea.getText() +"\n---\n");
@@ -1250,6 +1251,7 @@ public class Tools {
 			}
 		}
 
+		@Override
 		public int compare(String a, String b) {
 			int ia = 0, ib = 0;
 			int nza = 0, nzb = 0;
@@ -1337,16 +1339,19 @@ public class Tools {
 		}
 
 		// Returns supported flavors
+		@Override
 		public DataFlavor[] getTransferDataFlavors() {
 			return new DataFlavor[] { DataFlavor.imageFlavor };
 		}
 
 		// Returns true if flavor is supported
+		@Override
 		public boolean isDataFlavorSupported(DataFlavor flavor) {
 			return DataFlavor.imageFlavor.equals(flavor);
 		}
 
 		// Returns image
+		@Override
 		public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
 			if (!DataFlavor.imageFlavor.equals(flavor))	{
 				throw new UnsupportedFlavorException(flavor);

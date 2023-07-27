@@ -39,7 +39,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.Timestamp;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -50,6 +50,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Resources;
@@ -115,6 +116,7 @@ public class HighlightCriterion extends HighlightingRule {
 		}
 	}
 
+	@Override
 	public RuleType getRuleType(){
 		return RuleType.HIGHLIGHTING;
 	}
@@ -135,10 +137,12 @@ public class HighlightCriterion extends HighlightingRule {
 		return nullValue;
 	}
 
+	@Override
 	public Color getBackground() {
 		return background;
 	}
 
+	@Override
 	public Color getForeground() {
 		return foreground;
 	}
@@ -155,6 +159,7 @@ public class HighlightCriterion extends HighlightingRule {
 		return expandRow;
 	}
 
+	@Override
 	public String getSaveString(){
 		StringBuilder sb = new StringBuilder();
 		sb.append(getRuleType()+"|");
@@ -186,6 +191,7 @@ public class HighlightCriterion extends HighlightingRule {
 		return sb.toString();
 	}
 
+	@Override
 	public JLabel parseSaveString(String saveString){
 		String[] main = saveString.split("\\|");
 		if (!main[0].equals(getRuleType().toString())){
@@ -209,7 +215,7 @@ public class HighlightCriterion extends HighlightingRule {
 		if (!p.isEmpty()) list += p.toString();
 		list +=")";
 		boolean nval = (parts.length == 6) ? (parts[5].equals("1")) : false;
-		JLabel label = new JLabel(f + " " + c.getUnicode() + " " + (nval?"NULL":list), Resources.getScaledIcon(Resources.iHighlighting, 16), JLabel.CENTER);
+		JLabel label = new JLabel(f + " " + c.getUnicode() + " " + (nval?"NULL":list), Resources.getScaledIcon(Resources.iHighlighting, 16), SwingConstants.CENTER);
 		if (!parts[4].equals("-")) label.setBackground(new Color(Integer.parseInt(parts[4])));
 		if (!parts[5].equals("-")) label.setForeground(new Color(Integer.parseInt(parts[5])));
 		if (parts[6].equals("1")) label.setFont(label.getFont().deriveFont(Font.BOLD));
@@ -218,6 +224,7 @@ public class HighlightCriterion extends HighlightingRule {
 		return label;
 	}
 
+	@Override
 	public HighlightCriterion loadCriterion(HighlightingPanel highlightingPanel, String saveString) throws Exception {		
 		String[] main = saveString.split("\\|");
 		if (!main[0].equals(getRuleType().toString())){
@@ -293,8 +300,10 @@ public class HighlightCriterion extends HighlightingRule {
 		buttonsPanel.setLayout(new GridBagLayout());
 		JButton removeButton = new JButton(Resources.getScaledIcon(Resources.iCross, 16));
 		removeButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						delete();
 					}
@@ -309,6 +318,7 @@ public class HighlightCriterion extends HighlightingRule {
 		buttonsPanel.add(removeButton,new GridBagConstraints(0, 0, 0, 1, 1.0, 1.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(4, 4, 4, 4), 0, 0));
 		add(buttonsPanel,BorderLayout.EAST);
 		addMouseListener(new MouseAdapter() {
+			@Override
 			public void mousePressed(MouseEvent e) {
 				if (e.getClickCount() == 2) {
 					editCriterion();
@@ -316,6 +326,7 @@ public class HighlightCriterion extends HighlightingRule {
 			}
 		});
 		label.addMouseListener(new MouseAdapter() {
+			@Override
 			public void mousePressed(MouseEvent e) {
 				if (e.getClickCount() == 2) {
 					editCriterion();
@@ -324,6 +335,7 @@ public class HighlightCriterion extends HighlightingRule {
 		});
 	}
 
+	@Override
 	public String toString(){
 		StringBuilder details = new StringBuilder();
 		details.append(field.getName());
@@ -363,6 +375,7 @@ public class HighlightCriterion extends HighlightingRule {
 		return details.toString();
 	}
 
+	@Override
 	public String toHtmlString(){
 		StringBuilder details = new StringBuilder();
 		details.append("<html>");
@@ -402,6 +415,7 @@ public class HighlightCriterion extends HighlightingRule {
 		return details.toString();
 	}
 
+	@Override
 	public void editCriterion(){
 		CreateHighlightCriterion cfc = new CreateHighlightCriterion(Highlander.getCurrentAnalysis(), highlightingPanel, this);
 		Tools.centerWindow(cfc, false);
@@ -433,6 +447,7 @@ public class HighlightCriterion extends HighlightingRule {
 		highlightingPanel.refresh();		
 	}
 
+	@Override
 	public void delete(){
 		highlightingPanel.getCriteriaPanel().remove(HighlightCriterion.this);
 		Highlander.getCellRenderer().removeHighlighting(this);
@@ -469,8 +484,8 @@ public class HighlightCriterion extends HighlightingRule {
 						return Integer.parseInt(val) > Integer.parseInt(crit);
 						else if (field.getFieldClass() == Long.class)
 							return Long.parseLong(val) > Long.parseLong(crit);
-							else if (field.getFieldClass() == Timestamp.class)
-								return Timestamp.valueOf(crit).compareTo(Timestamp.valueOf(val)) > 0;
+							else if (field.getFieldClass() == OffsetDateTime.class)
+								return OffsetDateTime.parse(crit).compareTo(OffsetDateTime.parse(val)) > 0;
 								else
 									throw new Exception("Field class " + field.getFieldClass() + " not supported for >");
 			case GREATEROREQUAL:
@@ -480,8 +495,8 @@ public class HighlightCriterion extends HighlightingRule {
 						return Integer.parseInt(val) >= Integer.parseInt(crit);
 						else if (field.getFieldClass() == Long.class)
 							return Long.parseLong(val) >= Long.parseLong(crit);
-							else if (field.getFieldClass() == Timestamp.class)
-								return Timestamp.valueOf(crit).compareTo(Timestamp.valueOf(val)) >= 0;
+							else if (field.getFieldClass() == OffsetDateTime.class)
+								return OffsetDateTime.parse(crit).compareTo(OffsetDateTime.parse(val)) >= 0;
 								else
 									throw new Exception("Field class " + field.getFieldClass() + " not supported for >=");
 			case SMALLER:
@@ -491,8 +506,8 @@ public class HighlightCriterion extends HighlightingRule {
 					return Integer.parseInt(val) < Integer.parseInt(crit);
 				else if (field.getFieldClass() == Long.class)
 					return Long.parseLong(val) < Long.parseLong(crit);
-				else if (field.getFieldClass() == Timestamp.class)
-					return Timestamp.valueOf(crit).compareTo(Timestamp.valueOf(val)) < 0;
+				else if (field.getFieldClass() == OffsetDateTime.class)
+					return OffsetDateTime.parse(crit).compareTo(OffsetDateTime.parse(val)) < 0;
 				else
 					throw new Exception("Field class " + field.getFieldClass() + " not supported for <");
 			case SMALLEROREQUAL:
@@ -502,8 +517,8 @@ public class HighlightCriterion extends HighlightingRule {
 					return Integer.parseInt(val) <= Integer.parseInt(crit);
 				else if (field.getFieldClass() == Long.class)
 					return Long.parseLong(val) <= Long.parseLong(crit);
-				else if (field.getFieldClass() == Timestamp.class)
-					return Timestamp.valueOf(crit).compareTo(Timestamp.valueOf(val)) <= 0;
+				else if (field.getFieldClass() == OffsetDateTime.class)
+					return OffsetDateTime.parse(crit).compareTo(OffsetDateTime.parse(val)) <= 0;
 				else
 					throw new Exception("Field class " + field.getFieldClass() + " not supported for <=");
 			case CONTAINS:
@@ -523,8 +538,8 @@ public class HighlightCriterion extends HighlightingRule {
 					return (Integer.parseInt(val) >= Integer.parseInt(rangeStart)) && (Integer.parseInt(val) <= Integer.parseInt(rangeEnd));
 				else if (field.getFieldClass() == Long.class)
 					return (Long.parseLong(val) >= Long.parseLong(rangeStart)) && (Long.parseLong(val) <= Long.parseLong(rangeEnd));
-				else if (field.getFieldClass() == Timestamp.class)
-					return (Timestamp.valueOf(rangeStart).compareTo(Timestamp.valueOf(val)) >= 0) && (Timestamp.valueOf(rangeEnd).compareTo(Timestamp.valueOf(val)) <= 0);
+				else if (field.getFieldClass() == OffsetDateTime.class)
+					return (OffsetDateTime.parse(rangeStart).compareTo(OffsetDateTime.parse(val)) >= 0) && (OffsetDateTime.parse(rangeEnd).compareTo(OffsetDateTime.parse(val)) <= 0);
 				else
 					throw new Exception("Field class " + field.getFieldClass() + " not supported for [.,.]");
 			case RANGE_IE:
@@ -534,8 +549,8 @@ public class HighlightCriterion extends HighlightingRule {
 					return (Integer.parseInt(val) >= Integer.parseInt(rangeStart)) && (Integer.parseInt(val) < Integer.parseInt(rangeEnd));
 				else if (field.getFieldClass() == Long.class)
 					return (Long.parseLong(val) >= Long.parseLong(rangeStart)) && (Long.parseLong(val) < Long.parseLong(rangeEnd));
-				else if (field.getFieldClass() == Timestamp.class)
-					return (Timestamp.valueOf(rangeStart).compareTo(Timestamp.valueOf(val)) >= 0) && (Timestamp.valueOf(rangeEnd).compareTo(Timestamp.valueOf(val)) < 0);
+				else if (field.getFieldClass() == OffsetDateTime.class)
+					return (OffsetDateTime.parse(rangeStart).compareTo(OffsetDateTime.parse(val)) >= 0) && (OffsetDateTime.parse(rangeEnd).compareTo(OffsetDateTime.parse(val)) < 0);
 				else
 					throw new Exception("Field class " + field.getFieldClass() + " not supported for [.,.[");
 			case RANGE_EI:
@@ -545,8 +560,8 @@ public class HighlightCriterion extends HighlightingRule {
 					return (Integer.parseInt(val) > Integer.parseInt(rangeStart)) && (Integer.parseInt(val) <= Integer.parseInt(rangeEnd));
 				else if (field.getFieldClass() == Long.class)
 					return (Long.parseLong(val) > Long.parseLong(rangeStart)) && (Long.parseLong(val) <= Long.parseLong(rangeEnd));
-				else if (field.getFieldClass() == Timestamp.class)
-					return (Timestamp.valueOf(rangeStart).compareTo(Timestamp.valueOf(val)) > 0) && (Timestamp.valueOf(rangeEnd).compareTo(Timestamp.valueOf(val)) <= 0);
+				else if (field.getFieldClass() == OffsetDateTime.class)
+					return (OffsetDateTime.parse(rangeStart).compareTo(OffsetDateTime.parse(val)) > 0) && (OffsetDateTime.parse(rangeEnd).compareTo(OffsetDateTime.parse(val)) <= 0);
 				else
 					throw new Exception("Field class " + field.getFieldClass() + " not supported for ].,.]");
 			case RANGE_EE:
@@ -556,8 +571,8 @@ public class HighlightCriterion extends HighlightingRule {
 					return (Integer.parseInt(val) > Integer.parseInt(rangeStart)) && (Integer.parseInt(val) < Integer.parseInt(rangeEnd));
 				else if (field.getFieldClass() == Long.class)
 					return (Long.parseLong(val) > Long.parseLong(rangeStart)) && (Long.parseLong(val) < Long.parseLong(rangeEnd));
-				else if (field.getFieldClass() == Timestamp.class)
-					return (Timestamp.valueOf(rangeStart).compareTo(Timestamp.valueOf(val)) > 0) && (Timestamp.valueOf(rangeEnd).compareTo(Timestamp.valueOf(val)) < 0);
+				else if (field.getFieldClass() == OffsetDateTime.class)
+					return (OffsetDateTime.parse(rangeStart).compareTo(OffsetDateTime.parse(val)) > 0) && (OffsetDateTime.parse(rangeEnd).compareTo(OffsetDateTime.parse(val)) < 0);
 				else
 					throw new Exception("Field class " + field.getFieldClass() + " not supported for ].,.[");
 			default:

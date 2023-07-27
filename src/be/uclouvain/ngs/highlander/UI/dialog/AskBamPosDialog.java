@@ -47,6 +47,7 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.ScrollPaneConstants;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -177,8 +178,8 @@ public class AskBamPosDialog extends JDialog {
 		Border compoundBorder = BorderFactory.createCompoundBorder(outterBorder, innerBorder);
 
 		JScrollPane scrollPane = new JScrollPane(text_intervals_intervals);
-		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setViewportView(text_intervals_intervals);
 		scrollPane.setBorder(compoundBorder);
 		panelIntervals.add(scrollPane, BorderLayout.CENTER);
@@ -188,6 +189,7 @@ public class AskBamPosDialog extends JDialog {
 
 		JButton button_import_INDEL = new JButton("Import intervals from profile or file", Resources.getScaledIcon(Resources.i3dPlus, 24));
 		button_import_INDEL.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				AskListOfIntervalsDialog apd = new AskListOfIntervalsDialog(reference);
 				Tools.centerWindow(apd, false);
@@ -210,6 +212,7 @@ public class AskBamPosDialog extends JDialog {
 
 		JButton button_import_SNP = new JButton("Import intervals from profile or file as single positions", Resources.getScaledIcon(Resources.i3dPlus, 24));
 		button_import_SNP.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				AskListOfIntervalsDialog apd = new AskListOfIntervalsDialog(reference);
 				Tools.centerWindow(apd, false);
@@ -237,6 +240,7 @@ public class AskBamPosDialog extends JDialog {
 		JPanel buttonPanel = new JPanel();
 		JButton btnOk = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 24));
 		btnOk.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {				
 				dispose();
 			}
@@ -245,6 +249,7 @@ public class AskBamPosDialog extends JDialog {
 
 		JButton btnCancel = new JButton(Resources.getScaledIcon(Resources.iCross, 24));
 		btnCancel.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				cancelClose();
 			}
@@ -322,6 +327,7 @@ public class AskBamPosDialog extends JDialog {
 	}
 
 	//Overridden so we can exit when window is closed
+	@Override
 	protected void processWindowEvent(WindowEvent e) {
 		super.processWindowEvent(e);
 		if (e.getID() == WindowEvent.WINDOW_CLOSING) {

@@ -35,6 +35,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FileDialog;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -494,10 +495,15 @@ public class AlignmentPanel extends JPanel {
 				
 				//add right-click popup menu
 				MouseListener popupListener = new MouseListener() {
+					@Override
 					public void mouseReleased(MouseEvent e) {}
+					@Override
 					public void mousePressed(MouseEvent e) {}
+					@Override
 					public void mouseExited(MouseEvent e) {}
+					@Override
 					public void mouseEntered(MouseEvent e) {}
+					@Override
 					public void mouseClicked(MouseEvent e) {
 						if (e.getButton() == MouseEvent.BUTTON1) {
 							getPopupMenu(e).show(e.getComponent(), e.getX(), e.getY());
@@ -811,7 +817,7 @@ public class AlignmentPanel extends JPanel {
 		}
 
 		public int getPhredScore(int readPos){
-			return ((int)baseQual[readPos])-33;
+			return (baseQual[readPos])-33;
 		}
 
 		public Color getBaseColor(int readPos, boolean shadeByPhred){
@@ -921,6 +927,7 @@ public class AlignmentPanel extends JPanel {
 			}
 		}
 
+		@Override
 		public String toString(){
 			StringBuilder sb = new StringBuilder();
 			sb.append(name + "\n");
@@ -994,6 +1001,7 @@ public class AlignmentPanel extends JPanel {
 
 
 
+	@Override
 	public void paintComponent(Graphics g1d) {
 		super.paintComponent(g1d);
 		Graphics2D g = (Graphics2D)g1d;
@@ -1457,7 +1465,7 @@ public class AlignmentPanel extends JPanel {
 			scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 			scroll.setViewportView(alignment);
 			frame.getContentPane().add(scroll, BorderLayout.CENTER);
-			frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+			frame.setExtendedState(Frame.MAXIMIZED_BOTH);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			Tools.centerWindow(frame, true);
 			frame.setVisible(true);

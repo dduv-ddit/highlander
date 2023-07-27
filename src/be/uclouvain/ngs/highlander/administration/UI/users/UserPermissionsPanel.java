@@ -93,6 +93,7 @@ public class UserPermissionsPanel extends ManagerPanel {
 		boxUser.setMaximumRowCount(20);
 
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				boxSupport = AutoCompleteSupport.install(boxUser, manager.getUserList());
 				boxSupport.setCorrectsCase(true);
@@ -102,6 +103,7 @@ public class UserPermissionsPanel extends ManagerPanel {
 			}
 		});
 		boxUser.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (arg0.getActionCommand().equals("comboBoxEdited")){
 					if (boxUser.getSelectedIndex() < 0) boxUser.setSelectedItem(null);
@@ -146,10 +148,13 @@ public class UserPermissionsPanel extends ManagerPanel {
 		panel_subfilters.add(boxPathologies);
 
 		searchField.addFieldListener(new KeyListener() {
+			@Override
 			public void keyReleased(KeyEvent arg0) {
 				applyBothFilters();
 			}
+			@Override
 			public void keyTyped(KeyEvent arg0) {			}
+			@Override
 			public void keyPressed(KeyEvent arg0) {			}
 		});
 		panel_filters.add(searchField, BorderLayout.CENTER);
@@ -177,6 +182,7 @@ public class UserPermissionsPanel extends ManagerPanel {
 		panel_0.add(scrollPaneSource, BorderLayout.CENTER);
 
 		tableHasPermission = new JTable(){
+			@Override
 			public boolean isCellEditable(int row, int column){
 				return false;
 			}
@@ -207,6 +213,7 @@ public class UserPermissionsPanel extends ManagerPanel {
 		JButton button = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleRight, 24));
 		button.setToolTipText("Remove permission for selected sample(s)");
 		button.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				removePermission();
 			}
@@ -220,6 +227,7 @@ public class UserPermissionsPanel extends ManagerPanel {
 		JButton button_1 = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleLeft, 24));
 		button_1.setToolTipText("Grant permission for selected sample(s)");
 		button_1.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				grantPermission();
 			}
@@ -242,6 +250,7 @@ public class UserPermissionsPanel extends ManagerPanel {
 
 		tableNoPermissionModel = new DefaultTableModel(0,1);
 		tableNoPermission = new JTable(tableNoPermissionModel){
+			@Override
 			public boolean isCellEditable(int row, int column){
 				return false;
 			}

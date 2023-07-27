@@ -204,6 +204,7 @@ public class AskListOfFreeValuesDialog extends JDialog {
 		boxField = new JComboBox<>(fieldsArr);
 		boxField.setMaximumRowCount(20);
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				support = AutoCompleteSupport.install(boxField, fields);
 				support.setCorrectsCase(true);
@@ -213,6 +214,7 @@ public class AskListOfFreeValuesDialog extends JDialog {
 			}
 		});		
 		boxField.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (arg0.getActionCommand().equals("comboBoxEdited")){
 					if (boxField.getSelectedIndex() < 0) boxField.setSelectedItem(null);
@@ -223,6 +225,7 @@ public class AskListOfFreeValuesDialog extends JDialog {
 			}
 		});
 		boxField.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(ItemEvent arg0) {
 				if (arg0.getStateChange() == ItemEvent.SELECTED){
 					if (boxField.getSelectedIndex() >= 0){
@@ -247,9 +250,11 @@ public class AskListOfFreeValuesDialog extends JDialog {
 		boxCategories.setToolTipText("Restrict 'Database field' for easier searching");
 		boxCategories.setMaximumRowCount(20);
 		boxCategories.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(ItemEvent arg0) {
 				if (arg0.getStateChange() == ItemEvent.SELECTED){
 					SwingUtilities.invokeLater(new Runnable() {
+						@Override
 						public void run() {
 							filterByCategory((AnalysisFull)boxAnalyses.getSelectedItem());							
 						}
@@ -271,6 +276,7 @@ public class AskListOfFreeValuesDialog extends JDialog {
 		btnFile.setToolTipText("Import values from a text file");
 		btnFile.setPreferredSize(new Dimension(54,54));
 		btnFile.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				FileDialog chooser = new FileDialog(AskListOfFreeValuesDialog.this, "Choose a plain text file containing 1 value per line", FileDialog.LOAD);
 				chooser.setVisible(true);
@@ -303,6 +309,7 @@ public class AskListOfFreeValuesDialog extends JDialog {
 		btnSort.setToolTipText("Sort current list alphabetically and remove duplicates");
 		btnSort.setPreferredSize(new Dimension(54,54));
 		btnSort.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				sort();
 			}
@@ -313,6 +320,7 @@ public class AskListOfFreeValuesDialog extends JDialog {
 		btnSaveList.setToolTipText("Save current list of values in your profile");
 		btnSaveList.setPreferredSize(new Dimension(54,54));
 		btnSaveList.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				saveList();
 			}
@@ -323,6 +331,7 @@ public class AskListOfFreeValuesDialog extends JDialog {
 		btnPossibleValuesDatabase.setToolTipText("Add values among possible values found in the database");
 		btnPossibleValuesDatabase.setPreferredSize(new Dimension(54,54));
 		btnPossibleValuesDatabase.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					if (boxAnalyses.getSelectedItem() != null && boxField.getSelectedItem() != null){
@@ -350,6 +359,7 @@ public class AskListOfFreeValuesDialog extends JDialog {
 		btnLoadList.setToolTipText("Load a list of values from your profile");
 		btnLoadList.setPreferredSize(new Dimension(54,54));
 		btnLoadList.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				String listname = ProfileTree.showProfileDialog(AskListOfFreeValuesDialog.this, Action.LOAD, UserData.VALUES, boxField.getSelectedItem().toString());
 				if (listname != null){
@@ -363,6 +373,7 @@ public class AskListOfFreeValuesDialog extends JDialog {
 		btnValidateList.setToolTipText("Validate the list of values from your profile");
 		btnValidateList.setPreferredSize(new Dimension(54,54));
 		btnValidateList.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				List<String> list = new ArrayList<String>();
 				List<String> comments = new ArrayList<String>();
@@ -401,6 +412,7 @@ public class AskListOfFreeValuesDialog extends JDialog {
 		btnOk = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 24));
 		btnOk.setText("0 values");
 		btnOk.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				for (int i=0 ; i < tmodel.getRowCount() ; i++){
 					if (tmodel.getValueAt(i, 0) != null && tmodel.getValueAt(i, 0).toString().length() > 0)
@@ -413,6 +425,7 @@ public class AskListOfFreeValuesDialog extends JDialog {
 
 		JButton btnCancel = new JButton(Resources.getScaledIcon(Resources.iCross, 24));
 		btnCancel.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				cancelClose();
 			}
@@ -438,6 +451,7 @@ public class AskListOfFreeValuesDialog extends JDialog {
 		tmodel = new IncrementableTableModel();
 
 		table = new JTable(tmodel){
+			@Override
 			public boolean editCellAt(int row, int column, java.util.EventObject e){
 				boolean result = super.editCellAt(row, column, e);
 				final Component editor = getEditorComponent();
@@ -572,26 +586,32 @@ public class AskListOfFreeValuesDialog extends JDialog {
 			data.add(new Object[ncol]);
 		}
 
+		@Override
 		public int getColumnCount() {
 			return ncol;
 		}
 
+		@Override
 		public int getRowCount() {
 			return data.size();
 		}
 
+		@Override
 		public Class<?> getColumnClass(int columnIndex) {
 			return Object.class;
 		}
 
+		@Override
 		public String getColumnName(int col) {
 			return headers[col];
 		}
 		
+		@Override
 		public Object getValueAt(int row, int col) {
 			return data.get(row)[col];
 		}
 
+		@Override
 		public void setValueAt(Object value, int row, int col) {
 			data.get(row)[col] = value;
 			if (!isLastLineEmpty()){
@@ -600,6 +620,7 @@ public class AskListOfFreeValuesDialog extends JDialog {
 			fireTableCellUpdated(row, col);			
 		}
 
+		@Override
 		public boolean isCellEditable(int rowIndex, int columnIndex) {
 			return true;
 		}
@@ -690,6 +711,7 @@ public class AskListOfFreeValuesDialog extends JDialog {
 		 * Paste is done by aligning the upper left corner of the selection with the
 		 * 1st element in the current selection of the JTable.
 		 */
+		@Override
 		public void actionPerformed(ActionEvent e){
 			if (e.getActionCommand().compareTo("Paste")==0){
 				int startRow=(table.getSelectedRows())[0];
@@ -836,6 +858,7 @@ public class AskListOfFreeValuesDialog extends JDialog {
 	}
 
 	//Overridden so we can exit when window is closed
+	@Override
 	protected void processWindowEvent(WindowEvent e) {
 		super.processWindowEvent(e);
 		if (e.getID() == WindowEvent.WINDOW_CLOSING) {

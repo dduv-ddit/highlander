@@ -58,8 +58,10 @@ public class LogoPanel extends JPanel {
 		helpAbout.setPreferredSize(new Dimension(54,54));
 		helpAbout.setToolTipText("About");
 		helpAbout.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						about();
 					}
@@ -71,8 +73,10 @@ public class LogoPanel extends JPanel {
 		//linkGEHU.setPreferredSize(new Dimension(54,54));
 		linkGEHU.setToolTipText("Highlander has been developped at the Laboratory of Human Molecular Genetics from the de Duve Institute (UCLouvain)");
 		linkGEHU.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						Tools.openURL("http://www.deduveinstitute.be/human-genetics");
 					}
@@ -84,8 +88,10 @@ public class LogoPanel extends JPanel {
 		//linkDeDuve.setPreferredSize(new Dimension(54,54));
 		linkDeDuve.setToolTipText("Highlander has been developped at the Laboratory of Human Molecular Genetics from the de Duve Institute (UCLouvain)");
 		linkDeDuve.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						Tools.openURL("http://www.deduveinstitute.be");
 					}
@@ -97,8 +103,10 @@ public class LogoPanel extends JPanel {
 		//linkUCLouvain.setPreferredSize(new Dimension(54,54));
 		linkUCLouvain.setToolTipText("Highlander has been developped at the Laboratory of Human Molecular Genetics from the de Duve Institute (UCLouvain)");
 		linkUCLouvain.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						Tools.openURL("https://uclouvain.be/");
 					}
@@ -110,8 +118,10 @@ public class LogoPanel extends JPanel {
 		//linkWelbio.setPreferredSize(new Dimension(54,54));
 		linkWelbio.setToolTipText("Highlander has been funded thanks to Welbio");
 		linkWelbio.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						Tools.openURL("http://welbio.org/");
 					}
@@ -123,8 +133,10 @@ public class LogoPanel extends JPanel {
 		//linkInnoviris.setPreferredSize(new Dimension(54,54));
 		linkInnoviris.setToolTipText("Highlander has been funded thanks to Innovris");
 		linkInnoviris.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						Tools.openURL("https://innoviris.brussels/");
 					}
@@ -136,8 +148,10 @@ public class LogoPanel extends JPanel {
 		//linkFCE.setPreferredSize(new Dimension(54,54));
 		linkFCE.setToolTipText("Highlander has been funded thanks to Fondation contre le Cancer");
 		linkFCE.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						Tools.openURL("https://www.cancer.be/");
 					}

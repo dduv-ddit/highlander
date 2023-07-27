@@ -107,11 +107,11 @@ public class BarChart extends JPanel {
 		for (double value : values){
 			mean += value;
 		}
-		mean /= (double)values.length;
+		mean /= values.length;
 		for (double value : values){
 			sd += Math.pow(value-mean, 2);
 		}
-		sd /= (double)values.length;
+		sd /= values.length;
 		sd = Math.sqrt(sd);
 		for (int i=0 ; i < categories.length ; i++) {
 			if (i < presetcolors.length) {
@@ -216,7 +216,7 @@ public class BarChart extends JPanel {
 		for (int i=0 ; i < categories.length ; i++){
 			//Draw bars
 			int x = chartStartX + widthGapX + (i*widthDivisionX);
-			int height = (int)((values[i] / valDivisionY) * (double)heightDivisionY);
+			int height = (int)((values[i] / valDivisionY) * heightDivisionY);
 			int y = chartStartY + chartHeight - height;
 			if (showMeanAndSD || !coloredCategories) {
 				if (showMeanAndSD && values[i] < mean - sd) g.setColor(Resources.getTableEvenRowBackgroundColor(Palette.Red));
@@ -282,10 +282,10 @@ public class BarChart extends JPanel {
 		//Draw mean
 		if(showMeanAndSD) {
 			g.setColor(Color.RED);
-			int heightMean = chartStartY + chartHeight - ((int)((mean / valDivisionY) * (double)heightDivisionY));
+			int heightMean = chartStartY + chartHeight - ((int)((mean / valDivisionY) * heightDivisionY));
 			g.setStroke(thickStroke);
 			g.drawLine(chartStartX, heightMean, chartStartX + chartWidth, heightMean);
-			int heightSD = (int)((sd / valDivisionY) * (double)heightDivisionY);
+			int heightSD = (int)((sd / valDivisionY) * heightDivisionY);
 			g.setStroke(dashedStroke);
 			g.drawLine(chartStartX, heightMean+heightSD, chartStartX + chartWidth, heightMean+heightSD);
 			g.drawLine(chartStartX, heightMean-heightSD, chartStartX + chartWidth, heightMean-heightSD);

@@ -166,8 +166,10 @@ public class RunCharts extends JFrame {
 		JButton export = new JButton(Resources.getScaledIcon(Resources.iExportJpeg, 24));
 		export.setToolTipText("Export current chart to image file");
 		export.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						export();
 					}
@@ -178,6 +180,7 @@ public class RunCharts extends JFrame {
 
 		JButton btnClose = new JButton(Resources.getScaledIcon(Resources.iCross, 24));
 		btnClose.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				dispose();
 			}
@@ -189,6 +192,7 @@ public class RunCharts extends JFrame {
 
 		JButton btnSelect = new JButton("Select NGS runs to include in the chart",Resources.getScaledIcon(Resources.i3dPlus, 24));
 		btnSelect.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				CreateRunSelection select = new CreateRunSelection(selectedRuns);
 				Tools.centerWindow(select, false);
@@ -204,6 +208,7 @@ public class RunCharts extends JFrame {
 				}
 				if (boxField.getSelectedIndex() >= 0 && !selectedRuns.isEmpty()) { 
 					new Thread(new Runnable(){
+						@Override
 						public void run(){
 							showChart(boxField.getSelectedItem().toString(), order.getSelectedItem().toString());
 						}
@@ -217,6 +222,7 @@ public class RunCharts extends JFrame {
 
 		boxField.setMaximumRowCount(30);
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				fieldBoxSupport = AutoCompleteSupport.install(boxField, fieldList);
 				fieldBoxSupport.setCorrectsCase(true);
@@ -226,6 +232,7 @@ public class RunCharts extends JFrame {
 			}
 		});
 		boxField.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (arg0.getActionCommand().equals("comboBoxEdited")){
 					if (boxField.getSelectedIndex() < 0) boxField.setSelectedItem(null);
@@ -238,6 +245,7 @@ public class RunCharts extends JFrame {
 				if (arg0.getStateChange() == ItemEvent.SELECTED){
 					if (boxField.getSelectedIndex() >= 0 && !selectedRuns.isEmpty()) {
 						SwingUtilities.invokeLater(new Runnable() {
+							@Override
 							public void run(){
 								showChart(boxField.getSelectedItem().toString(), order.getSelectedItem().toString());
 							}
@@ -251,10 +259,12 @@ public class RunCharts extends JFrame {
 		panel_north.add(new JLabel("Order by "));		
 		order.setMaximumRowCount(30);
 		order.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(ItemEvent arg0) {
 				if (arg0.getStateChange() == ItemEvent.SELECTED){
 					if (boxField.getSelectedIndex() >= 0 && !selectedRuns.isEmpty()){
 						new Thread(new Runnable(){
+							@Override
 							public void run(){
 								showChart(boxField.getSelectedItem().toString(), order.getSelectedItem().toString());
 							}
@@ -270,6 +280,7 @@ public class RunCharts extends JFrame {
 			public void itemStateChanged(ItemEvent arg0) {
 				if (boxField.getSelectedIndex() >= 0 && !selectedRuns.isEmpty()){
 					new Thread(new Runnable(){
+						@Override
 						public void run(){
 							showChart(boxField.getSelectedItem().toString(), order.getSelectedItem().toString());
 						}
@@ -284,6 +295,7 @@ public class RunCharts extends JFrame {
 			public void itemStateChanged(ItemEvent arg0) {
 				if (boxField.getSelectedIndex() >= 0 && !selectedRuns.isEmpty()){
 					new Thread(new Runnable(){
+						@Override
 						public void run(){
 							showChart(boxField.getSelectedItem().toString(), order.getSelectedItem().toString());
 						}
@@ -300,6 +312,7 @@ public class RunCharts extends JFrame {
 	public void showChart(String field, String order){
 		try{
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(true);
 					waitingPanel.start();
@@ -397,6 +410,7 @@ public class RunCharts extends JFrame {
 
 			BarChart chart = new BarChart(WordUtils.capitalize(field).replace('_', ' ') + " for selected runs", "Runs", WordUtils.capitalize(field).replace('_', ' '), categories, values, show_mean.isSelected(), false);
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(false);
 					waitingPanel.stop();

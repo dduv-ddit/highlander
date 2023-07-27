@@ -560,6 +560,7 @@ public enum Mode {SAMPLE,FAMILY}
 		setGlassPane(waitingPanel);
 	}
 
+	@Override
 	protected void processWindowEvent(WindowEvent e) {
 		if (e.getID() == WindowEvent.WINDOW_CLOSING) {
 			frameVisible = false;
@@ -581,6 +582,7 @@ public enum Mode {SAMPLE,FAMILY}
 								@Override
 								public void run() {
 									SwingUtilities.invokeLater(new Runnable() {
+										@Override
 										public void run() {
 											waitingPanel.setVisible(true);
 											waitingPanel.start();
@@ -606,6 +608,7 @@ public enum Mode {SAMPLE,FAMILY}
 										JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error", ex), "Exomiser",	JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
 									}
 									SwingUtilities.invokeLater(new Runnable() {
+										@Override
 										public void run() {
 											waitingPanel.setVisible(false);
 											waitingPanel.stop();
@@ -642,6 +645,7 @@ public enum Mode {SAMPLE,FAMILY}
 	
 		JButton btnClose = new JButton("Close", Resources.getScaledIcon(Resources.iCross, 24));
 		btnClose.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				frameVisible = false;
 				dispose();
@@ -661,8 +665,10 @@ public enum Mode {SAMPLE,FAMILY}
 		browseDir.setPreferredSize(new Dimension(32,32));
 		browseDir.setToolTipText("Browse");
 		browseDir.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						JFileChooser chooser = new JFileChooser(Tools.getHomeDirectory().toString());
 						chooser.setDialogTitle("Select the download directory");
@@ -689,13 +695,14 @@ public enum Mode {SAMPLE,FAMILY}
 		panel.setBorder(new TitledBorder(null, "Phenotype", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		JPanel hpoTopPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
 		panel.add(hpoTopPanel, BorderLayout.NORTH);
-		JPanel hpoCenterPanel = new JPanel(new WrapLayout(WrapLayout.LEADING));
+		JPanel hpoCenterPanel = new JPanel(new WrapLayout(FlowLayout.LEADING));
 		panel.add(hpoCenterPanel, BorderLayout.CENTER);
 		JButton addHPOButton = new JButton("Add phenotype", Resources.getScaledIcon(Resources.i2dPlus, 24));
 		addHPOButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						AskListOfHPOTermDialog askHPO = new AskListOfHPOTermDialog(analysis.getReference(), hpoTerms);
 						Tools.centerWindow(askHPO, false);
@@ -785,12 +792,12 @@ public enum Mode {SAMPLE,FAMILY}
 		
 		JPanel frequencyPanel = new JPanel(new BorderLayout());
 		frequencyPanel.setBorder(new TitledBorder(null, "Frequency sources", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		JPanel frequencyValues = new JPanel(new WrapLayout(WrapLayout.LEADING));
+		JPanel frequencyValues = new JPanel(new WrapLayout(FlowLayout.LEADING));
 		frequencyValues.add(new JLabel("Max frequency:"));
 		frequencyValues.add(spiner_maxFrequency);
 		frequencyValues.add(new JLabel("%"));
 		frequencyPanel.add(frequencyValues, BorderLayout.NORTH);
-		JPanel frequencySources = new JPanel(new WrapLayout(WrapLayout.LEADING));
+		JPanel frequencySources = new JPanel(new WrapLayout(FlowLayout.LEADING));
 		for (int i=0 ; i < possibleFrequencySources.length ; i++) {
 			String source = possibleFrequencySources[i];
 			JCheckBox box = new JCheckBox(source);
@@ -804,7 +811,7 @@ public enum Mode {SAMPLE,FAMILY}
 		frequencyPanel.add(frequencySources, BorderLayout.SOUTH);
 		panel.add(frequencyPanel, new GridBagConstraints(0, a++, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0));
 
-		JPanel pathogenicitySources = new JPanel(new WrapLayout(WrapLayout.LEADING));
+		JPanel pathogenicitySources = new JPanel(new WrapLayout(FlowLayout.LEADING));
 		pathogenicitySources.setBorder(new TitledBorder(null, "Pathogenicity sources", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		for (int i=0 ; i < possiblePathogenicitySources.length ; i++) {
 			String source = possiblePathogenicitySources[i];
@@ -818,7 +825,7 @@ public enum Mode {SAMPLE,FAMILY}
 		}
 		panel.add(pathogenicitySources, new GridBagConstraints(0, a++, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0));
 		
-		JPanel effectSources = new JPanel(new WrapLayout(WrapLayout.LEADING));
+		JPanel effectSources = new JPanel(new WrapLayout(FlowLayout.LEADING));
 		effectSources.setBorder(new TitledBorder(null, "Exclude variants with effect", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		for (int i=0 ; i < possibleEffectSources.length ; i++) {
 			String source = possibleEffectSources[i];
@@ -850,6 +857,7 @@ public enum Mode {SAMPLE,FAMILY}
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					new Thread(new Runnable(){
+						@Override
 						public void run(){
 							hpoTerms.remove(term);
 							container.remove(panel);
@@ -1033,6 +1041,7 @@ public enum Mode {SAMPLE,FAMILY}
 						@Override
 						public void run() {
 							SwingUtilities.invokeLater(new Runnable() {
+								@Override
 								public void run() {
 									waitingPanel.setVisible(true);
 									waitingPanel.start();
@@ -1061,6 +1070,7 @@ public enum Mode {SAMPLE,FAMILY}
 								panel.validate();	
 							}
 							SwingUtilities.invokeLater(new Runnable() {
+								@Override
 								public void run() {
 									waitingPanel.setVisible(true);
 									waitingPanel.stop();

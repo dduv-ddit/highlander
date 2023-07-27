@@ -38,10 +38,12 @@ public class AdministrationTableModel	extends AbstractTableModel {
 		this.headers = headers;
 	}
 
+	@Override
 	public int getColumnCount() {
 		return headers.length;
 	}
 
+	@Override
 	public String getColumnName(int col) {
 		return headers[col];
 	}
@@ -55,18 +57,22 @@ public class AdministrationTableModel	extends AbstractTableModel {
 		return -1;
 	}
 
+	@Override
 	public int getRowCount() {
 		return data.length;
 	}
 
+	@Override
 	public Object getValueAt(int row, int col) {
 		return data[row][col];
 	}
 
+	@Override
 	public void setValueAt(Object value, int row, int col) {
 		data[row][col] = value;
 	}
 
+	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
 		boolean edit = false;
 		if (columnIndex == getColumn("family")) edit = true;

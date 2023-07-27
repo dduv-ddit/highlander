@@ -39,6 +39,7 @@ import java.sql.ResultSetMetaData;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
@@ -71,22 +72,27 @@ public class DetailsBoxRun extends DetailsBox {
 		initCommonUI(visible);
 	}
 
+	@Override
 	public DetailsPanel getDetailsPanel(){
 		return mainPanel;
 	}
 
+	@Override
 	public String getTitle(){
 		return "Run statistics";
 	}
 
+	@Override
 	public Palette getColor() {
 		return Field.run_label.getCategory().getColor();
 	}
 
+	@Override
 	protected boolean isDetailsLoaded(){
 		return detailsLoaded;
 	}
 
+	@Override
 	protected void loadDetails(){
 		try{
 			int project_id = -1;			
@@ -115,6 +121,7 @@ public class DetailsBoxRun extends DetailsBox {
 
 				final DetailsTableModel model = new DetailsTableModel(data);
 				table = new JTable(model){
+					@Override
 					public String getToolTipText(MouseEvent e) {
 						String tip = null;
 						java.awt.Point p = e.getPoint();
@@ -160,6 +167,7 @@ public class DetailsBoxRun extends DetailsBox {
 	}
 
 	private class ColoredTableCellRenderer extends MultiLineTableCellRenderer {
+		@Override
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 			Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 			JTextArea textArea = (JTextArea) comp;
@@ -172,7 +180,7 @@ public class DetailsBoxRun extends DetailsBox {
 			}
 			String rowname = (column == 1) ? ((table.getValueAt(row,0) != null) ? table.getValueAt(row,0).toString() : "") : "field";
 			Field field = Field.getField(rowname);
-			return Highlander.getCellRenderer().renderCell(textArea, value, field, JLabel.LEFT, row, isSelected, Resources.getTableEvenRowBackgroundColor(getColor()), Color.WHITE, false);
+			return Highlander.getCellRenderer().renderCell(textArea, value, field, SwingConstants.LEFT, row, isSelected, Resources.getTableEvenRowBackgroundColor(getColor()), Color.WHITE, false);
 		}
 	}
 
@@ -183,11 +191,13 @@ public class DetailsBoxRun extends DetailsBox {
 			this.data = data;
 		}
 
+		@Override
 		public int getColumnCount() {
 			if (data.length == 0) return 0;
 			return data[0].length;
 		}
 
+		@Override
 		public String getColumnName(int col) {
 			switch(col){
 			case 0:
@@ -199,23 +209,28 @@ public class DetailsBoxRun extends DetailsBox {
 			}
 		}
 
+		@Override
 		public int getRowCount() {
 			return data.length;
 		}
 
+		@Override
 		public Class<?> getColumnClass(int columnIndex) {
 			return String.class;
 		}
 
+		@Override
 		public Object getValueAt(int row, int col) {
 			if (row >= data.length || col >= data[row].length) return null;
 			if (row < 0 || col < 0) return null;
 			return data[row][col];
 		}
 
+		@Override
 		public void setValueAt(Object value, int row, int col) {
 		}
 
+		@Override
 		public boolean isCellEditable(int rowIndex, int columnIndex) {
 			return false;
 		}

@@ -859,7 +859,7 @@ public class Version_17 extends Version {
 					while (res.next()) {
 						count++;
 						if (count%AS == 0){
-							toConsole(df2.format(System.currentTimeMillis()) + " - " + Tools.longToString(count) + " variants processed ("+Tools.doubleToPercent(((double)count/(double)max), 2)+") - " + Tools.doubleToString(((double)Tools.getUsedMemoryInMb()), 0, false) + " Mb / "+ (Tools.doubleToString(((double)(Runtime.getRuntime().maxMemory() / 1024 /1024)), 0, false)) + " Mb of RAM used");
+							toConsole(df2.format(System.currentTimeMillis()) + " - " + Tools.longToString(count) + " variants processed ("+Tools.doubleToPercent(((double)count/(double)max), 2)+") - " + Tools.doubleToString((Tools.getUsedMemoryInMb()), 0, false) + " Mb / "+ (Tools.doubleToString((Runtime.getRuntime().maxMemory() / 1024 /1024), 0, false)) + " Mb of RAM used");
 						}
 						AnnotatedVariant variant = new AnnotatedVariant(analysis);
 						AnnotatedVariant.extractFromSqlResultSet(variant, res, fieldsToInclude);
@@ -878,13 +878,13 @@ public class Version_17 extends Version {
 						}
 					}
 				}
-				toConsole(df2.format(System.currentTimeMillis()) + " - All variants processed, importing sample_annotations  - " + Tools.doubleToString(((double)Tools.getUsedMemoryInMb()), 0, false) + " Mb / "+ (Tools.doubleToString(((double)(Runtime.getRuntime().maxMemory() / 1024 /1024)), 0, false)) + " Mb of RAM used");
+				toConsole(df2.format(System.currentTimeMillis()) + " - All variants processed, importing sample_annotations  - " + Tools.doubleToString((Tools.getUsedMemoryInMb()), 0, false) + " Mb / "+ (Tools.doubleToString((Runtime.getRuntime().maxMemory() / 1024 /1024), 0, false)) + " Mb of RAM used");
 				Highlander.getDB().insertFile(Schema.HIGHLANDER, analysis.getTableSampleAnnotations(), AnnotatedVariant.getInsertionColumnsString(analysis, analysis.getTableSampleAnnotations()), insertFileSample, false, Highlander.getParameters());
-				toConsole(df2.format(System.currentTimeMillis()) + " - All variants processed, importing static_annotations  - " + Tools.doubleToString(((double)Tools.getUsedMemoryInMb()), 0, false) + " Mb / "+ (Tools.doubleToString(((double)(Runtime.getRuntime().maxMemory() / 1024 /1024)), 0, false)) + " Mb of RAM used");
+				toConsole(df2.format(System.currentTimeMillis()) + " - All variants processed, importing static_annotations  - " + Tools.doubleToString((Tools.getUsedMemoryInMb()), 0, false) + " Mb / "+ (Tools.doubleToString((Runtime.getRuntime().maxMemory() / 1024 /1024), 0, false)) + " Mb of RAM used");
 				Highlander.getDB().insertFile(Schema.HIGHLANDER, analysis.getTableStaticAnnotations(), AnnotatedVariant.getInsertionColumnsString(analysis, analysis.getTableStaticAnnotations()), insertFileStatic, false, Highlander.getParameters());
-				toConsole(df2.format(System.currentTimeMillis()) + " - All variants processed, importing gene_annotations  - " + Tools.doubleToString(((double)Tools.getUsedMemoryInMb()), 0, false) + " Mb / "+ (Tools.doubleToString(((double)(Runtime.getRuntime().maxMemory() / 1024 /1024)), 0, false)) + " Mb of RAM used");
+				toConsole(df2.format(System.currentTimeMillis()) + " - All variants processed, importing gene_annotations  - " + Tools.doubleToString((Tools.getUsedMemoryInMb()), 0, false) + " Mb / "+ (Tools.doubleToString((Runtime.getRuntime().maxMemory() / 1024 /1024), 0, false)) + " Mb of RAM used");
 				Highlander.getDB().insertFile(Schema.HIGHLANDER, analysis.getTableGeneAnnotations(), AnnotatedVariant.getInsertionColumnsString(analysis, analysis.getTableGeneAnnotations()), insertFileGene, false, Highlander.getParameters());
-				toConsole(df2.format(System.currentTimeMillis()) + " - All variants processed, importing custom_annotations  - " + Tools.doubleToString(((double)Tools.getUsedMemoryInMb()), 0, false) + " Mb / "+ (Tools.doubleToString(((double)(Runtime.getRuntime().maxMemory() / 1024 /1024)), 0, false)) + " Mb of RAM used");
+				toConsole(df2.format(System.currentTimeMillis()) + " - All variants processed, importing custom_annotations  - " + Tools.doubleToString((Tools.getUsedMemoryInMb()), 0, false) + " Mb / "+ (Tools.doubleToString((Runtime.getRuntime().maxMemory() / 1024 /1024), 0, false)) + " Mb of RAM used");
 				Highlander.getDB().insertFile(Schema.HIGHLANDER, analysis.getTableCustomAnnotations(), AnnotatedVariant.getInsertionColumnsString(analysis, analysis.getTableCustomAnnotations()), insertFileCustom, true, Highlander.getParameters());
 				insertFileSample.delete();
 				insertFileStatic.delete();

@@ -131,8 +131,10 @@ public class IonCleaner extends JFrame {
 				@Override
 				public void componentShown(ComponentEvent arg0) {
 					new Thread(new Runnable(){
+						@Override
 						public void run(){
 							SwingUtilities.invokeLater(new Runnable() {
+								@Override
 								public void run() {
 									waitingPanel.setVisible(true);
 									waitingPanel.start();
@@ -141,6 +143,7 @@ public class IonCleaner extends JFrame {
 							fillRawData(platformBox.getItemAt(platformBox.getSelectedIndex()));
 							fillAnalyses(platformBox.getItemAt(platformBox.getSelectedIndex()));
 							SwingUtilities.invokeLater(new Runnable() {
+								@Override
 								public void run() {
 									waitingPanel.setVisible(false);
 									waitingPanel.stop();
@@ -176,8 +179,10 @@ public class IonCleaner extends JFrame {
 						@Override
 						public void run() {
 							new Thread(new Runnable(){
+								@Override
 								public void run(){
 									SwingUtilities.invokeLater(new Runnable() {
+										@Override
 										public void run() {
 											waitingPanel.setVisible(true);
 											waitingPanel.start();
@@ -186,6 +191,7 @@ public class IonCleaner extends JFrame {
 									fillRawData(platformBox.getItemAt(platformBox.getSelectedIndex()));
 									fillAnalyses(platformBox.getItemAt(platformBox.getSelectedIndex()));
 									SwingUtilities.invokeLater(new Runnable() {
+										@Override
 										public void run() {
 											waitingPanel.setVisible(false);
 											waitingPanel.stop();
@@ -299,30 +305,37 @@ public class IonCleaner extends JFrame {
 			this.colClass = colClass;
 		}
 
+		@Override
 		public int getColumnCount() {
 			return headers.length;
 		}
 
+		@Override
 		public String getColumnName(int col) {
 			return headers[col];
 		}
 
+		@Override
 		public int getRowCount() {
 			return data.length;
 		}
 
+		@Override
 		public Class<?> getColumnClass(int col) {
 			return colClass[col];
 		}
 
+		@Override
 		public Object getValueAt(int row, int col) {
 			return data[row][col];
 		}
 
+		@Override
 		public void setValueAt(Object value, int row, int col) {
 			data[row][col] = value;
 		}
 
+		@Override
 		public boolean isCellEditable(int rowIndex, int columnIndex) {
 			return false;
 		}
@@ -339,6 +352,7 @@ public class IonCleaner extends JFrame {
 	private void backup(boolean raw, Platform platform){
 		JTable selectedTable = (raw) ? tableRaw : tableAnal;
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				waitingPanel.setVisible(true);
 				waitingPanel.start();
@@ -382,6 +396,7 @@ public class IonCleaner extends JFrame {
 					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));			
 		}
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				waitingPanel.setVisible(false);
 				waitingPanel.stop();
@@ -392,6 +407,7 @@ public class IonCleaner extends JFrame {
 	private void remove(boolean raw, Platform platform){
 		JTable selectedTable = (raw) ? tableRaw : tableAnal;
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				waitingPanel.setVisible(true);
 				waitingPanel.start();
@@ -439,6 +455,7 @@ public class IonCleaner extends JFrame {
 		if (raw) fillRawData(platform);
 		else fillAnalyses(platform);
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				waitingPanel.setVisible(false);
 				waitingPanel.stop();
@@ -497,6 +514,7 @@ public class IonCleaner extends JFrame {
 	}
 
 	//Overridden so we can exit when window is closed
+	@Override
 	protected void processWindowEvent(WindowEvent e) {
 		super.processWindowEvent(e);
 		if (e.getID() == WindowEvent.WINDOW_CLOSING) {
@@ -537,6 +555,7 @@ public class IonCleaner extends JFrame {
 		}
 		final IonCleaner ion = new IonCleaner();
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				ion.validate();
 				//Center the window

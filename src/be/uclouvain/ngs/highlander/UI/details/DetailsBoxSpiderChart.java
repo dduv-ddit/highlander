@@ -79,10 +79,12 @@ public class DetailsBoxSpiderChart extends DetailsBox {
 		initCommonUI(visible);
 	}
 
+	@Override
 	public DetailsPanel getDetailsPanel(){
 		return mainPanel;
 	}
 
+	@Override
 	public String getTitle(){
 		switch(rankScoreType) {
 		case IMPACT_RANKSCORE:
@@ -94,14 +96,17 @@ public class DetailsBoxSpiderChart extends DetailsBox {
 		}
 	}
 
+	@Override
 	public Palette getColor() {
 		return Field.snpeff_effect.getCategory().getColor();
 	}
 
+	@Override
 	protected boolean isDetailsLoaded(){
 		return detailsLoaded;
 	}
 
+	@Override
 	protected void loadDetails(){
 		try{
 			detailsPanel.removeAll();

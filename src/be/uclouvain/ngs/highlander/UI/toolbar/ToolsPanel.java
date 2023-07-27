@@ -33,6 +33,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FileDialog;
 import java.awt.FlowLayout;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -121,8 +122,10 @@ public class ToolsPanel extends JPanel {
 		showAlignment.setPreferredSize(new Dimension(54,54));
 		showAlignment.setToolTipText("Alignment Viewer");
 		showAlignment.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						viewAlignment(false);
 					}
@@ -134,8 +137,10 @@ public class ToolsPanel extends JPanel {
 		showAlignmentPinned.setPreferredSize(new Dimension(54,54));
 		showAlignmentPinned.setToolTipText("Launch Alignment Viewer with a selection of samples already pinned");
 		showAlignmentPinned.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						viewAlignment(true);
 					}
@@ -147,8 +152,10 @@ public class ToolsPanel extends JPanel {
 		showInIGV.setPreferredSize(new Dimension(54,54));
 		showInIGV.setToolTipText("View selected variant in IGV");
 		showInIGV.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						viewInIGV();
 					}
@@ -160,8 +167,10 @@ public class ToolsPanel extends JPanel {
 		posInIGV.setPreferredSize(new Dimension(54,54));
 		posInIGV.setToolTipText("View selected position in IGV");
 		posInIGV.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						if (!IGVAccess.isPresent()){
 							viewInIGV();
@@ -200,8 +209,10 @@ public class ToolsPanel extends JPanel {
 				+ "It will run on the cluster then produce a table with number of reads presenting each nucleotide/gap/insertion.<br>"
 				+ "A z-score is also computed for each nucleotide/gap/insertion, using your selection of samples.</html>");
 		viewBam.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						bamView();
 					}
@@ -213,8 +224,10 @@ public class ToolsPanel extends JPanel {
 		exportSequence.setPreferredSize(new Dimension(54,54));
 		exportSequence.setToolTipText("Export mutated DNA/AA sequences of selected variant(s)");
 		exportSequence.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						exportSequence();
 					}
@@ -227,8 +240,10 @@ public class ToolsPanel extends JPanel {
 		exportToExcelWithNormalRC.setPreferredSize(new Dimension(54,54));
 		exportToExcelWithNormalRC.setToolTipText("Export current table content to Excel, adding columns with read count for Normal/Tumor pairs");
 		exportToExcelWithNormalRC.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						exportToExcelWithNormalRC();
 					}
@@ -243,8 +258,10 @@ public class ToolsPanel extends JPanel {
 				+ "The variants displayed are defined by the current custom filters (magic filters are not taken into account).<br>"
 				+ "The same filter is also applied on the selected frequency database.</html>");
 		burdenTest.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						burdenTest();
 					}
@@ -259,8 +276,10 @@ public class ToolsPanel extends JPanel {
 				+ "For each pair of selected samples, the proportion of common SNPs is computed, and displayed with a heat map.<br>"
 				+ "For each sample, the gender is also predicted, using homozygous SNP ratio of chromosome X.</html>");
 		pedigreeChecker.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						pedigreeChecker();
 					}
@@ -274,8 +293,10 @@ public class ToolsPanel extends JPanel {
 				+ "Select a set of genes and a set of sample to display their average read depth and coverage.<br>"
 				+ "You can display coverage per gene or per exon, separately for each sample or as an average.</html>");
 		coverage.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						coverage();
 					}
@@ -290,8 +311,10 @@ public class ToolsPanel extends JPanel {
 				+ "You can enter any variant by 'chr:pos-alt', even if no sample in Highlander has it.<br>"
 				+ "All annotations available in Highlander databases will be fetched (e.g. DBNSFP, COSMIC).</html>");
 		variantAnnotator.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						variantAnnotator();
 					}
@@ -310,8 +333,10 @@ public class ToolsPanel extends JPanel {
 				+ "You can mix samples from different analyses, and you may have to select the same sample multiple times if it has the same name in different analyses you want results from.<br>"
 				+ "You can hover your mouse on each tool/software to see the list of files that will be download, and in which analyses they are available.</html>");
 		download.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						download();
 					}
@@ -323,8 +348,10 @@ public class ToolsPanel extends JPanel {
 		exportToExcel.setPreferredSize(new Dimension(54,54));
 		exportToExcel.setToolTipText("Export current table content to Excel");
 		exportToExcel.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						exportToExcel();
 					}
@@ -336,8 +363,10 @@ public class ToolsPanel extends JPanel {
 		exportToTSV.setPreferredSize(new Dimension(54,54));
 		exportToTSV.setToolTipText("Export current table content to a 'Tab Separated Values' file");
 		exportToTSV.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						exportToTSV();
 					}
@@ -349,8 +378,10 @@ public class ToolsPanel extends JPanel {
 		exportToVCF.setPreferredSize(new Dimension(54,54));
 		exportToVCF.setToolTipText("Export current table content to a VCF (Variant Calling Format) file");
 		exportToVCF.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						exportToVCF();
 					}
@@ -370,8 +401,10 @@ public class ToolsPanel extends JPanel {
 				+ "<li>HGMD annotations for those variants will be visible in Highlander public comments, for any matching variant</li>"
 				+ "</ul></html>");
 		importHGMD.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						importHGMD();
 					}
@@ -385,8 +418,10 @@ public class ToolsPanel extends JPanel {
 				+ "A table displaying all available samples with general information about them and run metrics.<br>"
 				+ "You can filter the table with multiple criteria and/or limit it to a selection of NGS runs.</html>");
 		viewRunStatisticsDetails.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						viewRunStatisticsDetails();
 					}
@@ -408,8 +443,10 @@ public class ToolsPanel extends JPanel {
 				+ "<li>...</li>"
 				+ "</ul></html>");
 		viewRunStatisticsCharts.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						viewRunStatisticsCharts();
 					}
@@ -428,8 +465,10 @@ public class ToolsPanel extends JPanel {
 				+ "If you select a field with percentage values, like variant frequency in a population, categories will adapt (some categories below 1% + 1 category each 10%)<br>"
 				+ "Note that depending on the number of samples in your query, the tool can take a <b>very long time</b> to build the charts.</html>");
 		viewVariantsDistributionCharts.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						viewVariantsDistributionCharts();
 					}
@@ -445,8 +484,10 @@ public class ToolsPanel extends JPanel {
 				+ "You can then modify the size of each chart using the % dropdown, to display more charts at once on your screen.<br>"
 				+ "If you prefer to check all charts from one sample at a time, select '<i>Sample selection with one window per sample</i>'</html>");
 		viewFastQC.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						viewFastQC();
 					}
@@ -459,8 +500,10 @@ public class ToolsPanel extends JPanel {
 		ctdnaEstimation.setToolTipText("<html><b>ctDNA estimation</b><br>"
 				+ "You can use this tool on pairs of normal/tumor samples to estimate the circulating tumoral DNA proportion (using FACETS data).</html>");
 		ctdnaEstimation.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						ctdnaEstimation();
 					}
@@ -483,8 +526,10 @@ public class ToolsPanel extends JPanel {
 				+ "For each one, you'll see if you already have Exomiser results or if you need to run it.<br>"
 				+ "If you have to run it, it will be on the cluster, not on your computer. You'll get an email when results are ready.</html>");
 		exomiser.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						exomiser();
 					}
@@ -497,8 +542,10 @@ public class ToolsPanel extends JPanel {
 		kraken.setToolTipText("<html><b>Kraken</b><br>"
 				+ "Kraken is a system for assigning taxonomic labels to short DNA sequences.</html>");
 		kraken.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						kraken();
 					}
@@ -659,123 +706,124 @@ public class ToolsPanel extends JPanel {
 						if (!filename.endsWith(".xlsx")) filename += ".xlsx";
 						File xls = new File(filename);
 						try{
-							Workbook wb = new SXSSFWorkbook(100);  		
-							Sheet sheet = wb.createSheet(Highlander.getCurrentAnalysis() + " " + df.format(System.currentTimeMillis()));
-							sheet.createFreezePane(0, 1);		
-							int r = 0;
-							Row row = sheet.createRow(r++);
-							String[] headers = new String[] {
-									"variantSampleId",
-									"sample",
-									"chr",
-									"pos",
-									"ref",
-									"alt",
-									"gene",
-									"strand",
-									"hgvs",
-									"effect",
-									"nucleotides reference (forward)",
-									"nucleotides mutation (forward)",
-									"nucleotides reference (reverse complement)",
-									"nucleotides mutation (reverse complement)",
-									"amino acids reference",
-									"amino acids mutation",
-							};
-							for (int c = 0 ; c < headers.length ; c++){
-								Cell cell = row.createCell(c);
-								cell.setCellValue(headers[c]);
-							}
-							sheet.setAutoFilter(new CellRangeAddress(0, 0, 0, headers.length));							
-							for (int id : mainFrame.getVariantTable().getSelectedVariantsId()) {
-								Highlander.waitingPanel.setProgressValue(r);
-								String sample = "?";
-								String ensg = "?";
-								String hgvs = "?";
-								String eff = "?";
-								String strand = "?";
-								try (Results res = Highlander.getDB().select(Schema.HIGHLANDER, 
-										"SELECT " + Field.sample + ", " + Field.transcript_ensembl + ", " + Field.hgvs_protein + ", " + Field.snpeff_effect + " "
-												+ "FROM " + Highlander.getCurrentAnalysis().getFromSampleAnnotations()
-												+ Highlander.getCurrentAnalysis().getJoinStaticAnnotations()
-												+ Highlander.getCurrentAnalysis().getJoinGeneAnnotations()
-												+ Highlander.getCurrentAnalysis().getJoinProjects()
-												+ "WHERE "+Field.variant_sample_id.getQueryWhereName(Highlander.getCurrentAnalysis(), false)+" = " + id
-										)) {
-									if (res.next()){
-										sample = res.getString(1);
-										ensg = res.getString(2);
-										hgvs = (res.getObject(3) != null) ? res.getString(3) : "";
-										eff = (res.getObject(4) != null) ? res.getString(4) : "";
-									}else{
-										throw new Exception("Id " + id + " not found in the database");
+							try(Workbook wb = new SXSSFWorkbook(100)){  		
+								Sheet sheet = wb.createSheet(Highlander.getCurrentAnalysis() + " " + df.format(System.currentTimeMillis()));
+								sheet.createFreezePane(0, 1);		
+								int r = 0;
+								Row row = sheet.createRow(r++);
+								String[] headers = new String[] {
+										"variantSampleId",
+										"sample",
+										"chr",
+										"pos",
+										"ref",
+										"alt",
+										"gene",
+										"strand",
+										"hgvs",
+										"effect",
+										"nucleotides reference (forward)",
+										"nucleotides mutation (forward)",
+										"nucleotides reference (reverse complement)",
+										"nucleotides mutation (reverse complement)",
+										"amino acids reference",
+										"amino acids mutation",
+								};
+								for (int c = 0 ; c < headers.length ; c++){
+									Cell cell = row.createCell(c);
+									cell.setCellValue(headers[c]);
+								}
+								sheet.setAutoFilter(new CellRangeAddress(0, 0, 0, headers.length));							
+								for (int id : mainFrame.getVariantTable().getSelectedVariantsId()) {
+									Highlander.waitingPanel.setProgressValue(r);
+									String sample = "?";
+									String ensg = "?";
+									String hgvs = "?";
+									String eff = "?";
+									String strand = "?";
+									try (Results res = Highlander.getDB().select(Schema.HIGHLANDER, 
+											"SELECT " + Field.sample + ", " + Field.transcript_ensembl + ", " + Field.hgvs_protein + ", " + Field.snpeff_effect + " "
+													+ "FROM " + Highlander.getCurrentAnalysis().getFromSampleAnnotations()
+													+ Highlander.getCurrentAnalysis().getJoinStaticAnnotations()
+													+ Highlander.getCurrentAnalysis().getJoinGeneAnnotations()
+													+ Highlander.getCurrentAnalysis().getJoinProjects()
+													+ "WHERE "+Field.variant_sample_id.getQueryWhereName(Highlander.getCurrentAnalysis(), false)+" = " + id
+											)) {
+										if (res.next()){
+											sample = res.getString(1);
+											ensg = res.getString(2);
+											hgvs = (res.getObject(3) != null) ? res.getString(3) : "";
+											eff = (res.getObject(4) != null) ? res.getString(4) : "";
+										}else{
+											throw new Exception("Id " + id + " not found in the database");
+										}
+									}
+									Variant variant = new Variant(id);
+									Reference genome = Highlander.getCurrentAnalysis().getReference();
+									if (ensg != null) {
+										Gene gene = new Gene(ensg, genome, variant.getChromosome(), true);
+										strand = (gene.isStrandPositive()) ? "+" : "-";
+										MutatedSequence seq = new MutatedSequence(variant, gene, genome, rangeAA);
+										System.out.println(id + "\t" + sample + "\t" + seq.getVariant().getChromosome() + "\t" + seq.getVariant().getPosition() + "\t" + seq.getVariant().getReference() + "\t" + seq.getVariant().getAlternative() + "\t" + seq.getGene().getGeneSymbol() + "\t" + strand + "\t" + hgvs + "\t" + eff + "\t" + seq.getSequence(Type.NUCLEOTIDES, false, false) + "\t" + seq.getSequence(Type.NUCLEOTIDES, true, false) + "\t" + seq.getSequence(Type.NUCLEOTIDES, false, true) + "\t" + seq.getSequence(Type.NUCLEOTIDES, true, true) + "\t" + seq.getSequence(Type.AMINO_ACIDS, false, false) + "\t" + seq.getSequence(Type.AMINO_ACIDS, true, false));
+										row = sheet.createRow(r++);								
+										int c=0;
+										Cell cell = row.createCell(c++);
+										cell.setCellValue(id);
+										cell = row.createCell(c++);
+										cell.setCellValue(sample);
+										cell = row.createCell(c++);
+										cell.setCellValue(seq.getVariant().getChromosome() );
+										cell = row.createCell(c++);
+										cell.setCellValue(seq.getVariant().getPosition());
+										cell = row.createCell(c++);
+										cell.setCellValue(seq.getVariant().getReference());
+										cell = row.createCell(c++);
+										cell.setCellValue(seq.getVariant().getAlternative());
+										cell = row.createCell(c++);
+										cell.setCellValue(seq.getGene().getGeneSymbol());
+										cell = row.createCell(c++);
+										cell.setCellValue(strand);
+										cell = row.createCell(c++);
+										cell.setCellValue(hgvs);
+										cell = row.createCell(c++);
+										cell.setCellValue(eff);
+										cell = row.createCell(c++);
+										cell.setCellValue(seq.getSequence(Type.NUCLEOTIDES, false, false));
+										cell = row.createCell(c++);
+										cell.setCellValue(seq.getSequence(Type.NUCLEOTIDES, true, false));
+										cell = row.createCell(c++);
+										cell.setCellValue(seq.getSequence(Type.NUCLEOTIDES, false, true));
+										cell = row.createCell(c++);
+										cell.setCellValue(seq.getSequence(Type.NUCLEOTIDES, true, true));
+										cell = row.createCell(c++);
+										cell.setCellValue(seq.getSequence(Type.AMINO_ACIDS, false, false));
+										cell = row.createCell(c++);
+										cell.setCellValue(seq.getSequence(Type.AMINO_ACIDS, true, false));
+									}else {
+										System.out.println(id + "\t" + sample + "\t" + variant.getChromosome() + "\t" + variant.getPosition() + "\t" + variant.getReference() + "\t" + variant.getAlternative() + "\t" + "NO GENE");
+										row = sheet.createRow(r++);								
+										int c=0;
+										Cell cell = row.createCell(c++);
+										cell.setCellValue(id);
+										cell = row.createCell(c++);
+										cell.setCellValue(sample);
+										cell = row.createCell(c++);
+										cell.setCellValue(variant.getChromosome() );
+										cell = row.createCell(c++);
+										cell.setCellValue(variant.getPosition());
+										cell = row.createCell(c++);
+										cell.setCellValue(variant.getReference());
+										cell = row.createCell(c++);
+										cell.setCellValue(variant.getAlternative());
 									}
 								}
-								Variant variant = new Variant(id);
-								Reference genome = Highlander.getCurrentAnalysis().getReference();
-								if (ensg != null) {
-									Gene gene = new Gene(ensg, genome, variant.getChromosome(), true);
-									strand = (gene.isStrandPositive()) ? "+" : "-";
-									MutatedSequence seq = new MutatedSequence(variant, gene, genome, rangeAA);
-									System.out.println(id + "\t" + sample + "\t" + seq.getVariant().getChromosome() + "\t" + seq.getVariant().getPosition() + "\t" + seq.getVariant().getReference() + "\t" + seq.getVariant().getAlternative() + "\t" + seq.getGene().getGeneSymbol() + "\t" + strand + "\t" + hgvs + "\t" + eff + "\t" + seq.getSequence(Type.NUCLEOTIDES, false, false) + "\t" + seq.getSequence(Type.NUCLEOTIDES, true, false) + "\t" + seq.getSequence(Type.NUCLEOTIDES, false, true) + "\t" + seq.getSequence(Type.NUCLEOTIDES, true, true) + "\t" + seq.getSequence(Type.AMINO_ACIDS, false, false) + "\t" + seq.getSequence(Type.AMINO_ACIDS, true, false));
-									row = sheet.createRow(r++);								
-									int c=0;
-									Cell cell = row.createCell(c++);
-									cell.setCellValue(id);
-									cell = row.createCell(c++);
-									cell.setCellValue(sample);
-									cell = row.createCell(c++);
-									cell.setCellValue(seq.getVariant().getChromosome() );
-									cell = row.createCell(c++);
-									cell.setCellValue(seq.getVariant().getPosition());
-									cell = row.createCell(c++);
-									cell.setCellValue(seq.getVariant().getReference());
-									cell = row.createCell(c++);
-									cell.setCellValue(seq.getVariant().getAlternative());
-									cell = row.createCell(c++);
-									cell.setCellValue(seq.getGene().getGeneSymbol());
-									cell = row.createCell(c++);
-									cell.setCellValue(strand);
-									cell = row.createCell(c++);
-									cell.setCellValue(hgvs);
-									cell = row.createCell(c++);
-									cell.setCellValue(eff);
-									cell = row.createCell(c++);
-									cell.setCellValue(seq.getSequence(Type.NUCLEOTIDES, false, false));
-									cell = row.createCell(c++);
-									cell.setCellValue(seq.getSequence(Type.NUCLEOTIDES, true, false));
-									cell = row.createCell(c++);
-									cell.setCellValue(seq.getSequence(Type.NUCLEOTIDES, false, true));
-									cell = row.createCell(c++);
-									cell.setCellValue(seq.getSequence(Type.NUCLEOTIDES, true, true));
-									cell = row.createCell(c++);
-									cell.setCellValue(seq.getSequence(Type.AMINO_ACIDS, false, false));
-									cell = row.createCell(c++);
-									cell.setCellValue(seq.getSequence(Type.AMINO_ACIDS, true, false));
-								}else {
-									System.out.println(id + "\t" + sample + "\t" + variant.getChromosome() + "\t" + variant.getPosition() + "\t" + variant.getReference() + "\t" + variant.getAlternative() + "\t" + "NO GENE");
-									row = sheet.createRow(r++);								
-									int c=0;
-									Cell cell = row.createCell(c++);
-									cell.setCellValue(id);
-									cell = row.createCell(c++);
-									cell.setCellValue(sample);
-									cell = row.createCell(c++);
-									cell.setCellValue(variant.getChromosome() );
-									cell = row.createCell(c++);
-									cell.setCellValue(variant.getPosition());
-									cell = row.createCell(c++);
-									cell.setCellValue(variant.getReference());
-									cell = row.createCell(c++);
-									cell.setCellValue(variant.getAlternative());
+								Highlander.waitingPanel.setProgressValue(selection);
+								Highlander.waitingPanel.setProgressString("Writing file ...",true);		
+								try (FileOutputStream fileOut = new FileOutputStream(xls)){
+									wb.write(fileOut);
 								}
+								Highlander.waitingPanel.setProgressDone();
 							}
-							Highlander.waitingPanel.setProgressValue(selection);
-							Highlander.waitingPanel.setProgressString("Writing file ...",true);		
-							try (FileOutputStream fileOut = new FileOutputStream(xls)){
-								wb.write(fileOut);
-							}
-							Highlander.waitingPanel.setProgressDone();
 						}catch (IOException ex){
 							Highlander.waitingPanel.forceStop();
 							Tools.exception(ex);
@@ -915,7 +963,7 @@ public class ToolsPanel extends JPanel {
 			if (ask2.getAssociation() != null && !ask2.getAssociation().isEmpty()){
 				CtdnaEstimation ctDNA = new CtdnaEstimation(Highlander.getCurrentAnalysis(), ask2.getAssociation());
 				Tools.centerWindow(ctDNA, true);
-				ctDNA.setExtendedState(JFrame.MAXIMIZED_BOTH);
+				ctDNA.setExtendedState(Frame.MAXIMIZED_BOTH);
 				ctDNA.setVisible(true);
 			}
 		}
@@ -1145,21 +1193,21 @@ public class ToolsPanel extends JPanel {
 	public void viewRunStatisticsDetails(){
 		RunStatistics viewer = new RunStatistics();
 		Tools.centerWindow(viewer, false);
-		viewer.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		viewer.setExtendedState(Frame.MAXIMIZED_BOTH);
 		viewer.setVisible(true);
 	}
 
 	public void viewRunStatisticsCharts(){
 		RunCharts viewer = new RunCharts();
 		Tools.centerWindow(viewer, true);
-		viewer.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		viewer.setExtendedState(Frame.MAXIMIZED_BOTH);
 		viewer.setVisible(true);
 	}
 
 	public void viewVariantsDistributionCharts(){
 		VariantDistributionCharts viewer = new VariantDistributionCharts();
 		Tools.centerWindow(viewer, true);
-		viewer.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		viewer.setExtendedState(Frame.MAXIMIZED_BOTH);
 		viewer.setVisible(true);
 	}
 
@@ -1187,7 +1235,7 @@ public class ToolsPanel extends JPanel {
 							if (!select.getSelection().isEmpty()){
 								FastQCViewer viewer = new FastQCViewer(select.getSelection(), fastqcReport);
 								Tools.centerWindow(viewer, true);
-								viewer.setExtendedState(JFrame.MAXIMIZED_BOTH);
+								viewer.setExtendedState(Frame.MAXIMIZED_BOTH);
 								viewer.setVisible(true);
 							}
 						}else if (choice.toString().startsWith("Sample")){
@@ -1202,6 +1250,7 @@ public class ToolsPanel extends JPanel {
 												String project = res.getString("run_label");
 												final String url = Highlander.getParameters().getUrlForReports()+"/"+project+"/fastqc/"+sample+"/fastqc_report.html";
 												new Thread(new Runnable(){
+													@Override
 													public void run(){
 														Tools.openURL(url);
 													}

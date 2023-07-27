@@ -88,22 +88,27 @@ public class DetailsBoxOtherEvaluations extends DetailsBox {
 		initCommonUI(visible);
 	}
 
+	@Override
 	public DetailsPanel getDetailsPanel(){
 		return mainPanel;
 	}
 
+	@Override
 	public String getTitle(){
 		return "Samples with same evaluated variant" + (detailled?" (details)":" (count)");
 	}
 
+	@Override
 	public Palette getColor() {
 		return Field.evaluation.getCategory().getColor();
 	}
 
+	@Override
 	protected boolean isDetailsLoaded(){
 		return detailsLoaded;
 	}
 
+	@Override
 	protected void loadDetails(){
 		try{
 			AnalysisFull analysis = Highlander.getCurrentAnalysis();
@@ -286,6 +291,7 @@ public class DetailsBoxOtherEvaluations extends DetailsBox {
 
 		final DetailsTableModel model = new DetailsTableModel(data);
 		JTable table = new JTable(model){
+			@Override
 			public String getToolTipText(MouseEvent e) {
 				String tip = null;
 				java.awt.Point p = e.getPoint();
@@ -321,6 +327,7 @@ public class DetailsBoxOtherEvaluations extends DetailsBox {
 	}
 
 	private class ColoredTableCellRenderer extends MultiLineTableCellRenderer {
+		@Override
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 			Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 			JTextArea textArea = (JTextArea) comp;
@@ -367,11 +374,13 @@ public class DetailsBoxOtherEvaluations extends DetailsBox {
 			this.data = data;
 		}
 
+		@Override
 		public int getColumnCount() {
 			if (data.length == 0) return 0;
 			return data[0].length;
 		}
 
+		@Override
 		public String getColumnName(int col) {
 			switch(col){
 			case 0:
@@ -383,23 +392,28 @@ public class DetailsBoxOtherEvaluations extends DetailsBox {
 			}
 		}
 
+		@Override
 		public int getRowCount() {
 			return data.length;
 		}
 
+		@Override
 		public Class<?> getColumnClass(int columnIndex) {
 			return String.class;
 		}
 
+		@Override
 		public Object getValueAt(int row, int col) {
 			if (row >= data.length || col >= data[row].length) return null;
 			if (row < 0 || col < 0) return null;
 			return data[row][col];
 		}
 
+		@Override
 		public void setValueAt(Object value, int row, int col) {
 		}
 
+		@Override
 		public boolean isCellEditable(int rowIndex, int columnIndex) {
 			return false;
 		}

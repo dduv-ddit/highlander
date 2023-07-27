@@ -38,7 +38,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.Timestamp;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -109,7 +109,7 @@ public class SamplesPanel extends ManagerPanel {
 		northPanel.add(panel_filters, BorderLayout.NORTH);
 		panel_filters.add(searchField, BorderLayout.CENTER);
 
-		JPanel fillToolsPanel = new JPanel(new WrapLayout(WrapLayout.LEFT));
+		JPanel fillToolsPanel = new JPanel(new WrapLayout(FlowLayout.LEFT));
 		northPanel.add(fillToolsPanel, BorderLayout.SOUTH);
 
 		JButton setIndexCaseButton = new JButton("Set index case");
@@ -201,8 +201,10 @@ public class SamplesPanel extends ManagerPanel {
 		fillToolsPanel.add(setNormalButton);
 
 		samplesTable = new JTable(){
+			@Override
 			protected JTableHeader createDefaultTableHeader() {
 				return new JTableHeader(columnModel) {
+					@Override
 					public String getToolTipText(MouseEvent e) {
 						java.awt.Point p = e.getPoint();
 						int index = columnModel.getColumnIndexAtX(p.x);
@@ -284,6 +286,7 @@ public class SamplesPanel extends ManagerPanel {
 
 	private void refresh(){
 		SwingUtilities.invokeLater(new Runnable(){
+			@Override
 			public void run(){
 				try{
 					samplesTableModel.fireTableRowsUpdated(0,samplesTableModel.getRowCount()-1);
@@ -383,6 +386,7 @@ public class SamplesPanel extends ManagerPanel {
 		 * Paste is done by aligning the upper left corner of the selection with the
 		 * 1st element in the current selection of the JTable.
 		 */
+		@Override
 		public void actionPerformed(ActionEvent e){
 			if (e.getActionCommand().compareTo("Paste")==0){
 				int startRow=(table.getSelectedRows())[0];
@@ -433,48 +437,49 @@ public class SamplesPanel extends ManagerPanel {
 			try{
 				waitingPanel.start();
 				try{
-					Workbook wb = new SXSSFWorkbook(100); 
-					int totalRows = 0;					
-					JTable table = samplesTable;
-					Sheet sheet = wb.createSheet("Highlander samples");
-					sheet.createFreezePane(0, 1);		
-					int r = 0;
-					Row row = sheet.createRow(r++);
-					row.setHeightInPoints(50);
-					for (int c = 0 ; c < table.getColumnCount() ; c++){
-						row.createCell(c).setCellValue(table.getColumnName(c));
-					}
-					sheet.setAutoFilter(new CellRangeAddress(0, 0, 0, table.getColumnCount()-1));
-					int nrow = table.getRowCount();
-					waitingPanel.setProgressString("Exporting "+Tools.doubleToString(nrow, 0, false)+" lines", false);
-					waitingPanel.setProgressMaximum(nrow);
-					for (int i=0 ; i < nrow ; i++ ){
-						waitingPanel.setProgressValue(r);
-						row = sheet.createRow(r++);
+					try(Workbook wb = new SXSSFWorkbook(100)){ 
+						int totalRows = 0;					
+						JTable table = samplesTable;
+						Sheet sheet = wb.createSheet("Highlander samples");
+						sheet.createFreezePane(0, 1);		
+						int r = 0;
+						Row row = sheet.createRow(r++);
+						row.setHeightInPoints(50);
 						for (int c = 0 ; c < table.getColumnCount() ; c++){
-							if (table.getValueAt(i, c) == null)
-								row.createCell(c);
-							else if (table.getColumnClass(c) == Timestamp.class)
-								row.createCell(c).setCellValue((Timestamp)table.getValueAt(i, c));
-							else if (table.getColumnClass(c) == Integer.class)
-								row.createCell(c).setCellValue(Integer.parseInt(table.getValueAt(i, c).toString()));
-							else if (table.getColumnClass(c) == Long.class)
-								row.createCell(c).setCellValue(Long.parseLong(table.getValueAt(i, c).toString()));
-							else if (table.getColumnClass(c) == Double.class)
-								row.createCell(c).setCellValue(Double.parseDouble(table.getValueAt(i, c).toString()));
-							else if (table.getColumnClass(c) == Boolean.class)
-								row.createCell(c).setCellValue(Boolean.parseBoolean(table.getValueAt(i, c).toString()));
-							else 
-								row.createCell(c).setCellValue(table.getValueAt(i, c).toString());
+							row.createCell(c).setCellValue(table.getColumnName(c));
 						}
-					}		
-					totalRows += nrow;
-					waitingPanel.setProgressValue(totalRows);
-					waitingPanel.setProgressString("Writing file ...",true);		
-					try (FileOutputStream fileOut = new FileOutputStream(xls)){
-						wb.write(fileOut);
+						sheet.setAutoFilter(new CellRangeAddress(0, 0, 0, table.getColumnCount()-1));
+						int nrow = table.getRowCount();
+						waitingPanel.setProgressString("Exporting "+Tools.doubleToString(nrow, 0, false)+" lines", false);
+						waitingPanel.setProgressMaximum(nrow);
+						for (int i=0 ; i < nrow ; i++ ){
+							waitingPanel.setProgressValue(r);
+							row = sheet.createRow(r++);
+							for (int c = 0 ; c < table.getColumnCount() ; c++){
+								if (table.getValueAt(i, c) == null)
+									row.createCell(c);
+								else if (table.getColumnClass(c) == OffsetDateTime.class)
+									row.createCell(c).setCellValue(((OffsetDateTime)table.getValueAt(i, c)).toLocalDateTime());
+								else if (table.getColumnClass(c) == Integer.class)
+									row.createCell(c).setCellValue(Integer.parseInt(table.getValueAt(i, c).toString()));
+								else if (table.getColumnClass(c) == Long.class)
+									row.createCell(c).setCellValue(Long.parseLong(table.getValueAt(i, c).toString()));
+								else if (table.getColumnClass(c) == Double.class)
+									row.createCell(c).setCellValue(Double.parseDouble(table.getValueAt(i, c).toString()));
+								else if (table.getColumnClass(c) == Boolean.class)
+									row.createCell(c).setCellValue(Boolean.parseBoolean(table.getValueAt(i, c).toString()));
+								else 
+									row.createCell(c).setCellValue(table.getValueAt(i, c).toString());
+							}
+						}		
+						totalRows += nrow;
+						waitingPanel.setProgressValue(totalRows);
+						waitingPanel.setProgressString("Writing file ...",true);		
+						try (FileOutputStream fileOut = new FileOutputStream(xls)){
+							wb.write(fileOut);
+						}
+						waitingPanel.setProgressDone();
 					}
-					waitingPanel.setProgressDone();
 				}catch(Exception ex){
 					waitingPanel.forceStop();
 					throw ex;
@@ -501,10 +506,12 @@ public class SamplesPanel extends ManagerPanel {
 			this.headers = headers;
 		}
 
+		@Override
 		public int getColumnCount() {
 			return headers.length;
 		}
 
+		@Override
 		public String getColumnName(int col) {
 			return headers[col];
 		}
@@ -518,14 +525,17 @@ public class SamplesPanel extends ManagerPanel {
 			return -1;
 		}
 
+		@Override
 		public int getRowCount() {
 			return data.length;
 		}
 
+		@Override
 		public Object getValueAt(int row, int col) {
 			return data[row][col];
 		}
 
+		@Override
 		public void setValueAt(Object value, int row, int col) {
 			try {
 				String colName = getColumnName(col);
@@ -660,6 +670,7 @@ public class SamplesPanel extends ManagerPanel {
 			}
 		}
 
+		@Override
 		public boolean isCellEditable(int rowIndex, int columnIndex) {
 			boolean edit = false;
 			if (columnIndex == getColumn("family")) edit = true;

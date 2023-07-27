@@ -109,7 +109,7 @@ public class SpiderChart extends JPanel {
 				colors.put(label, new Color(new Random().nextInt(0xFFFFFF)));
 			}
 		}
-		angle = 360.0 / (double)categories.size();
+		angle = 360.0 / categories.size();
 	}
 
 	public String getTitle(){
@@ -195,9 +195,9 @@ public class SpiderChart extends JPanel {
   		g.setStroke(dottedStroke);
   		g.drawLine(cx,cy,ax,ay);
   		g.drawLine(ax,ay,bx,by);
-  		double offset = 1.0 / (double)numLines;
+  		double offset = 1.0 / numLines;
   		for (int j=1 ; j < numLines ; j++) {  		
-  			double r = radius*((double)j*offset);
+  			double r = radius*(j*offset);
     		int nx = (int) (cx + ((r) * Math.cos((incSweepAngle * 3.14f/180) - 3.14f/2)));
     		int ny = (int) (cy + ((r) * Math.sin((incSweepAngle * 3.14f/180) - 3.14f/2)));
     		int mx = (int) (cx + ((r) * Math.cos(((incSweepAngle + sweepAngle) * 3.14f/180) - 3.14f/2)));

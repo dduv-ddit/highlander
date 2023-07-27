@@ -183,6 +183,7 @@ public class AskListOfHPOTermDialog extends JDialog {
 		
 		JButton btnCancel = new JButton(Resources.getScaledIcon(Resources.iCross, 32));
 		btnCancel.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				selection.clear();
 				frameVisible = false;
@@ -193,6 +194,7 @@ public class AskListOfHPOTermDialog extends JDialog {
 		
 		JButton btnValidate = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 32));
 		btnValidate.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				frameVisible = false;
 				dispose();
@@ -220,6 +222,7 @@ public class AskListOfHPOTermDialog extends JDialog {
 		setGlassPane(waitingPanel);
 	}
 	
+	@Override
 	protected void processWindowEvent(WindowEvent e) {
 		if (e.getID() == WindowEvent.WINDOW_CLOSING) {
 			selection.clear();;
@@ -252,8 +255,10 @@ public class AskListOfHPOTermDialog extends JDialog {
 		JButton buttonAdd = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleRight, 24));
 		buttonAdd.setToolTipText("Add selected HPO term(s) to your selection");
 		buttonAdd.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable() {
+					@Override
 					public void run() {
 						addValues();
 					}
@@ -269,6 +274,7 @@ public class AskListOfHPOTermDialog extends JDialog {
 		JButton buttonRemove = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleLeft, 24));
 		buttonRemove.setToolTipText("Remove selected HPO term(s) from your selection");
 		buttonRemove.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				removeValues();
 			}
@@ -296,6 +302,7 @@ public class AskListOfHPOTermDialog extends JDialog {
 			JOptionPane.showMessageDialog(this, "You can only choose one HPO term.", "Too many values", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
 		}else{
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(true);
 					waitingPanel.start();
@@ -329,6 +336,7 @@ public class AskListOfHPOTermDialog extends JDialog {
 			updateSelectionTable();
 			modifyingTableSelection = false;
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(true);
 					waitingPanel.stop();
@@ -352,6 +360,7 @@ public class AskListOfHPOTermDialog extends JDialog {
 		btnSaveList.setToolTipText("Save current list of HPO terms in your profile");
 		btnSaveList.setPreferredSize(new Dimension(54,54));
 		btnSaveList.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				saveList();
 			}
@@ -361,6 +370,7 @@ public class AskListOfHPOTermDialog extends JDialog {
 		btnLoadList.setToolTipText("Load a list of HPO terms from your profile");
 		btnLoadList.setPreferredSize(new Dimension(54,54));
 		btnLoadList.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				String listname = ProfileTree.showProfileDialog(AskListOfHPOTermDialog.this, Action.LOAD, UserData.PHENOTYPES, reference.getName());
 				if (listname != null){
@@ -378,6 +388,7 @@ public class AskListOfHPOTermDialog extends JDialog {
 		scroll.setBorder(new TitledBorder(null, "Selected HPO Terms", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		tSelectionModel = new DefaultTableModel(0,1);
 		tableSelection = new JTable(tSelectionModel){
+			@Override
 			public boolean isCellEditable(int row, int column){
 				return false;
 			}
@@ -413,15 +424,19 @@ public class AskListOfHPOTermDialog extends JDialog {
 		JPanel panel = new JPanel(new GridBagLayout());
 		JTextField fieldQuery = new JTextField();
 		fieldQuery.addKeyListener(new KeyListener() {
+			@Override
 			public void keyReleased(KeyEvent arg0) {
 				SwingUtilities.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						//search(fieldQuery.getText());
 						query = fieldQuery.getText();
 					}
 				});
 			}
+			@Override
 			public void keyTyped(KeyEvent arg0) {			}
+			@Override
 			public void keyPressed(KeyEvent arg0) {			}
 		});
 		panel.add(new JLabel("Search for", Resources.getScaledIcon(Resources.iHPO, 24), SwingConstants.LEADING), new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
@@ -433,6 +448,7 @@ public class AskListOfHPOTermDialog extends JDialog {
 
 		private volatile String query = "";        
 
+		@Override
 		public void run() {
 			while (frameVisible) {
 				if (this.query != AskListOfHPOTermDialog.this.query) {
@@ -451,6 +467,7 @@ public class AskListOfHPOTermDialog extends JDialog {
 		
 		private volatile String query = "";        
 		
+		@Override
 		public void run() {
 			while (frameVisible) {
 				if (this.query != AskListOfHPOTermDialog.this.query) {
@@ -469,6 +486,7 @@ public class AskListOfHPOTermDialog extends JDialog {
 		
 		private volatile String query = "";        
 		
+		@Override
 		public void run() {
 			while (frameVisible) {
 				if (this.query != AskListOfHPOTermDialog.this.query) {
@@ -559,6 +577,7 @@ public class AskListOfHPOTermDialog extends JDialog {
 		JPanel panel = new JPanel(new BorderLayout());
 		JScrollPane scroll = new JScrollPane();
 		tableSearchResultsTerms = new JTable(){
+			@Override
 			public boolean isCellEditable(int row, int column){
 				return false;
 			}
@@ -588,6 +607,7 @@ public class AskListOfHPOTermDialog extends JDialog {
 		JPanel panel = new JPanel(new BorderLayout());
 		JScrollPane scroll = new JScrollPane();
 		tableSearchResultsDiseases = new JTable(){
+			@Override
 			public boolean isCellEditable(int row, int column){
 				return false;
 			}
@@ -619,6 +639,7 @@ public class AskListOfHPOTermDialog extends JDialog {
 		JScrollPane scrollAssTerms = new JScrollPane();
 		scrollAssTerms.setBorder(new TitledBorder(null, "Associated HPO Terms", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		tableSearchResultsDiseasesAssTerms = new JTable(){
+			@Override
 			public boolean isCellEditable(int row, int column){
 				return false;
 			}
@@ -648,6 +669,7 @@ public class AskListOfHPOTermDialog extends JDialog {
 		JPanel panel = new JPanel(new BorderLayout());
 		JScrollPane scroll = new JScrollPane();
 		tableSearchResultsGenes = new JTable(){
+			@Override
 			public boolean isCellEditable(int row, int column){
 				return false;
 			}
@@ -679,6 +701,7 @@ public class AskListOfHPOTermDialog extends JDialog {
 		JScrollPane scrollAssTerms = new JScrollPane();
 		scrollAssTerms.setBorder(new TitledBorder(null, "Associated HPO Terms", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		tableSearchResultsGenesAssTerms = new JTable(){
+			@Override
 			public boolean isCellEditable(int row, int column){
 				return false;
 			}
@@ -713,7 +736,8 @@ public class AskListOfHPOTermDialog extends JDialog {
 		tree.setCellRenderer(new HPOTreeCellRenderer());
 		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		tree.addTreeSelectionListener(new TreeSelectionListener() {
-      public void valueChanged(TreeSelectionEvent e) {
+      @Override
+			public void valueChanged(TreeSelectionEvent e) {
       	if (!modifyingTree) {
         	DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
         	HPOTerm hpo = (HPOTerm)selectedNode.getUserObject();
@@ -734,6 +758,7 @@ public class AskListOfHPOTermDialog extends JDialog {
 	}
 	
 	public class HPOTreeCellRenderer extends DefaultTreeCellRenderer {
+		@Override
 		public Component getTreeCellRendererComponent(JTree tree,	Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
 			super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
 			DefaultMutableTreeNode node = (DefaultMutableTreeNode)value;
@@ -806,6 +831,7 @@ public class AskListOfHPOTermDialog extends JDialog {
 		panel.add(tabs, BorderLayout.CENTER);
 		JScrollPane scrollDiseases = new JScrollPane();
 		tableDiseases = new JTable(){
+			@Override
 			public boolean isCellEditable(int row, int column){
 				return false;
 			}
@@ -814,6 +840,7 @@ public class AskListOfHPOTermDialog extends JDialog {
 		tabs.addTab("Diseases Associations", scrollDiseases);
 		JScrollPane scrollGenes = new JScrollPane();
 		tableGenes = new JTable(){
+			@Override
 			public boolean isCellEditable(int row, int column){
 				return false;
 			}

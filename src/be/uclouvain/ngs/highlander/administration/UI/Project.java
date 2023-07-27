@@ -53,6 +53,7 @@ public class Project {
 		references.put(partsRunPath[partsRunPath.length-1], reference);			
 	}
 
+	@Override
 	public String toString(){
 		return run_label;
 	}

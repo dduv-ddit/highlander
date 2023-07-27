@@ -104,9 +104,11 @@ public class DatabasePanel extends JPanel {
 			button.setSelected(true);
 			final AnalysisFull thisAnalysis = analysis;
 			button.addItemListener(new ItemListener() {
+				@Override
 				public void itemStateChanged(ItemEvent arg0) {
 					if (arg0.getStateChange() == ItemEvent.SELECTED && !switchingAnalysis){
 						new Thread(new Runnable(){
+							@Override
 							public void run(){
 								mainFrame.changeAnalysis(thisAnalysis);
 							}
@@ -128,6 +130,7 @@ public class DatabasePanel extends JPanel {
 		button_add.setToolTipText("Create a new selection of columns for this analysis");
 		button_add.setPreferredSize(new Dimension(54,54));
 		button_add.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				addNewColumnSelection();
 			}
@@ -152,9 +155,11 @@ public class DatabasePanel extends JPanel {
 		selection_default = new JRadioButton("Default columns");
 		selection_default.setToolTipText("Request the default columns set for this analysis");
 		selection_default.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(ItemEvent arg0) {
 				if (arg0.getStateChange() == ItemEvent.SELECTED){
 					new Thread(new Runnable() {
+						@Override
 						public void run() {
 							mainFrame.refreshTable();
 							if (!switchingAnalysis) {
@@ -175,9 +180,11 @@ public class DatabasePanel extends JPanel {
 		selection_all = new JRadioButton("All columns");
 		selection_all.setToolTipText("Request all columns available in the database");
 		selection_all.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(ItemEvent arg0) {
 				if (arg0.getStateChange() == ItemEvent.SELECTED){
 					new Thread(new Runnable() {
+						@Override
 						public void run() {
 							mainFrame.refreshTable();
 							if (!switchingAnalysis) {
@@ -197,9 +204,11 @@ public class DatabasePanel extends JPanel {
 		
 		selection_custom = new JRadioButton("Columns selection");
 		selection_custom.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(ItemEvent arg0) {
 				if (arg0.getStateChange() == ItemEvent.SELECTED){
 					new Thread(new Runnable() {
+						@Override
 						public void run() {
 							if (loadedSelection == null){
 								if(!loadSelectionFromProfile()){

@@ -92,7 +92,8 @@ public class GlobalSettingsPanel extends ManagerPanel {
 	    tree.expandRow(i);
 		}
 		tree.addTreeSelectionListener(new TreeSelectionListener() {
-      public void valueChanged(TreeSelectionEvent e) {
+      @Override
+			public void valueChanged(TreeSelectionEvent e) {
       	DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
       	StringBuilder sb = new StringBuilder();
       	TreeNode[] path = selectedNode.getPath();

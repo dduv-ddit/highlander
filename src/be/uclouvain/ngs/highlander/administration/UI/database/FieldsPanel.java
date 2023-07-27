@@ -101,7 +101,7 @@ public class FieldsPanel extends ManagerPanel {
 		splitPane.setLeftComponent(getLeftPanel());
 		splitPane.setRightComponent(getRightPanel());
 		
-		JPanel southPanel = new JPanel(new WrapLayout(WrapLayout.CENTER));
+		JPanel southPanel = new JPanel(new WrapLayout(FlowLayout.CENTER));
 		add(southPanel, BorderLayout.SOUTH);
 
 		JButton createNewCategoryButton = new JButton("Create category", Resources.getScaledIcon(Resources.i3dPlus, 16));
@@ -249,6 +249,7 @@ public class FieldsPanel extends ManagerPanel {
 		JButton button_up = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleUp, 24));
 		button_up.setToolTipText("Put selected category before for fields ordering (and details boxes) in Highlander");
 		button_up.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				reorderCategories(listCategories.getSelectedIndex(), true);
 			}
@@ -262,6 +263,7 @@ public class FieldsPanel extends ManagerPanel {
 		JButton button_down = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleDown, 24));
 		button_down.setToolTipText("Put selected category after for fields ordering (and details boxes) in Highlander");
 		button_down.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				reorderCategories(listCategories.getSelectedIndex(), false);
 			}
@@ -297,6 +299,7 @@ public class FieldsPanel extends ManagerPanel {
 		JButton button_up_field = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleUp, 24));
 		button_up_field.setToolTipText("Put selected field before for fields ordering in Highlander");
 		button_up_field.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				reorderFields(listFields.getSelectedIndex(), true);
 			}
@@ -310,6 +313,7 @@ public class FieldsPanel extends ManagerPanel {
 		JButton button_down_field = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleDown, 24));
 		button_down_field.setToolTipText("Put selected field after for fields ordering in Highlander");
 		button_down_field.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				reorderFields(listFields.getSelectedIndex(), false);
 			}
@@ -596,6 +600,7 @@ public class FieldsPanel extends ManagerPanel {
 									@Override
 									public void run() {
 										SwingUtilities.invokeLater(new Runnable() {
+											@Override
 											public void run() {
 												waitingPanel.setVisible(true);
 												waitingPanel.start();
@@ -626,6 +631,7 @@ public class FieldsPanel extends ManagerPanel {
 											ProjectManager.toConsole(ex);
 										}
 										SwingUtilities.invokeLater(new Runnable() {
+											@Override
 											public void run() {
 												waitingPanel.setVisible(false);
 												waitingPanel.stop();
@@ -998,6 +1004,7 @@ public class FieldsPanel extends ManagerPanel {
 		if (resu != null){
 			String name = resu.toString().toLowerCase();
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(true);
 					waitingPanel.start();
@@ -1032,6 +1039,7 @@ public class FieldsPanel extends ManagerPanel {
 				ProjectManager.toConsole(ex);
 			}
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(false);
 					waitingPanel.stop();
@@ -1055,6 +1063,7 @@ public class FieldsPanel extends ManagerPanel {
 					return;
 				}else if (res == JOptionPane.YES_OPTION){
 					SwingUtilities.invokeLater(new Runnable() {
+						@Override
 						public void run() {
 							waitingPanel.setVisible(true);
 							waitingPanel.start();
@@ -1077,6 +1086,7 @@ public class FieldsPanel extends ManagerPanel {
 						ProjectManager.toConsole(ex);
 					}
 					SwingUtilities.invokeLater(new Runnable() {
+						@Override
 						public void run() {
 							waitingPanel.setVisible(false);
 							waitingPanel.stop();
@@ -1097,6 +1107,7 @@ public class FieldsPanel extends ManagerPanel {
 		if (resu != null){
 			String name = resu.toString().toLowerCase();
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(true);
 					waitingPanel.start();
@@ -1123,6 +1134,7 @@ public class FieldsPanel extends ManagerPanel {
 				ProjectManager.toConsole(ex);
 			}
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(false);
 					waitingPanel.stop();
@@ -1133,6 +1145,7 @@ public class FieldsPanel extends ManagerPanel {
 	
 	public void enableCategoryDetailBox(Category category) {
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				waitingPanel.setVisible(true);
 				waitingPanel.start();
@@ -1148,6 +1161,7 @@ public class FieldsPanel extends ManagerPanel {
 			ProjectManager.toConsole(ex);
 		}
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				waitingPanel.setVisible(false);
 				waitingPanel.stop();
@@ -1160,6 +1174,7 @@ public class FieldsPanel extends ManagerPanel {
 		if (resu != null){
 			Palette color = (Palette)resu;
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(true);
 					waitingPanel.start();
@@ -1175,6 +1190,7 @@ public class FieldsPanel extends ManagerPanel {
 				ProjectManager.toConsole(ex);
 			}
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(false);
 					waitingPanel.stop();
@@ -1195,6 +1211,7 @@ public class FieldsPanel extends ManagerPanel {
 				JOptionPane.showMessageDialog(this, "Field '"+fieldStr+"' already exists", "Error", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross, 64));
 			}else{
 				SwingUtilities.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						waitingPanel.setVisible(true);
 						waitingPanel.start();
@@ -1224,6 +1241,7 @@ public class FieldsPanel extends ManagerPanel {
 				}
 				ProjectManager.setHardUpdate(false);
 				SwingUtilities.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						waitingPanel.setVisible(false);
 						waitingPanel.stop();
@@ -1244,6 +1262,7 @@ public class FieldsPanel extends ManagerPanel {
 			return;
 		}else if (res == JOptionPane.YES_OPTION){
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(true);
 					waitingPanel.start();
@@ -1266,6 +1285,7 @@ public class FieldsPanel extends ManagerPanel {
 				ProjectManager.toConsole(ex);
 			}
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(false);
 					waitingPanel.stop();
@@ -1326,7 +1346,8 @@ public class FieldsPanel extends ManagerPanel {
 	}
 	
 	private class CategoryCellRenderer extends DefaultListCellRenderer {
-    public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean hasFocus) {
+    @Override
+		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean hasFocus) {
       Component comp = super.getListCellRendererComponent(list, value, index, isSelected, hasFocus);
       JLabel label = (JLabel) comp;
       Category category = (Category)value;
@@ -1345,6 +1366,7 @@ public class FieldsPanel extends ManagerPanel {
   }
 
 	private class FieldCellRenderer extends DefaultListCellRenderer {
+		@Override
 		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean hasFocus) {
 			Component comp = super.getListCellRendererComponent(list, value, index, isSelected, hasFocus);
 			JLabel label = (JLabel) comp;

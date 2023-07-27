@@ -33,7 +33,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -56,16 +56,19 @@ public abstract class MagicFilter extends Filter {
 	protected JLabel label;
 	protected ComboFilter preFiltering = null;
 
+	@Override
 	public boolean isSimple(){
 		//return true;
 		return (preFiltering == null);
 	}
 
+	@Override
 	public boolean isComplex(){
 		//return false;
 		return (preFiltering != null);
 	}
 
+	@Override
 	public Filter getSubFilter(int index){
 		//return null;
 		if (preFiltering != null){
@@ -75,6 +78,7 @@ public abstract class MagicFilter extends Filter {
 		}
 	}
 
+	@Override
 	public int getSubFilterCount(){
 		//return 0;
 		if (preFiltering != null){
@@ -84,6 +88,7 @@ public abstract class MagicFilter extends Filter {
 		}
 	}
 
+	@Override
 	public LogicalOperator getLogicalOperator(){
 		return null;
 	}
@@ -92,6 +97,7 @@ public abstract class MagicFilter extends Filter {
 		return preFiltering;
 	}
 
+	@Override
 	public boolean hasSamples() {
 		if (preFiltering != null){			
 			return preFiltering.hasSamples();
@@ -99,12 +105,14 @@ public abstract class MagicFilter extends Filter {
 		return true;
 	}
 
+	@Override
 	public Set<String> getUserDefinedSamples(boolean includeProfileList){
 		Set<String> set = getIncludedSamples();
 		set.addAll(getExcludedSamples());
 		return set;
 	}
 
+	@Override
 	public void setFilteringPanel(FilteringPanel filteringPanel){
 		this.filteringPanel = filteringPanel;
 	}
@@ -125,6 +133,7 @@ public abstract class MagicFilter extends Filter {
 		add(critPanel, BorderLayout.CENTER);
 
 		addMouseListener(new MouseAdapter() {
+			@Override
 			public void mousePressed(MouseEvent e) {
 				if (e.getClickCount() == 2) {
 					editFilter();
@@ -132,6 +141,7 @@ public abstract class MagicFilter extends Filter {
 			}
 		});
 		label.addMouseListener(new MouseAdapter() {
+			@Override
 			public void mousePressed(MouseEvent e) {
 				if (e.getClickCount() == 2) {
 					editFilter();
@@ -159,6 +169,7 @@ public abstract class MagicFilter extends Filter {
 		 */
 	}
 
+	@Override
 	public void delete(){
 		if (getParentFilter().getFilterType() == FilterType.COMBO){
 			//Only possible case : we are inside a simple ComboFilter
@@ -170,18 +181,21 @@ public abstract class MagicFilter extends Filter {
 		filteringPanel.refresh();
 	}
 
+	@Override
 	protected List<Field> getQueryWhereFields() throws Exception {
 		List<Field> list = new ArrayList<Field>();
 		list.add(Field.variant_sample_id);
 		return list;
 	}
 
+	@Override
 	protected String getQueryWhereClause(boolean includeTableWithJoinON) throws Exception {		
 		Map<Integer,String> resultIds = getResultIds(getAllSamples());
 		if (resultIds.isEmpty()) return (Field.variant_sample_id.getQueryWhereName(Highlander.getCurrentAnalysis(), false) + " IS NULL");
 		return (Field.variant_sample_id.getQueryWhereName(Highlander.getCurrentAnalysis(), false) + " IN ("+HighlanderDatabase.makeSqlList(resultIds.keySet(), Integer.class)+")");
 	}
 
+	@Override
 	protected VariantResults extractResults(Results res, List<Field> headers, String progressTxt, boolean indeterminateProgress) throws Exception {		
 		Map<Integer, Object[]> dataMap = new LinkedHashMap<Integer, Object[]>();
 		Map<Integer, String> variants = new LinkedHashMap<Integer, String>();
@@ -196,7 +210,13 @@ public abstract class MagicFilter extends Filter {
 			int col=0;
 			for (Field field : headers){
 				//when MySQL NULL is replaced by 0 for some fields (like evaluation), the 0 is a string and not an INT, causing type problems in VariantTable (for filtering on those columns)
-				rowData[col] = (field.getDefaultValue() != null && field.getDefaultValue().equals("0")) ? res.getInt(field.getName()) : res.getObject(field.getName()); 
+				if (field.getDefaultValue() != null && field.getDefaultValue().equals("0")) {
+					rowData[col] = res.getInt(field.getName());
+				}else if (field.getFieldClass() == OffsetDateTime.class){
+					rowData[col] = res.getTimestamp(field.getName());
+				}else {
+					rowData[col] = res.getObject(field.getName()); 					
+				}
 				col++;
 			}
 			int id = res.getInt("variant_sample_id");

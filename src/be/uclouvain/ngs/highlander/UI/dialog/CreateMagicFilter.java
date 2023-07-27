@@ -54,6 +54,7 @@ import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -260,6 +261,7 @@ public class CreateMagicFilter extends JDialog {
 		btnBack = new JButton(Resources.getScaledIcon(Resources.iCross, 24));
 		btnBack.setToolTipText("Back");
 		btnBack.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {	
 				if (currentPanel.equals(FILTER_SELECTION)){
 					cancelClose();
@@ -280,6 +282,7 @@ public class CreateMagicFilter extends JDialog {
 		btnNext = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleRight, 24));
 		btnNext.setToolTipText("Next");
 		btnNext.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {				
 				if (currentPanel.equals(FILTER_SELECTION)){
 					if (selectionVariantIntersection.isSelected()){
@@ -327,7 +330,7 @@ public class CreateMagicFilter extends JDialog {
 
 		filterSelectionPanel = new JPanel();
 		JScrollPane scroll = new JScrollPane(filterSelectionPanel);
-		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		centerPanel.add(scroll, FILTER_SELECTION);
 		GridBagLayout gbl_filterSelection = new GridBagLayout();
 		filterSelectionPanel.setLayout(gbl_filterSelection);
@@ -927,6 +930,7 @@ public class CreateMagicFilter extends JDialog {
 		panel.add(panel_add, BorderLayout.SOUTH);
 		JButton button_add = new JButton(Resources.getScaledIcon(Resources.iFaintPlus, 24));
 		button_add.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				addSampleInVariantIntersection(null);
 			}
@@ -955,6 +959,7 @@ public class CreateMagicFilter extends JDialog {
 		varIntSubPanel.add(panelSample, new GridBagConstraints(0, (varIntRow), 1, 1, 1.0, 0.0
 				,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));		
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				AutoCompleteSupport<String> support = AutoCompleteSupport.install(sampleBox, GlazedLists.eventListOf(availableSamples));
 				support.setCorrectsCase(true);
@@ -962,6 +967,7 @@ public class CreateMagicFilter extends JDialog {
 				support.setTextMatchingStrategy(TextMatcherEditor.NORMALIZED_STRATEGY);
 				support.setStrict(false);
 				sampleBox.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						if (arg0.getActionCommand().equals("comboBoxEdited")){
 							if (sampleBox.getSelectedIndex() < 0) sampleBox.setSelectedItem(null);
@@ -1025,6 +1031,7 @@ public class CreateMagicFilter extends JDialog {
 		panel.add(panel_add, BorderLayout.SOUTH);
 		JButton button_add = new JButton(Resources.getScaledIcon(Resources.iFaintPlus, 24));
 		button_add.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				addCritInVariantComplement(null, null, null);
 				panel.validate();
@@ -1061,6 +1068,7 @@ public class CreateMagicFilter extends JDialog {
 		panel_tokeep.add(panelTopToKeep, BorderLayout.NORTH);
 		final JButton addSampleToKeep = new JButton("Select sample(s) with variants to KEEP", Resources.getScaledIcon(Resources.i3dPlus, 24));
 		addSampleToKeep.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				Set<String> existingSamples = new TreeSet<>();
 				Enumeration<?> e = listToKeepModel.elements();
@@ -1117,6 +1125,7 @@ public class CreateMagicFilter extends JDialog {
 		panel_toexclude.add(panelTopToExclude, BorderLayout.NORTH);
 		final JButton addSampleToExclude = new JButton("Select sample(s) with variants to EXCLUDE", Resources.getScaledIcon(Resources.i3dPlus, 24));
 		addSampleToExclude.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				Set<String> existingSamples = new TreeSet<>();
 				Enumeration<?> e = listToExcludeModel.elements();
@@ -1206,6 +1215,7 @@ public class CreateMagicFilter extends JDialog {
 
 		JButton button_select = new JButton("Sample selection dialog", Resources.getScaledIcon(Resources.i3dPlus, 24));
 		button_select.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				Set<String> existingSamples = new TreeSet<>();
 				Enumeration<?> e = geneComSampleListModel.elements();
@@ -1252,6 +1262,7 @@ public class CreateMagicFilter extends JDialog {
 		freqpatPathologyPanel.add(freqpatMinCommonLabel);
 		freqpatPathology = new JComboBox<String>(availableSamples);
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {				
 				freqpatPathology = new JComboBox<String>(availablePathologies);
 				AutoCompleteSupport<String> support = AutoCompleteSupport.install(freqpatPathology, GlazedLists.eventListOf(availablePathologies));
@@ -1260,6 +1271,7 @@ public class CreateMagicFilter extends JDialog {
 				support.setTextMatchingStrategy(TextMatcherEditor.NORMALIZED_STRATEGY);
 				support.setStrict(false);
 				freqpatPathology.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent e) {
 						if (e.getActionCommand().equals("comboBoxEdited")){
 							JComboBox<?> sampleBox = (JComboBox<?>)e.getSource();
@@ -1310,6 +1322,7 @@ public class CreateMagicFilter extends JDialog {
 		
 		JButton button_select = new JButton("Sample selection dialog", Resources.getScaledIcon(Resources.i3dPlus, 24));
 		button_select.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				Set<String> existingSamples = new TreeSet<>();
 				Enumeration<?> e = freqpatSampleListModel.elements();
@@ -1366,14 +1379,15 @@ public class CreateMagicFilter extends JDialog {
 		Border compoundBorder = BorderFactory.createCompoundBorder(outterBorder, innerBorder);
 
 		JScrollPane scrollPane = new JScrollPane(text_intervals_intervals);
-		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setViewportView(text_intervals_intervals);
 		scrollPane.setBorder(compoundBorder);
 		panelIntervals.add(scrollPane, BorderLayout.CENTER);
 
 		JButton button_select = new JButton("Import intervals from profile or file", Resources.getScaledIcon(Resources.i3dPlus, 24));
 		button_select.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				AskListOfIntervalsDialog apd = new AskListOfIntervalsDialog(Highlander.getCurrentAnalysis().getReference());
 				Tools.centerWindow(apd, false);
@@ -1397,6 +1411,7 @@ public class CreateMagicFilter extends JDialog {
 
 		JButton button_select_2 = new JButton("Sample selection dialog", Resources.getScaledIcon(Resources.i3dPlus, 24));
 		button_select_2.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				Set<String> existingSamples = new TreeSet<>();
 				Enumeration<?> e = intervals_samples.elements();
@@ -1449,6 +1464,7 @@ public class CreateMagicFilter extends JDialog {
 
 		JButton button_select = new JButton("Sample selection dialog", Resources.getScaledIcon(Resources.i3dPlus, 24));
 		button_select.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				Set<String> existingSamples = new TreeSet<>();
 				Enumeration<?> e = same_codon_samples.elements();
@@ -1490,6 +1506,7 @@ public class CreateMagicFilter extends JDialog {
 
 		JButton button_select = new JButton("Sample selection dialog", Resources.getScaledIcon(Resources.i3dPlus, 24));
 		button_select.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				Set<String> existingSamples = new TreeSet<>();
 				Enumeration<?> e = mnp_samples.elements();
@@ -1528,6 +1545,7 @@ public class CreateMagicFilter extends JDialog {
 		northPanel.add(panel_combhet_main, BorderLayout.CENTER);
 
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {				
 				for (int i=0 ; i < combHetLabels.length ; i++){
 					JPanel panel_ch = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -1546,6 +1564,7 @@ public class CreateMagicFilter extends JDialog {
 					support.setTextMatchingStrategy(TextMatcherEditor.NORMALIZED_STRATEGY);
 					support.setStrict(false);
 					combHetBoxes.get(i).addActionListener(new ActionListener() {
+						@Override
 						public void actionPerformed(ActionEvent e) {
 							if (e.getActionCommand().equals("comboBoxEdited")){
 								JComboBox<?> sampleBox = (JComboBox<?>)e.getSource();
@@ -1585,6 +1604,7 @@ public class CreateMagicFilter extends JDialog {
 						varIntChkBoxes.get(varIntFields[4]).setSelected(crit.useAllelicDepthProportionAlt);
 					}
 					SwingUtilities.invokeLater(new Runnable() {
+						@Override
 						public void run() {
 							for (FieldCriterion fc : varIntValues.get(sampleBox)){
 								if (fc.getField().equalsIgnoreCase(varIntFields[0]) && crit.useZigosity){
@@ -1649,6 +1669,7 @@ public class CreateMagicFilter extends JDialog {
 				selectionPathologyFrequency.setSelected(true);
 				showPanel(PATHOLOGY_FREQUENCY);
 				SwingUtilities.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						try{
 							if (((PathologyFrequency)filter).getPreFiltering() != null) freqpatPreFilter.setFilter(((PathologyFrequency)filter).getPreFiltering(), "");
@@ -1730,6 +1751,7 @@ public class CreateMagicFilter extends JDialog {
 				selectionCombinedHeterozygous.setSelected(true);
 				showPanel(COMBINED_HETEROZYGOUS_VARIANTS);				
 				SwingUtilities.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						try{
 							if (((CombinedHeterozygousVariants)filter).getPreFiltering() != null) combHetPreFilter.setFilter(((CombinedHeterozygousVariants)filter).getPreFiltering(), "");
@@ -1921,6 +1943,7 @@ public class CreateMagicFilter extends JDialog {
 	}
 
 	//Overridden so we can exit when window is closed
+	@Override
 	protected void processWindowEvent(WindowEvent e) {
 		super.processWindowEvent(e);
 		if (e.getID() == WindowEvent.WINDOW_CLOSING) {

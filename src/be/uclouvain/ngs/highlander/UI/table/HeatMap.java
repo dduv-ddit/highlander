@@ -32,7 +32,7 @@ package be.uclouvain.ngs.highlander.UI.table;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.sql.Timestamp;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,6 +58,7 @@ public class HeatMap {
 		private ColorRange(ImageIcon icon){this.icon = icon;}
 		public JPanel getExampleRange(){
 			JPanel panel = new JPanel(){
+				@Override
 				public void paintComponent(Graphics g) {
 					Dimension dim = this.getSize();
 					int min = 0;
@@ -112,9 +113,9 @@ public class HeatMap {
 					Object val = table.getValueAt(row, column);
 					Class<?> colClass = table.getColumnClass(column);
 					if (val != null){
-						if (colClass == Timestamp.class){
-							if (((Timestamp)val).before((Timestamp)min)) min = val;
-							if (((Timestamp)val).after((Timestamp)max)) max = val;
+						if (colClass == OffsetDateTime.class){
+							if (((OffsetDateTime)val).isBefore((OffsetDateTime)min)) min = val;
+							if (((OffsetDateTime)val).isAfter((OffsetDateTime)max)) max = val;
 						}else if (colClass == Integer.class){
 							if (((Integer)val).intValue() < ((Integer)min).intValue()) min = val;
 							if (((Integer)val).intValue() > ((Integer)max).intValue()) max = val;
@@ -132,9 +133,9 @@ public class HeatMap {
 				}
 			}else if (method == ConversionMethod.RANGE_GIVEN){
 				Class<?> colClass = table.getColumnClass(column);
-				if (colClass == Timestamp.class){
-					min = Timestamp.valueOf(mininum);
-					max = Timestamp.valueOf(maximum);
+				if (colClass == OffsetDateTime.class){
+					min = OffsetDateTime.parse(mininum);
+					max = OffsetDateTime.parse(maximum);
 				}else if (colClass == Integer.class){
 					min = Integer.parseInt(mininum);
 					max = Integer.parseInt(maximum);
@@ -222,14 +223,14 @@ public class HeatMap {
 			break;
 		}		
 		double totalColor;
-		if (dataClass == Timestamp.class){
-			Timestamp min = (Timestamp)minVal;
-			Timestamp max = (Timestamp)maxVal;
-			Timestamp val = (Timestamp)value;
-			double range = (double)(max.compareTo(min));
+		if (dataClass == OffsetDateTime.class){
+			OffsetDateTime min = (OffsetDateTime)minVal;
+			OffsetDateTime max = (OffsetDateTime)maxVal;
+			OffsetDateTime val = (OffsetDateTime)value;
+			double range = (max.compareTo(min));
 			if (range > 0){
 				double ratio = rangeLength/range;
-				totalColor = (double)(max.compareTo(val) * ratio);
+				totalColor = max.compareTo(val) * ratio;
 			}else{
 				totalColor = bestVal;
 			}
@@ -237,10 +238,10 @@ public class HeatMap {
 			int min = (Integer)minVal;
 			int max = (Integer)maxVal;
 			int val = (Integer)value;
-			double range = (double)(max-min);
+			double range = max-min;
 			if (range > 0){
 				double ratio = rangeLength/range;
-				totalColor = (double)((val-min) * ratio);
+				totalColor = (val-min) * ratio;
 			}else{
 				totalColor = bestVal;
 			}
@@ -248,10 +249,10 @@ public class HeatMap {
 			long min = (Long)minVal;
 			long max = (Long)maxVal;
 			long val = (Long)value;
-			double range = (double)(max-min);
+			double range = max-min;
 			if (range > 0){
 				double ratio = rangeLength/range;
-				totalColor = (double)((val-min) * ratio);
+				totalColor = (val-min) * ratio;
 			}else{
 				totalColor = bestVal;
 			}
@@ -262,7 +263,7 @@ public class HeatMap {
 			double range = max-min;
 			if (range > 0){
 				double ratio = rangeLength/range;
-				totalColor = (double)((val-min) * ratio);
+				totalColor = (val-min) * ratio;
 			}else{
 				totalColor = bestVal;
 			}
@@ -270,10 +271,10 @@ public class HeatMap {
 			String min = minVal.toString();
 			String max = maxVal.toString();
 			String val = value.toString();
-			double range = (double)(max.compareTo(min));
+			double range = (max.compareTo(min));
 			if (range > 0){
 				double ratio = rangeLength/range;
-				totalColor = (double)(val.compareTo(min) * ratio);
+				totalColor = val.compareTo(min) * ratio;
 			}else{
 				totalColor = bestVal;
 			}

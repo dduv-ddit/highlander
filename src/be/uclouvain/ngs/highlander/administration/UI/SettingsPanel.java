@@ -24,6 +24,7 @@
 package be.uclouvain.ngs.highlander.administration.UI;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -56,7 +57,7 @@ public class SettingsPanel extends ManagerPanel {
 	public SettingsPanel(ProjectManager manager){
 		super(manager);
 
-		JPanel memory = new JPanel(new WrapLayout(WrapLayout.LEADING));
+		JPanel memory = new JPanel(new WrapLayout(FlowLayout.LEADING));
 
 		try {
 			String appData = Tools.getApplicationDataFolder();

@@ -30,6 +30,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FileDialog;
 import java.awt.FlowLayout;
+import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -42,7 +43,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.Timestamp;
+import java.time.OffsetDateTime;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -52,13 +53,13 @@ import java.util.TreeMap;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
 import javax.swing.table.AbstractTableModel;
@@ -110,7 +111,7 @@ public class CommentsManager extends JFrame {
 		int width = screenSize.width - (screenSize.width/3);
 		int height = screenSize.height - (screenSize.height/3);
 		setSize(new Dimension(width,height));
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
+		setExtendedState(Frame.MAXIMIZED_BOTH);
 		initUI();
 		this.addComponentListener(new ComponentListener() {
 			@Override
@@ -169,8 +170,10 @@ public class CommentsManager extends JFrame {
 		panel_north.add(boxCategories);
 		
 		commentsTable = new JTable(commentsTableModel){
+			@Override
 			protected JTableHeader createDefaultTableHeader() {
 				return new JTableHeader(columnModel) {
+					@Override
 					public String getToolTipText(MouseEvent e) {
 						java.awt.Point p = e.getPoint();
 						int index = columnModel.getColumnIndexAtX(p.x);
@@ -198,6 +201,7 @@ public class CommentsManager extends JFrame {
 		
 		JButton btnAdd = new JButton("Add element", Resources.getScaledIcon(Resources.i3dPlus, 24));
 		btnAdd.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {				
 				addElementsDialog();
 			}
@@ -206,6 +210,7 @@ public class CommentsManager extends JFrame {
 
 		JButton btnModifyPrivate = new JButton("Modify private comment", Resources.getScaledIcon(Resources.iUpdater, 24));
 		btnModifyPrivate.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {				
 				modifyPrivate();
 			}
@@ -214,6 +219,7 @@ public class CommentsManager extends JFrame {
 		
 		JButton btnModifyPublic = new JButton("Modify public comment", Resources.getScaledIcon(Resources.iUpdater, 24));
 		btnModifyPublic.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {				
 				modifyPublic();
 			}
@@ -222,6 +228,7 @@ public class CommentsManager extends JFrame {
 		
 		JButton btnExport = new JButton("Export", Resources.getScaledIcon(Resources.iExcel, 24));
 		btnExport.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {				
 				export();
 			}
@@ -230,6 +237,7 @@ public class CommentsManager extends JFrame {
 		
 		JButton btnOk = new JButton("close", Resources.getScaledIcon(Resources.iButtonApply, 24));
 		btnOk.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {				
 				dispose();
 			}
@@ -242,6 +250,7 @@ public class CommentsManager extends JFrame {
 
 	private void fill() {
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				waitingPanel.setVisible(true);
 				waitingPanel.start();
@@ -354,6 +363,7 @@ public class CommentsManager extends JFrame {
 			Tools.exception(ex);
 		}
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				waitingPanel.setVisible(false);
 				waitingPanel.stop();
@@ -636,47 +646,48 @@ public class CommentsManager extends JFrame {
 			try{
 				waitingPanel.start();
 				try{
-					Workbook wb = new SXSSFWorkbook(100);  	
-					Sheet sheet = wb.createSheet(boxCategories.getSelectedItem()+" comments in "+boxAnalyses.getSelectedItem());
-					sheet.createFreezePane(1, 1);		
-					int r = 0;
-					Row row = sheet.createRow(r++);
-					for (int c = 0 ; c < commentsTable.getColumnCount() ; c++){
-						row.createCell(c).setCellValue(commentsTable.getColumnName(c));
-					}
-					int nrow = commentsTable.getRowCount();
-					waitingPanel.setProgressString("Exporting "+Tools.doubleToString(nrow, 0, false)+" lines", false);
-					waitingPanel.setProgressMaximum(nrow);
-
-					for (int i=0 ; i < nrow ; i++ ){
-						waitingPanel.setProgressValue(r);
-						row = sheet.createRow(r++);
+					try(Workbook wb = new SXSSFWorkbook(100)){
+						Sheet sheet = wb.createSheet(boxCategories.getSelectedItem()+" comments in "+boxAnalyses.getSelectedItem());
+						sheet.createFreezePane(1, 1);		
+						int r = 0;
+						Row row = sheet.createRow(r++);
 						for (int c = 0 ; c < commentsTable.getColumnCount() ; c++){
-							if (commentsTable.getValueAt(i, c) == null)
-								row.createCell(c);
-							else if (commentsTable.getColumnClass(c) == Timestamp.class)
-								row.createCell(c).setCellValue((Timestamp)commentsTable.getValueAt(i, c));
-							else if (commentsTable.getColumnClass(c) == Integer.class)
-								row.createCell(c).setCellValue(Integer.parseInt(commentsTable.getValueAt(i, c).toString()));
-							else if (commentsTable.getColumnClass(c) == Long.class)
-								row.createCell(c).setCellValue(Long.parseLong(commentsTable.getValueAt(i, c).toString()));
-							else if (commentsTable.getColumnClass(c) == Double.class)
-								row.createCell(c).setCellValue(Double.parseDouble(commentsTable.getValueAt(i, c).toString()));
-							else if (commentsTable.getColumnClass(c) == Boolean.class)
-								row.createCell(c).setCellValue(Boolean.parseBoolean(commentsTable.getValueAt(i, c).toString()));
-							else 
-								row.createCell(c).setCellValue(commentsTable.getValueAt(i, c).toString());
+							row.createCell(c).setCellValue(commentsTable.getColumnName(c));
 						}
-						waitingPanel.setProgressValue(i);						
-					}	
-					for (int c = 0 ; c < commentsTable.getColumnCount() ; c++){
-						sheet.autoSizeColumn(c);					
+						int nrow = commentsTable.getRowCount();
+						waitingPanel.setProgressString("Exporting "+Tools.doubleToString(nrow, 0, false)+" lines", false);
+						waitingPanel.setProgressMaximum(nrow);
+
+						for (int i=0 ; i < nrow ; i++ ){
+							waitingPanel.setProgressValue(r);
+							row = sheet.createRow(r++);
+							for (int c = 0 ; c < commentsTable.getColumnCount() ; c++){
+								if (commentsTable.getValueAt(i, c) == null)
+									row.createCell(c);
+								else if (commentsTable.getColumnClass(c) == OffsetDateTime.class)
+									row.createCell(c).setCellValue(((OffsetDateTime)commentsTable.getValueAt(i, c)).toLocalDateTime());
+								else if (commentsTable.getColumnClass(c) == Integer.class)
+									row.createCell(c).setCellValue(Integer.parseInt(commentsTable.getValueAt(i, c).toString()));
+								else if (commentsTable.getColumnClass(c) == Long.class)
+									row.createCell(c).setCellValue(Long.parseLong(commentsTable.getValueAt(i, c).toString()));
+								else if (commentsTable.getColumnClass(c) == Double.class)
+									row.createCell(c).setCellValue(Double.parseDouble(commentsTable.getValueAt(i, c).toString()));
+								else if (commentsTable.getColumnClass(c) == Boolean.class)
+									row.createCell(c).setCellValue(Boolean.parseBoolean(commentsTable.getValueAt(i, c).toString()));
+								else 
+									row.createCell(c).setCellValue(commentsTable.getValueAt(i, c).toString());
+							}
+							waitingPanel.setProgressValue(i);						
+						}	
+						for (int c = 0 ; c < commentsTable.getColumnCount() ; c++){
+							sheet.autoSizeColumn(c);					
+						}
+						waitingPanel.setProgressString("Writing file ...",true);		
+						try (FileOutputStream fileOut = new FileOutputStream(xls)){
+							wb.write(fileOut);
+						}
+						waitingPanel.setProgressDone();
 					}
-					waitingPanel.setProgressString("Writing file ...",true);		
-					try (FileOutputStream fileOut = new FileOutputStream(xls)){
-						wb.write(fileOut);
-					}
-					waitingPanel.setProgressDone();
 				}catch(Exception ex){
 					waitingPanel.forceStop();
 					throw ex;
@@ -695,6 +706,7 @@ public class CommentsManager extends JFrame {
 	}
 
 	private class ColoredTableCellRenderer extends MultiLineTableCellRenderer {
+		@Override
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 			Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 			JTextArea textArea = (JTextArea) comp;
@@ -727,7 +739,7 @@ public class CommentsManager extends JFrame {
 			if (isSelected) {
 				textArea.setBackground(new Color(51,153,255));
 			}
-		return Highlander.getCellRenderer().renderCell(textArea, value, field, JLabel.LEFT, row, isSelected, Resources.getTableEvenRowBackgroundColor(palette), Color.WHITE, false);
+		return Highlander.getCellRenderer().renderCell(textArea, value, field, SwingConstants.LEFT, row, isSelected, Resources.getTableEvenRowBackgroundColor(palette), Color.WHITE, false);
 		}
 	}
 
@@ -740,10 +752,12 @@ public class CommentsManager extends JFrame {
 			this.headers = headers;
 		}
 
+		@Override
 		public int getColumnCount() {
 			return headers.length;
 		}
 
+		@Override
 		public String getColumnName(int col) {
 			return headers[col];
 		}
@@ -757,19 +771,23 @@ public class CommentsManager extends JFrame {
 			return -1;
 		}
 
+		@Override
 		public int getRowCount() {
 			return data.length;
 		}
 
+		@Override
 		public Object getValueAt(int row, int col) {
 			return data[row][col];
 		}
 
+		@Override
 		public void setValueAt(Object value, int row, int col) {
 			data[row][col] = value;
 			fireTableCellUpdated(row, col);
 		}
 
+		@Override
 		public boolean isCellEditable(int rowIndex, int columnIndex) {
 			return false;
 		}

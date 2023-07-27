@@ -39,7 +39,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
-import java.sql.Timestamp;
+import java.time.OffsetDateTime;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -66,6 +66,7 @@ import javax.swing.RowFilter;
 import javax.swing.RowSorter;
 import javax.swing.RowSorter.SortKey;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -82,9 +83,11 @@ import java.io.FileWriter;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.ClientAnchor;
+import org.apache.poi.ss.usermodel.ClientAnchor.AnchorType;
 import org.apache.poi.ss.usermodel.Comment;
 import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Drawing;
@@ -184,8 +187,10 @@ public class VariantsTable extends JPanel {
 				return tip;
 			}
 
+			@Override
 			protected JTableHeader createDefaultTableHeader() {
 				return new JTableHeader(columnModel) {
+					@Override
 					public String getToolTipText(MouseEvent e) {
 						java.awt.Point p = e.getPoint();
 						int index = columnModel.getColumnIndexAtX(p.x);
@@ -251,8 +256,8 @@ public class VariantsTable extends JPanel {
 		memoryBar.setPreferredSize(new Dimension(150, 24));
 		memoryBar.setMaximum((int)(Runtime.getRuntime().maxMemory() / 1024 /1024));
 		memoryBar.setValue(Tools.getUsedMemoryInMb());
-		memoryBar.setString(Tools.doubleToString(((double)Tools.getUsedMemoryInMb() / 1024.0), 1, false) + " Gb / " 
-				+ (Tools.doubleToString(((double)(Runtime.getRuntime().maxMemory() / 1024 /1024) / 1024.0), 1, false)) + " Gb");
+		memoryBar.setString(Tools.doubleToString((Tools.getUsedMemoryInMb() / 1024.0), 1, false) + " Gb / " 
+				+ (Tools.doubleToString((Runtime.getRuntime().maxMemory() / 1024 /1024 / 1024.0), 1, false)) + " Gb");
 		memoryBar.setStringPainted(true);
 		memoryBar.setToolTipText("Memory currently used by Highlander with bar length equal to allowed memory");
 		panel.add(memoryBar);
@@ -278,6 +283,7 @@ public class VariantsTable extends JPanel {
 		btnSave.setToolTipText("Save current variant list in your profile");
 		btnSave.setPreferredSize(new Dimension(32,32));
 		btnSave.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable() {
 					@Override
@@ -293,6 +299,7 @@ public class VariantsTable extends JPanel {
 		btnLoad.setToolTipText("Load a variant list from your profile");
 		btnLoad.setPreferredSize(new Dimension(32,32));
 		btnLoad.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable() {
 					@Override
@@ -313,6 +320,7 @@ public class VariantsTable extends JPanel {
 
 	public void showWelcome(){
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				scrollPane.setViewportView(startTxt);
 			}
@@ -398,6 +406,7 @@ public class VariantsTable extends JPanel {
 	}
 
 	private class ColoredTableCellRenderer extends DefaultTableCellRenderer {
+		@Override
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 			Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 			JLabel label = (JLabel) comp;
@@ -428,10 +437,12 @@ public class VariantsTable extends JPanel {
 			this.uniqueVariant = uniqueVariant;
 		}
 
+		@Override
 		public int getColumnCount() {
 			return headers.length;
 		}
 
+		@Override
 		public String getColumnName(int col) {
 			return headers[col].getName();
 		}
@@ -451,10 +462,12 @@ public class VariantsTable extends JPanel {
 			return headers[col].getHtmlTooltip();
 		}
 
+		@Override
 		public int getRowCount() {
 			return data.length;
 		}
 
+		@Override
 		public Class<?> getColumnClass(int columnIndex) {
 			return headers[columnIndex].getFieldClass();
 		}
@@ -463,6 +476,7 @@ public class VariantsTable extends JPanel {
 			return headers[columnIndex];
 		}
 		
+		@Override
 		public Object getValueAt(int row, int col) {
 			return data[row][col];
 		}
@@ -489,6 +503,7 @@ public class VariantsTable extends JPanel {
 						data[i][j] = valueToModify;
 						final int row = i;
 						SwingUtilities.invokeLater(new Runnable(){
+							@Override
 							public void run(){
 								try{
 									fireTableRowsUpdated(row,row);
@@ -514,6 +529,7 @@ public class VariantsTable extends JPanel {
 								data[i][j] = valueToModify;
 								final int row = i;
 								SwingUtilities.invokeLater(new Runnable(){
+									@Override
 									public void run(){
 										try{
 											fireTableRowsUpdated(row,row);
@@ -542,6 +558,7 @@ public class VariantsTable extends JPanel {
 								data[i][j] = valueToModify;
 								final int row = i;
 								SwingUtilities.invokeLater(new Runnable(){
+									@Override
 									public void run(){
 										try{
 											fireTableRowsUpdated(row,row);
@@ -566,9 +583,11 @@ public class VariantsTable extends JPanel {
 			return null;
 		}
 
+		@Override
 		public void setValueAt(Object value, int row, int col) {
 		}
 
+		@Override
 		public boolean isCellEditable(int rowIndex, int columnIndex) {
 			return false;
 		}
@@ -622,6 +641,7 @@ public class VariantsTable extends JPanel {
 	public void fillTable(final VariantResults variantResults){
 		scrollPane.setViewportView(table);
 		SwingUtilities.invokeLater(new Runnable(){
+			@Override
 			public void run(){
 				try{
 					VariantsTableModel model = new VariantsTableModel(variantResults.headers, variantResults.data, variantResults.id, variantResults.variant);
@@ -1183,7 +1203,7 @@ public class VariantsTable extends JPanel {
 						if (numQuals == 0) {
 							fw.write(missing);
 						}else {
-							fw.write(Tools.doubleToString(sumQuals/(double)numQuals, 2, false, false));
+							fw.write(Tools.doubleToString(sumQuals/numQuals, 2, false, false));
 						}
 						fw.write(columnDelimiter);
 						//FILTER
@@ -1371,188 +1391,189 @@ public class VariantsTable extends JPanel {
 		try{
 			int columnCount = table.getColumnCount();
 			if (addNormalReadCount) columnCount += 2;
-			Workbook wb = new SXSSFWorkbook(100);  		
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-			Sheet sheet = wb.createSheet(Highlander.getCurrentAnalysis() + " " + df.format(System.currentTimeMillis()));
-			sheet.createFreezePane(0, 1);		
-			int r = 0;
-			Row row = sheet.createRow(r++);
-			row.setHeightInPoints(50);
-			VariantsTableModel model = (VariantsTableModel)table.getModel();
-			CellStyle cs = sheet.getWorkbook().createCellStyle();
-			cs.setWrapText(true);
-			int[] alignments = new int[columnCount];
-			for (int c = 0 ; c < table.getColumnCount() ; c++){
-				Cell cell = row.createCell(c);
-				cell.setCellValue(table.getColumnName(c));
-				setCellComment(row.getCell(c), model.headers[table.convertColumnIndexToModel(c)].getDescriptionAndSource());
-				sheet.setColumnWidth(c, Math.min(model.headers[table.convertColumnIndexToModel(c)].getSize()*32, 250*128));
-				alignments[c] = model.getColumnAlignment(c);
-				cell.setCellStyle(cs);
-			}
-			if (addNormalReadCount) {
-				int c = table.getColumnCount();
-				Cell cell = row.createCell(c);
-				cell.setCellValue("Normal sample");
-				setCellComment(row.getCell(c), "Normal sample");
-				sheet.setColumnWidth(c, 85*32);
-				alignments[c] = JLabel.LEFT;
-				cell.setCellStyle(cs);
-				c++;
-				cell = row.createCell(c);
-				cell.setCellValue("Normal read count");
-				setCellComment(row.getCell(c), "Read count in the normal sample");
-				sheet.setColumnWidth(c, 70*32);
-				alignments[c] = JLabel.CENTER;
-				cell.setCellStyle(cs);
-			}
-			sheet.setAutoFilter(new CellRangeAddress(0, 0, 0, columnCount-1));
-			int nrow = table.getRowCount();
-			Highlander.waitingPanel.setProgressString("Exporting "+Tools.doubleToString(nrow, 0, false)+" variants", false);
-			Highlander.waitingPanel.setProgressMaximum(nrow);
-			Highlander.getCellRenderer().clearCellStyles();
-			for (int i=0 ; i < nrow ; i++ ){
-				Highlander.waitingPanel.setProgressValue(r);
-				row = sheet.createRow(r++);
+			try(Workbook wb = new SXSSFWorkbook(100)){  		
+				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				Sheet sheet = wb.createSheet(Highlander.getCurrentAnalysis() + " " + df.format(System.currentTimeMillis()));
+				sheet.createFreezePane(0, 1);		
+				int r = 0;
+				Row row = sheet.createRow(r++);
+				row.setHeightInPoints(50);
+				VariantsTableModel model = (VariantsTableModel)table.getModel();
+				CellStyle cs = sheet.getWorkbook().createCellStyle();
+				cs.setWrapText(true);
+				int[] alignments = new int[columnCount];
 				for (int c = 0 ; c < table.getColumnCount() ; c++){
 					Cell cell = row.createCell(c);
-					if (table.getValueAt(i, c) != null){
-						Field field = ((VariantsTableModel)table.getModel()).getColumnField(c);
-						Highlander.getCellRenderer().formatXlsCell(table.getValueAt(i, c), field, alignments[c], sheet, cell, i);
-						if (table.getColumnClass(c) == Timestamp.class){
-							cell.setCellValue((Timestamp)table.getValueAt(i, c));
-						}else if (table.getColumnClass(c) == Integer.class){
-							cell.setCellValue(Integer.parseInt(table.getValueAt(i, c).toString()));
-						}else if (table.getColumnClass(c) == Long.class){
-							cell.setCellValue(Long.parseLong(table.getValueAt(i, c).toString()));
-						}else if (table.getColumnClass(c) == Double.class){
-							cell.setCellValue(Double.parseDouble(table.getValueAt(i, c).toString()));
-						}else if (table.getColumnClass(c) == Boolean.class){
-							cell.setCellValue(Boolean.parseBoolean(table.getValueAt(i, c).toString()));
-						}else {
-							cell.setCellValue(table.getValueAt(i, c).toString());
-						}
-					}
+					cell.setCellValue(table.getColumnName(c));
+					setCellComment(row.getCell(c), model.headers[table.convertColumnIndexToModel(c)].getDescriptionAndSource());
+					sheet.setColumnWidth(c, Math.min(model.headers[table.convertColumnIndexToModel(c)].getSize()*32, 250*128));
+					alignments[c] = model.getColumnAlignment(c);
+					cell.setCellStyle(cs);
 				}
 				if (addNormalReadCount) {
-					int idxSample = model.getColumnIndex(Field.sample);
-					int idxChr = model.getColumnIndex(Field.chr);
-					int idxPos = model.getColumnIndex(Field.pos);
-					int idxRef = model.getColumnIndex(Field.reference);
-					String sample = "";
-					String chr = "";
-					int pos = -1;
-					String ref = "";
-					if (idxSample == -1 || idxChr == -1 || idxPos == -1 || idxRef == -1) {
-						try (Results res = Highlander.getDB().select(Schema.HIGHLANDER, 
-								"SELECT sample, chr, pos, reference "
-								+ "FROM " + Highlander.getCurrentAnalysis().getFromSampleAnnotations()
-								+ Highlander.getCurrentAnalysis().getJoinProjects()
-								+ "WHERE variant_sample_id = " + model.getVariantId(i))) {
-							if (res.next()){
-								sample = res.getString("sample");
-								chr = res.getString("chr");
-								pos = res.getInt("pos");
-								ref = res.getString("reference");
-							}
-						}
-					}else{
-						sample = model.getValueAt(i, idxSample).toString();
-						chr = model.getValueAt(i, idxChr).toString();
-						pos = Integer.parseInt(model.getValueAt(i, idxPos).toString());
-						ref = model.getValueAt(i, idxRef).toString();
-					}
-					String normal = null;
-					try (Results res = Highlander.getDB().select(Schema.HIGHLANDER, 
-							"SELECT p2.sample "
-							+ "FROM projects as p "
-							+ "LEFT JOIN projects as p2 ON p.normal_id = p2.project_id "
-							+ "JOIN projects_analyses as pa ON p.project_id = pa.project_id "
-							+ "WHERE pa.analysis = '"+Highlander.getCurrentAnalysis()+"' AND p.sample = '"+sample+"'")) {
-						if (res.next()){
-							normal = res.getString("p2.sample");
-						}
-					}	
 					int c = table.getColumnCount();
 					Cell cell = row.createCell(c);
-					if (normal != null) {
-						Highlander.getCellRenderer().formatXlsCell(normal, new Field("Normal sample"), alignments[c], sheet, cell, i);
-						cell.setCellValue(normal);
-						c++;
-						cell = row.createCell(c);
-						int val = BamViewer.getReadCount(Highlander.getCurrentAnalysis(), sample, new Interval(Highlander.getCurrentAnalysis().getReference(), chr, pos, pos+ref.length()-1));
-						Highlander.getCellRenderer().formatXlsCell(val, new Field("Read count in the normal sample"), alignments[c], sheet, cell, i);
-						cell.setCellValue(val);
+					cell.setCellValue("Normal sample");
+					setCellComment(row.getCell(c), "Normal sample");
+					sheet.setColumnWidth(c, 85*32);
+					alignments[c] = SwingConstants.LEFT;
+					cell.setCellStyle(cs);
+					c++;
+					cell = row.createCell(c);
+					cell.setCellValue("Normal read count");
+					setCellComment(row.getCell(c), "Read count in the normal sample");
+					sheet.setColumnWidth(c, 70*32);
+					alignments[c] = SwingConstants.CENTER;
+					cell.setCellStyle(cs);
+				}
+				sheet.setAutoFilter(new CellRangeAddress(0, 0, 0, columnCount-1));
+				int nrow = table.getRowCount();
+				Highlander.waitingPanel.setProgressString("Exporting "+Tools.doubleToString(nrow, 0, false)+" variants", false);
+				Highlander.waitingPanel.setProgressMaximum(nrow);
+				Highlander.getCellRenderer().clearCellStyles();
+				for (int i=0 ; i < nrow ; i++ ){
+					Highlander.waitingPanel.setProgressValue(r);
+					row = sheet.createRow(r++);
+					for (int c = 0 ; c < table.getColumnCount() ; c++){
+						Cell cell = row.createCell(c);
+						if (table.getValueAt(i, c) != null){
+							Field field = ((VariantsTableModel)table.getModel()).getColumnField(c);
+							Highlander.getCellRenderer().formatXlsCell(table.getValueAt(i, c), field, alignments[c], sheet, cell, i);
+							if (table.getColumnClass(c) == OffsetDateTime.class){
+								cell.setCellValue(((OffsetDateTime)table.getValueAt(i, c)).toLocalDateTime());
+							}else if (table.getColumnClass(c) == Integer.class){
+								cell.setCellValue(Integer.parseInt(table.getValueAt(i, c).toString()));
+							}else if (table.getColumnClass(c) == Long.class){
+								cell.setCellValue(Long.parseLong(table.getValueAt(i, c).toString()));
+							}else if (table.getColumnClass(c) == Double.class){
+								cell.setCellValue(Double.parseDouble(table.getValueAt(i, c).toString()));
+							}else if (table.getColumnClass(c) == Boolean.class){
+								cell.setCellValue(Boolean.parseBoolean(table.getValueAt(i, c).toString()));
+							}else {
+								cell.setCellValue(StringUtils.left(table.getValueAt(i, c).toString(), 32765)); //The maximum length of cell contents (text) is 32767 characters								
+							}
+						}
+					}
+					if (addNormalReadCount) {
+						int idxSample = model.getColumnIndex(Field.sample);
+						int idxChr = model.getColumnIndex(Field.chr);
+						int idxPos = model.getColumnIndex(Field.pos);
+						int idxRef = model.getColumnIndex(Field.reference);
+						String sample = "";
+						String chr = "";
+						int pos = -1;
+						String ref = "";
+						if (idxSample == -1 || idxChr == -1 || idxPos == -1 || idxRef == -1) {
+							try (Results res = Highlander.getDB().select(Schema.HIGHLANDER, 
+									"SELECT sample, chr, pos, reference "
+											+ "FROM " + Highlander.getCurrentAnalysis().getFromSampleAnnotations()
+											+ Highlander.getCurrentAnalysis().getJoinProjects()
+											+ "WHERE variant_sample_id = " + model.getVariantId(i))) {
+								if (res.next()){
+									sample = res.getString("sample");
+									chr = res.getString("chr");
+									pos = res.getInt("pos");
+									ref = res.getString("reference");
+								}
+							}
+						}else{
+							sample = model.getValueAt(i, idxSample).toString();
+							chr = model.getValueAt(i, idxChr).toString();
+							pos = Integer.parseInt(model.getValueAt(i, idxPos).toString());
+							ref = model.getValueAt(i, idxRef).toString();
+						}
+						String normal = null;
+						try (Results res = Highlander.getDB().select(Schema.HIGHLANDER, 
+								"SELECT p2.sample "
+										+ "FROM projects as p "
+										+ "LEFT JOIN projects as p2 ON p.normal_id = p2.project_id "
+										+ "JOIN projects_analyses as pa ON p.project_id = pa.project_id "
+										+ "WHERE pa.analysis = '"+Highlander.getCurrentAnalysis()+"' AND p.sample = '"+sample+"'")) {
+							if (res.next()){
+								normal = res.getString("p2.sample");
+							}
+						}	
+						int c = table.getColumnCount();
+						Cell cell = row.createCell(c);
+						if (normal != null) {
+							Highlander.getCellRenderer().formatXlsCell(normal, new Field("Normal sample"), alignments[c], sheet, cell, i);
+							cell.setCellValue(normal);
+							c++;
+							cell = row.createCell(c);
+							int val = BamViewer.getReadCount(Highlander.getCurrentAnalysis(), sample, new Interval(Highlander.getCurrentAnalysis().getReference(), chr, pos, pos+ref.length()-1));
+							Highlander.getCellRenderer().formatXlsCell(val, new Field("Read count in the normal sample"), alignments[c], sheet, cell, i);
+							cell.setCellValue(val);
+						}
 					}
 				}
-			}
-			Highlander.waitingPanel.setProgressValue(nrow);
+				Highlander.waitingPanel.setProgressValue(nrow);
 
-			Sheet sheetFilt = wb.createSheet("Filters details");
-			r = 0;
-			row = sheetFilt.createRow(r++);
-			Cell cell = row.createCell(0);
-
-			if (mainFrame.getCurrentFilterName() != null){
-				cell = row.createCell(0);
-				cell.setCellValue("Filter " + mainFrame.getCurrentFilterName());
+				Sheet sheetFilt = wb.createSheet("Filters details");
+				r = 0;
 				row = sheetFilt.createRow(r++);
-			}
+				Cell cell = row.createCell(0);
 
-			if (mainFrame.getCurrentFilter() != null) {
+				if (mainFrame.getCurrentFilterName() != null){
+					cell = row.createCell(0);
+					cell.setCellValue("Filter " + mainFrame.getCurrentFilterName());
+					row = sheetFilt.createRow(r++);
+				}
+
+				if (mainFrame.getCurrentFilter() != null) {
+					cell = row.createCell(0);
+					cell.setCellValue(mainFrame.getCurrentFilter().toString());
+					if (rowFilterExp != null && rowFilterExp.length() > 0){
+						row = sheetFilt.createRow(r++);
+						row = sheetFilt.createRow(r++);
+						cell = row.createCell(0);
+						cell.setCellValue("Search criterion applied:");
+						row = sheetFilt.createRow(r++);
+						cell = row.createCell(0);
+						cell.setCellValue(rowFilterExp);
+					}
+				}
+
+				row = sheetFilt.createRow(r++);
+				row = sheetFilt.createRow(r++);
 				cell = row.createCell(0);
-				cell.setCellValue(mainFrame.getCurrentFilter().toString());
-				if (rowFilterExp != null && rowFilterExp.length() > 0){
-					row = sheetFilt.createRow(r++);
-					row = sheetFilt.createRow(r++);
-					cell = row.createCell(0);
-					cell.setCellValue("Search criterion applied:");
-					row = sheetFilt.createRow(r++);
-					cell = row.createCell(0);
-					cell.setCellValue(rowFilterExp);
+				cell.setCellValue("Analysis");
+				cell = row.createCell(1);
+				cell.setCellValue(""+Highlander.getCurrentAnalysis());
+
+				row = sheetFilt.createRow(r++);
+				row = sheetFilt.createRow(r++);
+				cell = row.createCell(0);
+
+				cell.setCellValue("Generated with Highlander version " + Highlander.version + " by " + Highlander.getLoggedUser() + " ("+df.format(System.currentTimeMillis())+")");
+
+				if (mainFrame.getCurrentFilter() != null) {
+					final CreationHelper helper = wb.getCreationHelper();
+					final Drawing<?> drawing = sheetFilt.createDrawingPatriarch();
+					final ClientAnchor anchor = helper.createClientAnchor();
+					anchor.setAnchorType( AnchorType.MOVE_AND_RESIZE );
+					BufferedImage filterImage = FilteringTree.getFilterImage(mainFrame.getCurrentFilter());
+					byte[] imageInByte;
+					try (ByteArrayOutputStream baos = new ByteArrayOutputStream()){
+						ImageIO.write( filterImage, "png", baos );
+						baos.flush();
+						imageInByte = baos.toByteArray();
+					}
+					final int pictureIndex = wb.addPicture( imageInByte, Workbook.PICTURE_TYPE_PNG );
+					r++;
+					anchor.setCol1( 0 );
+					anchor.setRow1( r++ ); // same row is okay
+					anchor.setRow2( r++ );
+					anchor.setCol2( 1 );
+					final Picture pict = drawing.createPicture( anchor, pictureIndex );
+					pict.resize();
 				}
-			}
 
-			row = sheetFilt.createRow(r++);
-			row = sheetFilt.createRow(r++);
-			cell = row.createCell(0);
-			cell.setCellValue("Analysis");
-			cell = row.createCell(1);
-			cell.setCellValue(""+Highlander.getCurrentAnalysis());
-
-			row = sheetFilt.createRow(r++);
-			row = sheetFilt.createRow(r++);
-			cell = row.createCell(0);
-
-			cell.setCellValue("Generated with Highlander version " + Highlander.version + " by " + Highlander.getLoggedUser() + " ("+df.format(System.currentTimeMillis())+")");
-
-			if (mainFrame.getCurrentFilter() != null) {
-				final CreationHelper helper = wb.getCreationHelper();
-				final Drawing drawing = sheetFilt.createDrawingPatriarch();
-				final ClientAnchor anchor = helper.createClientAnchor();
-				anchor.setAnchorType( ClientAnchor.MOVE_AND_RESIZE );
-				BufferedImage filterImage = FilteringTree.getFilterImage(mainFrame.getCurrentFilter());
-				byte[] imageInByte;
-				try (ByteArrayOutputStream baos = new ByteArrayOutputStream()){
-					ImageIO.write( filterImage, "png", baos );
-					baos.flush();
-					imageInByte = baos.toByteArray();
+				Highlander.waitingPanel.setProgressString("Writing file ...",true);		
+				try (FileOutputStream fileOut = new FileOutputStream(file)){
+					wb.write(fileOut);
 				}
-				final int pictureIndex = wb.addPicture( imageInByte, Workbook.PICTURE_TYPE_PNG );
-				r++;
-				anchor.setCol1( 0 );
-				anchor.setRow1( r++ ); // same row is okay
-				anchor.setRow2( r++ );
-				anchor.setCol2( 1 );
-				final Picture pict = drawing.createPicture( anchor, pictureIndex );
-				pict.resize();
+				Highlander.waitingPanel.setProgressDone();
 			}
-			
-			Highlander.waitingPanel.setProgressString("Writing file ...",true);		
-			try (FileOutputStream fileOut = new FileOutputStream(file)){
-				wb.write(fileOut);
-			}
-			Highlander.waitingPanel.setProgressDone();
 		}catch(Exception ex){
 			Highlander.waitingPanel.forceStop();
 			throw ex;
@@ -1562,7 +1583,7 @@ public class VariantsTable extends JPanel {
 
 	private static void setCellComment(Cell cell, String cellComment){
 		CreationHelper factory = cell.getSheet().getWorkbook().getCreationHelper();
-		Drawing drawing = cell.getSheet().createDrawingPatriarch();
+		Drawing<?> drawing = cell.getSheet().createDrawingPatriarch();
 		ClientAnchor anchor = factory.createClientAnchor();
 		anchor.setCol1(cell.getColumnIndex());
 		anchor.setCol2(cell.getColumnIndex()+6);
@@ -1580,10 +1601,11 @@ public class VariantsTable extends JPanel {
 			public void run() {
 				while (true){
 					SwingUtilities.invokeLater(new Runnable() {
+						@Override
 						public void run() {
 							memoryBar.setValue(Tools.getUsedMemoryInMb());
-							memoryBar.setString(Tools.doubleToString(((double)Tools.getUsedMemoryInMb() / 1024.0), 1, false) + " Gb / " 
-									+ (Tools.doubleToString(((double)(Runtime.getRuntime().maxMemory() / 1024 /1024) / 1024.0), 1, false)) + " Gb");
+							memoryBar.setString(Tools.doubleToString((Tools.getUsedMemoryInMb() / 1024.0), 1, false) + " Gb / " 
+									+ (Tools.doubleToString((Runtime.getRuntime().maxMemory() / 1024 /1024 / 1024.0), 1, false)) + " Gb");
 							memoryBar.setStringPainted(true);				     
 						}
 					});

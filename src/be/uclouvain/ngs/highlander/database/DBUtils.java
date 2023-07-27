@@ -304,7 +304,7 @@ public class DBUtils {
 						+ "JOIN seq_region as R USING (seq_region_id) "
 						+ "JOIN coord_system as C USING (coord_system_id) " 
 						+ "JOIN transcript as T ON G.canonical_transcript_id = T.transcript_id "
-						+ "WHERE C.rank = 1 and R.`name` = '"+variant.getChromosome()+"' "
+						+ "WHERE C.`rank` = 1 and R.`name` = '"+variant.getChromosome()+"' "
 						+ "AND G.seq_region_start <= "+variant.getPosition()+" AND G.seq_region_end >= " + (variant.getPosition()+variant.getAffectedReferenceLength()) + " " //query optimization: it limits the regions to look at in transcript table, far bigger than gene table. Logically, the gene region is bigger, because it encompass all transcripts.
 						+ "AND T.seq_region_start <= "+variant.getPosition()+" AND T.seq_region_end >= " + (variant.getPosition()+variant.getAffectedReferenceLength()))){
 			while (res.next()) {
@@ -417,7 +417,7 @@ public class DBUtils {
 						+ "JOIN coord_system as C ON R.coord_system_id = C.coord_system_id " 
 						+ "JOIN assembly as A ON R.seq_region_id = A.asm_seq_region_id " 
 						+ "JOIN dna as D ON D.seq_region_id = A.cmp_seq_region_id "
-						+ "WHERE C.rank = 1 and R.`name` = '"+chr+"' "
+						+ "WHERE C.`rank` = 1 and R.`name` = '"+chr+"' "
 						+ "AND (asm_start <= "+start+" AND asm_end >= "+start+" OR asm_start <= "+end+" AND asm_end >= "+end+" OR asm_start >= "+start+" AND asm_end <= "+end+") "
 						+ "ORDER BY asm_start"
 				)){	

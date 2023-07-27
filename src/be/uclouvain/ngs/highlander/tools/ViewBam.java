@@ -425,36 +425,37 @@ public class ViewBam {
 		if (!filename.endsWith(".xlsx")) filename += ".xlsx";
 		File xls = new File(filename);
 		try{
-			Workbook wb = new SXSSFWorkbook(100); 
-			System.out.println("Preparing file ...");		
-			for (Interval pos : patterns.keySet()){
-				Object[][] table = patterns.get(pos);
-				String sheetname = pos.toString().replace(':', '-');
-				if (sheetname.length() > 30) sheetname = sheetname.substring(sheetname.length()-30, sheetname.length());
-				Sheet sheet = wb.createSheet(sheetname);
-				sheet.createFreezePane(0, 1);		
-				int r = 0;
-				Row row = sheet.createRow(r++);
-				row.setHeightInPoints(50);
-				for (int c = 0 ; c < table[0].length ; c++){
-					row.createCell(c).setCellValue(table[0][c].toString());
-				}
-				sheet.setAutoFilter(new CellRangeAddress(0, 0, 0, table[0].length-1));
-				for (int i=1 ; i < table.length ; i++ ){
-					row = sheet.createRow(r++);
-					for (int c = 0 ; c < table[i].length ; c++){
-						if (table[i][c] == null)
-							row.createCell(c);
-						else if (c > 0)
-							row.createCell(c).setCellValue(Integer.parseInt(table[i][c].toString()));
-						else 
-							row.createCell(c).setCellValue(table[i][c].toString());
+			try(Workbook wb = new SXSSFWorkbook(100)){
+				System.out.println("Preparing file ...");		
+				for (Interval pos : patterns.keySet()){
+					Object[][] table = patterns.get(pos);
+					String sheetname = pos.toString().replace(':', '-');
+					if (sheetname.length() > 30) sheetname = sheetname.substring(sheetname.length()-30, sheetname.length());
+					Sheet sheet = wb.createSheet(sheetname);
+					sheet.createFreezePane(0, 1);		
+					int r = 0;
+					Row row = sheet.createRow(r++);
+					row.setHeightInPoints(50);
+					for (int c = 0 ; c < table[0].length ; c++){
+						row.createCell(c).setCellValue(table[0][c].toString());
 					}
-				}		
-			}
-			System.out.println("Writing file ...");		
-			try (FileOutputStream fileOut = new FileOutputStream(xls)){
-				wb.write(fileOut);
+					sheet.setAutoFilter(new CellRangeAddress(0, 0, 0, table[0].length-1));
+					for (int i=1 ; i < table.length ; i++ ){
+						row = sheet.createRow(r++);
+						for (int c = 0 ; c < table[i].length ; c++){
+							if (table[i][c] == null)
+								row.createCell(c);
+							else if (c > 0)
+								row.createCell(c).setCellValue(Integer.parseInt(table[i][c].toString()));
+							else 
+								row.createCell(c).setCellValue(table[i][c].toString());
+						}
+					}		
+				}
+				System.out.println("Writing file ...");		
+				try (FileOutputStream fileOut = new FileOutputStream(xls)){
+					wb.write(fileOut);
+				}
 			}
 		}catch (Exception ex){
 			ex.printStackTrace();

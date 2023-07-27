@@ -148,8 +148,10 @@ public class VariantDistributionCharts extends JFrame {
 		JButton export = new JButton(Resources.getScaledIcon(Resources.iExportJpeg, 24));
 		export.setToolTipText("Export current chart to image file");
 		export.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						export();
 					}
@@ -160,6 +162,7 @@ public class VariantDistributionCharts extends JFrame {
 
 		JButton btnClose = new JButton(Resources.getScaledIcon(Resources.iCross, 24));
 		btnClose.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				dispose();
 			}
@@ -181,6 +184,7 @@ public class VariantDistributionCharts extends JFrame {
 		boxField = new JComboBox<>(fieldsArr);
 		boxField.setMaximumRowCount(20);
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				support = AutoCompleteSupport.install(boxField, fields);
 				support.setCorrectsCase(true);
@@ -190,6 +194,7 @@ public class VariantDistributionCharts extends JFrame {
 			}
 		});		
 		boxField.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (arg0.getActionCommand().equals("comboBoxEdited")){
 					if (boxField.getSelectedIndex() < 0) boxField.setSelectedItem(null);
@@ -209,6 +214,7 @@ public class VariantDistributionCharts extends JFrame {
 			public void itemStateChanged(ItemEvent arg0) {
 				if (boxField.getSelectedIndex() >= 0 && !data.isEmpty()){
 					new Thread(new Runnable(){
+						@Override
 						public void run(){
 							showChart((Field)boxField.getSelectedItem());;
 						}
@@ -223,6 +229,7 @@ public class VariantDistributionCharts extends JFrame {
 			public void itemStateChanged(ItemEvent arg0) {
 				if (boxField.getSelectedIndex() >= 0 && !data.isEmpty()){
 					new Thread(new Runnable(){
+						@Override
 						public void run(){
 							showChart((Field)boxField.getSelectedItem());;
 						}
@@ -237,6 +244,7 @@ public class VariantDistributionCharts extends JFrame {
 			public void itemStateChanged(ItemEvent arg0) {
 				if (boxField.getSelectedIndex() >= 0 && !data.isEmpty()){
 					new Thread(new Runnable(){
+						@Override
 						public void run(){
 							showChart((Field)boxField.getSelectedItem());;
 						}
@@ -263,6 +271,7 @@ public class VariantDistributionCharts extends JFrame {
 				show_mean.repaint();
 				if (boxField.getSelectedIndex() >= 0 && !data.isEmpty()){
 					new Thread(new Runnable(){
+						@Override
 						public void run(){
 							showChart((Field)boxField.getSelectedItem());;
 						}
@@ -276,9 +285,11 @@ public class VariantDistributionCharts extends JFrame {
 		JButton btnShow = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 24));
 		btnShow.setToolTipText("Display field distribution chart");
 		btnShow.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (boxField.getSelectedIndex() >= 0) { 
 					new Thread(new Runnable(){
+						@Override
 						public void run(){
 							fetchChartData(Highlander.getCurrentAnalysis(), (Field)boxField.getSelectedItem());
 						}
@@ -332,6 +343,7 @@ public class VariantDistributionCharts extends JFrame {
 	public void fetchChartData(Analysis analysis, Field field) {
 		try{
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(true);
 					waitingPanel.start();
@@ -683,6 +695,7 @@ public class VariantDistributionCharts extends JFrame {
 			}
 
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(false);
 					waitingPanel.stop();

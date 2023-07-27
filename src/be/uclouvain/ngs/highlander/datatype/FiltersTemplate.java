@@ -60,6 +60,7 @@ public class FiltersTemplate {
 		this.templateName = templateName;		
 	}
 
+	@Override
 	public String toString(){
 		return templateName;
 	}

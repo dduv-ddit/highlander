@@ -41,6 +41,7 @@ import java.awt.event.MouseListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -81,7 +82,8 @@ import be.uclouvain.ngs.highlander.datatype.AnalysisFull;
 public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 
 	private DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
+	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+	
 	private VariantsTable table;
 	private DetailsPanel mainPanel;
 	private boolean detailsLoaded = false;
@@ -117,18 +119,22 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 		initCommonUI(visible);
 	}
 
+	@Override
 	public DetailsPanel getDetailsPanel(){
 		return mainPanel;
 	}
 
+	@Override
 	public String getTitle(){
 		return "Variant evaluation";
 	}
 
+	@Override
 	public Palette getColor() {
 		return Field.evaluation.getCategory().getColor();
 	}
 
+	@Override
 	protected boolean isDetailsLoaded(){
 		return detailsLoaded;
 	}
@@ -439,6 +445,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 		}
 	}
 
+	@Override
 	protected void loadDetails(){
 		try{
 			AnalysisFull analysis = Highlander.getCurrentAnalysis();
@@ -494,25 +501,25 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 						if (var_id == variantSampleId){
 							val_evaluation = res.getString(Field.evaluation.getName());
 							val_evaluation_username = res.getString(Field.evaluation_username.getName());
-							val_evaluation_date = df.format(res.getTimestamp(Field.evaluation_date.getName()));
+							val_evaluation_date = res.getTimestamp(Field.evaluation_date.getName()).format(dtf);
 							val_check_insilico = Insilico.valueOf(res.getString(Field.check_insilico.getName()));
 							val_check_insilico_username = res.getString(Field.check_insilico_username.getName());
-							val_check_insilico_date = df.format(res.getTimestamp(Field.check_insilico_date.getName()));
+							val_check_insilico_date = res.getTimestamp(Field.check_insilico_date.getName()).format(dtf);
 							val_reporting = Reporting.valueOf(res.getString(Field.reporting.getName()));
 							val_reporting_username = res.getString(Field.reporting_username.getName());
-							val_reporting_date = df.format(res.getTimestamp(Field.reporting_date.getName()));
+							val_reporting_date = res.getTimestamp(Field.reporting_date.getName()).format(dtf);
 							val_check_validated_variant = Validation.valueOf(res.getString(Field.check_validated_variant.getName()));
 							val_check_validated_variant_username = res.getString(Field.check_validated_variant_username.getName());
-							val_check_validated_variant_date = df.format(res.getTimestamp(Field.check_validated_variant_date.getName()));
+							val_check_validated_variant_date = res.getTimestamp(Field.check_validated_variant_date.getName()).format(dtf);
 							val_check_somatic_variant = Mosaicism.valueOf(res.getString(Field.check_somatic_variant.getName()));
 							val_check_somatic_variant_username = res.getString(Field.check_somatic_variant_username.getName());
-							val_check_somatic_variant_date = df.format(res.getTimestamp(Field.check_somatic_variant_date.getName()));
+							val_check_somatic_variant_date = res.getTimestamp(Field.check_somatic_variant_date.getName()).format(dtf);
 							val_check_segregation = Segregation.valueOf(res.getString(Field.check_segregation.getName()));
 							val_check_segregation_username = res.getString(Field.check_segregation_username.getName());
-							val_check_segregation_date = df.format(res.getTimestamp(Field.check_segregation_date.getName()));
+							val_check_segregation_date = res.getTimestamp(Field.check_segregation_date.getName()).format(dtf);
 							val_evaluation_comments = res.getString(Field.evaluation_comments.getName()).replace("|", "\n");
 							val_evaluation_comments_username = res.getString(Field.evaluation_comments_username.getName());
-							val_evaluation_comments_date = df.format(res.getTimestamp(Field.evaluation_comments_date.getName()));
+							val_evaluation_comments_date = res.getTimestamp(Field.evaluation_comments_date.getName()).format(dtf);
 							val_history = res.getString(Field.history.getName()).replace('|', '\n');
 						}
 					}
@@ -535,6 +542,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			final JPopupMenu statusEvaluationPopupMenu = new JPopupMenu();
 			JMenuItem itemEvaluationNull = new JMenuItem("Variant has not been evaluated",Resources.getScaledIcon(Resources.iQuestion, 24));
 			itemEvaluationNull.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					try{
 						updateDatabaseVariant(Field.evaluation, 0, "Evaluation set to not evaluated ("+Highlander.getLoggedUser().getUsername()+" - "+df.format(System.currentTimeMillis())+")|");
@@ -549,6 +557,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			statusEvaluationPopupMenu.add(itemEvaluationNull);
 			JMenuItem itemEvaluation1 = new JMenuItem("Type I: Benign - Polymorphism ["+val_num_evaluated_as_type_1+"]",Resources.getScaledIcon(Resources.iRoman1, 24));
 			itemEvaluation1.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					try{
 						updateDatabaseVariant(Field.evaluation, 1, "Evaluation set to type I ("+Highlander.getLoggedUser().getUsername()+" - "+df.format(System.currentTimeMillis())+")|");
@@ -563,6 +572,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			statusEvaluationPopupMenu.add(itemEvaluation1);
 			JMenuItem itemEvaluation2 = new JMenuItem("Type II: Variant Likely Benign ["+val_num_evaluated_as_type_2+"]",Resources.getScaledIcon(Resources.iRoman2, 24));
 			itemEvaluation2.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					try{
 						updateDatabaseVariant(Field.evaluation, 2, "Evaluation set to type II ("+Highlander.getLoggedUser().getUsername()+" - "+df.format(System.currentTimeMillis())+")|");
@@ -577,6 +587,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			statusEvaluationPopupMenu.add(itemEvaluation2);
 			JMenuItem itemEvaluation3 = new JMenuItem("Type III: Variant of Unknown Significance ["+val_num_evaluated_as_type_3+"]",Resources.getScaledIcon(Resources.iRoman3, 24));
 			itemEvaluation3.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					try{
 						updateDatabaseVariant(Field.evaluation, 3, "Evaluation set to type III ("+Highlander.getLoggedUser().getUsername()+" - "+df.format(System.currentTimeMillis())+")|");
@@ -591,6 +602,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			statusEvaluationPopupMenu.add(itemEvaluation3);
 			JMenuItem itemEvaluation4 = new JMenuItem("Type IV: Variant Likely Pathogenic ["+val_num_evaluated_as_type_4+"]",Resources.getScaledIcon(Resources.iRoman4, 24));
 			itemEvaluation4.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					try{
 						updateDatabaseVariant(Field.evaluation, 4, "Evaluation set to type IV ("+Highlander.getLoggedUser().getUsername()+" - "+df.format(System.currentTimeMillis())+")|");
@@ -605,6 +617,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			statusEvaluationPopupMenu.add(itemEvaluation4);
 			JMenuItem itemEvaluation5 = new JMenuItem("Type V: Pathogenic Mutation ["+val_num_evaluated_as_type_5+"]",Resources.getScaledIcon(Resources.iRoman5, 24));
 			itemEvaluation5.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					try{
 						updateDatabaseVariant(Field.evaluation, 5, "Evaluation set to type V ("+Highlander.getLoggedUser().getUsername()+" - "+df.format(System.currentTimeMillis())+")|");
@@ -618,10 +631,15 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			});
 			statusEvaluationPopupMenu.add(itemEvaluation5);
 			MouseListener statusEvaluationPopupListener = new MouseListener() {
+				@Override
 				public void mouseReleased(MouseEvent e) {}
+				@Override
 				public void mousePressed(MouseEvent e) {}
+				@Override
 				public void mouseExited(MouseEvent e) {}
+				@Override
 				public void mouseEntered(MouseEvent e) {}
+				@Override
 				public void mouseClicked(MouseEvent e) {
 					try{
 						if (Highlander.getLoggedUser().hasPermissionToModify(analysis, var_id_to_annotation_id.keySet())){
@@ -643,7 +661,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			JLabel labelEvaluation = new JLabel(Field.evaluation.getName(), SwingConstants.LEFT);
 			labelEvaluation.setToolTipText(Field.evaluation.getHtmlTooltip());
 			panel.add(labelEvaluation, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(3, 3, 3, 3), 0, 0));
-			userEvaluation = new JLabel("", JLabel.LEFT);
+			userEvaluation = new JLabel("", SwingConstants.LEFT);
 			panel.add(userEvaluation, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(3, 3, 3, 5), 0, 0));
 			set_Evaluation(val_evaluation, val_evaluation_username, val_evaluation_date,false);
 
@@ -652,6 +670,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			final JPopupMenu statusInsilicoPopupMenu = new JPopupMenu();
 			JMenuItem itemInsilicoNotChecked = new JMenuItem("NOT_CHECKED - Variant has not been checked insilico",Resources.getScaledIcon(Resources.iQuestion, 24));
 			itemInsilicoNotChecked.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					try{
 						updateDatabaseVariant(Field.check_insilico, Insilico.NOT_CHECKED, "check_insilico set to NOT_CHECKED ("+Highlander.getLoggedUser().getUsername()+" - "+df.format(System.currentTimeMillis())+")|");
@@ -666,6 +685,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			statusInsilicoPopupMenu.add(itemInsilicoNotChecked);
 			JMenuItem itemInsilicoOK = new JMenuItem("OK - Variant has been checked insilico and it's likely a real variant",Resources.getScaledIcon(Resources.iButtonApply, 24));
 			itemInsilicoOK.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					try{
 						updateDatabaseVariant(Field.check_insilico, Insilico.OK, "check_insilico set to OK ("+Highlander.getLoggedUser().getUsername()+" - "+df.format(System.currentTimeMillis())+")|");
@@ -680,6 +700,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			statusInsilicoPopupMenu.add(itemInsilicoOK);
 			JMenuItem itemInsilicoNotOk = new JMenuItem("NOT_OK - Variant has been checked insilico and it's likely a sequencing error",Resources.getScaledIcon(Resources.iCross, 24));
 			itemInsilicoNotOk.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					try{
 						updateDatabaseVariant(Field.check_insilico, Insilico.NOT_OK, "check_insilico set to NOT_OK ("+Highlander.getLoggedUser().getUsername()+" - "+df.format(System.currentTimeMillis())+")|");
@@ -694,6 +715,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			statusInsilicoPopupMenu.add(itemInsilicoNotOk);
 			JMenuItem itemInsilicoSuspect = new JMenuItem("SUSPECT - Variant has been checked insilico but not sure if it's real or not",Resources.getScaledIcon(Resources.iAttention, 24));
 			itemInsilicoSuspect.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					try{
 						updateDatabaseVariant(Field.check_insilico, Insilico.SUSPECT, "check_insilico set to SUSPECT ("+Highlander.getLoggedUser().getUsername()+" - "+df.format(System.currentTimeMillis())+")|");
@@ -707,10 +729,15 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			});
 			statusInsilicoPopupMenu.add(itemInsilicoSuspect);
 			MouseListener statusInsilicoPopupListener = new MouseListener() {
+				@Override
 				public void mouseReleased(MouseEvent e) {}
+				@Override
 				public void mousePressed(MouseEvent e) {}
+				@Override
 				public void mouseExited(MouseEvent e) {}
+				@Override
 				public void mouseEntered(MouseEvent e) {}
+				@Override
 				public void mouseClicked(MouseEvent e) {
 					try{
 						if (Highlander.getLoggedUser().hasPermissionToModify(analysis, var_id_to_annotation_id.keySet())){
@@ -732,7 +759,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			JLabel labelInsilico = new JLabel(Field.check_insilico.getName(), SwingConstants.LEFT);
 			labelInsilico.setToolTipText(Field.check_insilico.getHtmlTooltip());
 			panel.add(labelInsilico, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(3, 3, 3, 3), 0, 0));
-			userInsilico = new JLabel("", JLabel.LEFT);
+			userInsilico = new JLabel("", SwingConstants.LEFT);
 			panel.add(userInsilico, new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(3, 3, 3, 5), 0, 0));
 			set_check_insilico(val_check_insilico, val_check_insilico_username, val_check_insilico_date,false);
 
@@ -741,6 +768,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			final JPopupMenu statusReportingPopupMenu = new JPopupMenu();
 			JMenuItem itemReportingNotChecked = new JMenuItem("NOT_CHECKED - Variant has not been checked",Resources.getScaledIcon(Resources.iQuestion, 24));
 			itemReportingNotChecked.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					try{
 						updateDatabaseVariant(Field.reporting, Reporting.NOT_CHECKED, "reporting set to NOT_CHECKED ("+Highlander.getLoggedUser().getUsername()+" - "+df.format(System.currentTimeMillis())+")|");
@@ -755,6 +783,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			statusReportingPopupMenu.add(itemReportingNotChecked);
 			JMenuItem iteReportingYes = new JMenuItem("YES - Variant has been checked and needs to be reported to the patient",Resources.getScaledIcon(Resources.iButtonApply, 24));
 			iteReportingYes.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					try{
 						updateDatabaseVariant(Field.reporting, Reporting.YES, "reporting set to YES ("+Highlander.getLoggedUser().getUsername()+" - "+df.format(System.currentTimeMillis())+")|");
@@ -769,6 +798,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			statusReportingPopupMenu.add(iteReportingYes);
 			JMenuItem itemReportingNo = new JMenuItem("NO - Variant has been checked and doesn’t need to be reported to the patient",Resources.getScaledIcon(Resources.iCross, 24));
 			itemReportingNo.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					try{
 						updateDatabaseVariant(Field.reporting, Reporting.NO, "reporting set to NO ("+Highlander.getLoggedUser().getUsername()+" - "+df.format(System.currentTimeMillis())+")|");
@@ -782,10 +812,15 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			});
 			statusReportingPopupMenu.add(itemReportingNo);
 			MouseListener statusReportingPopupListener = new MouseListener() {
+				@Override
 				public void mouseReleased(MouseEvent e) {}
+				@Override
 				public void mousePressed(MouseEvent e) {}
+				@Override
 				public void mouseExited(MouseEvent e) {}
+				@Override
 				public void mouseEntered(MouseEvent e) {}
+				@Override
 				public void mouseClicked(MouseEvent e) {
 					try{
 						if (Highlander.getLoggedUser().hasPermissionToModify(analysis, var_id_to_annotation_id.keySet())){
@@ -807,7 +842,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			JLabel labelReporting = new JLabel(Field.reporting.getName(), SwingConstants.LEFT);
 			labelReporting.setToolTipText(Field.reporting.getHtmlTooltip());
 			panel.add(labelReporting, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(3, 3, 3, 3), 0, 0));
-			userReporting = new JLabel("", JLabel.LEFT);
+			userReporting = new JLabel("", SwingConstants.LEFT);
 			panel.add(userReporting, new GridBagConstraints(2, 2, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(3, 3, 3, 5), 0, 0));
 			set_reporting(val_reporting, val_reporting_username, val_reporting_date,false);
 			
@@ -816,6 +851,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			final JPopupMenu statusValidatedPopupMenu = new JPopupMenu();
 			JMenuItem itemValidatedNotChecked = new JMenuItem("NOT_CHECKED - Variant has not been checked in the lab",Resources.getScaledIcon(Resources.iQuestion, 24));
 			itemValidatedNotChecked.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					try{
 						updateDatabaseVariant(Field.check_validated_variant, Validation.NOT_CHECKED, 
@@ -831,6 +867,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			statusValidatedPopupMenu.add(itemValidatedNotChecked);
 			JMenuItem itemValidatedValidated = new JMenuItem("VALIDATED - Variant has been tested in the lab and CONFIRMED to be true",Resources.getScaledIcon(Resources.iButtonApply, 24));
 			itemValidatedValidated.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					try{
 						updateDatabaseVariant(Field.check_validated_variant, Validation.VALIDATED, 
@@ -846,6 +883,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			statusValidatedPopupMenu.add(itemValidatedValidated);
 			JMenuItem itemValidatedInvalidated = new JMenuItem("INVALIDATED - Variant has been tested in the lab and was NOT found",Resources.getScaledIcon(Resources.iCross, 24));
 			itemValidatedInvalidated.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					try{
 						updateDatabaseVariant(Field.check_validated_variant, Validation.INVALIDATED, 
@@ -861,6 +899,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			statusValidatedPopupMenu.add(itemValidatedInvalidated);
 			JMenuItem itemValidatedSuspect = new JMenuItem("SUSPECT - Variant has been tested in the lab, but cannot be confirmed or invalidate",Resources.getScaledIcon(Resources.iAttention, 24));
 			itemValidatedSuspect.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					try{
 						updateDatabaseVariant(Field.check_validated_variant, Validation.SUSPECT, 
@@ -875,10 +914,15 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			});
 			statusValidatedPopupMenu.add(itemValidatedSuspect);
 			MouseListener statusValidatedPopupListener = new MouseListener() {
+				@Override
 				public void mouseReleased(MouseEvent e) {}
+				@Override
 				public void mousePressed(MouseEvent e) {}
+				@Override
 				public void mouseExited(MouseEvent e) {}
+				@Override
 				public void mouseEntered(MouseEvent e) {}
+				@Override
 				public void mouseClicked(MouseEvent e) {
 					try{
 						if (Highlander.getLoggedUser().hasPermissionToModify(analysis, var_id_to_annotation_id.keySet())){
@@ -900,7 +944,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			JLabel labelValidated = new JLabel(Field.check_validated_variant.getName(), SwingConstants.LEFT);
 			labelValidated.setToolTipText(Field.check_validated_variant.getHtmlTooltip());
 			panel.add(labelValidated, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(3, 3, 3, 3), 0, 0));
-			userValidated = new JLabel("", JLabel.LEFT);
+			userValidated = new JLabel("", SwingConstants.LEFT);
 			panel.add(userValidated, new GridBagConstraints(2, 3, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(3, 3, 3, 5), 0, 0));
 			set_check_validated_variant(val_check_validated_variant, val_check_validated_variant_username, val_check_validated_variant_date,false);
 
@@ -909,6 +953,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			final JPopupMenu statusSomaticPopupMenu = new JPopupMenu();
 			JMenuItem itemSomaticNotChecked = new JMenuItem("NOT_CHECKED - Variant has not been checked for mosaicism",Resources.getScaledIcon(Resources.iQuestion, 24));
 			itemSomaticNotChecked.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					try{
 						updateDatabaseVariant(Field.check_somatic_variant, Mosaicism.NOT_CHECKED, 
@@ -924,6 +969,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			statusSomaticPopupMenu.add(itemSomaticNotChecked);
 			JMenuItem itemMosaicismSomatic = new JMenuItem("SOMATIC - Variant has been checked and seems to be a somatic variant",Resources.getScaledIcon(Resources.iButtonApply, 24));
 			itemMosaicismSomatic.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					try{
 						updateDatabaseVariant(Field.check_somatic_variant, Mosaicism.SOMATIC, 
@@ -939,6 +985,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			statusSomaticPopupMenu.add(itemMosaicismSomatic);
 			JMenuItem itemMosaicismGermline = new JMenuItem("GERMLINE - Variant has been checked and seems to be a germline variant",Resources.getScaledIcon(Resources.iCross, 24));
 			itemMosaicismGermline.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					try{
 						updateDatabaseVariant(Field.check_somatic_variant, Mosaicism.GERMLINE, 
@@ -954,6 +1001,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			statusSomaticPopupMenu.add(itemMosaicismGermline);
 			JMenuItem itemMosaicismDubious = new JMenuItem("DUBIOUS - Variant has been checked for mosaicism but was impossible to differenciate between somatic or germline",Resources.getScaledIcon(Resources.iAttention, 24));
 			itemMosaicismDubious.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					try{
 						updateDatabaseVariant(Field.check_somatic_variant, Mosaicism.DUBIOUS, 
@@ -968,10 +1016,15 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			});
 			statusSomaticPopupMenu.add(itemMosaicismDubious);
 			MouseListener statusSomaticPopupListener = new MouseListener() {
+				@Override
 				public void mouseReleased(MouseEvent e) {}
+				@Override
 				public void mousePressed(MouseEvent e) {}
+				@Override
 				public void mouseExited(MouseEvent e) {}
+				@Override
 				public void mouseEntered(MouseEvent e) {}
+				@Override
 				public void mouseClicked(MouseEvent e) {
 					try{
 						if (Highlander.getLoggedUser().hasPermissionToModify(analysis, var_id_to_annotation_id.keySet())){
@@ -993,7 +1046,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			JLabel labelSomatic = new JLabel(Field.check_somatic_variant.getName(), SwingConstants.LEFT);
 			labelSomatic.setToolTipText(Field.check_somatic_variant.getHtmlTooltip());
 			panel.add(labelSomatic, new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(3, 3, 3, 3), 0, 0));
-			userSomatic = new JLabel("", JLabel.LEFT);
+			userSomatic = new JLabel("", SwingConstants.LEFT);
 			panel.add(userSomatic, new GridBagConstraints(2, 4, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(3, 3, 3, 5), 0, 0));
 			set_check_somatic_variant(val_check_somatic_variant, val_check_somatic_variant_username, val_check_somatic_variant_date,false);
 
@@ -1002,6 +1055,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			final JPopupMenu statusSegregationPopupMenu = new JPopupMenu();
 			JMenuItem itemSegregationNotChecked = new JMenuItem("NOT_CHECKED - Not checked for segregation",Resources.getScaledIcon(Resources.iQuestion, 24));
 			itemSegregationNotChecked.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					try{
 						updateDatabaseVariant(Field.check_segregation, Segregation.NOT_CHECKED, 
@@ -1017,6 +1071,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			statusSegregationPopupMenu.add(itemSegregationNotChecked);			
 			JMenuItem itemSegregationSingle = new JMenuItem("SINGLE - No other sample in family",Resources.getScaledIcon(Resources.iQuestion, 24));
 			itemSegregationSingle.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					try{
 						updateDatabaseVariant(Field.check_segregation, Segregation.SINGLE, 
@@ -1032,6 +1087,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			statusSegregationPopupMenu.add(itemSegregationSingle);
 			JMenuItem itemSegregationCoseg = new JMenuItem("COSEG - Variant cosegregates",Resources.getScaledIcon(Resources.iButtonApply, 24));
 			itemSegregationCoseg.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					try{
 						updateDatabaseVariant(Field.check_segregation, Segregation.COSEG, 
@@ -1047,6 +1103,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			statusSegregationPopupMenu.add(itemSegregationCoseg);
 			JMenuItem itemSegregationCarriers = new JMenuItem("CARRIERS - Some unaffected carrier(s)",Resources.getScaledIcon(Resources.iButtonApply, 24));
 			itemSegregationCarriers.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					try{
 						updateDatabaseVariant(Field.check_segregation, Segregation.CARRIERS, 
@@ -1062,6 +1119,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			statusSegregationPopupMenu.add(itemSegregationCarriers);
 			JMenuItem itemSegregationNoCoseg = new JMenuItem("NO_COSEG - Not in other affected(s)",Resources.getScaledIcon(Resources.iCross, 24));
 			itemSegregationNoCoseg.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					try{
 						updateDatabaseVariant(Field.check_segregation, Segregation.NO_COSEG, 
@@ -1077,6 +1135,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			statusSegregationPopupMenu.add(itemSegregationNoCoseg);
 			JMenuItem itemSegregationNoCosegOther = new JMenuItem("NO_COSEG_OTHER - Does not cosegregate in other families",Resources.getScaledIcon(Resources.i2dMinus, 24));
 			itemSegregationNoCosegOther.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					try{
 						updateDatabaseVariant(Field.check_segregation, Segregation.NO_COSEG_OTHER, 
@@ -1092,10 +1151,15 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			statusSegregationPopupMenu.add(itemSegregationNoCosegOther);
 
 			MouseListener statusSegregationPopupListener = new MouseListener() {
+				@Override
 				public void mouseReleased(MouseEvent e) {}
+				@Override
 				public void mousePressed(MouseEvent e) {}
+				@Override
 				public void mouseExited(MouseEvent e) {}
+				@Override
 				public void mouseEntered(MouseEvent e) {}
+				@Override
 				public void mouseClicked(MouseEvent e) {
 					try{
 						if (Highlander.getLoggedUser().hasPermissionToModify(analysis, var_id_to_annotation_id.keySet())){
@@ -1117,7 +1181,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			JLabel labelSegregation = new JLabel(Field.check_segregation.getName(), SwingConstants.LEFT);
 			labelSegregation.setToolTipText(Field.check_segregation.getHtmlTooltip());
 			panel.add(labelSegregation, new GridBagConstraints(1, 5, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(3, 3, 3, 3), 0, 0));
-			userSegregation = new JLabel("", JLabel.LEFT);
+			userSegregation = new JLabel("", SwingConstants.LEFT);
 			panel.add(userSegregation, new GridBagConstraints(2, 5, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(3, 3, 3, 5), 0, 0));
 			set_check_segregation(val_check_segregation, val_check_segregation_username, val_check_segregation_date,false);
 

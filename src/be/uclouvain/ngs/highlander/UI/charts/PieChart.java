@@ -109,8 +109,8 @@ public class PieChart extends JPanel {
 			}else {
 				colors[i] = new Color(new Random().nextInt(0xFFFFFF));
 			}
-  		percent[i] = values[i] / (double)totalValues;
-			angle[i] = values[i] * 360.0 / (double)totalValues; 
+  		percent[i] = values[i] / totalValues;
+			angle[i] = values[i] * 360.0 / totalValues; 
 		}
 	}
 

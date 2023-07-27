@@ -99,6 +99,7 @@ public class VariantsList {
 		this.listName = listName;
 	}
 
+	@Override
 	public String toString(){
 		return listName;
 	}
@@ -289,7 +290,7 @@ public class VariantsList {
 					}
 				}
 			});
-		} catch (com.mysql.jdbc.exceptions.MySQLStatementCancelledException ex){
+		} catch (com.mysql.cj.jdbc.exceptions.MySQLStatementCancelledException ex){
 			Highlander.waitingPanel.setProgressString("Cancelling query", true);
 		}catch (Exception ex){
 			Tools.exception(ex);

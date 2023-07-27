@@ -31,12 +31,12 @@ package be.uclouvain.ngs.highlander.database;
 
 import java.sql.Blob;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
+import java.time.OffsetDateTime;
+import java.time.LocalDate;
 
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.DBMS;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
@@ -54,11 +54,11 @@ public class Results implements AutoCloseable {
 		try {
 			con = DB.getConnection(reference, schema);
 			if (hugeResultSetExpected && DB.getDBMS(schema) == DBMS.mysql){
-				//Necessary to fetch row one by one and avoid storing the whole ResultSet in memory
+				//Necessary to fetch row one by one and avoid storing the whole ResultSet in memory 
 				stm = con.createStatement(java.sql.ResultSet.TYPE_FORWARD_ONLY, java.sql.ResultSet.CONCUR_READ_ONLY);
 				stm.setFetchSize(Integer.MIN_VALUE);
 			}else{
-				stm = con.createStatement();
+				stm = con.createStatement(java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE, java.sql.ResultSet.CONCUR_READ_ONLY);
 			}
 		}catch (Exception ex) {
 			close();
@@ -147,13 +147,13 @@ public class Results implements AutoCloseable {
 		return res.getBoolean(columnLabel);
 	}
 
-	public Date getDate(int columnIndex) throws SQLException {
-		return res.getDate(columnIndex);
-	}
+	public LocalDate getDate(int columnIndex) throws SQLException {
+  	return res.getObject(columnIndex, LocalDate.class);
+  }
 
-	public Date getDate(String columnLabel) throws SQLException {
-		return res.getDate(columnLabel);
-	}
+  public LocalDate getDate(String columnLabel) throws SQLException {
+  	return res.getObject(columnLabel, LocalDate.class);
+  }
 
 	public double getDouble(int columnIndex) throws SQLException {
 		return res.getDouble(columnIndex);
@@ -187,12 +187,12 @@ public class Results implements AutoCloseable {
 		return res.getBlob(columnLabel);
 	}
 
-	public Timestamp getTimestamp(int columnIndex) throws SQLException {
-		return res.getTimestamp(columnIndex);
+	public OffsetDateTime getTimestamp(int columnIndex) throws SQLException {
+		return res.getObject(columnIndex, OffsetDateTime.class);
 	}
 	
-	public Timestamp getTimestamp(String columnLabel) throws SQLException {
-		return res.getTimestamp(columnLabel);
+	public OffsetDateTime getTimestamp(String columnLabel) throws SQLException {
+		return res.getObject(columnLabel, OffsetDateTime.class);
 	}
 	
 	public Object getObject(int columnIndex) throws SQLException {

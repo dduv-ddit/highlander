@@ -91,6 +91,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.ProgressMonitor;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
@@ -277,7 +278,7 @@ public class IonImporter extends JFrame {
 
 	private void initUI(){
 		getContentPane().setLayout(new BorderLayout());
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP);
 		getContentPane().add(tabbedPane, BorderLayout.CENTER);
 
 		JPanel panel = new JPanel(new BorderLayout());
@@ -313,6 +314,7 @@ public class IonImporter extends JFrame {
 								}
 							}
 							SwingUtilities.invokeLater(new Runnable() {
+								@Override
 								public void run() {
 									waitingPanel.setVisible(true);
 									waitingPanel.setProgressString("Retrieving projects", true);
@@ -337,6 +339,7 @@ public class IonImporter extends JFrame {
 								}
 							});
 							SwingUtilities.invokeLater(new Runnable() {
+								@Override
 								public void run() {
 									waitingPanel.setVisible(false);
 									waitingPanel.stop();
@@ -354,6 +357,7 @@ public class IonImporter extends JFrame {
 		projectsList = GlazedLists.eventListOf(values);
 		projectBox.setMaximumRowCount(20);
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				support = AutoCompleteSupport.install(projectBox, projectsList);
 				support.setCorrectsCase(true);
@@ -363,6 +367,7 @@ public class IonImporter extends JFrame {
 			}
 		});
 		projectBox.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (arg0.getActionCommand().equals("comboBoxEdited")){
 					if (projectBox.getSelectedIndex() < 0) projectBox.setSelectedItem(null);
@@ -378,6 +383,7 @@ public class IonImporter extends JFrame {
 							@Override
 							public void run() {
 								SwingUtilities.invokeLater(new Runnable() {
+									@Override
 									public void run() {
 										waitingPanel.setVisible(true);
 										waitingPanel.setProgressString("Retrieving BAM list", true);
@@ -386,6 +392,7 @@ public class IonImporter extends JFrame {
 								});
 								fillTable();
 								SwingUtilities.invokeLater(new Runnable() {
+									@Override
 									public void run() {
 										waitingPanel.setVisible(false);
 										waitingPanel.stop();
@@ -885,6 +892,7 @@ public class IonImporter extends JFrame {
 
 	private void refreshTable(){
 		SwingUtilities.invokeLater(new Runnable(){
+			@Override
 			public void run(){
 				try{
 					validateSamples();
@@ -999,10 +1007,12 @@ public class IonImporter extends JFrame {
 			}
 		}
 
+		@Override
 		public int getColumnCount() {
 			return headers.length;
 		}
 
+		@Override
 		public String getColumnName(int col) {
 			return headers[col];
 		}
@@ -1016,23 +1026,28 @@ public class IonImporter extends JFrame {
 			return -1;
 		}
 
+		@Override
 		public int getRowCount() {
 			return data.length;
 		}
 
+		@Override
 		public Class<?> getColumnClass(int columnIndex) {
 			if (columnIndex == 0) return ImageIcon.class;
 			return String.class;
 		}
 
+		@Override
 		public Object getValueAt(int row, int col) {
 			return data[row][col];
 		}
 
+		@Override
 		public void setValueAt(Object value, int row, int col) {
 			data[row][col] = value;
 		}
 
+		@Override
 		public boolean isCellEditable(int rowIndex, int columnIndex) {
 			return columnIndex == getColumn(SAMPLE) || columnIndex == getColumn(INDIVIDUAL) || columnIndex == getColumn(FAMILY) || columnIndex == getColumn(COMMENTS);
 		}
@@ -1069,6 +1084,7 @@ public class IonImporter extends JFrame {
 		 * Paste is done by aligning the upper left corner of the selection with the
 		 * 1st element in the current selection of the JTable.
 		 */
+		@Override
 		public void actionPerformed(ActionEvent e){
 			if (e.getActionCommand().compareTo("Paste")==0){
 				int startRow=(table.getSelectedRows())[0];
@@ -1183,6 +1199,7 @@ public class IonImporter extends JFrame {
 			return;
 		}
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				waitingPanel.setVisible(true);
 				waitingPanel.start();
@@ -1218,6 +1235,7 @@ public class IonImporter extends JFrame {
 				try{
 					System.out.println("Creating project in Highlander");
 					SwingUtilities.invokeLater(new Runnable() {
+						@Override
 						public void run() {
 							waitingPanel.setProgressDone();
 							waitingPanel.setProgressString("Creating project in Highlander", true);
@@ -1294,6 +1312,7 @@ public class IonImporter extends JFrame {
 					transferCount = 0;
 					System.out.println("Transferring BAM from " + platform + " to Highlander Server");
 					SwingUtilities.invokeLater(new Runnable() {
+						@Override
 						public void run() {
 							waitingPanel.setProgressMaximum(selection.length);
 							waitingPanel.setProgressValue(transferCount);
@@ -1326,6 +1345,7 @@ public class IonImporter extends JFrame {
 						localDir.mkdir();
 						System.out.println("Downloading targeted BED file");
 						SwingUtilities.invokeLater(new Runnable() {
+							@Override
 							public void run() {
 								waitingPanel.setProgressDone();
 								waitingPanel.setProgressString("Downloading targeted BED file", true);
@@ -1338,6 +1358,7 @@ public class IonImporter extends JFrame {
 						}
 						System.out.println("Downloading full genes BED file");
 						SwingUtilities.invokeLater(new Runnable() {
+							@Override
 							public void run() {
 								waitingPanel.setProgressDone();
 								waitingPanel.setProgressString("Downloading full genes BED file", true);
@@ -1350,6 +1371,7 @@ public class IonImporter extends JFrame {
 						}
 						System.out.println("Downloading ensembl genes priority file");
 						SwingUtilities.invokeLater(new Runnable() {
+							@Override
 							public void run() {
 								waitingPanel.setProgressDone();
 								waitingPanel.setProgressString("Downloading ensembl genes priority file", true);
@@ -1362,6 +1384,7 @@ public class IonImporter extends JFrame {
 						}
 						System.out.println("Downloading JSON parameters file");
 						SwingUtilities.invokeLater(new Runnable() {
+							@Override
 							public void run() {
 								waitingPanel.setProgressDone();
 								waitingPanel.setProgressString("Downloading JSON parameters file", true);
@@ -1385,6 +1408,7 @@ public class IonImporter extends JFrame {
 						}
 						System.out.println("Uploading JSON files to Highlander Server");
 						SwingUtilities.invokeLater(new Runnable() {
+							@Override
 							public void run() {
 								waitingPanel.setProgressDone();
 								waitingPanel.setProgressString("Uploading JSON files to Highlander Server", true);
@@ -1412,6 +1436,7 @@ public class IonImporter extends JFrame {
 						}
 						System.out.println("Uploading BED file to Highlander Server");
 						SwingUtilities.invokeLater(new Runnable() {
+							@Override
 							public void run() {
 								waitingPanel.setProgressDone();
 								waitingPanel.setProgressString("Uploading BED file to Highlander Server", true);
@@ -1420,6 +1445,7 @@ public class IonImporter extends JFrame {
 						hlChannel.put(project+"/"+project+".bed", ".", monitor, mode);
 						System.out.println("Uploading full genes BED file to Highlander Server");
 						SwingUtilities.invokeLater(new Runnable() {
+							@Override
 							public void run() {
 								waitingPanel.setProgressDone();
 								waitingPanel.setProgressString("Uploading full genes BED file to Highlander Server", true);
@@ -1428,6 +1454,7 @@ public class IonImporter extends JFrame {
 						hlChannel.put(project+"/"+project+".fullgenes.bed", ".", monitor, mode);
 						System.out.println("Uploading ensembl genes priority file to Highlander Server");
 						SwingUtilities.invokeLater(new Runnable() {
+							@Override
 							public void run() {
 								waitingPanel.setProgressDone();
 								waitingPanel.setProgressString("Uploading ensembl genes priority file to Highlander Server", true);
@@ -1469,6 +1496,7 @@ public class IonImporter extends JFrame {
 						 */
 						System.out.println("Launching importation pipeline");
 						SwingUtilities.invokeLater(new Runnable() {
+							@Override
 							public void run() {
 								waitingPanel.setProgressDone();
 								waitingPanel.setProgressString("Launching importation pipeline", true);
@@ -1513,6 +1541,7 @@ public class IonImporter extends JFrame {
 			}
 		}
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				waitingPanel.setVisible(false);
 				waitingPanel.stop();
@@ -1524,6 +1553,7 @@ public class IonImporter extends JFrame {
 		ProgressMonitor monitor;
 		long count=0;
 		long max=0;
+		@Override
 		public void init(int op, String src, String dest, long max){
 			this.max=max;
 			monitor=new ProgressMonitor(null, 
@@ -1536,6 +1566,7 @@ public class IonImporter extends JFrame {
 			monitor.setMillisToDecideToPopup(1000);
 		}
 		private long percent=-1;
+		@Override
 		public boolean count(long count){
 			this.count+=count;
 
@@ -1547,6 +1578,7 @@ public class IonImporter extends JFrame {
 
 			return !(monitor.isCanceled());
 		}
+		@Override
 		public void end(){
 			monitor.close();
 		}
@@ -1555,6 +1587,7 @@ public class IonImporter extends JFrame {
 	private boolean connectToSequencer(Platform platform) {
 		boolean connected = false;
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				waitingPanel.setVisible(true);
 				waitingPanel.setProgressString("Connecting to " + platform, true);
@@ -1576,6 +1609,7 @@ public class IonImporter extends JFrame {
 			JOptionPane.showMessageDialog(IonImporter.this, "Platform " + platform + " is currently inaccessible, please set the server online.", "Connecting to " + platform, JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
 		}
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				waitingPanel.setVisible(false);
 				waitingPanel.stop();
@@ -1597,6 +1631,7 @@ public class IonImporter extends JFrame {
 	private boolean connectToHighlander() throws JSchException {
 		boolean connected = false;
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				waitingPanel.setVisible(true);
 				waitingPanel.setProgressString("Connecting to Highlander server", true);
@@ -1618,6 +1653,7 @@ public class IonImporter extends JFrame {
 			JOptionPane.showMessageDialog(IonImporter.this, "Highlander server is currently inaccessible.", "Connecting to Highlander server", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
 		}
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				waitingPanel.setVisible(false);
 				waitingPanel.stop();
@@ -1676,6 +1712,7 @@ public class IonImporter extends JFrame {
 			this.highlanderSample = highlanderSample;
 		}
 		
+		@Override
 		public void run(){
 			try{
 				HttpClient httpClient = new HttpClient();
@@ -1738,6 +1775,7 @@ public class IonImporter extends JFrame {
 				JOptionPane.showMessageDialog(IonImporter.this, Tools.getMessage(highlanderSample + " could had a transfer problem, please contact Raphael with the following info:", ex), "Transfer of " + highlanderSample, JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
 			}
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setProgressValue(++transferCount);
 				}
@@ -2166,6 +2204,7 @@ public class IonImporter extends JFrame {
 	}
 
 	//Overridden so we can exit when window is closed
+	@Override
 	protected void processWindowEvent(WindowEvent e) {
 		super.processWindowEvent(e);
 		if (e.getID() == WindowEvent.WINDOW_CLOSING) {
@@ -2277,6 +2316,7 @@ public class IonImporter extends JFrame {
 		Highlander.setLoggedUser(user);
 		final IonImporter ion = new IonImporter();
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				ion.validate();
 				//Center the window

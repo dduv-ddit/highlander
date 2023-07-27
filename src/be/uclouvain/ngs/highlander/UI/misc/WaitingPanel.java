@@ -72,6 +72,7 @@ public class WaitingPanel extends JPanel implements Runnable {
 	JTextArea text;
 	List<String> txtLines = new ArrayList<String>();
 
+	@Override
 	protected void paintComponent(Graphics g) {
 		g.setColor(new Color(24,24,24,200));
 		g.fillRect(0, 0, getWidth(), getHeight());
@@ -82,10 +83,15 @@ public class WaitingPanel extends JPanel implements Runnable {
 		setOpaque(false);
 		setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		addMouseListener(new MouseListener() {
+			@Override
 			public void mouseReleased(MouseEvent arg0) {	arg0.consume();	}
+			@Override
 			public void mousePressed(MouseEvent arg0) {	arg0.consume();	}
+			@Override
 			public void mouseExited(MouseEvent arg0) {	arg0.consume();	}
+			@Override
 			public void mouseEntered(MouseEvent arg0) {	arg0.consume();	}
+			@Override
 			public void mouseClicked(MouseEvent arg0) {	arg0.consume();	}
 		});
 		JPanel centerPanel = new JPanel();
@@ -170,6 +176,7 @@ public class WaitingPanel extends JPanel implements Runnable {
 
 	public void setProgressString(final String label, final boolean indeterminate){
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				progress.setVisible(true);
 				progress.setString(label);
@@ -181,6 +188,7 @@ public class WaitingPanel extends JPanel implements Runnable {
 
 	public void setProgressMaximum(final int value){
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				progress.setVisible(true);
 				progress.setMaximum(value);
@@ -190,6 +198,7 @@ public class WaitingPanel extends JPanel implements Runnable {
 
 	public void setProgressValue(final int value){
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				progress.setValue(value);
 			}
@@ -198,6 +207,7 @@ public class WaitingPanel extends JPanel implements Runnable {
 
 	public void setProgressDone(){
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				progress.setValue(progress.getMaximum());
 				progress.setString("Done !");
@@ -274,6 +284,7 @@ public class WaitingPanel extends JPanel implements Runnable {
 			if (current == numImages) current = 0;
 			final int icurrent = current;
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					logoCardLayout.show(logoPanel, icurrent + "");		
 				}

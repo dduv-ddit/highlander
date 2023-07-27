@@ -57,6 +57,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
 import javax.swing.border.BevelBorder;
@@ -83,6 +84,7 @@ public abstract class DetailsBox extends JPanel implements Transferable, DragSou
 	protected void initCommonUI(boolean visible){		
 		detailsPanel.setBackground(Resources.getColor(getColor(), 200, false));
 		transfertHandler = new TransferHandler(){
+			@Override
 			public Transferable createTransferable(JComponent c){
 				return DetailsBox.this;
 			}
@@ -115,7 +117,7 @@ public abstract class DetailsBox extends JPanel implements Transferable, DragSou
 			}
 		});
 		north.add(showButton, BorderLayout.WEST);
-		JLabel sectionName = new JLabel(getTitle(), JLabel.LEFT);
+		JLabel sectionName = new JLabel(getTitle(), SwingConstants.LEFT);
 		north.add(sectionName, BorderLayout.CENTER);
 		add(north, BorderLayout.NORTH);
 		detailsPanel.setLayout(new BorderLayout(0,0));
@@ -125,6 +127,7 @@ public abstract class DetailsBox extends JPanel implements Transferable, DragSou
 		setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 		if (visible){
 			new Thread(new Runnable(){
+				@Override
 				public void run(){
 					try{
 						loadDetails();
@@ -138,38 +141,52 @@ public abstract class DetailsBox extends JPanel implements Transferable, DragSou
 		}
 	}
  
+	@Override
 	public DataFlavor[] getTransferDataFlavors() {
 		return new DataFlavor[]{new DataFlavor(String.class, "DetailsBox")};
 	}
 
+	@Override
 	public boolean isDataFlavorSupported(DataFlavor flavor) {
 		return true;
 	}
 
+	@Override
 	public Object getTransferData(DataFlavor flavor) {
 		return getTitle();
 	}
 
+	@Override
 	public void dragEnter(DragSourceDragEvent dsde) {}
+	@Override
 	public void dragOver(DragSourceDragEvent dsde) {}
 	public void dropActionchanged(DragSourceDragEvent dsde) {}
+	@Override
 	public void dragExit(DragSourceEvent dse) {}
+	@Override
 	public void dropActionChanged(DragSourceDragEvent arg0) {}
 
+	@Override
 	public void dragDropEnd(DragSourceDropEvent dsde) {
 		repaint();
 	}
 
+	@Override
 	public void dragGestureRecognized(DragGestureEvent dge) {
 		source.startDrag(dge, DragSource.DefaultMoveDrop, DetailsBox.this, this);       
 	}
 
+	@Override
 	public void dragEnter(DropTargetDragEvent dtde) {}
+	@Override
 	public void dragOver(DropTargetDragEvent dtde) {}
 	public void dropActionchanged(DropTargetDragEvent dtde) {}
+	@Override
 	public void dragExit(DropTargetEvent dte) {}
+	@Override
 	public void dropActionChanged(DropTargetDragEvent arg0) {}
 
+	@Override
 	public void drop(DropTargetDropEvent dtde) {
 		try {
 			Point loc = dtde.getLocation(); 
@@ -187,6 +204,7 @@ public abstract class DetailsBox extends JPanel implements Transferable, DragSou
 
 	class DetailsBoxTransferHandler extends TransferHandler {
 
+		@Override
 		public boolean canImport(JComponent c, DataFlavor[] f){
 			DataFlavor temp = new DataFlavor(String.class, "DetailsBox");
 			for(DataFlavor d:f){
@@ -264,7 +282,8 @@ public abstract class DetailsBox extends JPanel implements Transferable, DragSou
 		detailsPanel.setVisible(true);
 		if (!isDetailsLoaded()){
 			new Thread(new Runnable(){
-  			public void run(){
+  			@Override
+				public void run(){
 					try{
 						loadDetails();
 					}catch(Exception ex){

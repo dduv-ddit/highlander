@@ -115,8 +115,10 @@ public class FileDownloader extends JFrame {
 		getContentPane().add(south, BorderLayout.SOUTH);
 		JButton downloadButton = new JButton("Start download", Resources.getScaledIcon(Resources.iDownload, 40));
 		downloadButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						start();
 					}
@@ -164,8 +166,10 @@ public class FileDownloader extends JFrame {
 		browseDir.setPreferredSize(new Dimension(32,32));
 		browseDir.setToolTipText("Browse");
 		browseDir.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						JFileChooser chooser = new JFileChooser(Tools.getHomeDirectory().toString()	);
 						chooser.setDialogTitle("Select the download directory");
@@ -198,8 +202,10 @@ public class FileDownloader extends JFrame {
 		center.setBorder(new TitledBorder(null, "Samples", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		JButton selectSamples = new JButton("Select samples", Resources.getScaledIcon(Resources.iPatients, 24));
 		selectSamples.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						AskSamplesDialog ask = new AskSamplesDialog(false, Highlander.getCurrentAnalysis(), null, samples, true);
 						Tools.centerWindow(ask, false);

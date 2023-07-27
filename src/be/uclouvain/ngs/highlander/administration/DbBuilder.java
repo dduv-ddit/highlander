@@ -39,7 +39,7 @@ import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import java.sql.Timestamp;
+import java.time.OffsetDateTime;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -57,6 +57,7 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -1283,7 +1284,7 @@ public class DbBuilder {
 						}
 					}
 				}
-				ti_tv_ratio_ls = (double)ti / (double)tv;
+				ti_tv_ratio_ls = ti / tv;
 			}else{
 				throw new Exception("Cannot import LifeScope Ti/Tv ratio : " + titvLsFile + " does not exist.");
 			}
@@ -1518,7 +1519,7 @@ public class DbBuilder {
 												System.err.println("WARNING -- Interval " + interval + " not found in " + analysis.getFromCoverageRegions() + ", you have to add it there first.");
 											}
 										}
-										summaryDepth += depth * (double)(end-start);
+										summaryDepth += depth * (end-start);
 										summarySize += end-start;
 									}catch(NumberFormatException ex){
 										System.err.println("WARNING -- Line skipped because an integer cannot be parsed: " + line);
@@ -1529,7 +1530,7 @@ public class DbBuilder {
 					}
 				}
 			}
-			summaryDepth = summaryDepth / (double)summarySize;
+			summaryDepth = summaryDepth / summarySize;
 			String query = "UPDATE projects SET ";
 			switch(target) {
 			case raw:
@@ -1546,7 +1547,7 @@ public class DbBuilder {
 			for (int i=0 ; i < neededSummary.length ; i++) {
 				query += "`" + listSummaryCoverage.get(neededSummary[i]) + "`";
 				query += " = ";
-				query += "'" + (double)((double)summaryCov[i] / (double)summarySize * 100.0) + "'";
+				query += "'" + (double)summaryCov[i] / (double)summarySize * 100.0 + "'";
 				if (i < neededSummary.length-1) query += ", ";
 			}
 			query += " WHERE `project_id` = "+project_id;
@@ -1560,7 +1561,7 @@ public class DbBuilder {
 				}
 				if (raw != -1) {
 					if (raw > 0 && summaryDepth > 0){
-						double percent_duplicates_picard = (double)(raw - summaryDepth) / (double)raw * 100.0;
+						double percent_duplicates_picard = (raw - summaryDepth) / raw * 100.0;
 						if (percent_duplicates_picard < 0) percent_duplicates_picard = 0;
 						try {
 							setHardUpdate(true);
@@ -2306,8 +2307,8 @@ public class DbBuilder {
 											for (Field f : Field.getAvailableFields(analysis, false)){
 												Cell cell = row.createCell(c++);
 												if (annotatedVariant.getValue(f) != null && annotatedVariant.getValue(f).toString().length() > 0){
-													if (f.getFieldClass() == Timestamp.class){
-														cell.setCellValue((Timestamp)annotatedVariant.getValue(f));
+													if (f.getFieldClass() == OffsetDateTime.class){
+														cell.setCellValue(((OffsetDateTime)annotatedVariant.getValue(f)).toLocalDateTime());
 													}else if (f.getFieldClass() == Integer.class){
 														cell.setCellValue(Integer.parseInt(annotatedVariant.getValue(f).toString()));
 													}else if (f.getFieldClass() == Long.class){
@@ -2317,7 +2318,7 @@ public class DbBuilder {
 													}else if (f.getFieldClass() == Boolean.class){
 														cell.setCellValue(Boolean.parseBoolean(annotatedVariant.getValue(f).toString()));
 													}else {
-														cell.setCellValue(annotatedVariant.getValue(f).toString());
+														cell.setCellValue(StringUtils.left(annotatedVariant.getValue(f).toString(), 32765)); //The maximum length of cell contents (text) is 32767 characters
 													}
 												}
 											}  	
@@ -2503,7 +2504,7 @@ public class DbBuilder {
 				while (res.next()){
 					count++;
 					if (count%AS == 0){
-						System.out.println(df.format(System.currentTimeMillis()) + " - " + Tools.longToString(count) + " variants processed ("+Tools.doubleToPercent(((double)count/(double)max), 2)+") - " + Tools.doubleToString(((double)Tools.getUsedMemoryInMb()), 0, false) + " Mb / "+ (Tools.doubleToString(((double)(Runtime.getRuntime().maxMemory() / 1024 /1024)), 0, false)) + " Mb of RAM used");
+						System.out.println(df.format(System.currentTimeMillis()) + " - " + Tools.longToString(count) + " variants processed ("+Tools.doubleToPercent(((double)count/(double)max), 2)+") - " + Tools.doubleToString((Tools.getUsedMemoryInMb()), 0, false) + " Mb / "+ (Tools.doubleToString((Runtime.getRuntime().maxMemory() / 1024 /1024), 0, false)) + " Mb of RAM used");
 					}
 					int pos = res.getInt("pos");
 					if (pos != currentPos) {
@@ -2937,7 +2938,7 @@ public class DbBuilder {
 										+ "JOIN seq_region as R USING (seq_region_id) "
 										+ "JOIN coord_system as C USING (coord_system_id) "
 										+ "JOIN xref ON (display_xref_id = xref_id) "
-										+ "WHERE C.rank = 1 "
+										+ "WHERE C.`rank` = 1 "
 										+ "AND R.`name` IN ("+HighlanderDatabase.makeSqlList(analysis.getReference().getChromosomes(), String.class)+")")) {				
 							while (res.next()){
 								if (res.getObject(1) != null){
@@ -2981,7 +2982,7 @@ public class DbBuilder {
 						values.add("3");
 						values.add("4");
 						values.add("5");
-					}else if (field.getFieldClass() == Double.class || field.getFieldClass() == Integer.class || field.getFieldClass() == Long.class || field.getFieldClass() == Timestamp.class){
+					}else if (field.getFieldClass() == Double.class || field.getFieldClass() == Integer.class || field.getFieldClass() == Long.class || field.getFieldClass() == OffsetDateTime.class){
 						//DO NOTHING - Not really useful to list all possible numbers ; and take a lot of time and database space
 					}else if (field.getName().equalsIgnoreCase(Field.snpeff_other_transcripts.getName()) ){
 						//DO NOTHING - Not really useful to list all possible combinations of those fields ; and take a lot of time and database space
@@ -3019,7 +3020,7 @@ public class DbBuilder {
 								}
 								count++;
 								if (count%(numVar.get(field.getTable(analysis))/10) == 0){
-									System.out.println("Distinct field `" + field.getName() + "` (" + Tools.doubleToPercent(((double)count)/((double)(numVar.get(field.getTable(analysis)))), 0) + ") - " + Tools.doubleToString(((double)Tools.getUsedMemoryInMb()), 0, false) + " Mb / "+ (Tools.doubleToString(((double)(Runtime.getRuntime().maxMemory() / 1024 /1024)), 0, false)) + " Mb of RAM used");
+									System.out.println("Distinct field `" + field.getName() + "` (" + Tools.doubleToPercent(((double)count)/((double)(numVar.get(field.getTable(analysis)))), 0) + ") - " + Tools.doubleToString((Tools.getUsedMemoryInMb()), 0, false) + " Mb / "+ (Tools.doubleToString((Runtime.getRuntime().maxMemory() / 1024 /1024), 0, false)) + " Mb of RAM used");
 								}
 							}
 						}

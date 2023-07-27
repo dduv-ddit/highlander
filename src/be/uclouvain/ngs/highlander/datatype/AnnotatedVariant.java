@@ -29,7 +29,7 @@
 
 package be.uclouvain.ngs.highlander.datatype;
 
-import java.sql.Timestamp;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -186,7 +186,7 @@ public class AnnotatedVariant {
 					variant.entries.put(field, res.getLong(field.getName()));
 				}else if (field.getFieldClass() == Boolean.class){					
 					variant.entries.put(field, res.getBoolean(field.getName()));
-				}else if (field.getFieldClass() == Timestamp.class){					
+				}else if (field.getFieldClass() == OffsetDateTime.class){					
 					variant.entries.put(field, res.getTimestamp(field.getName()));
 				}else if (field.getFieldClass().isEnum()){
 					Class cls = field.getFieldClass();
@@ -402,9 +402,9 @@ public class AnnotatedVariant {
 				} catch(NumberFormatException e) {
 					entries.put(field, null);
 				}
-			}else if (field.getFieldClass() == Timestamp.class){
+			}else if (field.getFieldClass() == OffsetDateTime.class){
 				try {
-					entries.put(field, Timestamp.valueOf(value));
+					entries.put(field, OffsetDateTime.parse(value));
 				} catch(IllegalArgumentException e) {
 					entries.put(field, null);
 				}
@@ -601,8 +601,8 @@ public class AnnotatedVariant {
 							if (nAlt > AD.length-1) sum = (entries.get(Field.read_depth) == null) ? 1 : (int)entries.get(Field.read_depth);
 							int allelic_depth_ref = (entries.get(Field.allelic_depth_ref) == null) ? 0 : (int)entries.get(Field.allelic_depth_ref);
 							int allelic_depth_alt = (entries.get(Field.allelic_depth_alt) == null) ? 0 : (int)entries.get(Field.allelic_depth_alt);
-							double allelic_depth_proportion_ref = (sum > 0) ? (double)allelic_depth_ref / sum : 0;
-							double allelic_depth_proportion_alt = (sum > 0) ? (double)allelic_depth_alt / sum : 0;
+							double allelic_depth_proportion_ref = (sum > 0) ? allelic_depth_ref / sum : 0;
+							double allelic_depth_proportion_alt = (sum > 0) ? allelic_depth_alt / sum : 0;
 							entries.put(Field.allelic_depth_proportion_ref, allelic_depth_proportion_ref); 
 							entries.put(Field.allelic_depth_proportion_alt, allelic_depth_proportion_alt);
 						}else{
@@ -1581,6 +1581,7 @@ public class AnnotatedVariant {
 		return analysis;
 	}
 
+	@Override
 	public String toString(){
 		return entries.get(Field.chr) + "-" + String.format("%010d", entries.get(Field.pos)) + "-" + entries.get(Field.reference) + "-" + entries.get(Field.alternative);
 	}

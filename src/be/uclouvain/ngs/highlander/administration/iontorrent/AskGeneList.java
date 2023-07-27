@@ -99,6 +99,7 @@ public class AskGeneList extends JDialog  {
 		btnFile.setToolTipText("Import genes from a text file");
 		btnFile.setPreferredSize(new Dimension(54,54));
 		btnFile.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				FileDialog chooser = new FileDialog(AskGeneList.this, "Choose a plain text file containing 1 gene per line", FileDialog.LOAD);
 				chooser.setVisible(true);
@@ -131,6 +132,7 @@ public class AskGeneList extends JDialog  {
 		btnSort.setToolTipText("Sort current list alphabetically and remove duplicates");
 		btnSort.setPreferredSize(new Dimension(54,54));
 		btnSort.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				sort();
 			}
@@ -143,6 +145,7 @@ public class AskGeneList extends JDialog  {
 		btnOk = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 24));
 		btnOk.setText("0 values");
 		btnOk.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				for (int i=0 ; i < tmodel.getRowCount() ; i++){
 					if (tmodel.getValueAt(i, 0) != null && tmodel.getValueAt(i, 0).toString().length() > 0)
@@ -155,6 +158,7 @@ public class AskGeneList extends JDialog  {
 		
 		JButton btnCancel = new JButton(Resources.getScaledIcon(Resources.iCross, 24));
 		btnCancel.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				cancelClose();
 			}
@@ -180,6 +184,7 @@ public class AskGeneList extends JDialog  {
 		tmodel = new IncrementableTableModel();
 		
 		table = new JTable(tmodel){
+			@Override
 			public boolean editCellAt(int row, int column, java.util.EventObject e){
         boolean result = super.editCellAt(row, column, e);
         final Component editor = getEditorComponent();
@@ -229,22 +234,27 @@ public class AskGeneList extends JDialog  {
 			data.add(new Object[ncol]);
 		}
 		
+		@Override
 		public int getColumnCount() {
 			return ncol;
 		}
 		
+		@Override
 		public int getRowCount() {
 			return data.size();
 		}
 		
+		@Override
 		public Class<?> getColumnClass(int columnIndex) {
 			return Object.class;
 		}
 		
+		@Override
 		public Object getValueAt(int row, int col) {
 			return data.get(row)[col];
 		}
 		
+		@Override
 		public void setValueAt(Object value, int row, int col) {
 			data.get(row)[col] = value;
 			if (!isLastLineEmpty()){
@@ -253,6 +263,7 @@ public class AskGeneList extends JDialog  {
 			fireTableCellUpdated(row, col);			
 		}
 		
+		@Override
 		public boolean isCellEditable(int rowIndex, int columnIndex) {
 			return true;
 		}
@@ -302,6 +313,7 @@ public class AskGeneList extends JDialog  {
 		 * Paste is done by aligning the upper left corner of the selection with the
 		 * 1st element in the current selection of the JTable.
 		 */
+		@Override
 		public void actionPerformed(ActionEvent e){
 			if (e.getActionCommand().compareTo("Paste")==0){
 				int startRow=(table.getSelectedRows())[0];
@@ -384,7 +396,8 @@ public class AskGeneList extends JDialog  {
 	}
 	
   //Overridden so we can exit when window is closed
-  protected void processWindowEvent(WindowEvent e) {
+  @Override
+	protected void processWindowEvent(WindowEvent e) {
     super.processWindowEvent(e);
     if (e.getID() == WindowEvent.WINDOW_CLOSING) {
     	cancelClose();

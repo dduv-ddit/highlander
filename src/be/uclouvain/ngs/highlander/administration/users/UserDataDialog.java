@@ -139,6 +139,7 @@ public class UserDataDialog extends JDialog {
 
 		JButton btnNewButton = new JButton(validateButton, Resources.getScaledIcon(Resources.iButtonApply, 16));
 		btnNewButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					String password = validateInput();
@@ -201,6 +202,7 @@ public class UserDataDialog extends JDialog {
 
 		JButton btnCancel = new JButton("Cancel", Resources.getScaledIcon(Resources.iCross, 16));
 		btnCancel.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				user = null;
 				dispose();

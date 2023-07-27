@@ -31,6 +31,8 @@ package be.uclouvain.ngs.highlander.UI.table;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,11 +41,13 @@ import java.util.Map;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
 import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
@@ -180,8 +184,8 @@ public class CellRenderer {
     		String uniqueVariantId = table.getUniqueVariantId(row);
     		for (String unique : table.getSelectedUniqueVariantId()) {
     			if (unique.equals(uniqueVariantId)) {
-    				if (row%2 == 0) label.setBackground(Resources.getTableEvenRowBackgroundColor(((VariantsTable)table).getColor(TargetColor.SAME_VARIANT)));
-    		    else label.setBackground(Resources.getTableOddRowBackgroundColor(((VariantsTable)table).getColor(TargetColor.SAME_VARIANT)));
+    				if (row%2 == 0) label.setBackground(Resources.getTableEvenRowBackgroundColor(table.getColor(TargetColor.SAME_VARIANT)));
+    		    else label.setBackground(Resources.getTableOddRowBackgroundColor(table.getColor(TargetColor.SAME_VARIANT)));
     			}
     		}
     	}
@@ -429,6 +433,7 @@ public class CellRenderer {
 
 		boolean formatPercent = field.hasTag(Tag.FORMAT_PERCENT_0) || field.hasTag(Tag.FORMAT_PERCENT_2);
 		boolean bigNumber = (field.getFieldClass() == Long.class);
+		boolean date  = (field.getFieldClass() == OffsetDateTime.class || field.getFieldClass() == LocalDate.class);
 		Color backColor = null;
 		Color foreColor = null;
 		boolean bold = false;
@@ -507,22 +512,22 @@ public class CellRenderer {
 			HeatMapCriterion crit = heatMapCrits.get(field.getName());
 			backColor = (heatMap.getColor(value, table.getColumnIndex(crit.getField())));
 		}
-		String key = generateCellStyleKey(backColor, foreColor, bold, italic, formatPercent, bigNumber, alignment);		
+		String key = generateCellStyleKey(backColor, foreColor, bold, italic, formatPercent, bigNumber, date, alignment);		
 		if (!cellStyles.containsKey(key)){
-			cellStyles.put(key, createCellStyle(sheet, cell, backColor, foreColor, bold, italic, formatPercent, bigNumber, alignment));
+			cellStyles.put(key, createCellStyle(sheet, cell, backColor, foreColor, bold, italic, formatPercent, bigNumber, date, alignment));
 		}
 		cell.setCellStyle(cellStyles.get(key));
 	}
 	
-	private XSSFCellStyle createCellStyle(Sheet sheet, Cell cell, Color back, Color fore, boolean bold, boolean italic, boolean percent, boolean bigNumber, int alignment){
+	private XSSFCellStyle createCellStyle(Sheet sheet, Cell cell, Color back, Color fore, boolean bold, boolean italic, boolean percent, boolean bigNumber, boolean date, int alignment){
 		XSSFCellStyle cs = (XSSFCellStyle)sheet.getWorkbook().createCellStyle();
 		if (back != null){
-			cs.setFillPattern(CellStyle.SOLID_FOREGROUND);
-			cs.setFillForegroundColor(new XSSFColor(back));  		
+			cs.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+			cs.setFillForegroundColor(new XSSFColor(back, null));  		
 		}
 		if (fore != null || bold || italic){
 			XSSFFont font = (XSSFFont)sheet.getWorkbook().createFont();
-			if (fore != null) font.setColor(new XSSFColor(fore));
+			if (fore != null) font.setColor(new XSSFColor(fore, null));
 			if (bold) font.setBold(true);
 			if (italic) font.setItalic(true);
 			cs.setFont(font);
@@ -533,17 +538,20 @@ public class CellRenderer {
 		if (bigNumber){
 			cs.setDataFormat(HSSFDataFormat.getBuiltinFormat("#,##0"));
 		}
-		if (alignment == JLabel.CENTER){
-			cs.setAlignment(CellStyle.ALIGN_CENTER);
-		}else if (alignment == JLabel.RIGHT){
-			cs.setAlignment(CellStyle.ALIGN_RIGHT);
+		if (date){
+			cs.setDataFormat((short) 14); //default localized date format such as m/d/yy in US or jj-mm-aa in France
+		}
+		if (alignment == SwingConstants.CENTER){
+			cs.setAlignment(HorizontalAlignment.CENTER);
+		}else if (alignment == SwingConstants.RIGHT){
+			cs.setAlignment(HorizontalAlignment.RIGHT);
 		}else{
-			cs.setAlignment(CellStyle.ALIGN_LEFT);
+			cs.setAlignment(HorizontalAlignment.LEFT);
 		}
 		return cs;
 	}
 	
-	private String generateCellStyleKey(Color back, Color fore, boolean bold, boolean italic, boolean percent, boolean bigNumber, int alignment){
+	private String generateCellStyleKey(Color back, Color fore, boolean bold, boolean italic, boolean percent, boolean bigNumber, boolean date, int alignment){
 		StringBuilder sb = new StringBuilder();
 		if (back != null) sb.append(back.getRGB() + "+");
 		if (fore != null) sb.append(fore.getRGB() + "+");
@@ -551,6 +559,7 @@ public class CellRenderer {
 		if (italic) sb.append("I+");
 		if (percent) sb.append("P+");
 		if (bigNumber) sb.append("N+");
+		if (date) sb.append("D+");
 		sb.append(alignment+"");
 		return sb.toString();
 	}

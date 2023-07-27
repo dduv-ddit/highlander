@@ -311,6 +311,7 @@ public class Parameters {
 			System.setProperty("http.proxyUser", httpProxyUser);
 			System.setProperty("http.proxyPassword", httpProxyPassword);
 			Authenticator.setDefault(new Authenticator() {
+				@Override
 				protected PasswordAuthentication getPasswordAuthentication() {
 					if (getRequestorType() == RequestorType.PROXY) {
 						if (getRequestingHost().toLowerCase().equals(System.getProperty("http.proxyHost").toLowerCase())) {

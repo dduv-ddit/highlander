@@ -31,9 +31,11 @@ package be.uclouvain.ngs.highlander;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -47,6 +49,7 @@ import javax.swing.InputMap;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
@@ -163,6 +166,7 @@ public class Highlander extends JFrame {
 				@Override
 				public void componentMoved(ComponentEvent e) {}
 
+				@Override
 				public void componentHidden(ComponentEvent e) {}
 			});
 		}catch(Exception ex){
@@ -179,7 +183,7 @@ public class Highlander extends JFrame {
 		getContentPane().add(panel_commands, BorderLayout.NORTH);
 		panel_commands.setLayout(new BorderLayout(0, 0));
 
-		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane = new JTabbedPane(SwingConstants.TOP);
 		panel_commands.add(tabbedPane, BorderLayout.NORTH);
 
 		databasePanel = new DatabasePanel(this);
@@ -248,6 +252,7 @@ public class Highlander extends JFrame {
 	}
 
 	//Overridden so we can exit when window is closed
+	@Override
 	protected void processWindowEvent(WindowEvent e) {
 		if (e.getID() == WindowEvent.WINDOW_CLOSING) {
 			if (filteringPanel.checkForChangesToBeSaved()){
@@ -449,7 +454,7 @@ public class Highlander extends JFrame {
 					Highlander.waitingPanel.setProgressDone();
 				} catch (CancelException ex){
 					waitingPanel.setProgressString("Cancelling query", true);
-				} catch (com.mysql.jdbc.exceptions.MySQLStatementCancelledException ex){
+				} catch (com.mysql.cj.jdbc.exceptions.MySQLStatementCancelledException ex){
 					waitingPanel.setProgressString("Cancelling query", true);
 				}catch (Exception ex){
 					Tools.exception(ex);
@@ -559,19 +564,19 @@ public class Highlander extends JFrame {
 					if (Tools.isMac()){
 						for (String map : new String[]{"EditorPane.focusInputMap","FormattedTextField.focusInputMap","PasswordField.focusInputMap","TextArea.focusInputMap","TextField.focusInputMap","TextPane.focusInputMap"}){
 							im = (InputMap) UIManager.get(map);
-							im.put(KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.META_DOWN_MASK), DefaultEditorKit.copyAction);
-							im.put(KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.META_DOWN_MASK), DefaultEditorKit.pasteAction);
-							im.put(KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.META_DOWN_MASK), DefaultEditorKit.cutAction);
-							im.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.META_DOWN_MASK), DefaultEditorKit.selectAllAction);
+							im.put(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.META_DOWN_MASK), DefaultEditorKit.copyAction);
+							im.put(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.META_DOWN_MASK), DefaultEditorKit.pasteAction);
+							im.put(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.META_DOWN_MASK), DefaultEditorKit.cutAction);
+							im.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.META_DOWN_MASK), DefaultEditorKit.selectAllAction);
 						}
 						//IMPORTANT: JTable.processKeyBinding has a bug (it doesn't check if the meta key is pressed before triggering the cell editor)
 						//Don't forget to override it in each JTable to allow the meta+V to work correctly on MacOSX 
 						for (String map : new String[]{"List.focusInputMap","Table.ancestorInputMap","Tree.focusInputMap"}){
 							im = (InputMap) UIManager.get(map);
-							im.put(KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.META_DOWN_MASK), "copy");
-							im.put(KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.META_DOWN_MASK), "paste");
-							im.put(KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.META_DOWN_MASK), "cut");
-							im.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.META_DOWN_MASK), "selectAll");
+							im.put(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.META_DOWN_MASK), "copy");
+							im.put(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.META_DOWN_MASK), "paste");
+							im.put(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.META_DOWN_MASK), "cut");
+							im.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.META_DOWN_MASK), "selectAll");
 						}			
 					}	
 					break;
@@ -647,6 +652,7 @@ public class Highlander extends JFrame {
 		final Highlander highlander = new Highlander();
 
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				highlander.validate();
 				//Center the window
@@ -659,7 +665,7 @@ public class Highlander extends JFrame {
 					frameSize.width = screenSize.width;
 				}
 				highlander.setLocation((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
-				highlander.setExtendedState(Highlander.MAXIMIZED_BOTH);
+				highlander.setExtendedState(Frame.MAXIMIZED_BOTH);
 				highlander.setVisible(true);
 
 				ToolTipManager.sharedInstance().setDismissDelay(3600000);

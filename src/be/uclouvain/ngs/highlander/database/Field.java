@@ -30,7 +30,7 @@
 package be.uclouvain.ngs.highlander.database;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -42,6 +42,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Tools;
@@ -244,7 +245,7 @@ public class Field implements Serializable, Comparable<Field> {
 		Integer.class,
 		Long.class,
 		Boolean.class,
-		Timestamp.class,
+		OffsetDateTime.class,
 		SampleType.class,
 		StructuralVariantType.class,
 		Effect.class,
@@ -379,7 +380,7 @@ public class Field implements Serializable, Comparable<Field> {
 			comparisonOps.add(ComparisonOperator.CONTAINS);
 			comparisonOps.add(ComparisonOperator.DOESNOTCONTAINS);
 		}else if (type.toLowerCase().equals("timestamp") || type.toLowerCase().equals("datetime")){
-			fieldClass = Timestamp.class;
+			fieldClass = OffsetDateTime.class;
 			comparisonOps.add(ComparisonOperator.GREATER);
 			comparisonOps.add(ComparisonOperator.GREATEROREQUAL);
 			comparisonOps.add(ComparisonOperator.SMALLER);
@@ -538,9 +539,9 @@ public class Field implements Serializable, Comparable<Field> {
 			}
 		}
 
-		fieldAlignments.put("LEFT", JLabel.LEFT);
-		fieldAlignments.put("CENTER", JLabel.CENTER);
-		fieldAlignments.put("RIGHT", JLabel.RIGHT);
+		fieldAlignments.put("LEFT", SwingConstants.LEFT);
+		fieldAlignments.put("CENTER", SwingConstants.CENTER);
+		fieldAlignments.put("RIGHT", SwingConstants.RIGHT);
 
 		availableFields.clear();
 		try (Results res = DB.select(Schema.HIGHLANDER, 
@@ -1301,6 +1302,7 @@ public class Field implements Serializable, Comparable<Field> {
 		return has;
 	}
 
+	@Override
 	public String toString(){
 		return name;
 	}

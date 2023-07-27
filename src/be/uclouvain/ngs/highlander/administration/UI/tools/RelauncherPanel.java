@@ -176,6 +176,7 @@ public class RelauncherPanel extends ManagerPanel {
 		JButton button = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleRight, 24));
 		button.setToolTipText("Add selected run(s) to your selection");
 		button.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				addValues();
 			}
@@ -189,6 +190,7 @@ public class RelauncherPanel extends ManagerPanel {
 		JButton button_1 = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleLeft, 24));
 		button_1.setToolTipText("Remove selected run(s) from your selection");
 		button_1.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				removeValues();
 			}

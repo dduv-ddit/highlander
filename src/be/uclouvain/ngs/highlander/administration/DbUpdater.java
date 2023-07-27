@@ -391,7 +391,7 @@ public class DbUpdater {
 				executor.execute(new AnnotationUpdater(analysis, ids, map.get(analysis)));
 				ids = new ArrayList<Integer>(); 
 			}
-			System.out.println(df.format(System.currentTimeMillis()) + " - " + Tools.intToString(count) + " / " + Tools.intToString(total) + " variants updated ..." + " - " + Tools.doubleToString(((double)Tools.getUsedMemoryInMb() / 1024.0), 1, false) + " Gb / "+ (Tools.doubleToString(((double)(Runtime.getRuntime().maxMemory() / 1024 /1024) / 1024.0), 1, false)) + " Gb");
+			System.out.println(df.format(System.currentTimeMillis()) + " - " + Tools.intToString(count) + " / " + Tools.intToString(total) + " variants updated ..." + " - " + Tools.doubleToString((Tools.getUsedMemoryInMb() / 1024.0), 1, false) + " Gb / "+ (Tools.doubleToString((Runtime.getRuntime().maxMemory() / 1024 /1024 / 1024.0), 1, false)) + " Gb");
 		}
 		setHardUpdate(false);
 		executor.shutdown();
@@ -457,7 +457,7 @@ public class DbUpdater {
 				executor.execute(new AnnotationUpdater(analysis, ids, map.get(analysis)));
 				ids = new ArrayList<Integer>(); 
 			}
-			System.out.println(df.format(System.currentTimeMillis()) + " - " + Tools.intToString(count) + " / " + Tools.intToString(total) + " variants updated ..." + " - " + Tools.doubleToString(((double)Tools.getUsedMemoryInMb() / 1024.0), 1, false) + " Gb / "+ (Tools.doubleToString(((double)(Runtime.getRuntime().maxMemory() / 1024 /1024) / 1024.0), 1, false)) + " Gb");
+			System.out.println(df.format(System.currentTimeMillis()) + " - " + Tools.intToString(count) + " / " + Tools.intToString(total) + " variants updated ..." + " - " + Tools.doubleToString((Tools.getUsedMemoryInMb() / 1024.0), 1, false) + " Gb / "+ (Tools.doubleToString((Runtime.getRuntime().maxMemory() / 1024 /1024 / 1024.0), 1, false)) + " Gb");
 		}
 		setHardUpdate(false);
 		executor.shutdown();
@@ -475,6 +475,7 @@ public class DbUpdater {
 			this.annotations = annotations;
 		}
 
+		@Override
 		public void run(){
 			try{
 				DateFormat df = new SimpleDateFormat("yyyy-MM-dd - HH_mm_ss");
@@ -525,7 +526,7 @@ public class DbUpdater {
 						}
 						statement.executeBatch();
 						count += ids.size();
-						System.out.println(df.format(System.currentTimeMillis()) + " - " + Tools.intToString(count) + " / " + Tools.intToString(total) + " variants updated ..." + " - " + Tools.doubleToString(((double)Tools.getUsedMemoryInMb() / 1024.0), 1, false) + " Gb / "+ (Tools.doubleToString(((double)(Runtime.getRuntime().maxMemory() / 1024 /1024) / 1024.0), 1, false)) + " Gb");
+						System.out.println(df.format(System.currentTimeMillis()) + " - " + Tools.intToString(count) + " / " + Tools.intToString(total) + " variants updated ..." + " - " + Tools.doubleToString((Tools.getUsedMemoryInMb() / 1024.0), 1, false) + " Gb / "+ (Tools.doubleToString((Runtime.getRuntime().maxMemory() / 1024 /1024 / 1024.0), 1, false)) + " Gb");
 					}catch(Exception ex){
 						ex.printStackTrace();
 					}

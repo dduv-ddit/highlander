@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.30/mysql-connector-java-5.1.30-bin.jar" sourcepath="lib/mysql-connector-java-5.1.30/src"/>
 	<classpathentry kind="lib" path="lib/Install4j/i4jruntime.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="file:/D:/Dropbox/Projets/Highlander/lib/Install4j/javadoc/"/>
@@ -10,19 +9,6 @@
 	<classpathentry kind="lib" path="lib/javamail-1.4.5/mail.jar"/>
 	<classpathentry kind="lib" path="lib/AnimatingCardLayout/AnimatingCardLayout.jar"/>
 	<classpathentry kind="lib" path="lib/HTTP Client/commons-httpclient-2.0-rc3.jar"/>
-	<classpathentry kind="lib" path="lib/poi-3.9/poi-3.9-20121203.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="file:/D:/Dropbox/Projets/NGS Highlander/lib/poi-3.9/docs/apidocs/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/poi-3.9/poi-ooxml-3.9-20121203.jar"/>
-	<classpathentry kind="lib" path="lib/poi-3.9/poi-ooxml-schemas-3.9-20121203.jar"/>
-	<classpathentry kind="lib" path="lib/poi-3.9/lib/commons-codec-1.5.jar"/>
-	<classpathentry kind="lib" path="lib/poi-3.9/lib/commons-logging-1.1.jar"/>
-	<classpathentry kind="lib" path="lib/poi-3.9/ooxml-lib/dom4j-1.6.1.jar"/>
-	<classpathentry kind="lib" path="lib/poi-3.9/ooxml-lib/stax-api-1.0.1.jar"/>
-	<classpathentry kind="lib" path="lib/poi-3.9/ooxml-lib/xmlbeans-2.3.0.jar"/>
-	<classpathentry kind="lib" path="lib/poi-3.9/lib/junit-3.8.1.jar"/>
 	<classpathentry kind="lib" path="lib/picard-tools-1.107/ViewSam.jar"/>
 	<classpathentry kind="lib" path="lib/IGV_2.3.32/batik-codec__V1.7.jar"/>
 	<classpathentry kind="lib" path="lib/IGV_2.3.32/goby-io-igv__V1.0.jar"/>
@@ -56,5 +42,12 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/slf4j-1.7.26/slf4j-api-1.7.26.jar" sourcepath="lib/slf4j-1.7.26/slf4j-api-1.7.26-sources.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-1.7.26/slf4j-simple-1.7.26.jar" sourcepath="lib/slf4j-1.7.26/slf4j-simple-1.7.26-sources.jar"/>
+	<classpathentry kind="lib" path="lib/poi-5.0.0/poi-5.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/poi-5.0.0/poi-ooxml-5.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/poi-5.0.0/poi-ooxml-full-5.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/poi-5.0.0/lib/commons-collections4-4.4.jar"/>
+	<classpathentry kind="lib" path="lib/poi-5.0.0/ooxml-lib/commons-compress-1.20.jar"/>
+	<classpathentry kind="lib" path="lib/poi-5.0.0/ooxml-lib/xmlbeans-4.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-8.0.32/mysql-connector-j-8.0.32.jar" sourcepath="lib/mysql-connector-java-8.0.32/src"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

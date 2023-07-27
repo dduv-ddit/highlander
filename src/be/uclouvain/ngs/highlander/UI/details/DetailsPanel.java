@@ -104,12 +104,17 @@ public class DetailsPanel extends JScrollPane implements DropTargetListener {
 		setTransferHandler(new DetailsBoxTransferHandler());
 	}
 
+	@Override
 	public void dragEnter(DropTargetDragEvent dtde) {}
+	@Override
 	public void dragOver(DropTargetDragEvent dtde) {}
 	public void dropActionchanged(DropTargetDragEvent dtde) {}
+	@Override
 	public void dragExit(DropTargetEvent dte) {}
+	@Override
 	public void dropActionChanged(DropTargetDragEvent arg0) {}
 
+	@Override
 	public void drop(DropTargetDropEvent dtde) {
 		try {
 			Point loc = dtde.getLocation(); 
@@ -127,6 +132,7 @@ public class DetailsPanel extends JScrollPane implements DropTargetListener {
 
 	class DetailsBoxTransferHandler extends TransferHandler {
 
+		@Override
 		public boolean canImport(JComponent c, DataFlavor[] f){
 			DataFlavor temp = new DataFlavor(String.class, "DetailsBox");
 			for(DataFlavor d:f){
@@ -185,6 +191,7 @@ public class DetailsPanel extends JScrollPane implements DropTargetListener {
 
 	public void setSelection(final int variantId, final VariantsTable table){
 		new Thread(new Runnable(){
+			@Override
 			public void run(){
 				try{	
 					int currentScrollPos = getVerticalScrollBar().getValue();
@@ -237,6 +244,7 @@ public class DetailsPanel extends JScrollPane implements DropTargetListener {
 					detailsBoxesComboBox.setPreferredSize(new Dimension(100,26));
 					detailsBoxesComboBox.setMaximumRowCount(20);
 					SwingUtilities.invokeLater(new Runnable() {
+						@Override
 						public void run() {
 							AutoCompleteSupport<DetailsBox> support = AutoCompleteSupport.install(detailsBoxesComboBox, categories);
 							support.setCorrectsCase(true);
@@ -252,6 +260,7 @@ public class DetailsPanel extends JScrollPane implements DropTargetListener {
 						@Override
 						public void actionPerformed(ActionEvent e) {
 							SwingUtilities.invokeLater(new Runnable() {
+								@Override
 								public void run() {
 									moveDetailsBox(detailsBoxesComboBox.getItemAt(detailsBoxesComboBox.getSelectedIndex()).getTitle(), new Point(0,0));
 								}
@@ -279,6 +288,7 @@ public class DetailsPanel extends JScrollPane implements DropTargetListener {
 											}
 										}
 										SwingUtilities.invokeLater(new Runnable() {
+											@Override
 											public void run() {
 												orderDialogBoxes();
 												validate();
@@ -300,6 +310,7 @@ public class DetailsPanel extends JScrollPane implements DropTargetListener {
 					comboBox_field.setMaximumRowCount(20);
 					comboBox_field.setPreferredSize(new Dimension(100,26));
 					SwingUtilities.invokeLater(new Runnable() {
+						@Override
 						public void run() {
 							support = AutoCompleteSupport.install(comboBox_field, fields);
 							support.setCorrectsCase(true);
@@ -309,6 +320,7 @@ public class DetailsPanel extends JScrollPane implements DropTargetListener {
 						}
 					});		
 					comboBox_field.addActionListener(new ActionListener() {
+						@Override
 						public void actionPerformed(ActionEvent arg0) {
 							if (arg0.getActionCommand().equals("comboBoxEdited")){
 								if (comboBox_field.getSelectedIndex() < 0) comboBox_field.setSelectedItem(null);
@@ -319,6 +331,7 @@ public class DetailsPanel extends JScrollPane implements DropTargetListener {
 						}
 					});
 					comboBox_field.addItemListener(new ItemListener() {
+						@Override
 						public void itemStateChanged(ItemEvent arg0) {
 							if (arg0.getStateChange() == ItemEvent.SELECTED){
 								if (comboBox_field.getSelectedIndex() >= 0){
@@ -362,6 +375,7 @@ public class DetailsPanel extends JScrollPane implements DropTargetListener {
 												if (field.getName().contains("public")) {
 													if (b instanceof DetailsBoxPublicAnnotations) {
 														SwingUtilities.invokeLater(new Runnable() {
+															@Override
 															public void run() {
 																b.expand();
 																getVerticalScrollBar().setValue(b.getLocation().y+80);
@@ -372,6 +386,7 @@ public class DetailsPanel extends JScrollPane implements DropTargetListener {
 												}else if (field.getName().contains("private") || field.getName().contains("of_interest")) {
 													if (b instanceof DetailsBoxPrivateAnnotations) {
 														SwingUtilities.invokeLater(new Runnable() {
+															@Override
 															public void run() {
 																b.expand();
 																getVerticalScrollBar().setValue(b.getLocation().y+80);
@@ -382,6 +397,7 @@ public class DetailsPanel extends JScrollPane implements DropTargetListener {
 												}else {
 													if (b instanceof DetailsBoxEvaluationAnnotations) {
 														SwingUtilities.invokeLater(new Runnable() {
+															@Override
 															public void run() {
 																b.expand();
 																getVerticalScrollBar().setValue(b.getLocation().y+80);
@@ -395,6 +411,7 @@ public class DetailsPanel extends JScrollPane implements DropTargetListener {
 													DetailsBoxFields box = (DetailsBoxFields)b;	
 													if (box.getCategory().equals(field.getCategory())) {
 														SwingUtilities.invokeLater(new Runnable() {
+															@Override
 															public void run() {
 																b.expand();
 																getVerticalScrollBar().setValue(box.getLocation().y+80);

@@ -133,6 +133,7 @@ public class UseTemplate extends JDialog {
 
 		JButton btnOk = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 24));
 		btnOk.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				saveTemplate();
 				if (saved) dispose();
@@ -142,6 +143,7 @@ public class UseTemplate extends JDialog {
 
 		JButton btnCancel = new JButton(Resources.getScaledIcon(Resources.iCross, 24));
 		btnCancel.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				dispose();
 			}
@@ -186,6 +188,7 @@ public class UseTemplate extends JDialog {
 
 	private JPanel getPanelSamplePlaceholders() {
 		tmodel = new DefaultTableModel(	) {
+			@Override
 			public boolean isCellEditable(int rowIndex, int columnIndex) {
 				if (columnIndex == 0) return false;
 				return true;
@@ -198,6 +201,7 @@ public class UseTemplate extends JDialog {
 		}
 
 		table = new JTable(tmodel){
+			@Override
 			public boolean editCellAt(int row, int column, java.util.EventObject e){
 				boolean result = super.editCellAt(row, column, e);
 				final Component editor = getEditorComponent();
@@ -234,6 +238,7 @@ public class UseTemplate extends JDialog {
 		sampleColumn.setCellEditor(new DefaultCellEditor(sampleBox));
 
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				AutoCompleteSupport<String> support = AutoCompleteSupport.install(sampleBox, GlazedLists.eventListOf(availableSamples));
 				support.setCorrectsCase(true);
@@ -241,6 +246,7 @@ public class UseTemplate extends JDialog {
 				support.setTextMatchingStrategy(TextMatcherEditor.NORMALIZED_STRATEGY);
 				support.setStrict(false);
 				sampleBox.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						if (arg0.getActionCommand().equals("comboBoxEdited")){
 							if (sampleBox.getSelectedIndex() < 0) sampleBox.setSelectedItem(null);

@@ -190,17 +190,17 @@ public class Gene {
 						"JOIN exon_transcript as extx USING (transcript_id) "+
 						"JOIN exon as ex USING (exon_id) "+
 						"WHERE tx.stable_id = '"+getEnsemblTranscript()+"' "+
-						"ORDER BY rank"
+						"ORDER BY `rank`"
 						;
 				break;
 			default:
 				isTranslated = false;
-				query = "SELECT extx.rank, ex.exon_id, ex.seq_region_start, ex.seq_region_end, ex.seq_region_strand, ex.phase, ex.end_phase "+
+				query = "SELECT extx.`rank`, ex.exon_id, ex.seq_region_start, ex.seq_region_end, ex.seq_region_strand, ex.phase, ex.end_phase "+
 						"FROM transcript as tx "+
 						"JOIN exon_transcript as extx USING (transcript_id) "+
 						"JOIN exon as ex USING (exon_id) "+
 						"WHERE tx.stable_id = '"+getEnsemblTranscript()+"' "+
-						"ORDER BY rank"
+						"ORDER BY `rank`"
 						;
 				break;
 			}		

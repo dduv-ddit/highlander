@@ -95,6 +95,7 @@ public class Interval implements Comparable<Interval> {
 		return set;
 	}
 
+	@Override
 	public String toString(){
 		return (start != end) ? (chr + ":" + start + "-" + end) : (chr + ":" + start);
 	}

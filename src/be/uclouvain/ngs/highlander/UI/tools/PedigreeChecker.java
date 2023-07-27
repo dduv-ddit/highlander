@@ -34,6 +34,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FileDialog;
+import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -61,13 +62,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -120,12 +123,13 @@ public class PedigreeChecker extends JFrame {
 		int width = screenSize.width - (int)(screenSize.width*0.05);
 		int height = screenSize.height - (int)(screenSize.height*0.05);
 		setSize(new Dimension(width,height));
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
+		setExtendedState(Frame.MAXIMIZED_BOTH);
 		initUI();
 		this.addComponentListener(new ComponentListener() {
 			@Override
 			public void componentShown(ComponentEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						checkSamples();				
 					}
@@ -153,7 +157,7 @@ public class PedigreeChecker extends JFrame {
 
 		JPanel panelTop = new JPanel(new BorderLayout());
 		int height = 150;
-		int width = (int)(2500.0 / (1250.0/(double)height));
+		int width = (int)(2500.0 / (1250.0/height));
 		panelTop.add(new JLabel(new ImageIcon(Resources.iPedigreeCheckerCommon.getImage().getScaledInstance(width, height,  java.awt.Image.SCALE_SMOOTH))), BorderLayout.WEST);
 		JTextArea explanation = new JTextArea();
 		explanation.append("This tool will give you some insight about the snp shared between 2 samples.\n");
@@ -191,8 +195,10 @@ public class PedigreeChecker extends JFrame {
 		export.setPreferredSize(new Dimension(54,54));
 		export.setToolTipText("Export to an Excel file");
 		export.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						export();
 					}
@@ -270,6 +276,7 @@ public class PedigreeChecker extends JFrame {
 
 	private void checkSamples(){
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				waitingPanel.setVisible(true);
 				waitingPanel.start();
@@ -277,6 +284,7 @@ public class PedigreeChecker extends JFrame {
 		});
 		try {
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setProgressString("Checking SNP for "+samples.size()+" samples", false);
 					waitingPanel.setProgressMaximum(samples.size()*2*dbsnpVersions.length);
@@ -371,7 +379,7 @@ public class PedigreeChecker extends JFrame {
 						int t = snps.size() + dbsnp.get(version).get(p).size() - set.size();
 						int tadj = snps.size() + dbsnp.get(version).get(p).size();
 						double percent = (double)set.size() / (double)t;
-						double percentAdj = (double)set.size()*2.0 / (double)tadj;
+						double percentAdj = set.size()*2.0 / tadj;
 						data[j][i+2] = percent;
 						dataAdj[j][i+2] = percentAdj;
 						total[j][i+2] = t;
@@ -412,6 +420,7 @@ public class PedigreeChecker extends JFrame {
 					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
 		}
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				waitingPanel.setVisible(false);
 				waitingPanel.stop();
@@ -429,12 +438,13 @@ public class PedigreeChecker extends JFrame {
 			this.version = version;
 		}
 
+		@Override
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 			Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
 			JLabel label = (JLabel) comp;
 
-			label.setHorizontalAlignment(JLabel.LEFT);
+			label.setHorizontalAlignment(SwingConstants.LEFT);
 
 			if (value == null) {
 				value = "";
@@ -474,29 +484,36 @@ public class PedigreeChecker extends JFrame {
 			this.classes = classes;
 		}
 
+		@Override
 		public int getColumnCount() {
 			return headers.length;
 		}
 
+		@Override
 		public String getColumnName(int col) {
 			return headers[col];
 		}
 
+		@Override
 		public int getRowCount() {
 			return data.length;
 		}
 
+		@Override
 		public Class<?> getColumnClass(int col) {
 			return classes[col];
 		}
 
+		@Override
 		public Object getValueAt(int row, int col) {
 			return data[row][col];
 		}
 
+		@Override
 		public void setValueAt(Object value, int row, int col) {
 		}
 
+		@Override
 		public boolean isCellEditable(int rowIndex, int columnIndex) {
 			return false;
 		}
@@ -515,63 +532,64 @@ public class PedigreeChecker extends JFrame {
 			try{
 				waitingPanel.start();
 				try{
-					Workbook wb = new SXSSFWorkbook(100);  	
-					for (String version : dbsnpVersions){
-						for (int a=0 ; a <= 1 ; a++){
-							JTable table = (a==0) ? tablesAdj.get(version) : tables.get(version);
-							int[][] tot = (a==0) ? totalsAdj.get(version) : totals.get(version);
-							Sheet sheet = wb.createSheet((a==0) ? ("Adjusted dbSNP "+version) : ("Common dbSNP " + version));
-							sheet.createFreezePane(1, 1);		
-							int r = 0;
-							Row row = sheet.createRow(r++);
-							for (int c = 0 ; c < table.getColumnCount() ; c++){
-								row.createCell(c).setCellValue(table.getColumnName(c));
-							}
-							int nrow = table.getRowCount();
-							waitingPanel.setProgressString("Exporting "+Tools.doubleToString(nrow, 0, false)+" samples", false);
-							waitingPanel.setProgressMaximum(nrow);
-
-							Map<String, XSSFCellStyle> styles = new HashMap<String, XSSFCellStyle>();		  	
-							for (int i=0 ; i < nrow ; i++ ){
-								waitingPanel.setProgressValue(r);
-								row = sheet.createRow(r++);
+					try(Workbook wb = new SXSSFWorkbook(100)){  	
+						for (String version : dbsnpVersions){
+							for (int a=0 ; a <= 1 ; a++){
+								JTable table = (a==0) ? tablesAdj.get(version) : tables.get(version);
+								int[][] tot = (a==0) ? totalsAdj.get(version) : totals.get(version);
+								Sheet sheet = wb.createSheet((a==0) ? ("Adjusted dbSNP "+version) : ("Common dbSNP " + version));
+								sheet.createFreezePane(1, 1);		
+								int r = 0;
+								Row row = sheet.createRow(r++);
 								for (int c = 0 ; c < table.getColumnCount() ; c++){
-									Cell cell = row.createCell(c);
-									if (table.getValueAt(i, c) != null){
-										Object value = table.getValueAt(i, c);
-										Color color = null;
-										if (value != null){
-											if (c > 1 && a==0){
-												color = heatMapsAdj.get(version).getColor(i, c);
+									row.createCell(c).setCellValue(table.getColumnName(c));
+								}
+								int nrow = table.getRowCount();
+								waitingPanel.setProgressString("Exporting "+Tools.doubleToString(nrow, 0, false)+" samples", false);
+								waitingPanel.setProgressMaximum(nrow);
+
+								Map<String, XSSFCellStyle> styles = new HashMap<String, XSSFCellStyle>();		  	
+								for (int i=0 ; i < nrow ; i++ ){
+									waitingPanel.setProgressValue(r);
+									row = sheet.createRow(r++);
+									for (int c = 0 ; c < table.getColumnCount() ; c++){
+										Cell cell = row.createCell(c);
+										if (table.getValueAt(i, c) != null){
+											Object value = table.getValueAt(i, c);
+											Color color = null;
+											if (value != null){
+												if (c > 1 && a==0){
+													color = heatMapsAdj.get(version).getColor(i, c);
+												}
+											}  		
+											String styleKey  = generateCellStyleKey(color);
+											if (!styles.containsKey(styleKey)){
+												styles.put(styleKey, createCellStyle(sheet, cell, color));
 											}
-										}  		
-										String styleKey  = generateCellStyleKey(color);
-										if (!styles.containsKey(styleKey)){
-											styles.put(styleKey, createCellStyle(sheet, cell, color));
+											cell.setCellStyle(styles.get(styleKey));
+											if (table.getColumnClass(c) == Double.class && r > 1){
+												value = Tools.doubleToPercent(Double.parseDouble(value.toString()), 0) + " ("+Tools.intToString(tot[r-2][c])+")";
+											}else if (table.getColumnClass(c) == ImageIcon.class && r > 1){
+												if (value == iUnknown) value = "?";
+												else if (value == iMale) value = "M";
+												else if (value == iFemale) value = "F";
+											}
+											cell.setCellValue(StringUtils.left(value.toString(), 32765)); //The maximum length of cell contents (text) is 32767 characters
 										}
-										cell.setCellStyle(styles.get(styleKey));
-										if (table.getColumnClass(c) == Double.class && r > 1){
-											value = Tools.doubleToPercent(Double.parseDouble(value.toString()), 0) + " ("+Tools.intToString(tot[r-2][c])+")";
-										}else if (table.getColumnClass(c) == ImageIcon.class && r > 1){
-											if (value == iUnknown) value = "?";
-											else if (value == iMale) value = "M";
-											else if (value == iFemale) value = "F";
-										}
-										cell.setCellValue(value.toString());
 									}
 								}
+								for (int c = 0 ; c < table.getColumnCount() ; c++){
+									sheet.autoSizeColumn(c);					
+								}
+								waitingPanel.setProgressValue(nrow);						
 							}
-							for (int c = 0 ; c < table.getColumnCount() ; c++){
-								sheet.autoSizeColumn(c);					
-							}
-							waitingPanel.setProgressValue(nrow);						
 						}
+						waitingPanel.setProgressString("Writing file ...",true);		
+						try (FileOutputStream fileOut = new FileOutputStream(xls)){
+							wb.write(fileOut);
+						}
+						waitingPanel.setProgressDone();
 					}
-					waitingPanel.setProgressString("Writing file ...",true);		
-					try (FileOutputStream fileOut = new FileOutputStream(xls)){
-						wb.write(fileOut);
-					}
-					waitingPanel.setProgressDone();
 				}catch(Exception ex){
 					waitingPanel.forceStop();
 					throw ex;
@@ -592,8 +610,8 @@ public class PedigreeChecker extends JFrame {
 	private XSSFCellStyle createCellStyle(Sheet sheet, Cell cell, Color color){
 		XSSFCellStyle cs = (XSSFCellStyle)sheet.getWorkbook().createCellStyle();
 		if (color != null){
-			cs.setFillPattern(CellStyle.SOLID_FOREGROUND);
-			cs.setFillForegroundColor(new XSSFColor(color));  		
+			cs.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+			cs.setFillForegroundColor(new XSSFColor(color, null));  		
 		}
 		return cs;
 	}
@@ -655,7 +673,7 @@ public class PedigreeChecker extends JFrame {
 				Set<String> set = new HashSet<String>(variants.get(project_id_from));
 				set.retainAll(variants.get(project_id_to));
 				int tadj = variants.get(project_id_from).size() + variants.get(project_id_to).size();
-				double percentAdj = (double)set.size()*2.0 / (double)tadj;
+				double percentAdj = set.size()*2.0 / tadj;
 				common.get(project_id_from).put(project_id_to, percentAdj);
 				if (percentAdj > 0.9) {
 					if (!individuals.get(project_id_from).equals(individuals.get(project_id_to))) {

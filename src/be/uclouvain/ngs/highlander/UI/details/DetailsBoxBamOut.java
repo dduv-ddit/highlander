@@ -69,10 +69,12 @@ public class DetailsBoxBamOut extends DetailsBoxAlignment {
 		super(variantId, mainPanel);
 	}
 
+	@Override
 	public String getTitle(){
 		return "Haplotype Caller BamOut";
 	}
 
+	@Override
 	protected void loadDetails(){
 		try{
 			detailsPanel.removeAll();

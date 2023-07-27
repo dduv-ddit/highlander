@@ -32,6 +32,7 @@ package be.uclouvain.ngs.highlander.UI.toolbar;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -68,8 +69,10 @@ public class HelpPanel extends JPanel {
 		setMemory.setPreferredSize(new Dimension(54,54));
 		setMemory.setToolTipText("Memory settings");
 		setMemory.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						memorySettings();
 					}
@@ -81,8 +84,10 @@ public class HelpPanel extends JPanel {
 		helpLastChanges.setPreferredSize(new Dimension(54,54));
 		helpLastChanges.setToolTipText("Last changes");
 		helpLastChanges.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						last();
 					}
@@ -215,7 +220,7 @@ public class HelpPanel extends JPanel {
 		dlg.getContentPane().add(scrollPane, BorderLayout.CENTER);
 		dlg.pack();
 		Tools.centerWindow(dlg, false);
-		dlg.setExtendedState(Highlander.MAXIMIZED_BOTH);
+		dlg.setExtendedState(Frame.MAXIMIZED_BOTH);
 		dlg.setVisible(true);
 	}
 

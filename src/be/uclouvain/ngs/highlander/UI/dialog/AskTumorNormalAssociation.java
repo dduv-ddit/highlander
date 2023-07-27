@@ -107,6 +107,7 @@ public class AskTumorNormalAssociation extends JDialog {
 
 		JButton btnOk = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 24));
 		btnOk.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				tumorToNormal.clear();
 				for (String tumor : boxes.keySet()) {
@@ -125,6 +126,7 @@ public class AskTumorNormalAssociation extends JDialog {
 
 		JButton btnCancel = new JButton(Resources.getScaledIcon(Resources.iCross, 24));
 		btnCancel.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				cancelClose();
 			}
@@ -141,6 +143,7 @@ public class AskTumorNormalAssociation extends JDialog {
 			final JComboBox<String> box = new JComboBox<String>(availableSamples);
 			boxes.put(sample, box);
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {	
 					AutoCompleteSupport<String> support = AutoCompleteSupport.install(box, GlazedLists.eventListOf(availableSamples));
 					support.setCorrectsCase(true);
@@ -148,6 +151,7 @@ public class AskTumorNormalAssociation extends JDialog {
 					support.setTextMatchingStrategy(TextMatcherEditor.NORMALIZED_STRATEGY);
 					support.setStrict(false);
 					box.addActionListener(new ActionListener() {
+						@Override
 						public void actionPerformed(ActionEvent e) {
 							if (e.getActionCommand().equals("comboBoxEdited")){
 								JComboBox<?> sampleBox = (JComboBox<?>)e.getSource();
@@ -179,6 +183,7 @@ public class AskTumorNormalAssociation extends JDialog {
 				if (fromdb != null) {
 					final String normal = fromdb;
 					SwingUtilities.invokeLater(new Runnable() {
+						@Override
 						public void run() {	
 							boxes.get(tumor).setSelectedItem(normal);
 						}});
@@ -194,6 +199,7 @@ public class AskTumorNormalAssociation extends JDialog {
 	}
 
 	//Overridden so we can exit when window is closed
+	@Override
 	protected void processWindowEvent(WindowEvent e) {
 		super.processWindowEvent(e);
 		if (e.getID() == WindowEvent.WINDOW_CLOSING) {

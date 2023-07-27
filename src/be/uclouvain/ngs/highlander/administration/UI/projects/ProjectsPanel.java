@@ -44,7 +44,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.Timestamp;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -151,6 +151,7 @@ public class ProjectsPanel extends ManagerPanel {
 		projectBox = new JComboBox<>(availableProjects);
 		projectBox.setMaximumRowCount(20);
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				projectBoxSupport = AutoCompleteSupport.install(projectBox, projectsList);
 				projectBoxSupport.setCorrectsCase(true);
@@ -163,6 +164,7 @@ public class ProjectsPanel extends ManagerPanel {
 			}
 		});
 		projectBox.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (arg0.getActionCommand().equals("comboBoxEdited")){
 					if (projectBox.getSelectedIndex() < 0) projectBox.setSelectedItem(null);
@@ -186,7 +188,7 @@ public class ProjectsPanel extends ManagerPanel {
 		});
 		northPanel.add(projectBox, BorderLayout.NORTH);
 
-		JPanel fillToolsPanel = new JPanel(new WrapLayout(WrapLayout.LEFT));
+		JPanel fillToolsPanel = new JPanel(new WrapLayout(FlowLayout.LEFT));
 		northPanel.add(fillToolsPanel, BorderLayout.SOUTH);
 
 		JButton setRunIdButton = new JButton("Set run id");
@@ -576,8 +578,10 @@ public class ProjectsPanel extends ManagerPanel {
 		fillToolsPanel.add(clearCellButton);
 
 		projectsTable = new JTable(){
+			@Override
 			protected JTableHeader createDefaultTableHeader() {
 				return new JTableHeader(columnModel) {
+					@Override
 					public String getToolTipText(MouseEvent e) {
 						java.awt.Point p = e.getPoint();
 						int index = columnModel.getColumnIndexAtX(p.x);
@@ -631,7 +635,7 @@ public class ProjectsPanel extends ManagerPanel {
 		JPanel southPanel = new JPanel(new GridBagLayout());
 		add(southPanel, BorderLayout.SOUTH);
 
-		JPanel projectPanel = new JPanel(new WrapLayout(WrapLayout.LEADING));
+		JPanel projectPanel = new JPanel(new WrapLayout(FlowLayout.LEADING));
 		projectPanel.setBorder(BorderFactory.createTitledBorder("Project"));
 		southPanel.add(projectPanel, new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
 
@@ -680,7 +684,7 @@ public class ProjectsPanel extends ManagerPanel {
 		});
 		projectPanel.add(excelButton);
 
-		JPanel samplePanel = new JPanel(new WrapLayout(WrapLayout.LEADING));
+		JPanel samplePanel = new JPanel(new WrapLayout(FlowLayout.LEADING));
 		samplePanel.setBorder(BorderFactory.createTitledBorder("Sample"));
 		southPanel.add(samplePanel, new GridBagConstraints(0, 2, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
 
@@ -836,7 +840,7 @@ public class ProjectsPanel extends ManagerPanel {
 		});
 		samplePanel.add(deleteButton);
 
-		JPanel annotationsPanel = new JPanel(new WrapLayout(WrapLayout.LEADING));
+		JPanel annotationsPanel = new JPanel(new WrapLayout(FlowLayout.LEADING));
 		annotationsPanel.setBorder(BorderFactory.createTitledBorder("User annotations (variant evaluations)"));
 		southPanel.add(annotationsPanel, new GridBagConstraints(0, 3, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
 
@@ -867,6 +871,7 @@ public class ProjectsPanel extends ManagerPanel {
 
 	private void refresh(){
 		SwingUtilities.invokeLater(new Runnable(){
+			@Override
 			public void run(){
 				try{
 					projectTableModel.fireTableRowsUpdated(0,projectTableModel.getRowCount()-1);
@@ -1041,6 +1046,7 @@ public class ProjectsPanel extends ManagerPanel {
 		 * Paste is done by aligning the upper left corner of the selection with the
 		 * 1st element in the current selection of the JTable.
 		 */
+		@Override
 		public void actionPerformed(ActionEvent e){
 			if (e.getActionCommand().compareTo("Paste")==0){
 				int startRow=(table.getSelectedRows())[0];
@@ -1128,6 +1134,7 @@ public class ProjectsPanel extends ManagerPanel {
 			}
 			if (res == JOptionPane.YES_OPTION){
 				SwingUtilities.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						waitingPanel.setVisible(true);
 						waitingPanel.start();
@@ -1156,6 +1163,7 @@ public class ProjectsPanel extends ManagerPanel {
 					ProjectManager.toConsole(ex);
 				}
 				SwingUtilities.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						waitingPanel.setVisible(false);
 						waitingPanel.stop();
@@ -1177,48 +1185,49 @@ public class ProjectsPanel extends ManagerPanel {
 			try{
 				waitingPanel.start();
 				try{
-					Workbook wb = new SXSSFWorkbook(100); 
-					int totalRows = 0;					
-					JTable table = projectsTable;
-					Sheet sheet = wb.createSheet(projectBox.getSelectedItem().toString().replace(':', '-'));
-					sheet.createFreezePane(0, 1);		
-					int r = 0;
-					Row row = sheet.createRow(r++);
-					row.setHeightInPoints(50);
-					for (int c = 0 ; c < table.getColumnCount() ; c++){
-						row.createCell(c).setCellValue(table.getColumnName(c));
-					}
-					sheet.setAutoFilter(new CellRangeAddress(0, 0, 0, table.getColumnCount()-1));
-					int nrow = table.getRowCount();
-					waitingPanel.setProgressString("Exporting "+Tools.doubleToString(nrow, 0, false)+" lines", false);
-					waitingPanel.setProgressMaximum(nrow);
-					for (int i=0 ; i < nrow ; i++ ){
-						waitingPanel.setProgressValue(r);
-						row = sheet.createRow(r++);
+					try(Workbook wb = new SXSSFWorkbook(100)){ 
+						int totalRows = 0;					
+						JTable table = projectsTable;
+						Sheet sheet = wb.createSheet(projectBox.getSelectedItem().toString().replace(':', '-'));
+						sheet.createFreezePane(0, 1);		
+						int r = 0;
+						Row row = sheet.createRow(r++);
+						row.setHeightInPoints(50);
 						for (int c = 0 ; c < table.getColumnCount() ; c++){
-							if (table.getValueAt(i, c) == null)
-								row.createCell(c);
-							else if (table.getColumnClass(c) == Timestamp.class)
-								row.createCell(c).setCellValue((Timestamp)table.getValueAt(i, c));
-							else if (table.getColumnClass(c) == Integer.class)
-								row.createCell(c).setCellValue(Integer.parseInt(table.getValueAt(i, c).toString()));
-							else if (table.getColumnClass(c) == Long.class)
-								row.createCell(c).setCellValue(Long.parseLong(table.getValueAt(i, c).toString()));
-							else if (table.getColumnClass(c) == Double.class)
-								row.createCell(c).setCellValue(Double.parseDouble(table.getValueAt(i, c).toString()));
-							else if (table.getColumnClass(c) == Boolean.class)
-								row.createCell(c).setCellValue(Boolean.parseBoolean(table.getValueAt(i, c).toString()));
-							else 
-								row.createCell(c).setCellValue(table.getValueAt(i, c).toString());
+							row.createCell(c).setCellValue(table.getColumnName(c));
 						}
-					}		
-					totalRows += nrow;
-					waitingPanel.setProgressValue(totalRows);
-					waitingPanel.setProgressString("Writing file ...",true);		
-					try (FileOutputStream fileOut = new FileOutputStream(xls)){
-						wb.write(fileOut);
+						sheet.setAutoFilter(new CellRangeAddress(0, 0, 0, table.getColumnCount()-1));
+						int nrow = table.getRowCount();
+						waitingPanel.setProgressString("Exporting "+Tools.doubleToString(nrow, 0, false)+" lines", false);
+						waitingPanel.setProgressMaximum(nrow);
+						for (int i=0 ; i < nrow ; i++ ){
+							waitingPanel.setProgressValue(r);
+							row = sheet.createRow(r++);
+							for (int c = 0 ; c < table.getColumnCount() ; c++){
+								if (table.getValueAt(i, c) == null)
+									row.createCell(c);
+								else if (table.getColumnClass(c) == OffsetDateTime.class)
+									row.createCell(c).setCellValue(((OffsetDateTime)table.getValueAt(i, c)).toLocalDateTime());
+								else if (table.getColumnClass(c) == Integer.class)
+									row.createCell(c).setCellValue(Integer.parseInt(table.getValueAt(i, c).toString()));
+								else if (table.getColumnClass(c) == Long.class)
+									row.createCell(c).setCellValue(Long.parseLong(table.getValueAt(i, c).toString()));
+								else if (table.getColumnClass(c) == Double.class)
+									row.createCell(c).setCellValue(Double.parseDouble(table.getValueAt(i, c).toString()));
+								else if (table.getColumnClass(c) == Boolean.class)
+									row.createCell(c).setCellValue(Boolean.parseBoolean(table.getValueAt(i, c).toString()));
+								else 
+									row.createCell(c).setCellValue(table.getValueAt(i, c).toString());
+							}
+						}		
+						totalRows += nrow;
+						waitingPanel.setProgressValue(totalRows);
+						waitingPanel.setProgressString("Writing file ...",true);		
+						try (FileOutputStream fileOut = new FileOutputStream(xls)){
+							wb.write(fileOut);
+						}
+						waitingPanel.setProgressDone();
 					}
-					waitingPanel.setProgressDone();
 				}catch(Exception ex){
 					waitingPanel.forceStop();
 					throw ex;
@@ -1249,6 +1258,7 @@ public class ProjectsPanel extends ManagerPanel {
 			return;
 		}else if (res == JOptionPane.YES_OPTION){
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(true);
 					waitingPanel.start();
@@ -1272,6 +1282,7 @@ public class ProjectsPanel extends ManagerPanel {
 				}
 			}
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(false);
 					waitingPanel.stop();
@@ -1300,6 +1311,7 @@ public class ProjectsPanel extends ManagerPanel {
 		dialog.setVisible(true);
 		if (dialog.validate){
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(true);
 					waitingPanel.start();
@@ -1346,6 +1358,7 @@ public class ProjectsPanel extends ManagerPanel {
 			}
 			manager.stopRedirectSystemOut();
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(false);
 					waitingPanel.stop();
@@ -1379,7 +1392,7 @@ public class ProjectsPanel extends ManagerPanel {
 		public JPanel getParametersPanel(){
 			JPanel panel = new JPanel(new BorderLayout());
 
-			JPanel analysisPanel = new JPanel(new WrapLayout(WrapLayout.LEADING, 10, 5));		
+			JPanel analysisPanel = new JPanel(new WrapLayout(FlowLayout.LEADING, 10, 5));		
 			analysisPanel.add(new JLabel("Analysis: "));
 			importAnalysisBox = new JComboBox<AnalysisFull>(manager.getAvailableAnalysesAsArray());
 			analysisPanel.add(importAnalysisBox);
@@ -1400,6 +1413,7 @@ public class ProjectsPanel extends ManagerPanel {
 				vcfFile.setColumns(30);
 				JButton vcfFileButton = new JButton("VCF");
 				vcfFileButton.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						FileDialog chooser = new FileDialog(new JFrame(), "Select the VCF file for sample "+sample, FileDialog.LOAD) ;
 						Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize() ;
@@ -1419,6 +1433,7 @@ public class ProjectsPanel extends ManagerPanel {
 				alamutFile.setColumns(30);
 				JButton alamutFileButton = new JButton("Alamut");
 				alamutFileButton.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						FileDialog chooser = new FileDialog(new JFrame(), "Select the Alamut file for sample "+sample, FileDialog.LOAD) ;
 						Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize() ;
@@ -1440,7 +1455,7 @@ public class ProjectsPanel extends ManagerPanel {
 			vcfScrollPane.setBorder(BorderFactory.createTitledBorder("Select a VCF file for each sample, already annoted with snpEff. You can also optionally select an Alamut annotation file."));
 			panel.add(vcfScrollPane, BorderLayout.CENTER);
 
-			JPanel validationPanel = new JPanel(new WrapLayout(WrapLayout.LEADING, 10, 5));
+			JPanel validationPanel = new JPanel(new WrapLayout(FlowLayout.LEADING, 10, 5));
 			importOverwrite = new JCheckBox("Overwrite sample data if already present in selected analysis");
 			importOverwrite.setSelected(true);
 			validationPanel.add(importOverwrite);
@@ -1466,6 +1481,7 @@ public class ProjectsPanel extends ManagerPanel {
 		dialog.setVisible(true);
 		if (dialog.validate){
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(true);
 					waitingPanel.start();
@@ -1502,6 +1518,7 @@ public class ProjectsPanel extends ManagerPanel {
 			}
 			manager.stopRedirectSystemOut();
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(false);
 					waitingPanel.stop();
@@ -1535,7 +1552,7 @@ public class ProjectsPanel extends ManagerPanel {
 		public JPanel getMainPanel(){
 			JPanel panel = new JPanel(new BorderLayout());
 
-			JPanel analysisPanel = new JPanel(new WrapLayout(WrapLayout.LEADING, 10, 5));		
+			JPanel analysisPanel = new JPanel(new WrapLayout(FlowLayout.LEADING, 10, 5));		
 			analysisPanel.add(new JLabel("Analysis: "));
 			importCoverageDetailsBox = new JComboBox<AnalysisFull>(manager.getAvailableAnalysesAsArray());
 			analysisPanel.add(importCoverageDetailsBox);
@@ -1556,6 +1573,7 @@ public class ProjectsPanel extends ManagerPanel {
 				inputMosdepthThresholds.setColumns(30);
 				JButton inputMosdepthThresholdsButton = new JButton("BROWSE");
 				inputMosdepthThresholdsButton.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						FileDialog chooser = new FileDialog(new JFrame(), "Select input mosdepth thresholds gz file for sample "+sample, FileDialog.LOAD) ;
 						Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize() ;
@@ -1575,6 +1593,7 @@ public class ProjectsPanel extends ManagerPanel {
 				inputMosdepthRegions.setColumns(30);
 				JButton inputMosdepthRegionsButton = new JButton("BROWSE");
 				inputMosdepthRegionsButton.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						FileDialog chooser = new FileDialog(new JFrame(), "Select input mosdepth regions gz file for sample "+sample, FileDialog.LOAD) ;
 						Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize() ;
@@ -1597,7 +1616,7 @@ public class ProjectsPanel extends ManagerPanel {
 					"Select a MosDepth thresholds and regions gz files (use mosdepth argument --thresholds 1,20,30,100,200,500,1000,5000) for each sample."));
 			panel.add(inputFilesScrollPane, BorderLayout.CENTER);
 
-			JPanel validationPanel = new JPanel(new WrapLayout(WrapLayout.LEADING, 10, 5));
+			JPanel validationPanel = new JPanel(new WrapLayout(FlowLayout.LEADING, 10, 5));
 			JButton importButton = new JButton(" Import ");
 			importButton.addActionListener(new ActionListener() {
 				@Override
@@ -1621,6 +1640,7 @@ public class ProjectsPanel extends ManagerPanel {
 		dialog.setVisible(true);
 		if (dialog.validate){
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(true);
 					waitingPanel.start();
@@ -1664,6 +1684,7 @@ public class ProjectsPanel extends ManagerPanel {
 			}
 			manager.stopRedirectSystemOut();
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(false);
 					waitingPanel.stop();
@@ -1698,7 +1719,7 @@ public class ProjectsPanel extends ManagerPanel {
 		public JPanel getMainPanel(){
 			JPanel panel = new JPanel(new BorderLayout());
 
-			JPanel analysisPanel = new JPanel(new WrapLayout(WrapLayout.LEADING, 10, 5));		
+			JPanel analysisPanel = new JPanel(new WrapLayout(FlowLayout.LEADING, 10, 5));		
 			/*
 			importCoverageWDUpdateRunpath = new JCheckBox("Update 'run path' to the path of selected file");
 			analysisPanel.add(importCoverageWDUpdateRunpath);
@@ -1717,6 +1738,7 @@ public class ProjectsPanel extends ManagerPanel {
 				inputFile.setColumns(30);
 				JButton inputFileButton = new JButton("BROWSE");
 				inputFileButton.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						FileDialog chooser = new FileDialog(new JFrame(), "Select input file for sample "+sample, FileDialog.LOAD) ;
 						Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize() ;
@@ -1738,7 +1760,7 @@ public class ProjectsPanel extends ManagerPanel {
 			inputFilesScrollPane.setBorder(BorderFactory.createTitledBorder("Select a GATK coverage file .DOCbasemap10.sample_summary (using tool 'DepthOfCoverage' with arguments ' -ct 1 -ct 5 -ct 10 -ct 20 -ct 30') for each sample."));
 			panel.add(inputFilesScrollPane, BorderLayout.CENTER);
 
-			JPanel validationPanel = new JPanel(new WrapLayout(WrapLayout.LEADING, 10, 5));
+			JPanel validationPanel = new JPanel(new WrapLayout(FlowLayout.LEADING, 10, 5));
 			JButton importButton = new JButton(" Import ");
 			importButton.addActionListener(new ActionListener() {
 				@Override
@@ -1762,6 +1784,7 @@ public class ProjectsPanel extends ManagerPanel {
 		dialog.setVisible(true);
 		if (dialog.validate){
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(true);
 					waitingPanel.start();
@@ -1805,6 +1828,7 @@ public class ProjectsPanel extends ManagerPanel {
 			}
 			manager.stopRedirectSystemOut();
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(false);
 					waitingPanel.stop();
@@ -1839,7 +1863,7 @@ public class ProjectsPanel extends ManagerPanel {
 		public JPanel getMainPanel(){
 			JPanel panel = new JPanel(new BorderLayout());
 
-			JPanel analysisPanel = new JPanel(new WrapLayout(WrapLayout.LEADING, 10, 5));	
+			JPanel analysisPanel = new JPanel(new WrapLayout(FlowLayout.LEADING, 10, 5));	
 			/*
 			importCoverageWODUpdateRunpath = new JCheckBox("Update 'run path' to the path of selected file");
 			analysisPanel.add(importCoverageWODUpdateRunpath);
@@ -1858,6 +1882,7 @@ public class ProjectsPanel extends ManagerPanel {
 				inputFile.setColumns(30);
 				JButton inputFileButton = new JButton("BROWSE");
 				inputFileButton.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						FileDialog chooser = new FileDialog(new JFrame(), "Select input file for sample "+sample, FileDialog.LOAD) ;
 						Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize() ;
@@ -1879,7 +1904,7 @@ public class ProjectsPanel extends ManagerPanel {
 			inputFilesScrollPane.setBorder(BorderFactory.createTitledBorder("Select a GATK coverage file .DOCbasemap10.sample_summary (using tool 'DepthOfCoverage' with arguments ' -ct 1 -ct 5 -ct 10 -ct 20 -ct 30') for each sample."));
 			panel.add(inputFilesScrollPane, BorderLayout.CENTER);
 
-			JPanel validationPanel = new JPanel(new WrapLayout(WrapLayout.LEADING, 10, 5));
+			JPanel validationPanel = new JPanel(new WrapLayout(FlowLayout.LEADING, 10, 5));
 			JButton importButton = new JButton(" Import ");
 			importButton.addActionListener(new ActionListener() {
 				@Override
@@ -1903,6 +1928,7 @@ public class ProjectsPanel extends ManagerPanel {
 		dialog.setVisible(true);
 		if (dialog.validate){
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(true);
 					waitingPanel.start();
@@ -1946,6 +1972,7 @@ public class ProjectsPanel extends ManagerPanel {
 			}
 			manager.stopRedirectSystemOut();
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(false);
 					waitingPanel.stop();
@@ -1980,7 +2007,7 @@ public class ProjectsPanel extends ManagerPanel {
 		public JPanel getMainPanel(){
 			JPanel panel = new JPanel(new BorderLayout());
 
-			JPanel analysisPanel = new JPanel(new WrapLayout(WrapLayout.LEADING, 10, 5));		
+			JPanel analysisPanel = new JPanel(new WrapLayout(FlowLayout.LEADING, 10, 5));		
 			/*
 			importCoverageExomeUpdateRunpath = new JCheckBox("Update 'run path' to the path of selected file");
 			analysisPanel.add(importCoverageExomeUpdateRunpath);
@@ -1999,6 +2026,7 @@ public class ProjectsPanel extends ManagerPanel {
 				inputFile.setColumns(30);
 				JButton inputFileButton = new JButton("BROWSE");
 				inputFileButton.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						FileDialog chooser = new FileDialog(new JFrame(), "Select input file for sample "+sample, FileDialog.LOAD) ;
 						Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize() ;
@@ -2020,7 +2048,7 @@ public class ProjectsPanel extends ManagerPanel {
 			inputFilesScrollPane.setBorder(BorderFactory.createTitledBorder("Select a GATK coverage file .DOCbasemap10.sample_summary (using tool 'DepthOfCoverage' limited to exome (using -L) with arguments ' -ct 1 -ct 5 -ct 10 -ct 20 -ct 30') for each sample."));
 			panel.add(inputFilesScrollPane, BorderLayout.CENTER);
 
-			JPanel validationPanel = new JPanel(new WrapLayout(WrapLayout.LEADING, 10, 5));
+			JPanel validationPanel = new JPanel(new WrapLayout(FlowLayout.LEADING, 10, 5));
 			JButton importButton = new JButton(" Import ");
 			importButton.addActionListener(new ActionListener() {
 				@Override
@@ -2043,6 +2071,7 @@ public class ProjectsPanel extends ManagerPanel {
 		dialog.setVisible(true);
 		if (dialog.validate){
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(true);
 					waitingPanel.start();
@@ -2086,6 +2115,7 @@ public class ProjectsPanel extends ManagerPanel {
 			}
 			manager.stopRedirectSystemOut();
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(false);
 					waitingPanel.stop();
@@ -2119,7 +2149,7 @@ public class ProjectsPanel extends ManagerPanel {
 		public JPanel getMainPanel(){
 			JPanel panel = new JPanel(new BorderLayout());
 
-			JPanel analysisPanel = new JPanel(new WrapLayout(WrapLayout.LEADING, 10, 5));
+			JPanel analysisPanel = new JPanel(new WrapLayout(FlowLayout.LEADING, 10, 5));
 			/*
 			importFastqcUpdateRunpath = new JCheckBox("Update 'run path' to the path of selected file");
 			analysisPanel.add(importFastqcUpdateRunpath);
@@ -2138,6 +2168,7 @@ public class ProjectsPanel extends ManagerPanel {
 				inputFile.setColumns(30);
 				JButton inputFileButton = new JButton("BROWSE");
 				inputFileButton.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						FileDialog chooser = new FileDialog(new JFrame(), "Select input file for sample "+sample, FileDialog.LOAD) ;
 						Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize() ;
@@ -2159,7 +2190,7 @@ public class ProjectsPanel extends ManagerPanel {
 			inputFilesScrollPane.setBorder(BorderFactory.createTitledBorder("Select a FastQC 'zipped' report for each sample."));
 			panel.add(inputFilesScrollPane, BorderLayout.CENTER);
 
-			JPanel validationPanel = new JPanel(new WrapLayout(WrapLayout.LEADING, 10, 5));
+			JPanel validationPanel = new JPanel(new WrapLayout(FlowLayout.LEADING, 10, 5));
 			JButton importButton = new JButton(" Import ");
 			importButton.addActionListener(new ActionListener() {
 				@Override
@@ -2189,6 +2220,7 @@ public class ProjectsPanel extends ManagerPanel {
 			return;
 		}else if (res == JOptionPane.YES_OPTION){
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(true);
 					waitingPanel.start();
@@ -2204,6 +2236,7 @@ public class ProjectsPanel extends ManagerPanel {
 				}
 			}
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(false);
 					waitingPanel.stop();
@@ -2303,6 +2336,7 @@ public class ProjectsPanel extends ManagerPanel {
 			return;
 		}else if (res == JOptionPane.YES_OPTION){
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(true);
 					waitingPanel.start();
@@ -2318,6 +2352,7 @@ public class ProjectsPanel extends ManagerPanel {
 				}
 			}
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(false);
 					waitingPanel.stop();
@@ -2355,6 +2390,7 @@ public class ProjectsPanel extends ManagerPanel {
 			return;
 		}else if (res == JOptionPane.YES_OPTION){
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(true);
 					waitingPanel.start();
@@ -2370,6 +2406,7 @@ public class ProjectsPanel extends ManagerPanel {
 				}
 			}
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(false);
 					waitingPanel.stop();

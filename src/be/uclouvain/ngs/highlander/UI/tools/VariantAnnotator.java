@@ -40,7 +40,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.Timestamp;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -56,12 +56,14 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -179,6 +181,7 @@ public class VariantAnnotator extends JFrame {
 		JButton btnClose = new JButton(Resources.getScaledIcon(Resources.iCross, 24));
 		btnClose.setToolTipText("Close tool");
 		btnClose.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				dispose();
 			}
@@ -188,8 +191,10 @@ public class VariantAnnotator extends JFrame {
 		JButton export = new JButton(Resources.getScaledIcon(Resources.iExcel, 24));
 		btnClose.setToolTipText("Export tabs to Excel sheets");
 		export.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						export();
 					}
@@ -216,6 +221,7 @@ public class VariantAnnotator extends JFrame {
 	private void annotateVariant(AnalysisFull analysis, String chr, int pos, String alt) {
 		List<AnnotatedVariant> list = new ArrayList<>();
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				waitingPanel.setVisible(true);
 				waitingPanel.start();
@@ -223,6 +229,7 @@ public class VariantAnnotator extends JFrame {
 		});
 		try {
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setProgressString("Annotating variant", true);
 				}
@@ -265,6 +272,7 @@ public class VariantAnnotator extends JFrame {
 			ex.printStackTrace();
 		}
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				waitingPanel.setVisible(false);
 				waitingPanel.stop();
@@ -284,6 +292,7 @@ public class VariantAnnotator extends JFrame {
 		JScrollPane scrollPane = new JScrollPane();
 		final AnnotatedVariantTableModel model = new AnnotatedVariantTableModel(variant);
 		JTable table = new JTable(model){
+			@Override
 			public String getToolTipText(MouseEvent e) {
 				String tip = null;
 				java.awt.Point p = e.getPoint();
@@ -359,60 +368,61 @@ public class VariantAnnotator extends JFrame {
 			try{
 				waitingPanel.start();
 				try{
-					Workbook wb = new SXSSFWorkbook(100);  		
-					int nrow = tabbedPane.getComponents().length;
-					waitingPanel.setProgressString("Exporting "+Tools.doubleToString(nrow, 0, false)+" variants", false);
-					waitingPanel.setProgressMaximum(nrow);
-					int tab = 0;
-					for (Component panel : tabbedPane.getComponents()) {
-						for (Component comp : ((JPanel)panel).getComponents()) {
-							if (comp instanceof JScrollPane) {
-								waitingPanel.setProgressValue(tab);
-								JTable table = (JTable)((JScrollPane)comp).getViewport().getComponent(0);
-								Sheet sheet = wb.createSheet(tabbedPane.getTitleAt(tab).replace(':', '-'));
-								tab++;
-								int r = 0;
-								Row row = sheet.createRow(r++);
-								row.setHeightInPoints(50);
-								for (int c = 0 ; c < table.getColumnCount() ; c++){
-									row.createCell(c).setCellValue(table.getColumnName(c));
-									sheet.setColumnWidth(c, 10000);
-								}
-								sheet.setAutoFilter(new CellRangeAddress(0, 0, 0, table.getColumnCount()-1));
-								Highlander.getCellRenderer().clearCellStyles();
-								AnnotatedVariantTableModel model = ((AnnotatedVariantTableModel)table.getModel());
-								for (int i=0 ; i < model.getRowCount() ; i++ ){
-									row = sheet.createRow(r++);
-									for (int c = 0 ; c < model.getColumnCount() ; c++){
-										Cell cell = row.createCell(c);
-										if (model.getValueAt(i, c) != null){
-											Field field = (c == 0) ? new Field("field") : model.getRowField(i);
-											Highlander.getCellRenderer().formatXlsCell(model.getValueAt(i, c), field, JLabel.LEFT, sheet, cell, i);
-											if (field.getFieldClass() == Timestamp.class){
-												cell.setCellValue((Timestamp)model.getValueAt(i, c));
-											}else if (field.getFieldClass() == Integer.class){
-												cell.setCellValue(Integer.parseInt(model.getValueAt(i, c).toString()));
-											}else if (field.getFieldClass() == Long.class){
-												cell.setCellValue(Long.parseLong(model.getValueAt(i, c).toString()));
-											}else if (field.getFieldClass() == Double.class){
-												cell.setCellValue(Double.parseDouble(model.getValueAt(i, c).toString()));
-											}else if (field.getFieldClass() == Boolean.class){
-												cell.setCellValue(Boolean.parseBoolean(model.getValueAt(i, c).toString()));
-											}else {
-												cell.setCellValue(model.getValueAt(i, c).toString());
+					try(Workbook wb = new SXSSFWorkbook(100)){
+						int nrow = tabbedPane.getComponents().length;
+						waitingPanel.setProgressString("Exporting "+Tools.doubleToString(nrow, 0, false)+" variants", false);
+						waitingPanel.setProgressMaximum(nrow);
+						int tab = 0;
+						for (Component panel : tabbedPane.getComponents()) {
+							for (Component comp : ((JPanel)panel).getComponents()) {
+								if (comp instanceof JScrollPane) {
+									waitingPanel.setProgressValue(tab);
+									JTable table = (JTable)((JScrollPane)comp).getViewport().getComponent(0);
+									Sheet sheet = wb.createSheet(tabbedPane.getTitleAt(tab).replace(':', '-'));
+									tab++;
+									int r = 0;
+									Row row = sheet.createRow(r++);
+									row.setHeightInPoints(50);
+									for (int c = 0 ; c < table.getColumnCount() ; c++){
+										row.createCell(c).setCellValue(table.getColumnName(c));
+										sheet.setColumnWidth(c, 10000);
+									}
+									sheet.setAutoFilter(new CellRangeAddress(0, 0, 0, table.getColumnCount()-1));
+									Highlander.getCellRenderer().clearCellStyles();
+									AnnotatedVariantTableModel model = ((AnnotatedVariantTableModel)table.getModel());
+									for (int i=0 ; i < model.getRowCount() ; i++ ){
+										row = sheet.createRow(r++);
+										for (int c = 0 ; c < model.getColumnCount() ; c++){
+											Cell cell = row.createCell(c);
+											if (model.getValueAt(i, c) != null){
+												Field field = (c == 0) ? new Field("field") : model.getRowField(i);
+												Highlander.getCellRenderer().formatXlsCell(model.getValueAt(i, c), field, SwingConstants.LEFT, sheet, cell, i);
+												if (field.getFieldClass() == OffsetDateTime.class){
+													cell.setCellValue(((OffsetDateTime)model.getValueAt(i, c)).toLocalDateTime());
+												}else if (field.getFieldClass() == Integer.class){
+													cell.setCellValue(Integer.parseInt(model.getValueAt(i, c).toString()));
+												}else if (field.getFieldClass() == Long.class){
+													cell.setCellValue(Long.parseLong(model.getValueAt(i, c).toString()));
+												}else if (field.getFieldClass() == Double.class){
+													cell.setCellValue(Double.parseDouble(model.getValueAt(i, c).toString()));
+												}else if (field.getFieldClass() == Boolean.class){
+													cell.setCellValue(Boolean.parseBoolean(model.getValueAt(i, c).toString()));
+												}else {
+													cell.setCellValue(StringUtils.left(model.getValueAt(i, c).toString(), 32765)); //The maximum length of cell contents (text) is 32767 characters
+												}
 											}
 										}
 									}
 								}
 							}
 						}
+						waitingPanel.setProgressValue(nrow);
+						waitingPanel.setProgressString("Writing file ...",true);		
+						try (FileOutputStream fileOut = new FileOutputStream(xls)){
+							wb.write(fileOut);
+						}
+						waitingPanel.setProgressDone();
 					}
-					waitingPanel.setProgressValue(nrow);
-					waitingPanel.setProgressString("Writing file ...",true);		
-					try (FileOutputStream fileOut = new FileOutputStream(xls)){
-						wb.write(fileOut);
-					}
-					waitingPanel.setProgressDone();
 				}catch(Exception ex){
 					waitingPanel.forceStop();
 					throw ex;
@@ -431,6 +441,7 @@ public class VariantAnnotator extends JFrame {
 	}
 	
 	private class ColoredTableCellRenderer extends MultiLineTableCellRenderer {
+		@Override
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 			Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 			int realRowIndex = table.convertRowIndexToModel(row);
@@ -445,7 +456,7 @@ public class VariantAnnotator extends JFrame {
 				textArea.setBackground(new Color(51,153,255));
 			}
 			Field field = (column == 0) ? new Field("field") : ((AnnotatedVariantTableModel)table.getModel()).getRowField(realRowIndex);
-			return Highlander.getCellRenderer().renderCell(textArea, value, field, JLabel.LEFT, row, isSelected, Resources.getTableEvenRowBackgroundColor(palette), Resources.getTableOddRowBackgroundColor(palette), false);
+			return Highlander.getCellRenderer().renderCell(textArea, value, field, SwingConstants.LEFT, row, isSelected, Resources.getTableEvenRowBackgroundColor(palette), Resources.getTableOddRowBackgroundColor(palette), false);
 		}
 	}
 
@@ -501,10 +512,12 @@ public class VariantAnnotator extends JFrame {
 			}
 		}
 
+		@Override
 		public int getColumnCount() {
 			return 2;
 		}
 
+		@Override
 		public String getColumnName(int col) {
 			switch(col){
 			case 0:
@@ -531,14 +544,17 @@ public class VariantAnnotator extends JFrame {
 			return fields.get(row).getHtmlTooltip();
 		}
 		
+		@Override
 		public int getRowCount() {
 			return fields.size();
 		}
 
+		@Override
 		public Class<?> getColumnClass(int columnIndex) {
 			return String.class;
 		}
 
+		@Override
 		public Object getValueAt(int row, int col) {
 			switch(col){
 			case 0:
@@ -550,9 +566,11 @@ public class VariantAnnotator extends JFrame {
 			}
 		}
 
+		@Override
 		public void setValueAt(Object value, int row, int col) {
 		}
 
+		@Override
 		public boolean isCellEditable(int rowIndex, int columnIndex) {
 			return false;
 		}

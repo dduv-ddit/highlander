@@ -49,7 +49,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
 
-import java.sql.Timestamp;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -72,6 +72,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
 import javax.swing.table.AbstractTableModel;
@@ -161,6 +162,7 @@ public class BamViewer extends JFrame {
 			@Override
 			public void componentShown(ComponentEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						fillTables();				
 					}
@@ -192,8 +194,10 @@ public class BamViewer extends JFrame {
 		checkBam.setPreferredSize(new Dimension(54,54));
 		checkBam.setToolTipText("Check ALL selected variants in ALL selected BAM files");
 		checkBam.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						bamCheck();
 					}
@@ -206,8 +210,10 @@ public class BamViewer extends JFrame {
 		showInIGV.setPreferredSize(new Dimension(54,54));
 		showInIGV.setToolTipText("View selected variant in IGV");
 		showInIGV.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						viewInIGV();
 					}
@@ -247,8 +253,10 @@ public class BamViewer extends JFrame {
 		export.setPreferredSize(new Dimension(54,54));
 		export.setToolTipText("Export all tabs in one Excel file (1 sheet per tab)");
 		export.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						export();
 					}
@@ -265,8 +273,10 @@ public class BamViewer extends JFrame {
 			tabbedPane.addTab(pos.toString(), scrollPane);
 
 			JTable table = new JTable() {
+				@Override
 				protected JTableHeader createDefaultTableHeader() {
 					return new JTableHeader(columnModel) {
+						@Override
 						public String getToolTipText(MouseEvent e) {
 							java.awt.Point p = e.getPoint();
 							int index = columnModel.getColumnIndexAtX(p.x);
@@ -311,11 +321,12 @@ public class BamViewer extends JFrame {
 	}	
 
 	private class ColoredTableCellRenderer extends DefaultTableCellRenderer {
+		@Override
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 			Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 			JLabel label = (JLabel) comp;
 			String rowname = (column == 1) ? table.getValueAt(row,0).toString() : "field";
-			int alignment = (column == 0) ? JLabel.LEFT : JLabel.CENTER;
+			int alignment = (column == 0) ? SwingConstants.LEFT : SwingConstants.CENTER;
 			if (table.getModel().getColumnClass(column) == Double.class) {
 				value = Tools.doubleToString(Double.parseDouble(value.toString()), 2, false);
 			}
@@ -325,6 +336,7 @@ public class BamViewer extends JFrame {
 	}
 
 	private class MultilineColoredTableCellRenderer extends MultiLineTableCellRenderer {
+		@Override
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 			Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 			JTextArea textArea = (JTextArea) comp;
@@ -409,18 +421,22 @@ public class BamViewer extends JFrame {
 			}
 		}
 
+		@Override
 		public int getColumnCount() {
 			return headers.length;
 		}
 
+		@Override
 		public String getColumnName(int col) {
 			return headers[col];
 		}
 
+		@Override
 		public int getRowCount() {
 			return data.length;
 		}
 
+		@Override
 		public Class<?> getColumnClass(int columnIndex) {
 			if (columnIndex == iTotal) return Integer.class;
 			if (columnIndex == iRef) return Integer.class;
@@ -429,6 +445,7 @@ public class BamViewer extends JFrame {
 			else return Double.class;
 		}
 
+		@Override
 		public Object getValueAt(int row, int col) {
 			return data[row][col];
 		}
@@ -441,9 +458,11 @@ public class BamViewer extends JFrame {
 			return sds[col];
 		}
 
+		@Override
 		public void setValueAt(Object value, int row, int col) {
 		}
 
+		@Override
 		public boolean isCellEditable(int rowIndex, int columnIndex) {
 			return false;
 		}
@@ -452,6 +471,7 @@ public class BamViewer extends JFrame {
 
 	private void fillTables(){
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				waitingPanel.setVisible(true);
 				waitingPanel.start();
@@ -464,6 +484,7 @@ public class BamViewer extends JFrame {
 			}
 			final int maxBam = numBam;
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setProgressString("Checking "+maxBam+" BAM files", false);
 					waitingPanel.setProgressMaximum(maxBam);
@@ -521,6 +542,7 @@ public class BamViewer extends JFrame {
 					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
 		}
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				waitingPanel.setVisible(false);
 				waitingPanel.stop();
@@ -1021,8 +1043,10 @@ public class BamViewer extends JFrame {
 				export.setPreferredSize(new Dimension(54,54));
 				export.setToolTipText("Export this BamCheck and all BamViewer tabs in one Excel file (1 sheet per tab)");
 				export.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						new Thread(new Runnable(){
+							@Override
 							public void run(){
 								export(title, table);
 							}
@@ -1076,58 +1100,21 @@ public class BamViewer extends JFrame {
 			try{
 				waitingPanel.start();
 				try{
-					Workbook wb = new SXSSFWorkbook(100); 
-					int totalRows = 0;
-					if (checkParam != null){
-						JTable table = checkTable;
-						Sheet sheet = wb.createSheet(checkParam);
-						sheet.createFreezePane(0, 1);		
-						int r = 0;
-						Row row = sheet.createRow(r++);
-						row.setHeightInPoints(50);
-						for (int c = 0 ; c < table.getColumnCount() ; c++){
-							row.createCell(c).setCellValue(table.getColumnName(c));
-						}
-						sheet.setAutoFilter(new CellRangeAddress(0, 0, 0, table.getColumnCount()-1));
-						int nrow = table.getRowCount();
-						waitingPanel.setProgressString("Exporting "+checkParam, false);
-						waitingPanel.setProgressMaximum(nrow);
-						for (int i=0 ; i < nrow ; i++ ){
-							waitingPanel.setProgressValue(r);
-							row = sheet.createRow(r++);
+					try(Workbook wb = new SXSSFWorkbook(100)){
+						int totalRows = 0;
+						if (checkParam != null){
+							JTable table = checkTable;
+							Sheet sheet = wb.createSheet(checkParam);
+							sheet.createFreezePane(0, 1);		
+							int r = 0;
+							Row row = sheet.createRow(r++);
+							row.setHeightInPoints(50);
 							for (int c = 0 ; c < table.getColumnCount() ; c++){
-								if (table.getValueAt(i, c) == null)
-									row.createCell(c);
-								else if (table.getColumnClass(c) == Timestamp.class)
-									row.createCell(c).setCellValue((Timestamp)table.getValueAt(i, c));
-								else if (table.getColumnClass(c) == Integer.class)
-									row.createCell(c).setCellValue(Integer.parseInt(table.getValueAt(i, c).toString()));
-								else if (table.getColumnClass(c) == Long.class)
-									row.createCell(c).setCellValue(Long.parseLong(table.getValueAt(i, c).toString()));
-								else if (table.getColumnClass(c) == Double.class)
-									row.createCell(c).setCellValue(Double.parseDouble(table.getValueAt(i, c).toString()));
-								else if (table.getColumnClass(c) == Boolean.class)
-									row.createCell(c).setCellValue(Boolean.parseBoolean(table.getValueAt(i, c).toString()));
-								else 
-									row.createCell(c).setCellValue(table.getValueAt(i, c).toString());
+								row.createCell(c).setCellValue(table.getColumnName(c));
 							}
-						}		
-						totalRows += nrow;
-					}
-					for (Interval pos : positions){
-						JTable table = tables.get(pos);
-						Sheet sheet = wb.createSheet(pos.toString().replace(':', '-'));
-						sheet.createFreezePane(0, 1);		
-						int r = 0;
-						Row row = sheet.createRow(r++);
-						row.setHeightInPoints(50);
-						for (int c = 0 ; c < table.getColumnCount() ; c++){
-							row.createCell(c).setCellValue(table.getColumnName(c));
-						}
-						int nrow = table.getRowCount();
-						if (nrow > 0) {
 							sheet.setAutoFilter(new CellRangeAddress(0, 0, 0, table.getColumnCount()-1));
-							waitingPanel.setProgressString("Exporting "+Tools.doubleToString(nrow, 0, false)+" variants for " + pos, false);
+							int nrow = table.getRowCount();
+							waitingPanel.setProgressString("Exporting "+checkParam, false);
 							waitingPanel.setProgressMaximum(nrow);
 							for (int i=0 ; i < nrow ; i++ ){
 								waitingPanel.setProgressValue(r);
@@ -1135,8 +1122,8 @@ public class BamViewer extends JFrame {
 								for (int c = 0 ; c < table.getColumnCount() ; c++){
 									if (table.getValueAt(i, c) == null)
 										row.createCell(c);
-									else if (table.getColumnClass(c) == Timestamp.class)
-										row.createCell(c).setCellValue((Timestamp)table.getValueAt(i, c));
+									else if (table.getColumnClass(c) == OffsetDateTime.class)
+										row.createCell(c).setCellValue(((OffsetDateTime)table.getValueAt(i, c)).toLocalDateTime());
 									else if (table.getColumnClass(c) == Integer.class)
 										row.createCell(c).setCellValue(Integer.parseInt(table.getValueAt(i, c).toString()));
 									else if (table.getColumnClass(c) == Long.class)
@@ -1148,40 +1135,78 @@ public class BamViewer extends JFrame {
 									else 
 										row.createCell(c).setCellValue(table.getValueAt(i, c).toString());
 								}
-							}	
+							}		
 							totalRows += nrow;
-							row = sheet.createRow(r++);
-							row = sheet.createRow(r++);
-							for (int c = 0 ; c < table.getColumnCount() ; c++){
-								if (c == 0) {
-									row.createCell(c).setCellValue("Mean of alt proportion");
-								}else {
-									double mean = ((BamViewerTableModel)table.getModel()).getMean(c);
-									if (mean != -1.0) {
-										row.createCell(c).setCellValue(mean);
-									}
-								}
-							}
-							row = sheet.createRow(r++);
-							for (int c = 0 ; c < table.getColumnCount() ; c++){
-								if (c == 0) {
-									row.createCell(c).setCellValue("SD of alt proportion");
-								}else {
-									double sd = ((BamViewerTableModel)table.getModel()).getSD(c);
-									if (sd != -1.0) {
-										row.createCell(c).setCellValue(sd);
-									}
-								}
-							}
-							totalRows += 3;
 						}
+						for (Interval pos : positions){
+							JTable table = tables.get(pos);
+							Sheet sheet = wb.createSheet(pos.toString().replace(':', '-'));
+							sheet.createFreezePane(0, 1);		
+							int r = 0;
+							Row row = sheet.createRow(r++);
+							row.setHeightInPoints(50);
+							for (int c = 0 ; c < table.getColumnCount() ; c++){
+								row.createCell(c).setCellValue(table.getColumnName(c));
+							}
+							int nrow = table.getRowCount();
+							if (nrow > 0) {
+								sheet.setAutoFilter(new CellRangeAddress(0, 0, 0, table.getColumnCount()-1));
+								waitingPanel.setProgressString("Exporting "+Tools.doubleToString(nrow, 0, false)+" variants for " + pos, false);
+								waitingPanel.setProgressMaximum(nrow);
+								for (int i=0 ; i < nrow ; i++ ){
+									waitingPanel.setProgressValue(r);
+									row = sheet.createRow(r++);
+									for (int c = 0 ; c < table.getColumnCount() ; c++){
+										if (table.getValueAt(i, c) == null)
+											row.createCell(c);
+										else if (table.getColumnClass(c) == OffsetDateTime.class)
+											row.createCell(c).setCellValue(((OffsetDateTime)table.getValueAt(i, c)).toLocalDateTime());
+										else if (table.getColumnClass(c) == Integer.class)
+											row.createCell(c).setCellValue(Integer.parseInt(table.getValueAt(i, c).toString()));
+										else if (table.getColumnClass(c) == Long.class)
+											row.createCell(c).setCellValue(Long.parseLong(table.getValueAt(i, c).toString()));
+										else if (table.getColumnClass(c) == Double.class)
+											row.createCell(c).setCellValue(Double.parseDouble(table.getValueAt(i, c).toString()));
+										else if (table.getColumnClass(c) == Boolean.class)
+											row.createCell(c).setCellValue(Boolean.parseBoolean(table.getValueAt(i, c).toString()));
+										else 
+											row.createCell(c).setCellValue(table.getValueAt(i, c).toString());
+									}
+								}	
+								totalRows += nrow;
+								row = sheet.createRow(r++);
+								row = sheet.createRow(r++);
+								for (int c = 0 ; c < table.getColumnCount() ; c++){
+									if (c == 0) {
+										row.createCell(c).setCellValue("Mean of alt proportion");
+									}else {
+										double mean = ((BamViewerTableModel)table.getModel()).getMean(c);
+										if (mean != -1.0) {
+											row.createCell(c).setCellValue(mean);
+										}
+									}
+								}
+								row = sheet.createRow(r++);
+								for (int c = 0 ; c < table.getColumnCount() ; c++){
+									if (c == 0) {
+										row.createCell(c).setCellValue("SD of alt proportion");
+									}else {
+										double sd = ((BamViewerTableModel)table.getModel()).getSD(c);
+										if (sd != -1.0) {
+											row.createCell(c).setCellValue(sd);
+										}
+									}
+								}
+								totalRows += 3;
+							}
+						}
+						waitingPanel.setProgressValue(totalRows);
+						waitingPanel.setProgressString("Writing file ...",true);		
+						try (FileOutputStream fileOut = new FileOutputStream(xls)){
+							wb.write(fileOut);
+						}
+						waitingPanel.setProgressDone();
 					}
-					waitingPanel.setProgressValue(totalRows);
-					waitingPanel.setProgressString("Writing file ...",true);		
-					try (FileOutputStream fileOut = new FileOutputStream(xls)){
-						wb.write(fileOut);
-					}
-					waitingPanel.setProgressDone();
 				}catch(Exception ex){
 					waitingPanel.forceStop();
 					throw ex;

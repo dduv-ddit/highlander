@@ -179,7 +179,7 @@ public class HighlanderDatabase {
 			res.executeStatement();
 			runningSelects.remove(res.getStatement());
 			return res;
-		} catch (com.mysql.jdbc.exceptions.MySQLStatementCancelledException ex){
+		} catch (com.mysql.cj.jdbc.exceptions.MySQLStatementCancelledException ex){
 			throw ex;
 		} catch (Exception ex) {
 			Tools.print("SQL statement throwing exception : " + sqlStatement);

@@ -122,6 +122,7 @@ public class AskNormalSampleDialog extends JDialog {
 
 		JButton btnOk = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 24));
 		btnOk.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {				
 				dispose();
 			}
@@ -130,6 +131,7 @@ public class AskNormalSampleDialog extends JDialog {
 
 		JButton btnCancel = new JButton(Resources.getScaledIcon(Resources.iCross, 24));
 		btnCancel.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				cancelClose();
 			}
@@ -151,6 +153,7 @@ public class AskNormalSampleDialog extends JDialog {
 		panel_0.add(scrollPaneSource, BorderLayout.CENTER);
 
 		tableSource = new JTable(){
+			@Override
 			public boolean isCellEditable(int row, int column){
 				return false;
 			}
@@ -228,6 +231,7 @@ public class AskNormalSampleDialog extends JDialog {
 	}
 	
 	//Overridden so we can exit when window is closed
+	@Override
 	protected void processWindowEvent(WindowEvent e) {
 		super.processWindowEvent(e);
 		if (e.getID() == WindowEvent.WINDOW_CLOSING) {

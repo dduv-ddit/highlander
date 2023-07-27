@@ -94,7 +94,8 @@ public class FilteringTree extends JDialog {
 		tree.setCellRenderer(new FilterTreeCellRenderer());
 		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		tree.addTreeSelectionListener(new TreeSelectionListener() {
-      public void valueChanged(TreeSelectionEvent e) {
+      @Override
+			public void valueChanged(TreeSelectionEvent e) {
       	refreshButtons() ;
       }
     }) ;
@@ -154,6 +155,7 @@ public class FilteringTree extends JDialog {
 		JButton btnClose = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 32));
 		btnClose.setToolTipText("Fetch variants from the database using current filters");
 		btnClose.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				result = Result.SUBMIT;
 				dispose();
@@ -164,6 +166,7 @@ public class FilteringTree extends JDialog {
 		JButton btnCount = new JButton(Resources.getScaledIcon(Resources.iCount, 32));
 		btnCount.setToolTipText("Count variants from the database using current filters");
 		btnCount.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				result = Result.COUNT;
 				dispose();
@@ -181,6 +184,7 @@ public class FilteringTree extends JDialog {
 		btnExpand.setToolTipText("Expand all below selected filter node");
 		btnExpand.setPreferredSize(new Dimension(54,54));
 		btnExpand.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				FilterNode node = (FilterNode) tree.getLastSelectedPathComponent() ;
 				if (node != null){
@@ -196,6 +200,7 @@ public class FilteringTree extends JDialog {
 		btnSave.setToolTipText("Save current filter in your profile");
 		btnSave.setPreferredSize(new Dimension(54,54));
 		btnSave.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				filteringPanel.saveCurrentFilter(FilteringTree.this);
 			}
@@ -206,6 +211,7 @@ public class FilteringTree extends JDialog {
 		btnLoad.setToolTipText("Load a filter from your profile");
 		btnLoad.setPreferredSize(new Dimension(54,54));
 		btnLoad.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				filteringPanel.addFilter(AddChoice.LoadCombo, null, FilteringTree.this);
 				refreshTree();
@@ -217,6 +223,7 @@ public class FilteringTree extends JDialog {
 		btnLoadAnd.setToolTipText("Add a filter from your profile to the selected one, using the logical operator AND (i.e. results will be the INTERSECTION of filters)");
 		btnLoadAnd.setPreferredSize(new Dimension(54,54));
 		btnLoadAnd.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				FilterNode node = (FilterNode) tree.getLastSelectedPathComponent() ;	  				
 				if (node == null || node.isRoot()){
@@ -234,6 +241,7 @@ public class FilteringTree extends JDialog {
 		btnLoadOr.setToolTipText("Add a filter from your profile to the selected one, using the logical operator OR (i.e. results will be the UNION of filters)");
 		btnLoadOr.setPreferredSize(new Dimension(54,54));
 		btnLoadOr.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				FilterNode node = (FilterNode) tree.getLastSelectedPathComponent() ;	  				
 				if (node == null || node.isRoot()){
@@ -250,9 +258,11 @@ public class FilteringTree extends JDialog {
 		btnAddCustom = new JButton(Resources.getScaledIcon(Resources.iFilterAddCustom, 40));
 		btnAddCustom.setToolTipText("Add a new custom filter");
 		btnAddCustom.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
-	  			public void run(){
+	  			@Override
+					public void run(){
 	  				filteringPanel.addFilter(AddChoice.NewCustom, null, FilteringTree.this);
 	  				refreshTree();
 	  			}
@@ -265,9 +275,11 @@ public class FilteringTree extends JDialog {
 		btnAddCustomAnd = new JButton(Resources.getScaledIcon(Resources.iFilterAddCustomAnd, 40));
 		btnAddCustomAnd.setToolTipText("Add a custom filter to the selected one, using the logical operator AND (i.e. results will be the INTERSECTION of filters)");
 		btnAddCustomAnd.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
-	  			public void run(){
+	  			@Override
+					public void run(){
 	  				FilterNode node = (FilterNode) tree.getLastSelectedPathComponent() ;	  				
 	  				if (node == null || node.isRoot()){
 		  				filteringPanel.addFilter(AddChoice.NewCustom, LogicalOperator.AND, FilteringTree.this);
@@ -288,9 +300,11 @@ public class FilteringTree extends JDialog {
 		btnAddCustomOr = new JButton(Resources.getScaledIcon(Resources.iFilterAddCustomOr, 40));
 		btnAddCustomOr.setToolTipText("Add a custom filter to the selected one, using the logical operator OR (i.e. results will be the UNION of filters)");
 		btnAddCustomOr.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
-	  			public void run(){
+	  			@Override
+					public void run(){
 	  				FilterNode node = (FilterNode) tree.getLastSelectedPathComponent() ;	  				
 	  				if (node == null || node.isRoot()){
 		  				filteringPanel.addFilter(AddChoice.NewCustom, LogicalOperator.OR, FilteringTree.this);
@@ -311,9 +325,11 @@ public class FilteringTree extends JDialog {
 		btnAddmagic = new JButton(Resources.getScaledIcon(Resources.iFilterAddMagic, 40));
 		btnAddmagic.setToolTipText("Add a new magic filter");
 		btnAddmagic.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 					new Thread(new Runnable(){
-		  			public void run(){
+		  			@Override
+						public void run(){
 		  				filteringPanel.addFilter(AddChoice.NewMagic, null, FilteringTree.this);
 		  				refreshTree();
 		  			}
@@ -326,8 +342,10 @@ public class FilteringTree extends JDialog {
 		btnAddmagicAnd = new JButton(Resources.getScaledIcon(Resources.iFilterAddMagicAnd, 40));
 		btnAddmagicAnd.setToolTipText("Add a magic filter to the selected one, using the logical operator AND (i.e. results will be the INTERSECTION of filters)");
 		btnAddmagicAnd.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 	  				FilterNode node = (FilterNode) tree.getLastSelectedPathComponent() ;	  				
 	  				if (node == null || node.isRoot()){
@@ -347,8 +365,10 @@ public class FilteringTree extends JDialog {
 		btnAddmagicOr = new JButton(Resources.getScaledIcon(Resources.iFilterAddMagicOr, 40));
 		btnAddmagicOr.setToolTipText("Add a magic filter to the selected one, using the logical operator OR (i.e. results will be the UNION of filters)");
 		btnAddmagicOr.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 	  				FilterNode node = (FilterNode) tree.getLastSelectedPathComponent() ;	  				
 	  				if (node == null || node.isRoot()){
@@ -369,6 +389,7 @@ public class FilteringTree extends JDialog {
 		btnFilterEdit.setToolTipText("Edit selected filter");
 		btnFilterEdit.setPreferredSize(new Dimension(54,54));
 		btnFilterEdit.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				FilterNode node = (FilterNode) tree.getLastSelectedPathComponent() ;	  				
 				if (node != null){
@@ -384,9 +405,11 @@ public class FilteringTree extends JDialog {
 		btnDelete.setToolTipText("Remove selected filter");
 		btnDelete.setPreferredSize(new Dimension(54,54));
 		btnDelete.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
-	  			public void run(){
+	  			@Override
+					public void run(){
 	  				FilterNode node = (FilterNode) tree.getLastSelectedPathComponent() ;	  				
 	  				if (node == null || node.isRoot()){
 	  					filteringPanel.clearFilter();
@@ -585,6 +608,7 @@ public class FilteringTree extends JDialog {
 	}
 	
 	public static class FilterTreeCellRenderer extends DefaultTreeCellRenderer {
+		@Override
 		public Component getTreeCellRendererComponent(JTree tree,	Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
 			super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
 			Filter f = ((FilterNode)value).getFilter();

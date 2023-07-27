@@ -226,10 +226,13 @@ public class AlignmentViewer extends JFrame {
 		panel_filters.add(panel_analysis, BorderLayout.NORTH);
 		
 		searchFieldSamples.addFieldListener(new KeyListener() {
+			@Override
 			public void keyReleased(KeyEvent arg0) {
 				applyBothFilters();
 			}
+			@Override
 			public void keyTyped(KeyEvent arg0) {			}
+			@Override
 			public void keyPressed(KeyEvent arg0) {			}
 		});
 		panel_filters.add(searchFieldSamples, BorderLayout.CENTER);
@@ -257,6 +260,7 @@ public class AlignmentViewer extends JFrame {
 		panel_0.add(scrollPaneSource, BorderLayout.CENTER);
 		
 		tableSamples = new JTable(){
+			@Override
 			public boolean isCellEditable(int row, int column){
 				return false;
 			}
@@ -287,6 +291,7 @@ public class AlignmentViewer extends JFrame {
 		JButton button = new JButton(Resources.getScaledIcon(Resources.iPin, 24));
 		button.setToolTipText("Pin alignment of selected sample for a multi-alignment comparison");
 		button.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				String sample = tableSamples.getValueAt(tableSamples.getSelectedRow(), 0).toString();
 				AnalysisFull analysis = (AnalysisFull)boxAnalysis.getSelectedItem();
@@ -441,7 +446,7 @@ public class AlignmentViewer extends JFrame {
 	}
 	
 	private JPanel getControlBar() {
-		JPanel panel = new JPanel(new WrapLayout(WrapLayout.LEADING));
+		JPanel panel = new JPanel(new WrapLayout(FlowLayout.LEADING));
 
 		JLabel labelChr = new JLabel("Locus");
 		labelChr.setToolTipText("Enter a locus in the form chr:start-stop or chr:pos, a gene symbol (e.g. TEK) or an Ensembl gene id (e.g. ENSG00000120156)");
@@ -746,6 +751,7 @@ public class AlignmentViewer extends JFrame {
 			Interval interval = new Interval(analysis.getReference(), lastVariant.getChromosome(), lastVariant.getPosition()+offset-window, lastVariant.getPosition()+offset+window);
 			try {
 				SwingUtilities.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						bar.setValue(0);
 						bar.setString("Loading Alignment");
@@ -785,6 +791,7 @@ public class AlignmentViewer extends JFrame {
 					}
 				});
 				SwingUtilities.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						bar.setString("Alignment loaded");
 						bar.setStringPainted(true);

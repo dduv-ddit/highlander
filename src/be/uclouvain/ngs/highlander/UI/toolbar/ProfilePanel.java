@@ -86,9 +86,11 @@ public class ProfilePanel extends JPanel {
 	  userEditUserProfile.setPreferredSize(new Dimension(54,54));
 	  userEditUserProfile.setToolTipText("Edit user profile");
 	  userEditUserProfile.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
+      @Override
+			public void actionPerformed(ActionEvent e) {
       	new Thread(new Runnable(){
-      		public void run(){
+      		@Override
+					public void run(){
       			User.editUserProfile();
       		}
       	}, "ProfilePanel.editUserProfile").start();
@@ -99,9 +101,11 @@ public class ProfilePanel extends JPanel {
 	  userCreateUser.setPreferredSize(new Dimension(54,54));
 	  userCreateUser.setToolTipText("Create new user");
 	  userCreateUser.addActionListener(new ActionListener() {
-	  	public void actionPerformed(ActionEvent e) {
+	  	@Override
+			public void actionPerformed(ActionEvent e) {
 	  		new Thread(new Runnable(){
-	  			public void run(){
+	  			@Override
+					public void run(){
 	  				User.createUser();
 	  			}
 	  		}, "ProfilePanel.createUser").start();
@@ -112,9 +116,11 @@ public class ProfilePanel extends JPanel {
 	  userDeleteUser.setPreferredSize(new Dimension(54,54));
 	  userDeleteUser.setToolTipText("Delete existing user");
 	  userDeleteUser.addActionListener(new ActionListener() {
-	  	public void actionPerformed(ActionEvent e) {
+	  	@Override
+			public void actionPerformed(ActionEvent e) {
 	  		new Thread(new Runnable(){
-	  			public void run(){
+	  			@Override
+					public void run(){
 	  				User.deleteUser(mainFrame);
 	  			}
 	  		}, "ProfilePanel.deleteUser").start();
@@ -125,9 +131,11 @@ public class ProfilePanel extends JPanel {
 	  userResetPassword.setPreferredSize(new Dimension(54,54));
 	  userResetPassword.setToolTipText("Reset password of existing user");
 	  userResetPassword.addActionListener(new ActionListener() {
-	  	public void actionPerformed(ActionEvent e) {
+	  	@Override
+			public void actionPerformed(ActionEvent e) {
 	  		new Thread(new Runnable(){
-	  			public void run(){
+	  			@Override
+					public void run(){
 	  				User.resetPassword(mainFrame);
 	  			}
 	  		}, "ProfilePanel.resetPassword").start();
@@ -138,9 +146,11 @@ public class ProfilePanel extends JPanel {
 	  userPromoteUser.setPreferredSize(new Dimension(54,54));
 	  userPromoteUser.setToolTipText("Promote existing user to administrator");
 	  userPromoteUser.addActionListener(new ActionListener() {
-	  	public void actionPerformed(ActionEvent e) {
+	  	@Override
+			public void actionPerformed(ActionEvent e) {
 	  		new Thread(new Runnable(){
-	  			public void run(){
+	  			@Override
+					public void run(){
 	  				User.promoteUser(mainFrame);
 	  			}
 	  		}, "ProfilePanel.promoteUser").start();
@@ -151,9 +161,11 @@ public class ProfilePanel extends JPanel {
 	  manageProfile.setPreferredSize(new Dimension(54,54));
 	  manageProfile.setToolTipText("Manage your profile");
 	  manageProfile.addActionListener(new ActionListener() {
-	  	public void actionPerformed(ActionEvent e) {
+	  	@Override
+			public void actionPerformed(ActionEvent e) {
 	  		new Thread(new Runnable(){
-	  			public void run(){
+	  			@Override
+					public void run(){
 	  				manageProfile();
 	  			}
 	  		}, "ProfilePanel.manageProfile").start();
@@ -164,9 +176,11 @@ public class ProfilePanel extends JPanel {
 	  manageComments.setPreferredSize(new Dimension(54,54));
 	  manageComments.setToolTipText("Manage user annotation comments");
 	  manageComments.addActionListener(new ActionListener() {
-	  	public void actionPerformed(ActionEvent e) {
+	  	@Override
+			public void actionPerformed(ActionEvent e) {
 	  		new Thread(new Runnable(){
-	  			public void run(){
+	  			@Override
+					public void run(){
 	  				manageComments();
 	  			}
 	  		}, "ProfilePanel.manageComments").start();
@@ -177,9 +191,11 @@ public class ProfilePanel extends JPanel {
 	  checkShared.setPreferredSize(new Dimension(54,54));
 	  checkShared.setToolTipText("Check for shared elements");
 	  checkShared.addActionListener(new ActionListener() {
-	  	public void actionPerformed(ActionEvent e) {
+	  	@Override
+			public void actionPerformed(ActionEvent e) {
 	  		new Thread(new Runnable(){
-	  			public void run(){
+	  			@Override
+					public void run(){
 	  				Highlander.getLoggedUser().checkForNewSharedElement(mainFrame);
 	  			}
 	  		}, "ProfilePanel.checkForNewSharedElement").start();
@@ -190,9 +206,11 @@ public class ProfilePanel extends JPanel {
 	  createUserValueList.setPreferredSize(new Dimension(54,54));
 	  createUserValueList.setToolTipText("Create a list of values (like a gene list) in your profile");
 	  createUserValueList.addActionListener(new ActionListener() {
-	  	public void actionPerformed(ActionEvent e) {
+	  	@Override
+			public void actionPerformed(ActionEvent e) {
 	  		new Thread(new Runnable(){
-	  			public void run(){
+	  			@Override
+					public void run(){
 	  				createValueList();
 	  			}
 	  		}, "ProfilePanel.createValueList").start();
@@ -203,9 +221,11 @@ public class ProfilePanel extends JPanel {
 	  createUserIntervalsList.setPreferredSize(new Dimension(54,54));
 	  createUserIntervalsList.setToolTipText("Create a list of genomic intervals in your profile");
 	  createUserIntervalsList.addActionListener(new ActionListener() {
-	  	public void actionPerformed(ActionEvent e) {
+	  	@Override
+			public void actionPerformed(ActionEvent e) {
 	  		new Thread(new Runnable(){
-	  			public void run(){
+	  			@Override
+					public void run(){
 	  				Set<Interval> set = new HashSet<>();
 	  				try{
 	  					set = Interval.fetchIntervals(mainFrame.getVariantTable().getSelectedVariantsId());
@@ -222,9 +242,11 @@ public class ProfilePanel extends JPanel {
 	  createUserPhenotypesList.setPreferredSize(new Dimension(54,54));
 	  createUserPhenotypesList.setToolTipText("Create a list of HPO terms in your profile");
 	  createUserPhenotypesList.addActionListener(new ActionListener() {
-	  	public void actionPerformed(ActionEvent e) {
+	  	@Override
+			public void actionPerformed(ActionEvent e) {
 	  		new Thread(new Runnable(){
-	  			public void run(){
+	  			@Override
+					public void run(){
 	  				createPhenotypesList();
 	  			}
 	  		}, "ProfilePanel.createPhenotypesList").start();
@@ -235,9 +257,11 @@ public class ProfilePanel extends JPanel {
 	  createGeneListFromHPO.setPreferredSize(new Dimension(54,54));
 	  createGeneListFromHPO.setToolTipText("Create a gene list in your profile derived from a selection of HPO terms");
 	  createGeneListFromHPO.addActionListener(new ActionListener() {
-	  	public void actionPerformed(ActionEvent e) {
+	  	@Override
+			public void actionPerformed(ActionEvent e) {
 	  		new Thread(new Runnable(){
-	  			public void run(){
+	  			@Override
+					public void run(){
 	  				createGeneListFromHPO();
 	  			}
 	  		}, "ProfilePanel.createGeneListFromHPO").start();
@@ -248,9 +272,11 @@ public class ProfilePanel extends JPanel {
 	  createUserTemplateList.setPreferredSize(new Dimension(54,54));
 	  createUserTemplateList.setToolTipText("Create a filters template in your profile");
 	  createUserTemplateList.addActionListener(new ActionListener() {
-	  	public void actionPerformed(ActionEvent e) {
+	  	@Override
+			public void actionPerformed(ActionEvent e) {
 	  		new Thread(new Runnable(){
-	  			public void run(){	  				
+	  			@Override
+					public void run(){	  				
 	  				createFiltersTemplate();
 	  			}
 	  		}, "ProfilePanel.createFiltersTemplate").start();
@@ -261,9 +287,11 @@ public class ProfilePanel extends JPanel {
 	  userFiltersTemplate.setPreferredSize(new Dimension(54,54));
 	  userFiltersTemplate.setToolTipText("Create a set of filters using a template from your profile");
 	  userFiltersTemplate.addActionListener(new ActionListener() {
-	  	public void actionPerformed(ActionEvent e) {
+	  	@Override
+			public void actionPerformed(ActionEvent e) {
 	  		new Thread(new Runnable(){
-	  			public void run(){	  				
+	  			@Override
+					public void run(){	  				
 	  				useFiltersTemplate();
 	  			}
 	  		}, "ProfilePanel.useFiltersTemplate").start();
@@ -274,9 +302,11 @@ public class ProfilePanel extends JPanel {
 	  resetColumnWidths.setPreferredSize(new Dimension(54,54));
 	  resetColumnWidths.setToolTipText("Reset all column width to default values");
 	  resetColumnWidths.addActionListener(new ActionListener() {
-	  	public void actionPerformed(ActionEvent e) {
+	  	@Override
+			public void actionPerformed(ActionEvent e) {
 	  		new Thread(new Runnable(){
-	  			public void run(){
+	  			@Override
+					public void run(){
 	  				resetColumnWidth(mainFrame);
 	  			}
 	  		}, "ProfilePanel.resetColumnWidth").start();
@@ -288,9 +318,11 @@ public class ProfilePanel extends JPanel {
 	  changeTableColor.setPreferredSize(new Dimension(54,54));
 	  changeTableColor.setToolTipText("Change even rows background color of main table");
 	  changeTableColor.addActionListener(new ActionListener() {
-	  	public void actionPerformed(ActionEvent e) {
+	  	@Override
+			public void actionPerformed(ActionEvent e) {
 	  		new Thread(new Runnable(){
-	  			public void run(){
+	  			@Override
+					public void run(){
 	  				changeTableColor(mainFrame, TargetColor.VARIANT_TABLE);
 	  			}
 	  		}, "ProfilePanel.changeTableColor").start();
@@ -302,9 +334,11 @@ public class ProfilePanel extends JPanel {
 	  changeSameVariantColor.setPreferredSize(new Dimension(54,54));
 	  changeSameVariantColor.setToolTipText("Change rows background color of main table of selected unique variant");
 	  changeSameVariantColor.addActionListener(new ActionListener() {
-	  	public void actionPerformed(ActionEvent e) {
+	  	@Override
+			public void actionPerformed(ActionEvent e) {
 	  		new Thread(new Runnable(){
-	  			public void run(){
+	  			@Override
+					public void run(){
 	  				changeTableColor(mainFrame, TargetColor.SAME_VARIANT);
 	  			}
 	  		}, "ProfilePanel.changeTableColor").start();

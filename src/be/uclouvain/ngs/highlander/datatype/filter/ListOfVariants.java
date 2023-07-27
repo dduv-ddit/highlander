@@ -53,68 +53,84 @@ public class ListOfVariants extends MagicFilter {
 		this.ids = new TreeSet<Integer>(ids);
 	}
 
+	@Override
 	public FilterType getFilterType(){
 		return FilterType.LIST_OF_VARIANTS;
 	}
 
+	@Override
 	public Set<String> getIncludedSamples(){
 		return new TreeSet<String>();
 	}
 
+	@Override
 	public Set<String> getExcludedSamples(){
 		return new TreeSet<String>();
 	}
 
+	@Override
 	public Set<String> getUserDefinedSamples(boolean includeProfileList){
 		Set<String> set = getIncludedSamples();
 		set.addAll(getExcludedSamples());
 		return set;
 	}
 
+	@Override
 	public String toString(){
 		return "List of variants ("+ids.size()+" id's)";
 	}
 
+	@Override
 	public boolean isFilterValid(){
 		return true;
 	}
 
+	@Override
 	public List<String> getValidationProblems(){
 		return new ArrayList<String>();
 	}
 
+	@Override
 	public String toHtmlString(){
 		return toString();
 	}
 
+	@Override
 	public String getSaveString(){
 		return null;
 	}
 
+	@Override
 	public String parseSaveString(String saveString){
 		return null;
 	}
 
+	@Override
 	public Filter loadCriterion(FilteringPanel filteringPanel, String saveString) throws Exception {
 		return null;
 	}
 
+	@Override
 	public boolean checkFieldCompatibility(Analysis analysis){
 		return true;
 	}
 
+	@Override
 	public boolean changeAnalysis(Analysis analysis){
 		return false;
 	}
 
+	@Override
 	public void editFilter(){
 
 	}
 
+	@Override
 	public int getNumberOfVariants() {
 		return ids.size();
 	}
 
+	@Override
 	public Map<Integer,String> getResultIds(Set<String> autoSamples) throws Exception {	
 		Map<Integer,String> results = new HashMap<Integer, String>();
 		if (!ids.isEmpty()){

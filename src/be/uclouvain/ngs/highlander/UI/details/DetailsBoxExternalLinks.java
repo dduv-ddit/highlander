@@ -74,18 +74,22 @@ public class DetailsBoxExternalLinks extends DetailsBox {
 		initCommonUI(visible);
 	}
 
+	@Override
 	public DetailsPanel getDetailsPanel(){
 		return mainPanel;
 	}
 
+	@Override
 	public String getTitle(){
 		return "External links";
 	}
 
+	@Override
 	public Palette getColor() {
 		return Field.dbsnp_id.getCategory().getColor();
 	}
 
+	@Override
 	protected boolean isDetailsLoaded(){
 		return detailsLoaded;
 	}
@@ -114,6 +118,7 @@ public class DetailsBoxExternalLinks extends DetailsBox {
 	}
 	 */
 	
+	@Override
 	protected void loadDetails(){
 		final int HEIGHT = 36;
 
@@ -153,6 +158,7 @@ public class DetailsBoxExternalLinks extends DetailsBox {
 						@Override
 						public void actionPerformed(ActionEvent arg0) {
 							new Thread(new Runnable(){
+								@Override
 								public void run(){
 									Tools.openURL("https://research.nhgri.nih.gov/projects/bic/Member/brca1_mutation_database.shtml");
 								}
@@ -169,6 +175,7 @@ public class DetailsBoxExternalLinks extends DetailsBox {
 						@Override
 						public void actionPerformed(ActionEvent arg0) {
 							new Thread(new Runnable(){
+								@Override
 								public void run(){
 									Tools.openURL("https://research.nhgri.nih.gov/projects/bic/Member/brca2_mutation_database.shtml");
 								}

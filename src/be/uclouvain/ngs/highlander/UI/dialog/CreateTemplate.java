@@ -147,6 +147,7 @@ public class CreateTemplate extends JDialog {
 
 		JButton btnOk = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 24));
 		btnOk.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				save = true;
 				dispose();
@@ -156,6 +157,7 @@ public class CreateTemplate extends JDialog {
 		
 		JButton btnCancel = new JButton(Resources.getScaledIcon(Resources.iCross, 24));
 		btnCancel.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				save = false;
 				dispose();
@@ -179,6 +181,7 @@ public class CreateTemplate extends JDialog {
 				+ "Another example would be to select a trio of samples and define them as 'Father', 'Mother' and 'Child'.<br>"
 				+ "If your filter is larger than the window and blue arrows don't appear to scroll, resize a little bit the window !</html>");
 		addFilter.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				GridBagConstraints gbc_panel = new GridBagConstraints();
 				gbc_panel.insets = new Insets(5, 5, 5, 5);
@@ -203,6 +206,7 @@ public class CreateTemplate extends JDialog {
 	
 	private JScrollPane getPanelSamplePlaceholders() {
 		tmodel = new DefaultTableModel(	) {
+			@Override
 			public boolean isCellEditable(int rowIndex, int columnIndex) {
 				if (columnIndex == 0) return false;
 				return true;
@@ -212,6 +216,7 @@ public class CreateTemplate extends JDialog {
 		tmodel.addColumn("Placeholder");
 		
 		table = new JTable(tmodel){
+			@Override
 			public boolean editCellAt(int row, int column, java.util.EventObject e){
         boolean result = super.editCellAt(row, column, e);
         final Component editor = getEditorComponent();
@@ -284,6 +289,7 @@ public class CreateTemplate extends JDialog {
 		JButton btnRename = new JButton(Resources.getScaledIcon(Resources.iEditPen, 40));
 		btnRename.setToolTipText("Rename filter");
 		btnRename.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {		
 				final String oldName = innerBorder.getTitle();
 				Object newName = null;

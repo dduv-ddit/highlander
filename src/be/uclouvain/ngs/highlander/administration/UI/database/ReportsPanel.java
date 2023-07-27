@@ -360,6 +360,7 @@ public class ReportsPanel extends ManagerPanel {
 		if (resu != null){
 			String software = resu.toString();
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(true);
 					waitingPanel.start();
@@ -394,6 +395,7 @@ public class ReportsPanel extends ManagerPanel {
 				ProjectManager.toConsole(ex);
 			}
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(false);
 					waitingPanel.stop();
@@ -407,6 +409,7 @@ public class ReportsPanel extends ManagerPanel {
 		if (resu != null){
 			String software = resu.toString();
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(true);
 					waitingPanel.start();
@@ -433,6 +436,7 @@ public class ReportsPanel extends ManagerPanel {
 				ProjectManager.toConsole(ex);
 			}
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(false);
 					waitingPanel.stop();

@@ -95,22 +95,27 @@ public class DetailsBoxPublicAnnotations extends DetailsBox {
 		initCommonUI(visible);
 	}
 
+	@Override
 	public DetailsPanel getDetailsPanel(){
 		return mainPanel;
 	}
 
+	@Override
 	public String getTitle(){
 		return "Public annotations";
 	}
 
+	@Override
 	public Palette getColor() {
 		return Field.variant_comments_public.getCategory().getColor();
 	}
 
+	@Override
 	protected boolean isDetailsLoaded(){
 		return detailsLoaded;
 	}
 
+	@Override
 	protected void loadDetails(){
 		try{
 			AnalysisFull analysis = Highlander.getCurrentAnalysis();

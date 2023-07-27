@@ -202,7 +202,8 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 			break;
 		}
 		tree.addTreeSelectionListener(new TreeSelectionListener() {
-      public void valueChanged(TreeSelectionEvent e) {
+      @Override
+			public void valueChanged(TreeSelectionEvent e) {
       	refreshButtons() ;
       	scrollDescription.setViewportView(showSelectedElement());
       	history.setText(showHistory());
@@ -265,7 +266,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 	
 	private void initUI(){
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		setSize(new Dimension((int)(screenSize.width/2),(int)(screenSize.height/2.5)));
+		setSize(new Dimension(screenSize.width/2,(int)(screenSize.height/2.5)));
 		
 		JSplitPane splitpane = new JSplitPane();
 		splitpane.setResizeWeight(0.3);
@@ -321,8 +322,10 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 		btnRename.setToolTipText("Rename selected element");
 		btnRename.setPreferredSize(new Dimension(54,54));
 		btnRename.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						if (canRenameSelection())
 							renameElement((ProfileNode) tree.getLastSelectedPathComponent());
@@ -336,8 +339,10 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 		btnEdit.setToolTipText("Edit selected element");
 		btnEdit.setPreferredSize(new Dimension(54,54));
 		btnEdit.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						if (canEditSelection())
 							editElement((ProfileNode) tree.getLastSelectedPathComponent());
@@ -352,9 +357,11 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 		btnDelete.setToolTipText("Delete selected elements");
 		btnDelete.setPreferredSize(new Dimension(54,54));
 		btnDelete.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
-	  			public void run(){
+	  			@Override
+					public void run(){
 	  				if (canDeleteSelection())
 	  					deleteElement(tree.getSelectionPaths());
 	  			}
@@ -368,8 +375,10 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 		btnCopy.setToolTipText("Copy selected elements");
 		btnCopy.setPreferredSize(new Dimension(54,54));
 		btnCopy.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						if (canCopySelection())
 							copyElement(tree.getSelectionPaths());
@@ -384,8 +393,10 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 		btnShare.setToolTipText("Share selected elements");
 		btnShare.setPreferredSize(new Dimension(54,54));
 		btnShare.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						if (canShareSelection())
 							if (tree.getSelectionPaths().length > 0){
@@ -412,6 +423,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 		btnFolderNew.setToolTipText("Create new folder under selected folder");
 		btnFolderNew.setPreferredSize(new Dimension(54,54));
 		btnFolderNew.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (canCreateElement((ProfileNode) tree.getLastSelectedPathComponent(), UserData.FOLDER))
 					newFolder((ProfileNode) tree.getLastSelectedPathComponent());
@@ -423,9 +435,11 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 	  createUserValueList.setPreferredSize(new Dimension(54,54));
 	  createUserValueList.setToolTipText("Create a new list of values (like a sample or gene list)");
 	  createUserValueList.addActionListener(new ActionListener() {
-	  	public void actionPerformed(ActionEvent e) {
+	  	@Override
+			public void actionPerformed(ActionEvent e) {
 	  		new Thread(new Runnable(){
-	  			public void run(){
+	  			@Override
+					public void run(){
 	  				if (canCreateElement((ProfileNode) tree.getLastSelectedPathComponent(), UserData.VALUES))
 	  					createValueList((ProfileNode) tree.getLastSelectedPathComponent());
 	  			}
@@ -439,9 +453,11 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 	  createUserIntervalsList.setPreferredSize(new Dimension(54,54));
 	  createUserIntervalsList.setToolTipText("Create a new list of genomic intervals");
 	  createUserIntervalsList.addActionListener(new ActionListener() {
-	  	public void actionPerformed(ActionEvent e) {
+	  	@Override
+			public void actionPerformed(ActionEvent e) {
 	  		new Thread(new Runnable(){
-	  			public void run(){
+	  			@Override
+					public void run(){
 	  				if (canCreateElement((ProfileNode) tree.getLastSelectedPathComponent(), UserData.INTERVALS))
 	  					createIntervalsList((ProfileNode) tree.getLastSelectedPathComponent());
 	  			}
@@ -455,8 +471,10 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 		createUserPhenotypesList.setPreferredSize(new Dimension(54,54));
 		createUserPhenotypesList.setToolTipText("Create a new list of phenotypes (HPO terms)");
 		createUserPhenotypesList.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						if (canCreateElement((ProfileNode) tree.getLastSelectedPathComponent(), UserData.PHENOTYPES))
 							createPhenotypesList((ProfileNode) tree.getLastSelectedPathComponent());
@@ -471,8 +489,10 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 		createUserTemplateList.setPreferredSize(new Dimension(54,54));
 		createUserTemplateList.setToolTipText("Create a filters template in your profile");
 		createUserTemplateList.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						if (canCreateElement((ProfileNode) tree.getLastSelectedPathComponent(), UserData.FILTERS_TEMPLATE))
 							createFiltersTemplate((ProfileNode) tree.getLastSelectedPathComponent());
@@ -494,13 +514,16 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 		userInput = new JTextField(30);
 		southPanel.add(userInput, new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(2, 5, 2, 5), 0, 0));
 		userInput.getDocument().addDocumentListener(new DocumentListener() {
-		  public void changedUpdate(DocumentEvent e) {
+		  @Override
+			public void changedUpdate(DocumentEvent e) {
 		  	refreshButtons();
 		  }
-		  public void removeUpdate(DocumentEvent e) {
+		  @Override
+			public void removeUpdate(DocumentEvent e) {
 		  	refreshButtons();
 		  }
-		  public void insertUpdate(DocumentEvent e) {
+		  @Override
+			public void insertUpdate(DocumentEvent e) {
 		  	refreshButtons();
 		  }
 		});
@@ -510,9 +533,11 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 	  createUserIntervalsList.setToolTipText("Choose");
 		okButton.setPreferredSize(new Dimension(42,42));
 		okButton.addActionListener(new ActionListener() {
-	  	public void actionPerformed(ActionEvent e) {
+	  	@Override
+			public void actionPerformed(ActionEvent e) {
 	  		new Thread(new Runnable(){
-	  			public void run(){
+	  			@Override
+					public void run(){
 	  				if (ProfileTree.this.action == Action.SAVE){
 	  					if (Filter.containsForbiddenCharacters(userInput.getText())) {
 	  						JOptionPane.showMessageDialog(new JFrame(), "You cannot use the following characters: "+Filter.getForbiddenCharacters(), "Saving in profile", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
@@ -550,8 +575,10 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 		cancelButton.setToolTipText("Cancel");
 	  cancelButton.setPreferredSize(new Dimension(42,42));
 		cancelButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						selection = null;
 						dispose();
@@ -667,6 +694,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 					Highlander.getLoggedUser().saveColumnMask(maskName, node.getAnalysis(), mask);
 					if (maskName.equals(mainFrame.getSelectedMaskName()) && Highlander.getCurrentAnalysis().equals(node.getAnalysis())){
 						new Thread(new Runnable() {
+							@Override
 							public void run() {
 								mainFrame.refreshTableView();
 							}
@@ -689,6 +717,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 					Highlander.getLoggedUser().saveColumnSelection(selectionName, node.getAnalysis(), selection);
 					if (selectionName.equals(mainFrame.getSelectedColumnSelectionName()) && Highlander.getCurrentAnalysis().equals(node.getAnalysis())){
 						new Thread(new Runnable() {
+							@Override
 							public void run() {
 								mainFrame.refreshTable();
 							}
@@ -745,6 +774,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 				"Deleting element from profile", JOptionPane.YES_NO_CANCEL_OPTION , JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iUserDelete,64));
 		if (res == JOptionPane.YES_OPTION){
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(true);
 					waitingPanel.start();
@@ -792,6 +822,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 				}
 			}
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(false);
 					waitingPanel.stop();
@@ -802,6 +833,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 
 	private void shareElement(TreePath[] paths, Set<User> users) throws Exception {
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				waitingPanel.setVisible(true);
 				waitingPanel.start();
@@ -811,7 +843,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 		for (final User user : users){
 			userString += user.toString() + "\n";
 			for (final TreePath path : paths){
-				waitingPanel.setProgressString("Sharing " + (ProfileNode)path.getLastPathComponent() + " with " + user.toString(), true);
+				waitingPanel.setProgressString("Sharing " + path.getLastPathComponent() + " with " + user.toString(), true);
 				ProfileNode node = (ProfileNode)path.getLastPathComponent();
 				if (node.getUserData() == UserData.FOLDER){
 					duplicate(node, UserData.FOLDER, node, node.getKey(), false, user);
@@ -829,6 +861,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 			JOptionPane.showMessageDialog(ProfileTree.this, paths.length+" elements have been sent,\n"+  userString + "will be notified.", "Sharing element from profile", JOptionPane.PLAIN_MESSAGE, Resources.getScaledIcon(Resources.iUsers,64));
 		}
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				waitingPanel.setVisible(false);
 				waitingPanel.stop();
@@ -838,6 +871,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 
 	private void moveElement(ProfileNode[] nodes, ProfileNode destination, int indexInDestination){		
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				waitingPanel.setVisible(true);
 				waitingPanel.start();
@@ -912,6 +946,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 		tree.scrollPathToVisible(new TreePath(model.getPathToRoot(destination)));
 
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				waitingPanel.setVisible(false);
 				waitingPanel.stop();
@@ -921,6 +956,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 
 	private void copyElement(TreePath[] paths){		
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				waitingPanel.setVisible(true);
 				waitingPanel.start();
@@ -994,6 +1030,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 			tree.scrollPathToVisible(new TreePath(model.getPathToRoot(target)));			
 		}
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				waitingPanel.setVisible(false);
 				waitingPanel.stop();
@@ -1780,6 +1817,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 			data[row++][0] = f;
 		}
 		return new JTable(new DefaultTableModel(data, new String[] {header})){
+			@Override
 			public String getToolTipText(MouseEvent e) {
 				String tip = null;
 				java.awt.Point p = e.getPoint();
@@ -1793,6 +1831,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 				return tip;
 			}
 
+			@Override
 			public boolean isCellEditable(int row, int column){
 				return false;
 			}
@@ -2121,6 +2160,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 	}
 	
 	class ProfileTreeCellRenderer extends DefaultTreeCellRenderer {
+		@Override
 		public Component getTreeCellRendererComponent(JTree tree,	Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
 			super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
 			ProfileNode node = (ProfileNode)value; 
@@ -2171,6 +2211,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 			}
 		}
 
+		@Override
 		public boolean canImport(TransferHandler.TransferSupport support) {
 			if(!support.isDrop()) {
 				return false;
@@ -2216,6 +2257,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 			return true;
 		}
 
+		@Override
 		protected Transferable createTransferable(JComponent c) {
 			TreePath[] paths = tree.getSelectionPaths();
 			if(paths != null) {
@@ -2244,10 +2286,12 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 			return null;
 		}
 
+		@Override
 		public int getSourceActions(JComponent c) {
 			return MOVE;
 		}
 
+		@Override
 		public boolean importData(TransferHandler.TransferSupport support) {
 			if(!canImport(support)) {
 				return false;
@@ -2285,6 +2329,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 			return true;
 		}
 
+		@Override
 		public String toString() {
 			return getClass().getName();
 		}
@@ -2296,16 +2341,19 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 				this.nodes = nodes;
 			}
 
+			@Override
 			public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
 				if(!isDataFlavorSupported(flavor))
 					throw new UnsupportedFlavorException(flavor);
 				return nodes;
 			}
 
+			@Override
 			public DataFlavor[] getTransferDataFlavors() {
 				return flavors;
 			}
 
+			@Override
 			public boolean isDataFlavorSupported(DataFlavor flavor) {
 				return nodesFlavor.equals(flavor);
 			}

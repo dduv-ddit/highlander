@@ -50,6 +50,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JTextArea;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 
 import be.uclouvain.ngs.highlander.Highlander;
@@ -137,6 +138,7 @@ public class CreateCustomFilter extends JDialog {
 
 		JButton btnCreate = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 32));
 		btnCreate.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (generateCriterion()){
 					dispose();
@@ -147,6 +149,7 @@ public class CreateCustomFilter extends JDialog {
 
 		JButton btnCancel = new JButton(Resources.getScaledIcon(Resources.iCross, 32));
 		btnCancel.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				cancelClose();
 			}
@@ -188,6 +191,7 @@ public class CreateCustomFilter extends JDialog {
 		comboBox_field = new JComboBox<>(fieldsArr);
 		comboBox_field.setMaximumRowCount(20);
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				support = AutoCompleteSupport.install(comboBox_field, fields);
 				support.setCorrectsCase(true);
@@ -197,6 +201,7 @@ public class CreateCustomFilter extends JDialog {
 			}
 		});		
 		comboBox_field.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (arg0.getActionCommand().equals("comboBoxEdited")){
 					if (comboBox_field.getSelectedIndex() < 0) comboBox_field.setSelectedItem(null);
@@ -207,6 +212,7 @@ public class CreateCustomFilter extends JDialog {
 			}
 		});
 		comboBox_field.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(ItemEvent arg0) {
 				if (arg0.getStateChange() == ItemEvent.SELECTED){
 					if (comboBox_field.getSelectedIndex() >= 0){
@@ -232,9 +238,11 @@ public class CreateCustomFilter extends JDialog {
 		boxCategories.setToolTipText("Restrict 'Database field' for easier searching");
 		boxCategories.setMaximumRowCount(20);
 		boxCategories.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(ItemEvent arg0) {
 				if (arg0.getStateChange() == ItemEvent.SELECTED){
 					SwingUtilities.invokeLater(new Runnable() {
+						@Override
 						public void run() {
 							filterByCategory();							
 						}
@@ -352,6 +360,7 @@ public class CreateCustomFilter extends JDialog {
 		btnPossibleValuesDatabase.setEnabled(false);
 		btnPossibleValuesDatabase.setToolTipText("Choose among possible values found in the whole database");
 		btnPossibleValuesDatabase.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (comboBox_field.getSelectedItem() == null){ 
 					JOptionPane.showMessageDialog(CreateCustomFilter.this, "You must first select a field !", "Ask for possible values", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
@@ -382,6 +391,7 @@ public class CreateCustomFilter extends JDialog {
 			btnPossibleValuesTable = new JButton("From your table",Resources.getScaledIcon(Resources.i3dPlus, 16));
 			btnPossibleValuesTable.setToolTipText("Choose among possible values found in the current table (i.e. applying your filters)");
 			btnPossibleValuesTable.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent arg0) {
 					if (comboBox_field.getSelectedItem() == null){ 
 						JOptionPane.showMessageDialog(CreateCustomFilter.this, "You must first select a field !", "Ask for possible values", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
@@ -415,6 +425,7 @@ public class CreateCustomFilter extends JDialog {
 		btnFreeValues = new JButton("Encode",Resources.getScaledIcon(Resources.i3dPlus, 16));
 		btnFreeValues.setToolTipText("Open a form to encode or import your values");
 		btnFreeValues.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				List<String> existingValues = new ArrayList<String>();
 				if(txtArea_values.getText().length() > 0){
@@ -455,13 +466,14 @@ public class CreateCustomFilter extends JDialog {
 		txtArea_values.setLineWrap(true);
 		txtArea_values.setWrapStyleWord(true);
 		txtArea_values.setToolTipText("Case insensitive, values must be separated by ';'. If you want to search for a ';' in the database you must write preceded by a backslash '\\;'");
-		scrollPane_1.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane_1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scrollPane_1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane_1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		scrollPane_1.setViewportView(txtArea_values);
 
 		btnValueListFrom = new JButton("Value list from profile",Resources.getScaledIcon(Resources.i3dPlus, 16));
 		btnValueListFrom.setEnabled(false);
 		btnValueListFrom.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (comboBox_field.getSelectedItem() != null){
 					String listname = ProfileTree.showProfileDialog(CreateCustomFilter.this, Action.LOAD, UserData.VALUES, comboBox_field.getSelectedItem().toString());
@@ -496,8 +508,8 @@ public class CreateCustomFilter extends JDialog {
 		txtArea_values.setLineWrap(true);
 		txtArea_values.setWrapStyleWord(true);
 		txtArea_profile.setToolTipText("Case insensitive, values must be separated by ';'. If you want to search for a ';' in the database you must write preceded by a backslash '\\;'");
-		scrollPane_2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane_2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scrollPane_2.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane_2.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		scrollPane_2.setViewportView(txtArea_profile);
 
 		JLabel lblIfVariantHas = new JLabel("Variant without value");
@@ -538,53 +550,61 @@ public class CreateCustomFilter extends JDialog {
 		scrollPanel.add(mainPanel, new GridBagConstraints(0,0,1,1,1.0,0,GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 		scrollPanel.add(new JPanel(), new GridBagConstraints(0,1,1,1,1.0,1.0,GridBagConstraints.NORTH, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));		
 		scroll.setViewportView(scrollPanel);
-		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		getContentPane().add(scroll);
 
 		radioButton_equal.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(ItemEvent arg0) {
 				if(arg0.getStateChange() == ItemEvent.SELECTED)
 					setAvailableValueLists();
 			}
 		});
 		radioButton_different.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(ItemEvent arg0) {
 				if(arg0.getStateChange() == ItemEvent.SELECTED)
 					setAvailableValueLists();
 			}
 		});
 		radioButton_greater.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(ItemEvent arg0) {
 				if(arg0.getStateChange() == ItemEvent.SELECTED)
 					setAvailableValueLists();
 			}
 		});
 		radioButton_greaterequal.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(ItemEvent arg0) {
 				if(arg0.getStateChange() == ItemEvent.SELECTED)
 					setAvailableValueLists();
 			}
 		});
 		radioButton_smaller.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(ItemEvent arg0) {
 				if(arg0.getStateChange() == ItemEvent.SELECTED)
 					setAvailableValueLists();
 			}
 		});
 		radioButton_smallerequal.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(ItemEvent arg0) {
 				if(arg0.getStateChange() == ItemEvent.SELECTED)
 					setAvailableValueLists();
 			}
 		});
 		radioButton_contains.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(ItemEvent arg0) {
 				if(arg0.getStateChange() == ItemEvent.SELECTED)
 					setAvailableValueLists();
 			}
 		});
 		radioButton_doesnotcontains.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(ItemEvent arg0) {
 				if(arg0.getStateChange() == ItemEvent.SELECTED)
 					setAvailableValueLists();
@@ -737,6 +757,7 @@ public class CreateCustomFilter extends JDialog {
 	private void fillFields(){
 		if (criterion != null) {
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					comboBox_field.setSelectedItem(criterion.getField().getName());
 					switch(criterion.getComparisonOperator()){
@@ -875,6 +896,7 @@ public class CreateCustomFilter extends JDialog {
 	}
 
 	//Overridden so we can exit when window is closed
+	@Override
 	protected void processWindowEvent(WindowEvent e) {
 		super.processWindowEvent(e);
 		if (e.getID() == WindowEvent.WINDOW_CLOSING) {

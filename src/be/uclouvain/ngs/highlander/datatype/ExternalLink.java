@@ -679,6 +679,7 @@ public class ExternalLink implements Comparable<ExternalLink> {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){				
 						for (URI uri : uris) {	
 							Tools.openURL(uri);

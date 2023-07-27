@@ -25,6 +25,7 @@ package be.uclouvain.ngs.highlander.administration.UI.users;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -67,8 +68,10 @@ public class UserManagementPanel extends ManagerPanel {
 	public UserManagementPanel(ProjectManager manager){
 		super(manager);
 		usersTable = new JTable(usersTableModel){
+			@Override
 			protected JTableHeader createDefaultTableHeader() {
 				return new JTableHeader(columnModel) {
+					@Override
 					public String getToolTipText(MouseEvent e) {
 						java.awt.Point p = e.getPoint();
 						int index = columnModel.getColumnIndexAtX(p.x);
@@ -91,12 +94,14 @@ public class UserManagementPanel extends ManagerPanel {
 
 		fill();
 
-		JPanel users = new JPanel(new WrapLayout(WrapLayout.LEADING));
+		JPanel users = new JPanel(new WrapLayout(FlowLayout.LEADING));
 
 		JButton userCreateUser = new JButton("Create new user", Resources.getScaledIcon(Resources.iUserAdd, 24));
 		userCreateUser.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						User newUser = User.createUser();
 						if (newUser != null) {
@@ -110,8 +115,10 @@ public class UserManagementPanel extends ManagerPanel {
 
 		JButton userDeleteUser = new JButton("Delete selected user", Resources.getScaledIcon(Resources.iUserDelete, 24));
 		userDeleteUser.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						User user = getSelectedUser();
 						if (user != null) {
@@ -138,8 +145,10 @@ public class UserManagementPanel extends ManagerPanel {
 
 		JButton userPromoteUser = new JButton("Change rights of selected user", Resources.getScaledIcon(Resources.iUserPromote, 24));
 		userPromoteUser.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						User user = getSelectedUser();
 						if (user != null) {
@@ -166,8 +175,10 @@ public class UserManagementPanel extends ManagerPanel {
 
 		JButton userResetPassword = new JButton("Reset password of selected user", Resources.getScaledIcon(Resources.iUserLock, 24));
 		userResetPassword.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						User user = getSelectedUser();
 						if (user != null) {
@@ -180,8 +191,10 @@ public class UserManagementPanel extends ManagerPanel {
 
 		JButton userModify = new JButton("Modify selected user", Resources.getScaledIcon(Resources.iUserEdit, 24));
 		userModify.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						User user = getSelectedUser();
 						if (user != null) {
@@ -265,6 +278,7 @@ public class UserManagementPanel extends ManagerPanel {
 
 	private void refresh(){
 		SwingUtilities.invokeLater(new Runnable(){
+			@Override
 			public void run(){
 				try{
 					usersTableModel.fireTableRowsUpdated(0,usersTableModel.getRowCount()-1);

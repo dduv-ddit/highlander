@@ -33,10 +33,9 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.sql.Date;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import javax.swing.JTextPane;
 import javax.swing.text.html.HTMLEditorKit;
@@ -153,7 +152,7 @@ public class WelcomePage extends JTextPane {
 	public String getLastAdditions(){
 		StringBuilder sb = new StringBuilder();
 		try{
-			DateFormat df = new SimpleDateFormat("dd MMMM yyyy");
+			DateTimeFormatter df = DateTimeFormatter.ofPattern("dd MMMM yyyy");
 			try (Results res = Highlander.getDB().select(Schema.HIGHLANDER, 
 					"SELECT p.project_id, analysis, p.platform, p.sample, pathology, p.sample_type, p.normal_id, p2.sample, p.run_date " +
 					"FROM projects as p " +
@@ -163,7 +162,7 @@ public class WelcomePage extends JTextPane {
 					"LEFT JOIN projects as p2 ON p.normal_id = p2.project_id " +
 					"WHERE pu.username = '"+Highlander.getLoggedUser().getUsername()+"' " +
 					"ORDER BY p.run_date DESC, analysis ASC")){
-				Date currentDate = new Date(0);
+				LocalDate currentDate = null;
 				String currentAnalysis = null;
 				boolean first = true;
 				sb.append("<br>");
@@ -174,7 +173,7 @@ public class WelcomePage extends JTextPane {
 						currentAnalysis = res.getString("analysis");
 						if (!first) sb.append("</ul>");
 						else first = false;
-						sb.append("<b>"+df.format(currentDate)+"</b> in "+analysis+" ("+analysis.getSequencingTarget()+" aligned on "+analysis.getReference()+", variants called with "+analysis.getVariantCaller()+")<br><ul>");
+						sb.append("<b>"+currentDate.format(df)+"</b> in "+analysis+" ("+analysis.getSequencingTarget()+" aligned on "+analysis.getReference()+", variants called with "+analysis.getVariantCaller()+")<br><ul>");
 					}
 					String samp = res.getString("sample_type") + " sample with id " + res.getString("p.sample") + " ("+res.getString("pathology")+").";
 					if (analysis.getVariantCaller() == VariantCaller.MUTECT && res.getString("p.normal_id") != null) {

@@ -84,6 +84,7 @@ public class ToolbarScrollablePanel extends JPanel implements Observer {
 		setLayout(new java.awt.BorderLayout());
 
 		buttonLeft.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				buttonLeftActionPerformed(false);
 			}
@@ -99,6 +100,7 @@ public class ToolbarScrollablePanel extends JPanel implements Observer {
 		add(buttonLeft, java.awt.BorderLayout.LINE_START);
 
 		buttonRight.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				buttonRightActionPerformed(false);
 			}

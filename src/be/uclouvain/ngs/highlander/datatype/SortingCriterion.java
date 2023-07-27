@@ -89,6 +89,7 @@ public class SortingCriterion extends JPanel implements Transferable, DragSource
 
 		//to be transferred in the Drag
 		transfertHandler = new TransferHandler(){
+			@Override
 			public Transferable createTransferable(JComponent c){
 				return SortingCriterion.this;
 			}
@@ -103,6 +104,7 @@ public class SortingCriterion extends JPanel implements Transferable, DragSource
 	public void addListeners(final SortingPanel sortingPanel){
 		if(buttonColumn.getListeners(ActionListener.class).length == 0){
 			buttonColumn.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent arg0) {
 					sortingPanel.refresh();
 				}
@@ -110,6 +112,7 @@ public class SortingCriterion extends JPanel implements Transferable, DragSource
 		}
 		if(buttonRemove.getListeners(ActionListener.class).length == 0){
 			buttonRemove.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent arg0) {
 					sortingPanel.getCriteriaPanel().remove(SortingCriterion.this);
 					sortingPanel.refresh();
@@ -131,30 +134,39 @@ public class SortingCriterion extends JPanel implements Transferable, DragSource
 	}
 
 	//The DataFlavor is a marker to let the DropTarget know how to handle the Transferable
+	@Override
 	public DataFlavor[] getTransferDataFlavors() {
 		return new DataFlavor[]{new DataFlavor(SortingCriterion.class, "SortingItem")};
 	}
 
+	@Override
 	public boolean isDataFlavorSupported(DataFlavor flavor) {
 		return true;
 	}
 
+	@Override
 	public Object getTransferData(DataFlavor flavor) {
 		return this;
 	}
 
+	@Override
 	public void dragEnter(DragSourceDragEvent dsde) {}
+	@Override
 	public void dragOver(DragSourceDragEvent dsde) {}
 	public void dropActionchanged(DragSourceDragEvent dsde) {}
+	@Override
 	public void dragExit(DragSourceEvent dse) {}
+	@Override
 	public void dropActionChanged(DragSourceDragEvent arg0) {}
 
 	//When the drag finishes, refresh (boutton still pressed etc)
+	@Override
 	public void dragDropEnd(DragSourceDropEvent dsde) {
 		repaint();
 	}
 
 	//when a DragGesture is recognized, initiate the Drag
+	@Override
 	public void dragGestureRecognized(DragGestureEvent dge) {
 		source.startDrag(dge, DragSource.DefaultMoveDrop, SortingCriterion.this, this);       
 	}

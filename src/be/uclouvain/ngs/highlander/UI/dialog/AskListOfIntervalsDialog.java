@@ -115,6 +115,7 @@ public class AskListOfIntervalsDialog extends JDialog {
 		btnSort.setToolTipText("Sort current list by chromosome-positions and remove duplicates");
 		btnSort.setPreferredSize(new Dimension(54,54));
 		btnSort.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				sort();
 			}
@@ -125,6 +126,7 @@ public class AskListOfIntervalsDialog extends JDialog {
 		btnFile.setToolTipText("Import values from a bed file");
 		btnFile.setPreferredSize(new Dimension(54,54));
 		btnFile.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				FileDialog chooser = new FileDialog(AskListOfIntervalsDialog.this, "Choose a bed file", FileDialog.LOAD);
 				chooser.setVisible(true);
@@ -164,6 +166,7 @@ public class AskListOfIntervalsDialog extends JDialog {
 		btnLoadList.setToolTipText("Load a list of intervals from your profile");
 		btnLoadList.setPreferredSize(new Dimension(54,54));
 		btnLoadList.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				String listname = ProfileTree.showProfileDialog(AskListOfIntervalsDialog.this, Action.LOAD, UserData.INTERVALS, reference.getName());
 				if (listname != null){
@@ -177,6 +180,7 @@ public class AskListOfIntervalsDialog extends JDialog {
 		btnSaveFile.setToolTipText("Export current list of intervals in a bed file");
 		btnSaveFile.setPreferredSize(new Dimension(54,54));
 		btnSaveFile.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				saveBed();
 			}
@@ -187,6 +191,7 @@ public class AskListOfIntervalsDialog extends JDialog {
 		btnSaveList.setToolTipText("Save current list of intervals in your profile");
 		btnSaveList.setPreferredSize(new Dimension(54,54));
 		btnSaveList.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				saveList();
 			}
@@ -200,6 +205,7 @@ public class AskListOfIntervalsDialog extends JDialog {
 		btnOk = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 24));
 		btnOk.setText("0 interval(s)");
 		btnOk.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (createSelection()){
 					dispose();
@@ -210,6 +216,7 @@ public class AskListOfIntervalsDialog extends JDialog {
 
 		JButton btnCancel = new JButton(Resources.getScaledIcon(Resources.iCross, 24));
 		btnCancel.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				cancelClose();
 			}
@@ -235,6 +242,7 @@ public class AskListOfIntervalsDialog extends JDialog {
 		tmodel = new IncrementableTableModel();
 
 		table = new JTable(tmodel){
+			@Override
 			public boolean editCellAt(int row, int column, java.util.EventObject e){
 				boolean result = super.editCellAt(row, column, e);
 				final Component editor = getEditorComponent();
@@ -286,26 +294,32 @@ public class AskListOfIntervalsDialog extends JDialog {
 			data.add(new Object[ncol]);
 		}
 
+		@Override
 		public int getColumnCount() {
 			return ncol;
 		}
 
+		@Override
 		public int getRowCount() {
 			return data.size();
 		}
 
+		@Override
 		public String getColumnName(int columnIndex) {
 			return headers[columnIndex];
 		}
 
+		@Override
 		public Class<?> getColumnClass(int columnIndex) {
 			return (columnIndex > 0) ? Integer.class : String.class;
 		}
 
+		@Override
 		public Object getValueAt(int row, int col) {
 			return data.get(row)[col];
 		}
 
+		@Override
 		public void setValueAt(Object value, int row, int col) {
 			data.get(row)[col] = value;
 			if (!isLastLineEmpty()){
@@ -314,6 +328,7 @@ public class AskListOfIntervalsDialog extends JDialog {
 			fireTableCellUpdated(row, col);			
 		}
 
+		@Override
 		public boolean isCellEditable(int rowIndex, int columnIndex) {
 			return true;
 		}
@@ -358,6 +373,7 @@ public class AskListOfIntervalsDialog extends JDialog {
 		 * Paste is done by aligning the upper left corner of the selection with the
 		 * 1st element in the current selection of the JTable.
 		 */
+		@Override
 		public void actionPerformed(ActionEvent e){
 			if (e.getActionCommand().compareTo("Paste")==0){
 				int startRow=(table.getSelectedRows())[0];
@@ -548,6 +564,7 @@ public class AskListOfIntervalsDialog extends JDialog {
 	}
 
 	//Overridden so we can exit when window is closed
+	@Override
 	protected void processWindowEvent(WindowEvent e) {
 		super.processWindowEvent(e);
 		if (e.getID() == WindowEvent.WINDOW_CLOSING) {

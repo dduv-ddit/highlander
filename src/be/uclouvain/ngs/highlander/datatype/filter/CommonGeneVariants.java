@@ -103,14 +103,17 @@ public class CommonGeneVariants extends MagicFilter {
 		samples = null;
 	}
 
+	@Override
 	public FilterType getFilterType(){
 		return FilterType.COMMON_GENE_VARIANTS;
 	}
 
+	@Override
 	public Set<String> getIncludedSamples(){
 		return samples;
 	}
 
+	@Override
 	public Set<String> getExcludedSamples(){
 		return new TreeSet<String>();
 	}
@@ -127,6 +130,7 @@ public class CommonGeneVariants extends MagicFilter {
 		return numVariantsThreshold;
 	}
 
+	@Override
 	public String toString(){
 		StringBuilder sb = new StringBuilder();
 		sb.append(getFilterType().getName() + " (common in min "+minCommon+" samples, with "+(numVariantsThreshold.getText())+" "+minMaxVariants+" variants in each sample): ");
@@ -140,6 +144,7 @@ public class CommonGeneVariants extends MagicFilter {
 		return sb.toString();
 	}
 
+	@Override
 	public String toHtmlString(){
 		StringBuilder sb = new StringBuilder();
 		sb.append("<html>");
@@ -160,6 +165,7 @@ public class CommonGeneVariants extends MagicFilter {
 		return sb.toString();
 	}
 
+	@Override
 	public boolean isFilterValid(){
 		if (preFiltering != null){
 			return preFiltering.isFilterValid();
@@ -168,6 +174,7 @@ public class CommonGeneVariants extends MagicFilter {
 		}
 	}
 
+	@Override
 	public List<String> getValidationProblems(){
 		List<String> problems = new ArrayList<String>();
 		if (preFiltering != null){
@@ -176,6 +183,7 @@ public class CommonGeneVariants extends MagicFilter {
 		return problems;
 	}
 
+	@Override
 	public String getSaveString(){
 		StringBuilder sb = new StringBuilder();
 		for (String sample : samples){
@@ -198,6 +206,7 @@ public class CommonGeneVariants extends MagicFilter {
 		return sb.toString();
 	}
 
+	@Override
 	public String parseSaveString(String saveString){
 		StringBuilder sb = new StringBuilder();
 		int beginIndex = 0;
@@ -225,6 +234,7 @@ public class CommonGeneVariants extends MagicFilter {
 		return sb.toString();
 	}
 
+	@Override
 	public Filter loadCriterion(FilteringPanel filteringPanel, String saveString) throws Exception {
 		Set<String> set = new LinkedHashSet<String>();
 		int beginIndex = 0;
@@ -250,6 +260,7 @@ public class CommonGeneVariants extends MagicFilter {
 		return new CommonGeneVariants(filteringPanel, set, Integer.parseInt(commonInMin), Integer.parseInt(minVariantsInGene), numVariantsThreshold, loadPreFiltering);
 	}
 
+	@Override
 	public boolean checkFieldCompatibility(Analysis analysis){
 		if (!Field.variant_sample_id.hasAnalysis(analysis)) return false;
 		if (!Field.chr.hasAnalysis(analysis)) return false;
@@ -263,11 +274,13 @@ public class CommonGeneVariants extends MagicFilter {
 		return true;
 	}
 
+	@Override
 	public boolean changeAnalysis(Analysis analysis){
 		if (preFiltering != null) return preFiltering.changeAnalysis(analysis);
 		return (checkFieldCompatibility(analysis));
 	}
 
+	@Override
 	public void editFilter(){
 		CreateMagicFilter cmf = new CreateMagicFilter(filteringPanel, this);
 		Tools.centerWindow(cmf, false);
@@ -283,10 +296,12 @@ public class CommonGeneVariants extends MagicFilter {
 		}
 	}
 
+	@Override
 	public int getNumberOfVariants() {
 		return nVariants;
 	}
 
+	@Override
 	public Map<Integer,String> getResultIds(Set<String> autoSamples) throws Exception {
 		nVariants = -1;
 		if (samples.isEmpty()) {

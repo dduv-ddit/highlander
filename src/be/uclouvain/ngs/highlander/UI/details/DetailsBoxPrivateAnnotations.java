@@ -105,18 +105,22 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 		initCommonUI(visible);
 	}
 
+	@Override
 	public DetailsPanel getDetailsPanel(){
 		return mainPanel;
 	}
 
+	@Override
 	public String getTitle(){
 		return "Private annotations";
 	}
 
+	@Override
 	public Palette getColor() {
 		return Field.variant_comments_private.getCategory().getColor();
 	}
 
+	@Override
 	protected boolean isDetailsLoaded(){
 		return detailsLoaded;
 	}
@@ -326,6 +330,7 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 		}
 	}
 	
+	@Override
 	protected void loadDetails(){
 		try{
 			AnalysisFull analysis = Highlander.getCurrentAnalysis();
@@ -398,6 +403,7 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 			final JPopupMenu statusInterestVariantPopupMenu = new JPopupMenu();
 			JMenuItem itemInterestVariantNull = new JMenuItem("You don't have marked this variant ... yet",Resources.getScaledIcon(Resources.iQuestion, 24));
 			itemInterestVariantNull.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					try{
 						updateDatabaseVariant(Field.variant_of_interest,null);
@@ -412,6 +418,7 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 			statusInterestVariantPopupMenu.add(itemInterestVariantNull);
 			JMenuItem itemInterestVariantTrue = new JMenuItem("You have marked this variant as 'of interest' (in all samples)",Resources.getScaledIcon(Resources.iButtonApply, 24));
 			itemInterestVariantTrue.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					try{
 						updateDatabaseVariant(Field.variant_of_interest,true);
@@ -426,6 +433,7 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 			statusInterestVariantPopupMenu.add(itemInterestVariantTrue);
 			JMenuItem itemInterestVariantFalse = new JMenuItem("You have marked this variant as 'not interesting' (in all samples)",Resources.getScaledIcon(Resources.iCross, 24));
 			itemInterestVariantFalse.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					try{
 						updateDatabaseVariant(Field.variant_of_interest,false);
@@ -439,10 +447,15 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 			});
 			statusInterestVariantPopupMenu.add(itemInterestVariantFalse);
 			MouseListener statusInterestVariantPopupListener = new MouseListener() {
+				@Override
 				public void mouseReleased(MouseEvent e) {}
+				@Override
 				public void mousePressed(MouseEvent e) {}
+				@Override
 				public void mouseExited(MouseEvent e) {}
+				@Override
 				public void mouseEntered(MouseEvent e) {}
+				@Override
 				public void mouseClicked(MouseEvent e) {
 					statusInterestVariantPopupMenu.show(e.getComponent(), e.getX(), e.getY());
 				}
@@ -461,6 +474,7 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 				final JPopupMenu statusInterestGenePopupMenu = new JPopupMenu();
 				JMenuItem itemInterestGeneNull = new JMenuItem("You don't have marked this gene ... yet",Resources.getScaledIcon(Resources.iQuestion, 24));
 				itemInterestGeneNull.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent e) {
 						try{
 							updateDatabaseGene(Field.gene_of_interest,null);
@@ -475,6 +489,7 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 				statusInterestGenePopupMenu.add(itemInterestGeneNull);
 				JMenuItem itemInterestGeneTrue = new JMenuItem("You have marked this gene as 'of interest'",Resources.getScaledIcon(Resources.iButtonApply, 24));
 				itemInterestGeneTrue.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent e) {
 						try{
 							updateDatabaseGene(Field.gene_of_interest,true);
@@ -489,6 +504,7 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 				statusInterestGenePopupMenu.add(itemInterestGeneTrue);
 				JMenuItem itemInterestGeneFalse = new JMenuItem("You have marked this gene as 'not interesting'",Resources.getScaledIcon(Resources.iCross, 24));
 				itemInterestGeneFalse.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent e) {
 						try{
 							updateDatabaseGene(Field.gene_of_interest,false);
@@ -502,10 +518,15 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 				});
 				statusInterestGenePopupMenu.add(itemInterestGeneFalse);
 				MouseListener statusInterestGenePopupListener = new MouseListener() {
+					@Override
 					public void mouseReleased(MouseEvent e) {}
+					@Override
 					public void mousePressed(MouseEvent e) {}
+					@Override
 					public void mouseExited(MouseEvent e) {}
+					@Override
 					public void mouseEntered(MouseEvent e) {}
+					@Override
 					public void mouseClicked(MouseEvent e) {
 						statusInterestGenePopupMenu.show(e.getComponent(), e.getX(), e.getY());
 					}
@@ -524,6 +545,7 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 			final JPopupMenu statusInterestSamplePopupMenu = new JPopupMenu();
 			JMenuItem itemInterestSampleNull = new JMenuItem("You don't have marked this sample ... yet",Resources.getScaledIcon(Resources.iQuestion, 24));
 			itemInterestSampleNull.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					try{
 						updateDatabaseSample(Field.sample_of_interest,null);
@@ -538,6 +560,7 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 			statusInterestSamplePopupMenu.add(itemInterestSampleNull);
 			JMenuItem itemInterestSampleTrue = new JMenuItem("You have marked this sample as 'of interest'",Resources.getScaledIcon(Resources.iButtonApply, 24));
 			itemInterestSampleTrue.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					try{
 						updateDatabaseSample(Field.sample_of_interest,true);
@@ -552,6 +575,7 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 			statusInterestSamplePopupMenu.add(itemInterestSampleTrue);
 			JMenuItem itemInterestSampleFalse = new JMenuItem("You have marked this sample as 'not interesting'",Resources.getScaledIcon(Resources.iCross, 24));
 			itemInterestSampleFalse.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					try{
 						updateDatabaseSample(Field.sample_of_interest,false);
@@ -565,10 +589,15 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 			});
 			statusInterestSamplePopupMenu.add(itemInterestSampleFalse);
 			MouseListener statusInterestSamplePopupListener = new MouseListener() {
+				@Override
 				public void mouseReleased(MouseEvent e) {}
+				@Override
 				public void mousePressed(MouseEvent e) {}
+				@Override
 				public void mouseExited(MouseEvent e) {}
+				@Override
 				public void mouseEntered(MouseEvent e) {}
+				@Override
 				public void mouseClicked(MouseEvent e) {
 					statusInterestSamplePopupMenu.show(e.getComponent(), e.getX(), e.getY());
 				}

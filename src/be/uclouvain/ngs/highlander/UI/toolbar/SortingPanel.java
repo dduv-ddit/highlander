@@ -91,6 +91,7 @@ public class SortingPanel extends JPanel implements DropTargetListener {
 		btnSave.setToolTipText("Save current criteria list in your profile");
 		btnSave.setPreferredSize(new Dimension(54,54));
 		btnSave.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					String name = ProfileTree.showProfileDialog(mainframe, Action.SAVE, UserData.SORTING, Highlander.getCurrentAnalysis().toString(), "Save "+UserData.SORTING.getName()+" to your profile", currentSortingName);
@@ -117,6 +118,7 @@ public class SortingPanel extends JPanel implements DropTargetListener {
 		btnLoad.setToolTipText("Load a criteria list from your profile");
 		btnLoad.setPreferredSize(new Dimension(54,54));
 		btnLoad.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				String name = ProfileTree.showProfileDialog(mainframe, Action.LOAD, UserData.SORTING, Highlander.getCurrentAnalysis().toString());
 				if (name != null){					
@@ -135,6 +137,7 @@ public class SortingPanel extends JPanel implements DropTargetListener {
 		button_add.setToolTipText("Add sorting criterion");
 		button_add.setPreferredSize(new Dimension(54,54));
 		button_add.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (table == null) {
 					JOptionPane.showMessageDialog(new JFrame(), "Table is empty, you must first generate a filter.", "No table", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
@@ -180,13 +183,18 @@ public class SortingPanel extends JPanel implements DropTargetListener {
 		setTransferHandler(new SortingItemTransferHandler());
 	}
 
+	@Override
 	public void dragEnter(DropTargetDragEvent dtde) {}
+	@Override
 	public void dragOver(DropTargetDragEvent dtde) {}
 	public void dropActionchanged(DropTargetDragEvent dtde) {}
+	@Override
 	public void dragExit(DropTargetEvent dte) {}
+	@Override
 	public void dropActionChanged(DropTargetDragEvent arg0) {}
 
 	//This is what happens when a Drop occurs
+	@Override
 	public void drop(DropTargetDropEvent dtde) {
 		try {
 			//get the Point where the drop occurred
@@ -217,6 +225,7 @@ public class SortingPanel extends JPanel implements DropTargetListener {
 	class SortingItemTransferHandler extends TransferHandler {
 
 		//tests for a valid SortingItem DataFlavor
+		@Override
 		public boolean canImport(JComponent c, DataFlavor[] f){
 			DataFlavor temp = new DataFlavor(SortingCriterion.class, "SortingItem");
 			for(DataFlavor d:f){
@@ -296,7 +305,8 @@ public class SortingPanel extends JPanel implements DropTargetListener {
 		Highlander.getHighlanderObserver().setControlName("RESIZE_TOOLBAR");
 		Highlander.waitingPanel.start();
 		new Thread(new Runnable(){
-  		public void run(){
+  		@Override
+			public void run(){
   			try{
 	  			if (table != null && !table.isEmpty()){
 	  				table.setSorting(getSortingCriteria());

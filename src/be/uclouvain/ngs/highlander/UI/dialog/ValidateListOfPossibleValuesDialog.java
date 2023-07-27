@@ -140,6 +140,7 @@ public class ValidateListOfPossibleValuesDialog extends JDialog {
 		btnOk.setText("0 values");
 		btnOk.setToolTipText("Replace your input by the corrected list");
 		btnOk.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				//Set<String> set = new LinkedHashSet<>();
 				//Set<String> comments = new LinkedHashSet<>();
@@ -162,6 +163,7 @@ public class ValidateListOfPossibleValuesDialog extends JDialog {
 		JButton btnCancel = new JButton(Resources.getScaledIcon(Resources.iCross, 24));
 		btnCancel.setToolTipText("Cancel");
 		btnCancel.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				cancelClose();
 			}
@@ -227,6 +229,7 @@ public class ValidateListOfPossibleValuesDialog extends JDialog {
 					public void itemStateChanged(ItemEvent e) {
 						if (e.getStateChange() == ItemEvent.SELECTED) {
 							SwingUtilities.invokeLater(new Runnable() {
+								@Override
 								public void run() {
 									selection[currentY].setText(box.getSelectedItem().toString());		
 									btnOk.setText(getValuesCount()+" values");
@@ -283,6 +286,7 @@ public class ValidateListOfPossibleValuesDialog extends JDialog {
 
 	private void validateInput(List<String> values) {
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				waitingPanel.setVisible(true);
 				waitingPanel.start();
@@ -309,6 +313,7 @@ public class ValidateListOfPossibleValuesDialog extends JDialog {
 		}
 		scrollPane.setViewportView(getValidationPanel());
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				waitingPanel.setVisible(false);
 				waitingPanel.stop();
@@ -343,6 +348,7 @@ public class ValidateListOfPossibleValuesDialog extends JDialog {
 	}
 
 	//Overridden so we can exit when window is closed
+	@Override
 	protected void processWindowEvent(WindowEvent e) {
 		super.processWindowEvent(e);
 		if (e.getID() == WindowEvent.WINDOW_CLOSING) {

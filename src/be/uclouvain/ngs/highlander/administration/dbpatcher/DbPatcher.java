@@ -165,6 +165,7 @@ public class DbPatcher extends JFrame  {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						update();
 					}
@@ -205,6 +206,7 @@ public class DbPatcher extends JFrame  {
 
 	public void update(){
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				waitingPanel.setVisible(true);
 				waitingPanel.start();
@@ -214,6 +216,7 @@ public class DbPatcher extends JFrame  {
 		String currentTry = "?";
 		try{
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setProgressString("Updating database - DO NOT CLOSE !", false);
 					waitingPanel.setProgressMaximum(availableVersions.length);
@@ -246,6 +249,7 @@ public class DbPatcher extends JFrame  {
 			JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Problem when updating from version " + currentVersion + " to version " + currentTry, ex), "Database update", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
 		}
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				waitingPanel.setVisible(false);
 				waitingPanel.stop();
@@ -289,6 +293,7 @@ public class DbPatcher extends JFrame  {
 
 
 	//Overridden so we can exit when window is closed
+	@Override
 	protected void processWindowEvent(WindowEvent e) {
 		super.processWindowEvent(e);
 		if (e.getID() == WindowEvent.WINDOW_CLOSING) {
@@ -444,6 +449,7 @@ public class DbPatcher extends JFrame  {
 					Highlander.setLoggedUser(user);
 					final DbPatcher patcher = new DbPatcher();
 					SwingUtilities.invokeLater(new Runnable() {
+						@Override
 						public void run() {
 							patcher.validate();
 							//Center the window

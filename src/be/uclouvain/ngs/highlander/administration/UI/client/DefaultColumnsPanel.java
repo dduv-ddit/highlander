@@ -24,6 +24,7 @@
 package be.uclouvain.ngs.highlander.administration.UI.client;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -103,7 +104,7 @@ public class DefaultColumnsPanel extends ManagerPanel {
 		
 		panel_right.add(scrollData, BorderLayout.CENTER);
 		
-		JPanel southPanel = new JPanel(new WrapLayout(WrapLayout.CENTER));
+		JPanel southPanel = new JPanel(new WrapLayout(FlowLayout.CENTER));
 		add(southPanel, BorderLayout.SOUTH);
 
 		JButton createNewButton = new JButton("Set default columns", Resources.getScaledIcon(Resources.iColumnSelectionNew, 16));
@@ -196,6 +197,7 @@ public class DefaultColumnsPanel extends ManagerPanel {
 			return;
 		}else if (res == JOptionPane.YES_OPTION){
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(true);
 					waitingPanel.start();
@@ -209,6 +211,7 @@ public class DefaultColumnsPanel extends ManagerPanel {
 			}
 			listAnalyses.setSelectedValue(to, true);
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(false);
 					waitingPanel.stop();

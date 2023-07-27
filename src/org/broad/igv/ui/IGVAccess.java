@@ -32,7 +32,6 @@ package org.broad.igv.ui;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.swing.JFrame;
 import javax.swing.ToolTipManager;
 
 import java.awt.EventQueue;
@@ -156,7 +155,7 @@ public class IGVAccess {
 	      }
 	    	//Should this be done here?  Will this step on other key dispatchers?
 	    	KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new GlobalKeyDispatcher());
-	    	igvFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+	    	igvFrame.setExtendedState(Frame.MAXIMIZED_BOTH);
 	    	igvFrame.toFront();
 	    	igvFrame.setAlwaysOnTop(true);
 	    	igvFrame.setAlwaysOnTop(false);

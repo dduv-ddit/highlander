@@ -43,6 +43,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Resources;
@@ -80,6 +81,7 @@ public class HeatMapCriterion extends HighlightingRule {
 
 	}
 
+	@Override
 	public RuleType getRuleType(){
 		return RuleType.HEATMAP;
 	}
@@ -104,6 +106,7 @@ public class HeatMapCriterion extends HighlightingRule {
 		return expandTable;
 	}
 
+	@Override
 	public String getSaveString(){
 		StringBuilder sb = new StringBuilder();
 		sb.append(getRuleType()+"|");
@@ -121,6 +124,7 @@ public class HeatMapCriterion extends HighlightingRule {
 		return sb.toString();
 	}
 
+	@Override
 	public JLabel parseSaveString(String saveString){
 		String[] main = saveString.split("\\|");
 		if (!main[0].equals(getRuleType().toString())){
@@ -145,10 +149,11 @@ public class HeatMapCriterion extends HighlightingRule {
 			method = "position sorting";
 			break;
 		}
-		JLabel label = new JLabel(f + " ("+method+")", Resources.getScaledIcon(col.getIcon(), 16), JLabel.CENTER);
+		JLabel label = new JLabel(f + " ("+method+")", Resources.getScaledIcon(col.getIcon(), 16), SwingConstants.CENTER);
 		return label;
 	}
 
+	@Override
 	public HeatMapCriterion loadCriterion(HighlightingPanel highlightingPanel, String saveString) throws Exception {		
 		String[] main = saveString.split("\\|");
 		if (!main[0].equals(getRuleType().toString())){
@@ -181,8 +186,10 @@ public class HeatMapCriterion extends HighlightingRule {
 		buttonsPanel.setLayout(new GridBagLayout());
 		JButton removeButton = new JButton(Resources.getScaledIcon(Resources.iCross, 16));
 		removeButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						delete();
 					}
@@ -197,6 +204,7 @@ public class HeatMapCriterion extends HighlightingRule {
 		buttonsPanel.add(removeButton,new GridBagConstraints(0, 0, 0, 1, 1.0, 1.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(4, 4, 4, 4), 0, 0));
 		add(buttonsPanel,BorderLayout.EAST);
 		addMouseListener(new MouseAdapter() {
+			@Override
 			public void mousePressed(MouseEvent e) {
 				if (e.getClickCount() == 2) {
 					editCriterion();
@@ -204,6 +212,7 @@ public class HeatMapCriterion extends HighlightingRule {
 			}
 		});
 		label.addMouseListener(new MouseAdapter() {
+			@Override
 			public void mousePressed(MouseEvent e) {
 				if (e.getClickCount() == 2) {
 					editCriterion();
@@ -212,6 +221,7 @@ public class HeatMapCriterion extends HighlightingRule {
 		});
 	}
 
+	@Override
 	public String toString(){
 		StringBuilder details = new StringBuilder();
 		details.append(field.getName());
@@ -234,6 +244,7 @@ public class HeatMapCriterion extends HighlightingRule {
 		return details.toString();
 	}
 
+	@Override
 	public String toHtmlString(){
 		StringBuilder details = new StringBuilder();
 		details.append("<html>");
@@ -261,6 +272,7 @@ public class HeatMapCriterion extends HighlightingRule {
 		return details.toString();
 	}
 
+	@Override
 	public void editCriterion(){
 		CreateHeatMapCriterion cfc = new CreateHeatMapCriterion(Highlander.getCurrentAnalysis(), highlightingPanel, this);
 		Tools.centerWindow(cfc, false);
@@ -283,6 +295,7 @@ public class HeatMapCriterion extends HighlightingRule {
 		highlightingPanel.refresh();		
 	}
 
+	@Override
 	public void delete(){
 		highlightingPanel.getCriteriaPanel().remove(HeatMapCriterion.this);
 		Highlander.getCellRenderer().removeHeatMap(this);

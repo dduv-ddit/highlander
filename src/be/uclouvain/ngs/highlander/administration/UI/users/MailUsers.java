@@ -136,6 +136,7 @@ public class MailUsers extends ManagerPanel {
 					@Override
 					public void run() {
 						SwingUtilities.invokeLater(new Runnable() {
+							@Override
 							public void run() {
 								waitingPanel.setVisible(true);
 								waitingPanel.start();
@@ -154,6 +155,7 @@ public class MailUsers extends ManagerPanel {
 							JOptionPane.showMessageDialog(manager, "Problem when sending email", "Mail users", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross, 64));
 						}
 						SwingUtilities.invokeLater(new Runnable() {
+							@Override
 							public void run() {
 								waitingPanel.setVisible(true);
 								waitingPanel.stop();

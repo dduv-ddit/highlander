@@ -37,6 +37,7 @@ import java.awt.Dimension;
 import java.awt.FileDialog;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
@@ -61,7 +62,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import java.sql.Timestamp;
+import java.time.OffsetDateTime;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -91,6 +92,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 import javax.swing.border.EtchedBorder;
@@ -199,12 +201,13 @@ public class BurdenTest extends JFrame {
 		}
 		this.filter = filtering;
 		this.displayedColumns = new ArrayList<Field>(mainFrame.getColumnSelection());
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
+		setExtendedState(Frame.MAXIMIZED_BOTH);
 		initUI();
 		this.addComponentListener(new ComponentListener() {
 			@Override
 			public void componentShown(ComponentEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						fillTables();				
 					}
@@ -243,8 +246,10 @@ public class BurdenTest extends JFrame {
 		exportTable.setPreferredSize(new Dimension(54,54));
 		exportTable.setToolTipText("Export all tabs in one Excel file (1 sheet per tab)");
 		exportTable.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						export();
 					}
@@ -257,8 +262,10 @@ public class BurdenTest extends JFrame {
 		exportChart.setPreferredSize(new Dimension(54,54));
 		exportChart.setToolTipText("Export current chart to image file");
 		exportChart.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						exportChart();
 					}
@@ -275,6 +282,7 @@ public class BurdenTest extends JFrame {
 	}	
 
 	private class ColoredTableCellRenderer extends DefaultTableCellRenderer {
+		@Override
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 			Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 			JLabel label = (JLabel) comp;
@@ -327,10 +335,12 @@ public class BurdenTest extends JFrame {
 			return data[row][6].toString();
 		}
 
+		@Override
 		public int getColumnCount() {
 			return headers.length;
 		}
 
+		@Override
 		public String getColumnName(int col) {
 			return headers[col].getName();
 		}
@@ -343,10 +353,12 @@ public class BurdenTest extends JFrame {
 			return headers[col].getAlignment();
 		}
 
+		@Override
 		public int getRowCount() {
 			return data.length;
 		}
 
+		@Override
 		public Class<?> getColumnClass(int columnIndex) {
 			return headers[columnIndex].getFieldClass();
 		}
@@ -355,13 +367,16 @@ public class BurdenTest extends JFrame {
 			return headers[columnIndex];
 		}
 
+		@Override
 		public Object getValueAt(int row, int col) {
 			return data[row][col];
 		}
 
+		@Override
 		public void setValueAt(Object value, int row, int col) {
 		}
 
+		@Override
 		public boolean isCellEditable(int rowIndex, int columnIndex) {
 			return false;
 		}
@@ -370,6 +385,7 @@ public class BurdenTest extends JFrame {
 
 	private void fillTables(){
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				waitingPanel.setVisible(true);
 				waitingPanel.start();
@@ -454,9 +470,9 @@ public class BurdenTest extends JFrame {
 			displayedColumns.add(0, Field.reference);
 			displayedColumns.add(0, Field.pos);
 			displayedColumns.add(0, Field.chr);
-			displayedColumns.add(0, new Field("total_an", sourceSchema, analysis.toString(), "int(5)", JSon.INFO, "Total number of alleles in all called genotypes", Annotation.HIGHLANDER, "", "Highlander/"+source, Integer.MAX_VALUE, null, 100, JLabel.CENTER));
-			displayedColumns.add(0, new Field("total_ac", sourceSchema, analysis.toString(), "int(5)", JSon.INFO, "Allele count in all called genotypes", Annotation.HIGHLANDER, "", "Highlander/"+source, Integer.MAX_VALUE, null, 100, JLabel.CENTER));
-			displayedColumns.add(0, new Field("source", sourceSchema, analysis.toString(), "enum('HIGHLANDER','"+source+"')", JSon.INFO, "Database from which the variant is related", Annotation.HIGHLANDER, "", "Highlander/"+source, Integer.MAX_VALUE, null, 100, JLabel.CENTER));
+			displayedColumns.add(0, new Field("total_an", sourceSchema, analysis.toString(), "int(5)", JSon.INFO, "Total number of alleles in all called genotypes", Annotation.HIGHLANDER, "", "Highlander/"+source, Integer.MAX_VALUE, null, 100, SwingConstants.CENTER));
+			displayedColumns.add(0, new Field("total_ac", sourceSchema, analysis.toString(), "int(5)", JSon.INFO, "Allele count in all called genotypes", Annotation.HIGHLANDER, "", "Highlander/"+source, Integer.MAX_VALUE, null, 100, SwingConstants.CENTER));
+			displayedColumns.add(0, new Field("source", sourceSchema, analysis.toString(), "enum('HIGHLANDER','"+source+"')", JSon.INFO, "Database from which the variant is related", Annotation.HIGHLANDER, "", "Highlander/"+source, Integer.MAX_VALUE, null, 100, SwingConstants.CENTER));
 
 			for (final String geneSymbol : genes.keySet()){
 				createGeneTab(geneSymbol, variantPosAndIds);
@@ -478,6 +494,7 @@ public class BurdenTest extends JFrame {
 					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
 		}
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				waitingPanel.setVisible(false);
 				waitingPanel.stop();
@@ -519,8 +536,10 @@ public class BurdenTest extends JFrame {
 		zoomOriginal.setPreferredSize(new Dimension(54,54));
 		zoomOriginal.setToolTipText("Zoom in");
 		zoomOriginal.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						scale--;
 						if (scale < 1) scale = 1;
@@ -562,8 +581,10 @@ public class BurdenTest extends JFrame {
 		zoomBestFit.setPreferredSize(new Dimension(54,54));
 		zoomBestFit.setToolTipText("Zoom out");
 		zoomBestFit.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						scale++;
 						int max = charts.get(geneSymbol).getMaxPosPerPix();
@@ -580,8 +601,10 @@ public class BurdenTest extends JFrame {
 		chiSquare.setPreferredSize(new Dimension(54,54));
 		chiSquare.setToolTipText("Compute a Chi² p-value");
 		chiSquare.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						final Set<VariantType> variantTypes = new HashSet<VariantType>();
 						JPanel panel = new JPanel(new GridBagLayout());
@@ -734,6 +757,7 @@ public class BurdenTest extends JFrame {
 		TableRowSorter<BurdenTestTableModel> sorter = new TableRowSorter<BurdenTestTableModel>(model);
 		final JTable table = new JTable(model){
 
+			@Override
 			public String getToolTipText(MouseEvent e) {
 				String tip = null;
 				java.awt.Point p = e.getPoint();
@@ -747,8 +771,10 @@ public class BurdenTest extends JFrame {
 				return tip;
 			}
 
+			@Override
 			protected JTableHeader createDefaultTableHeader() {
 				return new JTableHeader(columnModel) {
+					@Override
 					public String getToolTipText(MouseEvent e) {
 						java.awt.Point p = e.getPoint();
 						int index = columnModel.getColumnIndexAtX(p.x);
@@ -834,6 +860,7 @@ public class BurdenTest extends JFrame {
 
 	public class ColorLegend extends JPanel {
 
+		@Override
 		public void paintComponent(Graphics g1) {
 
 			Graphics2D g = (Graphics2D)g1;
@@ -1226,6 +1253,7 @@ public class BurdenTest extends JFrame {
 			return (int)Math.ceil((double)totalExonWidth / (double)widthAvForExons);
 		}
 
+		@Override
 		public void paintComponent(Graphics g1) {
 
 			if (scale < 1) scale = 1;
@@ -1437,8 +1465,8 @@ public class BurdenTest extends JFrame {
 			if (startDragSelection != null && endDragSelection != null){
 				int startX = Math.min(startDragSelection.x,endDragSelection.x);
 				int startY = Math.min(startDragSelection.y,endDragSelection.y);
-				int selectionWidth = (int)Math.abs(startDragSelection.x-endDragSelection.x);
-				int selectionHeight = (int)Math.abs(startDragSelection.y-endDragSelection.y);
+				int selectionWidth = Math.abs(startDragSelection.x-endDragSelection.x);
+				int selectionHeight = Math.abs(startDragSelection.y-endDragSelection.y);
 				g.setColor(new Color(selectionColor.getRed(), selectionColor.getGreen(), selectionColor.getBlue(), 100));
 				g.fillRect(startX, startY, selectionWidth, selectionHeight);
 				g.setColor(selectionColor);				
@@ -1587,78 +1615,78 @@ public class BurdenTest extends JFrame {
 				File xls = new File(filename);
 				waitingPanel.start();
 				try{
-					Workbook wb = new SXSSFWorkbook(100);  		
-					DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-					for (String gene : genes.keySet()){
-						Sheet sheet = wb.createSheet(gene);
-						sheet.createFreezePane(0, 1);		
-						int r = 0;
-						Row row = sheet.createRow(r++);
-						row.setHeightInPoints(50);
-						JTable table = tables.get(gene);
-						BurdenTestTableModel model = (BurdenTestTableModel)table.getModel();
-						CellStyle cs = sheet.getWorkbook().createCellStyle();
-						cs.setWrapText(true);
-						int[] alignments = new int[table.getColumnCount()];
-						for (int c = 0 ; c < table.getColumnCount() ; c++){
-							Cell cell = row.createCell(c);
-							cell.setCellValue(table.getColumnName(c));
-							setCellComment(row.getCell(c), model.headers[table.convertColumnIndexToModel(c)].getDescriptionAndSource());
-							sheet.setColumnWidth(c, Math.min(model.headers[table.convertColumnIndexToModel(c)].getSize()*32, 250*128));
-							alignments[c] = model.getColumnAlignment(c);
-							cell.setCellStyle(cs);
-						}
-						sheet.setAutoFilter(new CellRangeAddress(0, 0, 0, table.getColumnCount()-1));
-						int nrow = table.getRowCount();
-						waitingPanel.setProgressString("Exporting "+Tools.doubleToString(nrow, 0, false)+" variants", false);
-						waitingPanel.setProgressMaximum(nrow);
-						Highlander.getCellRenderer().clearCellStyles();
-						for (int i=0 ; i < nrow ; i++ ){
-							waitingPanel.setProgressValue(r);
-							row = sheet.createRow(r++);
+					try(Workbook wb = new SXSSFWorkbook(100)){
+						DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+						for (String gene : genes.keySet()){
+							Sheet sheet = wb.createSheet(gene);
+							sheet.createFreezePane(0, 1);		
+							int r = 0;
+							Row row = sheet.createRow(r++);
+							row.setHeightInPoints(50);
+							JTable table = tables.get(gene);
+							BurdenTestTableModel model = (BurdenTestTableModel)table.getModel();
+							CellStyle cs = sheet.getWorkbook().createCellStyle();
+							cs.setWrapText(true);
+							int[] alignments = new int[table.getColumnCount()];
 							for (int c = 0 ; c < table.getColumnCount() ; c++){
 								Cell cell = row.createCell(c);
-								if (table.getValueAt(i, c) != null){
-									Field field = ((VariantsTableModel)table.getModel()).getColumnField(c);
-									Highlander.getCellRenderer().formatXlsCell(table.getValueAt(i, c), field, alignments[c], sheet, cell, i);
-									if (table.getColumnClass(c) == Timestamp.class){
-										cell.setCellValue((Timestamp)table.getValueAt(i, c));
-									}else if (table.getColumnClass(c) == Integer.class){
-										cell.setCellValue(Integer.parseInt(table.getValueAt(i, c).toString()));
-									}else if (table.getColumnClass(c) == Long.class){
-										cell.setCellValue(Long.parseLong(table.getValueAt(i, c).toString()));
-									}else if (table.getColumnClass(c) == Double.class){
-										cell.setCellValue(Double.parseDouble(table.getValueAt(i, c).toString()));
-									}else if (table.getColumnClass(c) == Boolean.class){
-										cell.setCellValue(Boolean.parseBoolean(table.getValueAt(i, c).toString()));
-									}else {
-										cell.setCellValue(table.getValueAt(i, c).toString());
+								cell.setCellValue(table.getColumnName(c));
+								setCellComment(row.getCell(c), model.headers[table.convertColumnIndexToModel(c)].getDescriptionAndSource());
+								sheet.setColumnWidth(c, Math.min(model.headers[table.convertColumnIndexToModel(c)].getSize()*32, 250*128));
+								alignments[c] = model.getColumnAlignment(c);
+								cell.setCellStyle(cs);
+							}
+							sheet.setAutoFilter(new CellRangeAddress(0, 0, 0, table.getColumnCount()-1));
+							int nrow = table.getRowCount();
+							waitingPanel.setProgressString("Exporting "+Tools.doubleToString(nrow, 0, false)+" variants", false);
+							waitingPanel.setProgressMaximum(nrow);
+							Highlander.getCellRenderer().clearCellStyles();
+							for (int i=0 ; i < nrow ; i++ ){
+								waitingPanel.setProgressValue(r);
+								row = sheet.createRow(r++);
+								for (int c = 0 ; c < table.getColumnCount() ; c++){
+									Cell cell = row.createCell(c);
+									if (table.getValueAt(i, c) != null){
+										Field field = ((VariantsTableModel)table.getModel()).getColumnField(c);
+										Highlander.getCellRenderer().formatXlsCell(table.getValueAt(i, c), field, alignments[c], sheet, cell, i);
+										if (table.getColumnClass(c) == OffsetDateTime.class){
+											cell.setCellValue(((OffsetDateTime)table.getValueAt(i, c)).toLocalDateTime());
+										}else if (table.getColumnClass(c) == Integer.class){
+											cell.setCellValue(Integer.parseInt(table.getValueAt(i, c).toString()));
+										}else if (table.getColumnClass(c) == Long.class){
+											cell.setCellValue(Long.parseLong(table.getValueAt(i, c).toString()));
+										}else if (table.getColumnClass(c) == Double.class){
+											cell.setCellValue(Double.parseDouble(table.getValueAt(i, c).toString()));
+										}else if (table.getColumnClass(c) == Boolean.class){
+											cell.setCellValue(Boolean.parseBoolean(table.getValueAt(i, c).toString()));
+										}else {
+											cell.setCellValue(table.getValueAt(i, c).toString());
+										}
 									}
 								}
 							}
+							waitingPanel.setProgressValue(nrow);		
 						}
-						waitingPanel.setProgressValue(nrow);		
+
+						Sheet sheetFilt = wb.createSheet("Filters details");
+						int r = 0;
+						Row	row = sheetFilt.createRow(r++);
+						Cell cell = row.createCell(0);
+						cell = row.createCell(0);
+						cell.setCellValue(filter.toString());
+
+						row = sheetFilt.createRow(r++);
+						row = sheetFilt.createRow(r++);
+						cell = row.createCell(0);
+
+						cell.setCellValue("Generated with Burden test tool of Highlander version " + Highlander.version + " by " + Highlander.getLoggedUser() + " ("+df.format(System.currentTimeMillis())+")");
+
+						waitingPanel.setProgressString("Writing file ...",true);		
+						try (FileOutputStream fileOut = new FileOutputStream(xls)){
+							wb.write(fileOut);
+						}
+						waitingPanel.setProgressDone();
 					}
-
-					Sheet sheetFilt = wb.createSheet("Filters details");
-					int r = 0;
-					Row	row = sheetFilt.createRow(r++);
-					Cell cell = row.createCell(0);
-					cell = row.createCell(0);
-					cell.setCellValue(filter.toString());
-
-					row = sheetFilt.createRow(r++);
-					row = sheetFilt.createRow(r++);
-					cell = row.createCell(0);
-
-					cell.setCellValue("Generated with Burden test tool of Highlander version " + Highlander.version + " by " + Highlander.getLoggedUser() + " ("+df.format(System.currentTimeMillis())+")");
-
-					waitingPanel.setProgressString("Writing file ...",true);		
-					try (FileOutputStream fileOut = new FileOutputStream(xls)){
-						wb.write(fileOut);
-					}
-					waitingPanel.setProgressDone();
-
 				}catch(Exception ex){
 					waitingPanel.forceStop();
 					throw ex;
@@ -1678,7 +1706,7 @@ public class BurdenTest extends JFrame {
 
 	private static void setCellComment(Cell cell, String cellComment){
 		CreationHelper factory = cell.getSheet().getWorkbook().getCreationHelper();
-		Drawing drawing = cell.getSheet().createDrawingPatriarch();
+		Drawing<?> drawing = cell.getSheet().createDrawingPatriarch();
 		ClientAnchor anchor = factory.createClientAnchor();
 		anchor.setCol1(cell.getColumnIndex());
 		anchor.setCol2(cell.getColumnIndex()+6);

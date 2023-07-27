@@ -25,6 +25,7 @@ package be.uclouvain.ngs.highlander.administration.UI.database;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -95,7 +96,7 @@ public class UpdatePanel extends ManagerPanel {
 	private JPanel getTabSoftupdate(){
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.setBorder(BorderFactory.createTitledBorder("Set the Highlander database in 'update' mode (a warning is displayed in the client GUI)"));
-		JPanel panel_north = new JPanel(new WrapLayout(WrapLayout.LEADING));
+		JPanel panel_north = new JPanel(new WrapLayout(FlowLayout.LEADING));
 		panel_north.add(new JLabel(" Current status of Highlander: "));
 		final JLabel databaseLoadLabel = new JLabel();
 		panel_north.add(databaseLoadLabel);
@@ -130,12 +131,13 @@ public class UpdatePanel extends ManagerPanel {
 			}
 		}, "UpdatePanel.databaseStatus").start();
 		panel.add(panel_north, BorderLayout.NORTH);
-		JPanel panel_south = new JPanel(new WrapLayout(WrapLayout.LEADING));
+		JPanel panel_south = new JPanel(new WrapLayout(FlowLayout.LEADING));
 		JButton normalButton = new JButton("Deactivate soft and hard update", Resources.getScaledIcon(Resources.iShinyBallGreen, 24));
 		normalButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						try{
 							ProjectManager.getDbUpdater().setSoftUpdate(false);
@@ -153,6 +155,7 @@ public class UpdatePanel extends ManagerPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						try{
 							ProjectManager.getDbUpdater().setSoftUpdate(true);
@@ -169,6 +172,7 @@ public class UpdatePanel extends ManagerPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						try{
 							ProjectManager.getDbUpdater().setHardUpdate(true);
@@ -191,7 +195,7 @@ public class UpdatePanel extends ManagerPanel {
 		JPanel panelArguments = new JPanel(new BorderLayout());
 		panel.add(panelArguments, BorderLayout.NORTH);
 
-		JPanel panelAnalyses = new JPanel(new WrapLayout(WrapLayout.LEADING, 10, 5));
+		JPanel panelAnalyses = new JPanel(new WrapLayout(FlowLayout.LEADING, 10, 5));
 		panelAnalyses.add(new JLabel("Analyses: "));
 		for (Analysis a : manager.getAvailableAnalysesAsArray()){
 			JCheckBox check = new JCheckBox(a.toString());
@@ -201,7 +205,7 @@ public class UpdatePanel extends ManagerPanel {
 		panelAnalyses.setSize(new Dimension(300,1));
 		panelArguments.add(panelAnalyses, BorderLayout.NORTH);
 
-		JPanel panelSchema = new JPanel(new WrapLayout(WrapLayout.LEADING, 10, 5));		
+		JPanel panelSchema = new JPanel(new WrapLayout(FlowLayout.LEADING, 10, 5));		
 		panelSchema.add(new JLabel("Annotations: "));
 		for (Annotation a : Annotation.getAnnotations(AnnotationType.STATIC)){
 			JCheckBox check = new JCheckBox(a.toString());
@@ -211,7 +215,7 @@ public class UpdatePanel extends ManagerPanel {
 		panelSchema.setSize(new Dimension(300,1));
 		panelArguments.add(panelSchema, BorderLayout.SOUTH);
 
-		JPanel panelLaunch = new JPanel(new WrapLayout(WrapLayout.LEADING, 10, 5));
+		JPanel panelLaunch = new JPanel(new WrapLayout(FlowLayout.LEADING, 10, 5));
 		panelLaunch.add(new JLabel("Number of threads: "));
 		panelLaunch.add(annotationsThread);
 		JButton launch = new JButton("  Update annotations ");
@@ -224,6 +228,7 @@ public class UpdatePanel extends ManagerPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						List<AnalysisFull> analyses = new ArrayList<>();
 						for (JCheckBox box : annotationsAnalyses){
@@ -243,6 +248,7 @@ public class UpdatePanel extends ManagerPanel {
 						}
 						int nthreads = (Integer)annotationsThread.getValue();
 						SwingUtilities.invokeLater(new Runnable() {
+							@Override
 							public void run() {
 								waitingPanel.setVisible(true);
 								waitingPanel.start();
@@ -256,6 +262,7 @@ public class UpdatePanel extends ManagerPanel {
 						}
 						manager.stopRedirectSystemOut();
 						SwingUtilities.invokeLater(new Runnable() {
+							@Override
 							public void run() {
 								waitingPanel.setVisible(false);
 								waitingPanel.stop();
@@ -276,7 +283,7 @@ public class UpdatePanel extends ManagerPanel {
 		JPanel panelArguments = new JPanel(new BorderLayout());
 		panel.add(panelArguments, BorderLayout.NORTH);
 
-		JPanel panelAnalyses = new JPanel(new WrapLayout(WrapLayout.LEADING, 10, 5));		
+		JPanel panelAnalyses = new JPanel(new WrapLayout(FlowLayout.LEADING, 10, 5));		
 		panelAnalyses.add(new JLabel("Analyses: "));
 		for (Analysis a : manager.getAvailableAnalysesAsArray()){
 			JCheckBox check = new JCheckBox(a.toString());
@@ -286,7 +293,7 @@ public class UpdatePanel extends ManagerPanel {
 		panelArguments.add(panelAnalyses, BorderLayout.NORTH);
 
 
-		JPanel panelLaunch = new JPanel(new WrapLayout(WrapLayout.LEADING, 10, 5));
+		JPanel panelLaunch = new JPanel(new WrapLayout(FlowLayout.LEADING, 10, 5));
 		JButton launch = new JButton("  Update [analysis]_user_annotations_num_evaluations ");
 		panelLaunch.add(launch);
 		panel.add(panelLaunch, BorderLayout.SOUTH);
@@ -296,6 +303,7 @@ public class UpdatePanel extends ManagerPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						List<Analysis> analyses = new ArrayList<>();
 						for (JCheckBox box : numEvalAnalyses){
@@ -308,6 +316,7 @@ public class UpdatePanel extends ManagerPanel {
 							}
 						}
 						SwingUtilities.invokeLater(new Runnable() {
+							@Override
 							public void run() {
 								waitingPanel.setVisible(true);
 								waitingPanel.start();
@@ -325,6 +334,7 @@ public class UpdatePanel extends ManagerPanel {
 						}
 						manager.stopRedirectSystemOut();
 						SwingUtilities.invokeLater(new Runnable() {
+							@Override
 							public void run() {
 								waitingPanel.setVisible(false);
 								waitingPanel.stop();
@@ -348,7 +358,7 @@ public class UpdatePanel extends ManagerPanel {
 		JPanel panelAnalyses = new JPanel(new BorderLayout());
 		panelArguments.add(panelAnalyses, BorderLayout.NORTH);
 		
-		JPanel panelFrom = new JPanel(new WrapLayout(WrapLayout.LEADING, 10, 5));		
+		JPanel panelFrom = new JPanel(new WrapLayout(FlowLayout.LEADING, 10, 5));		
 		panelFrom.add(new JLabel("Transfer FROM: "));
 		ButtonGroup groupFrom = new ButtonGroup();
 		for (Analysis a : manager.getAvailableAnalysesAsArray()){
@@ -359,7 +369,7 @@ public class UpdatePanel extends ManagerPanel {
 		}
 		panelAnalyses.add(panelFrom, BorderLayout.NORTH);
 
-		JPanel panelTo = new JPanel(new WrapLayout(WrapLayout.LEADING, 10, 5));		
+		JPanel panelTo = new JPanel(new WrapLayout(FlowLayout.LEADING, 10, 5));		
 		panelTo.add(new JLabel("Transfer TO: "));
 		ButtonGroup groupTo = new ButtonGroup();
 		for (Analysis a : manager.getAvailableAnalysesAsArray()){
@@ -370,7 +380,7 @@ public class UpdatePanel extends ManagerPanel {
 		}
 		panelAnalyses.add(panelTo, BorderLayout.SOUTH);
 		
-		JPanel panelLaunch = new JPanel(new WrapLayout(WrapLayout.LEADING, 10, 5));
+		JPanel panelLaunch = new JPanel(new WrapLayout(FlowLayout.LEADING, 10, 5));
 		panel.add(panelLaunch, BorderLayout.SOUTH);
 
 		JButton launchVariants = new JButton("  Transfer user annotations on variants ");
@@ -379,6 +389,7 @@ public class UpdatePanel extends ManagerPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						AnalysisFull from = null;
 						for (JCheckBox box : transferAnnotationsFromAnalyses){
@@ -403,6 +414,7 @@ public class UpdatePanel extends ManagerPanel {
 							}
 						}
 						SwingUtilities.invokeLater(new Runnable() {
+							@Override
 							public void run() {
 								waitingPanel.setVisible(true);
 								waitingPanel.start();
@@ -418,6 +430,7 @@ public class UpdatePanel extends ManagerPanel {
 						}
 						manager.stopRedirectSystemOut();
 						SwingUtilities.invokeLater(new Runnable() {
+							@Override
 							public void run() {
 								waitingPanel.setVisible(false);
 								waitingPanel.stop();
@@ -434,6 +447,7 @@ public class UpdatePanel extends ManagerPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						Analysis from = null;
 						for (JCheckBox box : transferAnnotationsFromAnalyses){
@@ -458,6 +472,7 @@ public class UpdatePanel extends ManagerPanel {
 							}
 						}
 						SwingUtilities.invokeLater(new Runnable() {
+							@Override
 							public void run() {
 								waitingPanel.setVisible(true);
 								waitingPanel.start();
@@ -473,6 +488,7 @@ public class UpdatePanel extends ManagerPanel {
 						}
 						manager.stopRedirectSystemOut();
 						SwingUtilities.invokeLater(new Runnable() {
+							@Override
 							public void run() {
 								waitingPanel.setVisible(false);
 								waitingPanel.stop();
@@ -489,6 +505,7 @@ public class UpdatePanel extends ManagerPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						Analysis from = null;
 						for (JCheckBox box : transferAnnotationsFromAnalyses){
@@ -513,6 +530,7 @@ public class UpdatePanel extends ManagerPanel {
 							}
 						}
 						SwingUtilities.invokeLater(new Runnable() {
+							@Override
 							public void run() {
 								waitingPanel.setVisible(true);
 								waitingPanel.start();
@@ -528,6 +546,7 @@ public class UpdatePanel extends ManagerPanel {
 						}
 						manager.stopRedirectSystemOut();
 						SwingUtilities.invokeLater(new Runnable() {
+							@Override
 							public void run() {
 								waitingPanel.setVisible(false);
 								waitingPanel.stop();
@@ -544,6 +563,7 @@ public class UpdatePanel extends ManagerPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						AnalysisFull from = null;
 						for (JCheckBox box : transferAnnotationsFromAnalyses){
@@ -568,6 +588,7 @@ public class UpdatePanel extends ManagerPanel {
 							}
 						}
 						SwingUtilities.invokeLater(new Runnable() {
+							@Override
 							public void run() {
 								waitingPanel.setVisible(true);
 								waitingPanel.start();
@@ -589,6 +610,7 @@ public class UpdatePanel extends ManagerPanel {
 						}
 						manager.stopRedirectSystemOut();
 						SwingUtilities.invokeLater(new Runnable() {
+							@Override
 							public void run() {
 								waitingPanel.setVisible(false);
 								waitingPanel.stop();

@@ -116,6 +116,7 @@ public class FastQCViewer extends JFrame {
 			label_run_selection.repaint();
 		}
 		new Thread(new Runnable(){
+			@Override
 			public void run(){
 				showView(boxField.getSelectedItem().toString());
 			}
@@ -136,8 +137,10 @@ public class FastQCViewer extends JFrame {
 		JButton export = new JButton(Resources.getScaledIcon(Resources.iExportJpeg, 24));
 		export.setToolTipText("Export current view to image file");
 		export.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						export();
 					}
@@ -148,6 +151,7 @@ public class FastQCViewer extends JFrame {
 
 		JButton btnClose = new JButton(Resources.getScaledIcon(Resources.iCross, 24));
 		btnClose.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				dispose();
 			}
@@ -159,6 +163,7 @@ public class FastQCViewer extends JFrame {
 
 		JButton btnSelect = new JButton("Select NGS runs to include in the chart",Resources.getScaledIcon(Resources.i3dPlus, 24));
 		btnSelect.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				CreateRunSelection select = new CreateRunSelection(selectedRuns);
 				Tools.centerWindow(select, false);
@@ -172,10 +177,12 @@ public class FastQCViewer extends JFrame {
 
 		boxField.setMaximumRowCount(10);
 		boxField.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(ItemEvent arg0) {
 				if (arg0.getStateChange() == ItemEvent.SELECTED){
 					if (!selectedRuns.isEmpty()){
 						new Thread(new Runnable(){
+							@Override
 							public void run(){
 								showView(boxField.getSelectedItem().toString());
 							}
@@ -188,10 +195,12 @@ public class FastQCViewer extends JFrame {
 
 		boxScale.setMaximumRowCount(10);
 		boxScale.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(ItemEvent arg0) {
 				if (arg0.getStateChange() == ItemEvent.SELECTED){
 					if (!selectedRuns.isEmpty()){
 						new Thread(new Runnable(){
+							@Override
 							public void run(){
 								showView(boxField.getSelectedItem().toString());
 							}
@@ -209,6 +218,7 @@ public class FastQCViewer extends JFrame {
 	public void showView(String field){
 		try{
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(true);
 					waitingPanel.start();
@@ -315,6 +325,7 @@ public class FastQCViewer extends JFrame {
 
 
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(false);
 					waitingPanel.stop();

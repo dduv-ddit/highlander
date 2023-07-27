@@ -84,12 +84,13 @@ public class VcfToolsPanel extends ManagerPanel {
 		JPanel panel = new JPanel(new GridBagLayout());
 		panel.setBorder(BorderFactory.createTitledBorder("VCF conversion to"));
 
-		JPanel vcfPanel = new JPanel(new WrapLayout(WrapLayout.LEADING, 10, 5));
+		JPanel vcfPanel = new JPanel(new WrapLayout(FlowLayout.LEADING, 10, 5));
 		vcfPanel.add(new JLabel("VCF file to convert: "));
 		conversionVCF = new JTextField();
 		conversionVCF.setColumns(30);
 		JButton browseVcfButton = new JButton("BROWSE");
 		browseVcfButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				FileDialog chooser = new FileDialog(new JFrame(), "Choose a VCF file to convert", FileDialog.LOAD) ;
 				Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize() ;
@@ -113,7 +114,7 @@ public class VcfToolsPanel extends ManagerPanel {
 		referencePanel.add(conversionAnalysis);
 		analysisPanel.add(referencePanel, BorderLayout.NORTH);
 		
-		JPanel alamutPanel = new JPanel(new WrapLayout(WrapLayout.LEADING, 10, 5));
+		JPanel alamutPanel = new JPanel(new WrapLayout(FlowLayout.LEADING, 10, 5));
 		alamutPanel.add(new JLabel("Alamut annotations (optional, left blank to skip): "));
 		conversionAlamuts = new JTextField();
 		conversionAlamuts.setColumns(30);
@@ -121,6 +122,7 @@ public class VcfToolsPanel extends ManagerPanel {
 		JButton browseAlamutButton = new JButton("BROWSE");
 		browseAlamutButton.setToolTipText("Alamut annotations text file generated using the same VCF");
 		browseAlamutButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				FileDialog chooser = new FileDialog(new JFrame(), "Choose an Alamut annotations file", FileDialog.LOAD) ;
 				Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize() ;
@@ -136,7 +138,7 @@ public class VcfToolsPanel extends ManagerPanel {
 		alamutPanel.add(conversionAlamuts);
 		alamutPanel.add(browseAlamutButton);
 
-		JPanel targetPanel = new JPanel(new WrapLayout(WrapLayout.LEADING, 10, 5));
+		JPanel targetPanel = new JPanel(new WrapLayout(FlowLayout.LEADING, 10, 5));
 		targetPanel.add(new JLabel("Convert to: "));
 		ButtonGroup group = new ButtonGroup();
 		conversionFileTypes.clear();
@@ -147,7 +149,7 @@ public class VcfToolsPanel extends ManagerPanel {
 			targetPanel.add(radio);
 		}
 
-		JPanel launchPanel = new JPanel(new WrapLayout(WrapLayout.LEADING, 10, 5));
+		JPanel launchPanel = new JPanel(new WrapLayout(FlowLayout.LEADING, 10, 5));
 		JButton launch = new JButton(" Convert ");
 		launchPanel.add(launch);
 		launch.addActionListener(new ActionListener() {
@@ -155,8 +157,10 @@ public class VcfToolsPanel extends ManagerPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						SwingUtilities.invokeLater(new Runnable() {
+							@Override
 							public void run() {
 								waitingPanel.setVisible(true);
 								waitingPanel.start();
@@ -190,6 +194,7 @@ public class VcfToolsPanel extends ManagerPanel {
 						}
 						manager.stopRedirectSystemOut();
 						SwingUtilities.invokeLater(new Runnable() {
+							@Override
 							public void run() {
 								waitingPanel.setVisible(false);
 								waitingPanel.stop();
@@ -218,7 +223,7 @@ public class VcfToolsPanel extends ManagerPanel {
 		panel.add(panelArguments, BorderLayout.NORTH);
 
 
-		JPanel panelLaunch = new JPanel(new WrapLayout(WrapLayout.LEADING, 10, 5));
+		JPanel panelLaunch = new JPanel(new WrapLayout(FlowLayout.LEADING, 10, 5));
 		JButton cleanVCF = new JButton("Eliminate variants from a VCF with ref or alt equals to '-', '.' or ' '");
 		panelLaunch.add(cleanVCF);
 		panel.add(panelLaunch, BorderLayout.SOUTH);
@@ -228,6 +233,7 @@ public class VcfToolsPanel extends ManagerPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						FileDialog d = new FileDialog(manager, "Select a VCF file", FileDialog.LOAD);
 						Tools.centerWindow(d, false);
@@ -235,6 +241,7 @@ public class VcfToolsPanel extends ManagerPanel {
 						if (d.getFile() != null){
 							String filename = d.getDirectory() + d.getFile();
 							SwingUtilities.invokeLater(new Runnable() {
+								@Override
 								public void run() {
 									waitingPanel.setVisible(true);
 									waitingPanel.start();
@@ -251,6 +258,7 @@ public class VcfToolsPanel extends ManagerPanel {
 							}
 							manager.stopRedirectSystemOut();
 							SwingUtilities.invokeLater(new Runnable() {
+								@Override
 								public void run() {
 									waitingPanel.setVisible(false);
 									waitingPanel.stop();
@@ -271,6 +279,7 @@ public class VcfToolsPanel extends ManagerPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						FileDialog d = new FileDialog(manager, "Select a VCF file", FileDialog.LOAD);
 						Tools.centerWindow(d, false);
@@ -278,6 +287,7 @@ public class VcfToolsPanel extends ManagerPanel {
 						if (d.getFile() != null){
 							String filename = d.getDirectory() + d.getFile();
 							SwingUtilities.invokeLater(new Runnable() {
+								@Override
 								public void run() {
 									waitingPanel.setVisible(true);
 									waitingPanel.start();
@@ -294,6 +304,7 @@ public class VcfToolsPanel extends ManagerPanel {
 							}
 							manager.stopRedirectSystemOut();
 							SwingUtilities.invokeLater(new Runnable() {
+								@Override
 								public void run() {
 									waitingPanel.setVisible(false);
 									waitingPanel.stop();

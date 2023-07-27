@@ -69,6 +69,7 @@ public class UpgradePanel extends ManagerPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						ProjectManager.getDbPatcher().update();
 					}

@@ -69,6 +69,7 @@ public class SampleSpecificVariants extends MagicFilter {
 		samples = null;
 	}
 
+	@Override
 	public FilterType getFilterType(){
 		return FilterType.SAMPLE_SPECIFIC_VARIANTS;
 	}
@@ -81,6 +82,7 @@ public class SampleSpecificVariants extends MagicFilter {
 		return toKeepOperator;
 	}
 
+	@Override
 	public Set<String> getIncludedSamples(){
 		Set<String> set = new HashSet<String>();
 		for (List<String> toKeep : samples.keySet()){
@@ -89,6 +91,7 @@ public class SampleSpecificVariants extends MagicFilter {
 		return set;
 	}
 
+	@Override
 	public Set<String> getExcludedSamples(){
 		Set<String> set = new HashSet<String>();
 		for (List<String> toExclude : samples.values()){
@@ -97,6 +100,7 @@ public class SampleSpecificVariants extends MagicFilter {
 		return set;
 	}
 
+	@Override
 	public String toString(){
 		StringBuilder sb = new StringBuilder();
 		sb.append(getFilterType().getName() +": ");
@@ -110,6 +114,7 @@ public class SampleSpecificVariants extends MagicFilter {
 		return sb.toString();
 	}
 
+	@Override
 	public String toHtmlString(){
 		StringBuilder sb = new StringBuilder();
 		sb.append("<html>");
@@ -126,6 +131,7 @@ public class SampleSpecificVariants extends MagicFilter {
 		return sb.toString();
 	}
 
+	@Override
 	public boolean isFilterValid(){
 		if (samples.isEmpty()){
 			return false;
@@ -136,6 +142,7 @@ public class SampleSpecificVariants extends MagicFilter {
 		}
 	}
 
+	@Override
 	public List<String> getValidationProblems(){
 		List<String> problems = new ArrayList<String>();
 		if (preFiltering != null){
@@ -147,6 +154,7 @@ public class SampleSpecificVariants extends MagicFilter {
 		return problems;
 	}
 
+	@Override
 	public String getSaveString(){
 		StringBuilder sb = new StringBuilder();
 		for (Entry<List<String>, List<String>> e : samples.entrySet()){
@@ -174,6 +182,7 @@ public class SampleSpecificVariants extends MagicFilter {
 		return sb.toString();
 	}
 
+	@Override
 	public String parseSaveString(String saveString){
 		StringBuilder sb = new StringBuilder();
 		boolean hasPrefilter = saveString.indexOf('µ') > 0;
@@ -214,6 +223,7 @@ public class SampleSpecificVariants extends MagicFilter {
 		return sb.toString();
 	}
 
+	@Override
 	public Filter loadCriterion(FilteringPanel filteringPanel, String saveString) throws Exception {
 		boolean hasPrefilter = saveString.indexOf('µ') > 0;
 		String prefilter = (hasPrefilter) ? saveString.substring(saveString.indexOf('µ')+1) : "NO_PREFILTERING";		
@@ -251,6 +261,7 @@ public class SampleSpecificVariants extends MagicFilter {
 		return new SampleSpecificVariants(filteringPanel, map, log, loadPreFiltering);
 	}
 
+	@Override
 	public boolean checkFieldCompatibility(Analysis analysis){
 		if (!Field.variant_sample_id.hasAnalysis(analysis)) return false;
 		if (!Field.chr.hasAnalysis(analysis)) return false;
@@ -263,11 +274,13 @@ public class SampleSpecificVariants extends MagicFilter {
 		return true;
 	}
 
+	@Override
 	public boolean changeAnalysis(Analysis analysis){
 		if (preFiltering != null) return preFiltering.changeAnalysis(analysis);
 		return (checkFieldCompatibility(analysis));
 	}
 
+	@Override
 	public void editFilter(){
 		CreateMagicFilter cmf = new CreateMagicFilter(filteringPanel, this);
 		Tools.centerWindow(cmf, false);
@@ -281,10 +294,12 @@ public class SampleSpecificVariants extends MagicFilter {
 		}
 	}
 
+	@Override
 	public int getNumberOfVariants() {
 		return nVariants;
 	}
 
+	@Override
 	public Map<Integer,String> getResultIds(Set<String> autoSamples) throws Exception {
 		nVariants = -1;
 		Highlander.waitingPanel.start(true);

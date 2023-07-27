@@ -32,6 +32,7 @@ package be.uclouvain.ngs.highlander.UI.details;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -85,22 +86,27 @@ public class DetailsBoxAlignment extends DetailsBox {
 		initCommonUI(visible);
 	}
 
+	@Override
 	public DetailsPanel getDetailsPanel(){
 		return mainPanel;
 	}
 
+	@Override
 	public String getTitle(){
 		return "Alignment";
 	}
 
+	@Override
 	public Palette getColor() {
 		return Field.read_depth.getCategory().getColor();
 	}
 	
+	@Override
 	protected boolean isDetailsLoaded(){
 		return detailsLoaded;
 	}
 
+	@Override
 	protected void loadDetails(){
 		try{
 			detailsPanel.removeAll();
@@ -140,7 +146,7 @@ public class DetailsBoxAlignment extends DetailsBox {
 	}
 
 	protected JPanel getControlBar() {
-		JPanel panel = new JPanel(new WrapLayout(WrapLayout.LEADING));
+		JPanel panel = new JPanel(new WrapLayout(FlowLayout.LEADING));
 		panel.setBackground(Resources.getColor(getColor(), 200, false));
 		
 		final JButton zoomin = new JButton(Resources.getScaledIcon(Resources.iZoomIn, 24));

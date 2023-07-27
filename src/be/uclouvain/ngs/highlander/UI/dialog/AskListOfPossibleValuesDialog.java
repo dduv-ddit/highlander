@@ -153,6 +153,7 @@ public class AskListOfPossibleValuesDialog extends JDialog {
 		btnSaveList.setToolTipText("Save current list of values in your profile");
 		btnSaveList.setPreferredSize(new Dimension(54,54));
 		btnSaveList.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				saveList();
 			}
@@ -164,6 +165,7 @@ public class AskListOfPossibleValuesDialog extends JDialog {
 
 		JButton btnOk = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 24));
 		btnOk.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {				
 				dispose();
 			}
@@ -172,6 +174,7 @@ public class AskListOfPossibleValuesDialog extends JDialog {
 
 		JButton btnCancel = new JButton(Resources.getScaledIcon(Resources.iCross, 24));
 		btnCancel.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				cancelClose();
 			}
@@ -201,6 +204,7 @@ public class AskListOfPossibleValuesDialog extends JDialog {
 		panel_0.add(scrollPaneSource, BorderLayout.CENTER);
 
 		tableSource = new JTable(){
+			@Override
 			public boolean isCellEditable(int row, int column){
 				return false;
 			}
@@ -234,6 +238,7 @@ public class AskListOfPossibleValuesDialog extends JDialog {
 		JButton button = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleRight, 24));
 		button.setToolTipText("Add selected value(s) to your selection");
 		button.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				addValues();
 			}
@@ -247,6 +252,7 @@ public class AskListOfPossibleValuesDialog extends JDialog {
 		JButton button_1 = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleLeft, 24));
 		button_1.setToolTipText("Remove selected value(s) from your selection");
 		button_1.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				removeValues();
 			}
@@ -269,6 +275,7 @@ public class AskListOfPossibleValuesDialog extends JDialog {
 
 		tSelectionModel = new DefaultTableModel(0,1);
 		tableSelection = new JTable(tSelectionModel){
+			@Override
 			public boolean isCellEditable(int row, int column){
 				return false;
 			}
@@ -292,6 +299,7 @@ public class AskListOfPossibleValuesDialog extends JDialog {
 		if (userTable == null){
 			values = new TreeSet<String>();
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(true);
 					waitingPanel.start();
@@ -308,6 +316,7 @@ public class AskListOfPossibleValuesDialog extends JDialog {
 				JOptionPane.showMessageDialog(this, Tools.getMessage("Can't retrieve field values from the database", ex), "Fill available values", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
 			}
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(false);
 					waitingPanel.stop();
@@ -423,6 +432,7 @@ public class AskListOfPossibleValuesDialog extends JDialog {
 	}
 
 	//Overridden so we can exit when window is closed
+	@Override
 	protected void processWindowEvent(WindowEvent e) {
 		super.processWindowEvent(e);
 		if (e.getID() == WindowEvent.WINDOW_CLOSING) {

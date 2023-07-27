@@ -38,7 +38,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -111,6 +111,7 @@ public class ComboFilter extends Filter {
 
 	}
 
+	@Override
 	public void setFilteringPanel(FilteringPanel filteringPanel){
 		this.filteringPanel = filteringPanel;
 		for (ComboFilter criterion : comboList) criterion.setFilteringPanel(filteringPanel);
@@ -120,6 +121,7 @@ public class ComboFilter extends Filter {
 		return filter;
 	}
 
+	@Override
 	public Filter getSubFilter(int index){
 		if (isSimple){
 			return filter;
@@ -128,6 +130,7 @@ public class ComboFilter extends Filter {
 		}
 	}
 
+	@Override
 	public int getSubFilterCount(){
 		if (isSimple){
 			return 1;
@@ -136,10 +139,12 @@ public class ComboFilter extends Filter {
 		}
 	}
 
+	@Override
 	public FilterType getFilterType(){
 		return FilterType.COMBO;
 	}
 
+	@Override
 	public boolean hasSamples() {
 		if (isSimple){
 			return filter.hasSamples();
@@ -151,6 +156,7 @@ public class ComboFilter extends Filter {
 		}
 	}
 
+	@Override
 	public Set<String> getIncludedSamples() {
 		Set<String> samples = new HashSet<String>();
 		if (isSimple){
@@ -163,10 +169,12 @@ public class ComboFilter extends Filter {
 		return samples;
 	}
 
+	@Override
 	public Set<String> getExcludedSamples(){
 		return new TreeSet<String>();
 	}
 
+	@Override
 	public Set<String> getUserDefinedSamples(boolean includeProfileList){
 		Set<String> samples = new HashSet<String>();
 		if (isSimple){
@@ -179,6 +187,7 @@ public class ComboFilter extends Filter {
 		return samples;
 	}
 
+	@Override
 	public String getSaveString(){
 		StringBuilder sb = new StringBuilder();
 		if (isSimple){
@@ -197,6 +206,7 @@ public class ComboFilter extends Filter {
 		return sb.toString();
 	}
 
+	@Override
 	public String parseSaveString(String saveString){
 		if (!saveString.startsWith("€") && !saveString.startsWith("^")){
 			int dollarPos = saveString.indexOf("$");
@@ -268,6 +278,7 @@ public class ComboFilter extends Filter {
 		}		
 	}
 
+	@Override
 	public Filter loadCriterion(FilteringPanel filteringPanel, String saveString) throws Exception {		
 		if (!saveString.startsWith("€") && !saveString.startsWith("^")){
 			int dollarPos = saveString.indexOf("$");
@@ -345,6 +356,7 @@ public class ComboFilter extends Filter {
 		}
 	}
 
+	@Override
 	public boolean isFilterValid(){
 		if (isSimple){
 			return filter.isFilterValid();
@@ -357,6 +369,7 @@ public class ComboFilter extends Filter {
 		}
 	}
 
+	@Override
 	public List<String> getValidationProblems(){
 		List<String> problems = new ArrayList<String>();
 		if (isSimple){
@@ -400,6 +413,7 @@ public class ComboFilter extends Filter {
 		return null;
 	}
 
+	@Override
 	public boolean checkFieldCompatibility(Analysis analysis){
 		if (isSimple){
 			return filter.checkFieldCompatibility(analysis);
@@ -412,6 +426,7 @@ public class ComboFilter extends Filter {
 		}
 	}
 
+	@Override
 	public boolean changeAnalysis(Analysis analysis){
 		if (isSimple){
 			return filter.changeAnalysis(analysis);
@@ -437,8 +452,10 @@ public class ComboFilter extends Filter {
 		buttonsPanel.setLayout(new BorderLayout());
 		JButton removeButton = new JButton(Resources.getScaledIcon(Resources.iCross, 16));
 		removeButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						delete();
 					}
@@ -511,8 +528,10 @@ public class ComboFilter extends Filter {
 			JButton removeButton = new JButton(Resources.getScaledIcon(Resources.iCross, 16));
 			removeButton.setToolTipText("Delete filter");	
 			removeButton.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent arg0) {
 					new Thread(new Runnable(){
+						@Override
 						public void run(){
 							delete();
 						}
@@ -531,8 +550,10 @@ public class ComboFilter extends Filter {
 			case OR:
 				JMenuItem itemAddCustomOr = new JMenuItem("Add a Custom Filter, using the logical operator OR (i.e. filter will be the UNION of sub-filters)",Resources.getScaledIcon(Resources.iFilterAddCustomOr, 24));
 				itemAddCustomOr.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent e) {
 						new Thread(new Runnable(){
+							@Override
 							public void run(){
 								addNewCustomFilter(LogicalOperator.OR);
 							}
@@ -542,8 +563,10 @@ public class ComboFilter extends Filter {
 				addButtonPopupMenu.add(itemAddCustomOr);
 				JMenuItem itemAddMagicOr = new JMenuItem("Add a Magic Filter, using the logical operator OR (i.e. filter will be the UNION of sub-filters)",Resources.getScaledIcon(Resources.iFilterAddMagicOr, 24));
 				itemAddMagicOr.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent e) {
 						new Thread(new Runnable(){
+							@Override
 							public void run(){
 								addNewMagicFilter(LogicalOperator.OR);
 							}
@@ -553,8 +576,10 @@ public class ComboFilter extends Filter {
 				addButtonPopupMenu.add(itemAddMagicOr);
 				JMenuItem itemAddProfileOr = new JMenuItem("Load a filter from your profile and add it, using the logical operator OR (i.e. filter will be the UNION of sub-filters)",Resources.getScaledIcon(Resources.iFilterLoadOr, 24));
 				itemAddProfileOr.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent e) {
 						new Thread(new Runnable(){
+							@Override
 							public void run(){
 								addProfileFilter(LogicalOperator.OR);
 							}
@@ -566,8 +591,10 @@ public class ComboFilter extends Filter {
 			case AND:
 				JMenuItem itemAddCustomAnd = new JMenuItem("Add a Custom Filter, using the logical operator AND (i.e. filter will be the INTERSECTION of sub-filters)",Resources.getScaledIcon(Resources.iFilterAddCustomAnd, 24));
 				itemAddCustomAnd.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent e) {
 						new Thread(new Runnable(){
+							@Override
 							public void run(){
 								addNewCustomFilter(LogicalOperator.AND);
 							}
@@ -577,8 +604,10 @@ public class ComboFilter extends Filter {
 				addButtonPopupMenu.add(itemAddCustomAnd);
 				JMenuItem itemAddMagicAnd = new JMenuItem("Add a Magic Filter, using the logical operator AND (i.e. filter will be the INTERSECTION of sub-filters)",Resources.getScaledIcon(Resources.iFilterAddMagicAnd, 24));
 				itemAddMagicAnd.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent e) {
 						new Thread(new Runnable(){
+							@Override
 							public void run(){
 								addNewMagicFilter(LogicalOperator.AND);
 							}
@@ -588,8 +617,10 @@ public class ComboFilter extends Filter {
 				addButtonPopupMenu.add(itemAddMagicAnd);
 				JMenuItem itemAddProfileAnd = new JMenuItem("Load a filter from your profile and add it, using the logical operator AND (i.e. filter will be the INTERSECTION of sub-filters)",Resources.getScaledIcon(Resources.iFilterLoadAnd, 24));
 				itemAddProfileAnd.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent e) {
 						new Thread(new Runnable(){
+							@Override
 							public void run(){
 								addProfileFilter(LogicalOperator.AND);
 							}
@@ -600,10 +631,15 @@ public class ComboFilter extends Filter {
 				break;
 			}
 			MouseListener statusAddButtonPopupListener = new MouseListener() {
+				@Override
 				public void mouseReleased(MouseEvent e) {}
+				@Override
 				public void mousePressed(MouseEvent e) {}
+				@Override
 				public void mouseExited(MouseEvent e) {}
+				@Override
 				public void mouseEntered(MouseEvent e) {}
+				@Override
 				public void mouseClicked(MouseEvent e) {
 					addButtonPopupMenu.show(e.getComponent(), e.getX(), e.getY());
 				}
@@ -617,6 +653,7 @@ public class ComboFilter extends Filter {
 		}
 	}
 
+	@Override
 	public String toString(){
 		StringBuilder details = new StringBuilder();
 		if (isSimple){
@@ -641,6 +678,7 @@ public class ComboFilter extends Filter {
 		return details.toString();
 	}
 
+	@Override
 	public String toHtmlString(){
 		if (isSimple){
 			return filter.toHtmlString();
@@ -653,14 +691,17 @@ public class ComboFilter extends Filter {
 		}
 	}
 
+	@Override
 	public boolean isSimple(){
 		return isSimple;
 	}
 
+	@Override
 	public boolean isComplex(){
 		return isComplex;
 	}
 
+	@Override
 	public LogicalOperator getLogicalOperator(){
 		return logicop;
 	}
@@ -785,8 +826,10 @@ public class ComboFilter extends Filter {
 			case AND:
 				JMenuItem itemAddCustomOr = new JMenuItem("Add a Custom Filter, using the logical operator OR (i.e. filter will be the UNION of sub-filters)",Resources.getScaledIcon(Resources.iFilterAddCustomOr, 24));
 				itemAddCustomOr.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent e) {
 						new Thread(new Runnable(){
+							@Override
 							public void run(){
 								comboFilter.addNewCustomFilter(LogicalOperator.OR);
 							}
@@ -796,8 +839,10 @@ public class ComboFilter extends Filter {
 				addButtonPopupMenu.add(itemAddCustomOr);
 				JMenuItem itemAddMagicOr = new JMenuItem("Add a Magic Filter, using the logical operator OR (i.e. filter will be the UNION of sub-filters)",Resources.getScaledIcon(Resources.iFilterAddMagicOr, 24));
 				itemAddMagicOr.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent e) {
 						new Thread(new Runnable(){
+							@Override
 							public void run(){
 								comboFilter.addNewMagicFilter(LogicalOperator.OR);
 							}
@@ -807,8 +852,10 @@ public class ComboFilter extends Filter {
 				addButtonPopupMenu.add(itemAddMagicOr);
 				JMenuItem itemAddProfileOr = new JMenuItem("Load a filter from your profile and add it, using the logical operator OR (i.e. filter will be the UNION of sub-filters)",Resources.getScaledIcon(Resources.iFilterLoadOr, 24));
 				itemAddProfileOr.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent e) {
 						new Thread(new Runnable(){
+							@Override
 							public void run(){
 								comboFilter.addProfileFilter(LogicalOperator.OR);
 							}
@@ -820,8 +867,10 @@ public class ComboFilter extends Filter {
 			case OR:
 				JMenuItem itemAddCustomAnd = new JMenuItem("Add a Custom Filter, using the logical operator AND (i.e. filter will be the INTERSECTION of sub-filters)",Resources.getScaledIcon(Resources.iFilterAddCustomAnd, 24));
 				itemAddCustomAnd.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent e) {
 						new Thread(new Runnable(){
+							@Override
 							public void run(){
 								comboFilter.addNewCustomFilter(LogicalOperator.AND);
 							}
@@ -831,8 +880,10 @@ public class ComboFilter extends Filter {
 				addButtonPopupMenu.add(itemAddCustomAnd);
 				JMenuItem itemAddMagicAnd = new JMenuItem("Add a Magic Filter, using the logical operator AND (i.e. filter will be the INTERSECTION of sub-filters)",Resources.getScaledIcon(Resources.iFilterAddMagicAnd, 24));
 				itemAddMagicAnd.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent e) {
 						new Thread(new Runnable(){
+							@Override
 							public void run(){
 								comboFilter.addNewMagicFilter(LogicalOperator.AND);
 							}
@@ -842,8 +893,10 @@ public class ComboFilter extends Filter {
 				addButtonPopupMenu.add(itemAddMagicAnd);
 				JMenuItem itemAddProfileAnd = new JMenuItem("Load a filter from your profile and add it, using the logical operator AND (i.e. filter will be the INTERSECTION of sub-filters)",Resources.getScaledIcon(Resources.iFilterLoadAnd, 24));
 				itemAddProfileAnd.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent e) {
 						new Thread(new Runnable(){
+							@Override
 							public void run(){
 								comboFilter.addProfileFilter(LogicalOperator.AND);
 							}
@@ -854,10 +907,15 @@ public class ComboFilter extends Filter {
 				break;
 			}
 			MouseListener statusAddButtonPopupListener = new MouseListener() {
+				@Override
 				public void mouseReleased(MouseEvent e) {}
+				@Override
 				public void mousePressed(MouseEvent e) {}
+				@Override
 				public void mouseExited(MouseEvent e) {}
+				@Override
 				public void mouseEntered(MouseEvent e) {}
+				@Override
 				public void mouseClicked(MouseEvent e) {
 					addButtonPopupMenu.show(e.getComponent(), e.getX(), e.getY());
 				}
@@ -907,6 +965,7 @@ public class ComboFilter extends Filter {
 		}
 	}
 
+	@Override
 	public void delete(){
 		if (getParentFilter() == null){
 			//We are the main ComboFilter
@@ -921,14 +980,17 @@ public class ComboFilter extends Filter {
 		filteringPanel.refresh();
 	}
 
+	@Override
 	public void editFilter(){
 		//Should use the method directly from the Custom/Magic filter
 	}
 
+	@Override
 	public int getNumberOfVariants() {
 		return nVariants;
 	}
 
+	@Override
 	public Map<Integer,String> getResultIds(Set<String> autoSamples) throws Exception {
 		nVariants = -1;
 		Map<Integer,String> ids;
@@ -964,12 +1026,14 @@ public class ComboFilter extends Filter {
 		return ids;
 	}
 
+	@Override
 	protected List<Field> getQueryWhereFields() throws Exception {
 		List<Field> list = new ArrayList<Field>();
 		list.add(Field.variant_sample_id);
 		return list;
 	}
 
+	@Override
 	protected String getQueryWhereClause(boolean includeTableWithJoinON) throws Exception {		
 		Map<Integer,String> resultIds = getResultIds(getAllSamples());
 		Field id = Field.variant_sample_id;
@@ -977,6 +1041,7 @@ public class ComboFilter extends Filter {
 		return (id.getQueryWhereName(Highlander.getCurrentAnalysis(), false) + " IN ("+HighlanderDatabase.makeSqlList(resultIds.keySet(), Integer.class)+")");
 	}
 
+	@Override
 	protected VariantResults extractResults(Results res, List<Field> headers, String progressTxt, boolean indeterminateProgress) throws Exception {		
 		Map<Integer, Object[]> dataMap = new LinkedHashMap<Integer, Object[]>();
 		Map<Integer, String> variants = new LinkedHashMap<Integer, String>();
@@ -991,7 +1056,13 @@ public class ComboFilter extends Filter {
 			int col=0;
 			for (Field field : headers){
 				//when MySQL NULL is replaced by 0 for some fields (like evaluation), the 0 is a string and not an INT, causing type problems in VariantTable (for filtering on those columns)
-				rowData[col] = (field.getDefaultValue() != null && field.getDefaultValue().equals("0")) ? res.getInt(field.getName()) : res.getObject(field.getName()); 
+				if (field.getDefaultValue() != null && field.getDefaultValue().equals("0")) {
+					rowData[col] = res.getInt(field.getName());
+				}else if (field.getFieldClass() == OffsetDateTime.class){
+					rowData[col] = res.getTimestamp(field.getName());
+				}else {
+					rowData[col] = res.getObject(field.getName()); 					
+				}
 				col++;
 			}
 			int id = res.getInt("variant_sample_id");

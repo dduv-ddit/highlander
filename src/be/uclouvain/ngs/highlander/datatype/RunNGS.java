@@ -29,8 +29,7 @@
 
 package be.uclouvain.ngs.highlander.datatype;
 
-import java.sql.Date;
-
+import java.time.LocalDate;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -48,7 +47,7 @@ public class RunNGS implements Comparable<RunNGS> {
 	private String read_length;
 	private boolean pair_end;
 	private int run_id;
-	private Date run_date;
+	private LocalDate run_date;
 	private String run_name;
 	private String run_label;
 
@@ -141,11 +140,11 @@ public class RunNGS implements Comparable<RunNGS> {
 		this.run_id = run_id;
 	}
 
-	public Date getRun_date() {
+	public LocalDate getRun_date() {
 		return run_date;
 	}
 
-	public void setRun_date(Date run_date) {
+	public void setRun_date(LocalDate run_date) {
 		this.run_date = run_date;
 	}
 

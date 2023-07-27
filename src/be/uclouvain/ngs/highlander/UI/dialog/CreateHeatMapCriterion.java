@@ -49,6 +49,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 
 import be.uclouvain.ngs.highlander.Resources;
@@ -122,6 +123,7 @@ public class CreateHeatMapCriterion extends JDialog {
 		
 		JButton btnCreate = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 32));
 		btnCreate.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (generateCriterion()){
 					dispose();
@@ -132,6 +134,7 @@ public class CreateHeatMapCriterion extends JDialog {
 		
 		JButton btnCancel = new JButton(Resources.getScaledIcon(Resources.iCross, 32));
 		btnCancel.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				cancelClose();
 			}
@@ -162,9 +165,11 @@ public class CreateHeatMapCriterion extends JDialog {
 		boxCategories = new JComboBox<>(Category.getAvailableCategories(true,true));
 		boxCategories.setMaximumRowCount(20);
 		boxCategories.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(ItemEvent arg0) {
 				if (arg0.getStateChange() == ItemEvent.SELECTED){
 					SwingUtilities.invokeLater(new Runnable() {
+						@Override
 						public void run() {
 							filterByCategory();							
 						}
@@ -202,6 +207,7 @@ public class CreateHeatMapCriterion extends JDialog {
 		comboBox_field = new JComboBox<>(fieldsArr);
 		comboBox_field.setMaximumRowCount(20);
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				support = AutoCompleteSupport.install(comboBox_field, fields);
 				support.setCorrectsCase(true);
@@ -211,6 +217,7 @@ public class CreateHeatMapCriterion extends JDialog {
 			}
 		});		
 		comboBox_field.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (arg0.getActionCommand().equals("comboBoxEdited")){
 					if (comboBox_field.getSelectedIndex() < 0) comboBox_field.setSelectedItem(null);
@@ -359,8 +366,8 @@ public class CreateHeatMapCriterion extends JDialog {
 		scrollPanel.add(mainPanel, new GridBagConstraints(0,0,1,1,1.0,0,GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 		scrollPanel.add(new JPanel(), new GridBagConstraints(0,1,1,1,1.0,1.0,GridBagConstraints.NORTH, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));		
 		scroll.setViewportView(scrollPanel);
-		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		getContentPane().add(scroll);
 		
 	}
@@ -404,6 +411,7 @@ public class CreateHeatMapCriterion extends JDialog {
 	private void fillFields(){
 		if (criterion != null) {
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					comboBox_field.setSelectedItem(criterion.getField().getName());
 					switch(criterion.getColorRange()){
@@ -481,7 +489,8 @@ public class CreateHeatMapCriterion extends JDialog {
 	}
 
 	//Overridden so we can exit when window is closed
-  protected void processWindowEvent(WindowEvent e) {
+  @Override
+	protected void processWindowEvent(WindowEvent e) {
     super.processWindowEvent(e);
     if (e.getID() == WindowEvent.WINDOW_CLOSING) {
     	cancelClose();

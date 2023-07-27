@@ -406,6 +406,7 @@ public class Variant implements Comparable<Variant> {
 		return svType;
 	}
 	
+	@Override
 	public String toString(){
 		return chr+":"+pos;
 	}

@@ -144,6 +144,7 @@ public class Kraken extends JFrame {
 							@Override
 							public void run() {
 								SwingUtilities.invokeLater(new Runnable() {
+									@Override
 									public void run() {
 										waitingPanel.setVisible(true);
 										waitingPanel.start();
@@ -171,6 +172,7 @@ public class Kraken extends JFrame {
 									JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error", ex), "Kraken",	JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
 								}
 								SwingUtilities.invokeLater(new Runnable() {
+									@Override
 									public void run() {
 										waitingPanel.setVisible(false);
 										waitingPanel.stop();
@@ -227,6 +229,7 @@ public class Kraken extends JFrame {
 		
 		JButton btnClose = new JButton("Close", Resources.getScaledIcon(Resources.iCross, 24));
 		btnClose.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				frameVisible = false;
 				dispose();
@@ -248,8 +251,10 @@ public class Kraken extends JFrame {
 		browseDir.setPreferredSize(new Dimension(32,32));
 		browseDir.setToolTipText("Browse");
 		browseDir.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						JFileChooser chooser = new JFileChooser(Tools.getHomeDirectory().toString());
 						chooser.setDialogTitle("Select the download directory");
@@ -285,6 +290,7 @@ public class Kraken extends JFrame {
 		setGlassPane(waitingPanel);
 	}
 
+	@Override
 	protected void processWindowEvent(WindowEvent e) {
 		if (e.getID() == WindowEvent.WINDOW_CLOSING) {
 			frameVisible = false;

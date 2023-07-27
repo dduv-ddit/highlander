@@ -24,6 +24,7 @@
 package be.uclouvain.ngs.highlander.administration.UI.projects;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -76,7 +77,7 @@ public class PostImportationPanel extends ManagerPanel {
 		JPanel panelArguments = new JPanel(new BorderLayout());
 		panel.add(panelArguments, BorderLayout.NORTH);
 
-		JPanel panelAnalyses = new JPanel(new WrapLayout(WrapLayout.LEADING, 10, 5));		
+		JPanel panelAnalyses = new JPanel(new WrapLayout(FlowLayout.LEADING, 10, 5));		
 		panelAnalyses.add(new JLabel("Analyses: "));
 		for (Analysis a : manager.getAvailableAnalysesAsArray()){
 			JCheckBox check = new JCheckBox(a.toString());
@@ -86,7 +87,7 @@ public class PostImportationPanel extends ManagerPanel {
 		panelArguments.add(panelAnalyses, BorderLayout.NORTH);
 
 
-		JPanel panelLaunch = new JPanel(new WrapLayout(WrapLayout.LEADING, 10, 5));
+		JPanel panelLaunch = new JPanel(new WrapLayout(FlowLayout.LEADING, 10, 5));
 		JButton launch = new JButton(" Send emails ");
 		panelLaunch.add(launch);
 		panel.add(panelLaunch, BorderLayout.SOUTH);
@@ -96,6 +97,7 @@ public class PostImportationPanel extends ManagerPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						List<AnalysisFull> analyses = new ArrayList<>();
 						for (JCheckBox box : possibleValuesAnalyses){
@@ -108,6 +110,7 @@ public class PostImportationPanel extends ManagerPanel {
 							}
 						}
 						SwingUtilities.invokeLater(new Runnable() {
+							@Override
 							public void run() {
 								waitingPanel.setVisible(true);
 								waitingPanel.start();
@@ -124,6 +127,7 @@ public class PostImportationPanel extends ManagerPanel {
 						}
 						manager.stopRedirectSystemOut();
 						SwingUtilities.invokeLater(new Runnable() {
+							@Override
 							public void run() {
 								waitingPanel.setVisible(false);
 								waitingPanel.stop();
@@ -144,7 +148,7 @@ public class PostImportationPanel extends ManagerPanel {
 		JPanel panelArguments = new JPanel(new BorderLayout());
 		panel.add(panelArguments, BorderLayout.NORTH);
 
-		JPanel panelAnalyses = new JPanel(new WrapLayout(WrapLayout.LEADING, 10, 5));		
+		JPanel panelAnalyses = new JPanel(new WrapLayout(FlowLayout.LEADING, 10, 5));		
 		panelAnalyses.add(new JLabel("Analyses: "));
 		for (Analysis a : manager.getAvailableAnalysesAsArray()){
 			JCheckBox check = new JCheckBox(a.toString());
@@ -154,7 +158,7 @@ public class PostImportationPanel extends ManagerPanel {
 		panelArguments.add(panelAnalyses, BorderLayout.NORTH);
 
 
-		JPanel panelLaunch = new JPanel(new WrapLayout(WrapLayout.LEADING, 10, 5));
+		JPanel panelLaunch = new JPanel(new WrapLayout(FlowLayout.LEADING, 10, 5));
 		JButton launch = new JButton(" Update possible values ");
 		panelLaunch.add(launch);
 		panel.add(panelLaunch, BorderLayout.SOUTH);
@@ -164,6 +168,7 @@ public class PostImportationPanel extends ManagerPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						List<AnalysisFull> analyses = new ArrayList<>();
 						for (JCheckBox box : possibleValuesAnalyses){
@@ -176,6 +181,7 @@ public class PostImportationPanel extends ManagerPanel {
 							}
 						}
 						SwingUtilities.invokeLater(new Runnable() {
+							@Override
 							public void run() {
 								waitingPanel.setVisible(true);
 								waitingPanel.start();
@@ -190,6 +196,7 @@ public class PostImportationPanel extends ManagerPanel {
 						}
 						manager.stopRedirectSystemOut();
 						SwingUtilities.invokeLater(new Runnable() {
+							@Override
 							public void run() {
 								waitingPanel.setVisible(false);
 								waitingPanel.stop();
@@ -210,7 +217,7 @@ public class PostImportationPanel extends ManagerPanel {
 		JPanel panelArguments = new JPanel(new BorderLayout());
 		panel.add(panelArguments, BorderLayout.NORTH);
 
-		JPanel panelAnalyses = new JPanel(new WrapLayout(WrapLayout.LEADING, 10, 5));		
+		JPanel panelAnalyses = new JPanel(new WrapLayout(FlowLayout.LEADING, 10, 5));		
 		panelAnalyses.add(new JLabel("Analyses: "));
 		for (Analysis a : manager.getAvailableAnalysesAsArray()){
 			JCheckBox check = new JCheckBox(a.toString());
@@ -220,7 +227,7 @@ public class PostImportationPanel extends ManagerPanel {
 		panelArguments.add(panelAnalyses, BorderLayout.NORTH);
 
 
-		JPanel panelLaunch = new JPanel(new WrapLayout(WrapLayout.LEADING, 10, 5));
+		JPanel panelLaunch = new JPanel(new WrapLayout(FlowLayout.LEADING, 10, 5));
 		JButton changeStatsButton = new JButton(" Update allele frequencies ");
 		panelLaunch.add(changeStatsButton);
 		panel.add(panelLaunch, BorderLayout.SOUTH);
@@ -230,6 +237,7 @@ public class PostImportationPanel extends ManagerPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						List<Analysis> analyses = new ArrayList<>();
 						for (JCheckBox box : statisticsAnalyses){
@@ -242,6 +250,7 @@ public class PostImportationPanel extends ManagerPanel {
 							}
 						}
 						SwingUtilities.invokeLater(new Runnable() {
+							@Override
 							public void run() {
 								waitingPanel.setVisible(true);
 								waitingPanel.start();
@@ -256,6 +265,7 @@ public class PostImportationPanel extends ManagerPanel {
 						}
 						manager.stopRedirectSystemOut();
 						SwingUtilities.invokeLater(new Runnable() {
+							@Override
 							public void run() {
 								waitingPanel.setVisible(false);
 								waitingPanel.stop();
@@ -275,6 +285,7 @@ public class PostImportationPanel extends ManagerPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						List<Analysis> analyses = new ArrayList<>();
 						for (JCheckBox box : statisticsAnalyses){
@@ -287,6 +298,7 @@ public class PostImportationPanel extends ManagerPanel {
 							}
 						}
 						SwingUtilities.invokeLater(new Runnable() {
+							@Override
 							public void run() {
 								waitingPanel.setVisible(true);
 								waitingPanel.start();
@@ -301,6 +313,7 @@ public class PostImportationPanel extends ManagerPanel {
 						}
 						manager.stopRedirectSystemOut();
 						SwingUtilities.invokeLater(new Runnable() {
+							@Override
 							public void run() {
 								waitingPanel.setVisible(false);
 								waitingPanel.stop();

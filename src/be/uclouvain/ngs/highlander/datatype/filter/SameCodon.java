@@ -67,18 +67,22 @@ public class SameCodon extends MagicFilter {
 		samples = null;
 	}
 
+	@Override
 	public FilterType getFilterType(){
 		return FilterType.SAME_CODON;
 	}
 
+	@Override
 	public Set<String> getIncludedSamples(){
 		return samples;
 	}
 
+	@Override
 	public Set<String> getExcludedSamples(){
 		return new TreeSet<String>();
 	}
 
+	@Override
 	public String toString(){
 		StringBuilder sb = new StringBuilder();
 		sb.append(getFilterType().getName() + ": ");
@@ -92,6 +96,7 @@ public class SameCodon extends MagicFilter {
 		return sb.toString();
 	}
 
+	@Override
 	public String toHtmlString(){
 		StringBuilder sb = new StringBuilder();
 		sb.append("<html>");
@@ -110,6 +115,7 @@ public class SameCodon extends MagicFilter {
 		return sb.toString();
 	}
 
+	@Override
 	public boolean isFilterValid(){
 		if (samples.isEmpty()){
 			return false;
@@ -120,6 +126,7 @@ public class SameCodon extends MagicFilter {
 		}
 	}
 
+	@Override
 	public List<String> getValidationProblems(){
 		List<String> problems = new ArrayList<String>();
 		if (preFiltering != null){
@@ -131,6 +138,7 @@ public class SameCodon extends MagicFilter {
 		return problems;
 	}
 
+	@Override
 	public String getSaveString(){
 		StringBuilder sb = new StringBuilder();
 		for (String sample : samples){
@@ -147,6 +155,7 @@ public class SameCodon extends MagicFilter {
 		return sb.toString();
 	}
 
+	@Override
 	public String parseSaveString(String saveString){
 		StringBuilder sb = new StringBuilder();
 		boolean hasPrefilter = saveString.indexOf('µ') > 0;
@@ -164,6 +173,7 @@ public class SameCodon extends MagicFilter {
 		return sb.toString();
 	}
 
+	@Override
 	public Filter loadCriterion(FilteringPanel filteringPanel, String saveString) throws Exception {
 		boolean hasPrefilter = saveString.indexOf('µ') > 0;
 		String prefilter = (hasPrefilter) ? saveString.substring(saveString.indexOf('µ')+1) : "NO_PREFILTERING";		
@@ -179,6 +189,7 @@ public class SameCodon extends MagicFilter {
 		return new SameCodon(filteringPanel, set, loadPreFiltering);
 	}
 
+	@Override
 	public boolean checkFieldCompatibility(Analysis analysis){
 		if (!Field.variant_sample_id.hasAnalysis(analysis)) return false;
 		if (!Field.chr.hasAnalysis(analysis)) return false;
@@ -194,11 +205,13 @@ public class SameCodon extends MagicFilter {
 		return true;
 	}
 
+	@Override
 	public boolean changeAnalysis(Analysis analysis){
 		if (preFiltering != null) return preFiltering.changeAnalysis(analysis);
 		return (checkFieldCompatibility(analysis));
 	}
 
+	@Override
 	public void editFilter(){
 		CreateMagicFilter cmf = new CreateMagicFilter(filteringPanel, this);
 		Tools.centerWindow(cmf, false);
@@ -211,10 +224,12 @@ public class SameCodon extends MagicFilter {
 		}
 	}
 
+	@Override
 	public int getNumberOfVariants() {
 		return nVariants;
 	}
 
+	@Override
 	public Map<Integer,String> getResultIds(Set<String> autoSamples) throws Exception {
 		nVariants = -1;
 		if (samples.isEmpty()) {

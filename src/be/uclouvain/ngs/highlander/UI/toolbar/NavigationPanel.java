@@ -106,6 +106,7 @@ public class NavigationPanel extends JPanel {
 		button_cell_selection.setToolTipText("Select cells in the table");
 		button_cell_selection.setPreferredSize(new Dimension(54,54));
 		button_cell_selection.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getStateChange() == ItemEvent.SELECTED)
 					mainFrame.getVariantTable().setRowSelectionAllowed(false);
@@ -119,6 +120,7 @@ public class NavigationPanel extends JPanel {
 		button_row_selection.setToolTipText("Select full rows in the table");
 		button_row_selection.setPreferredSize(new Dimension(54,54));
 		button_row_selection.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getStateChange() == ItemEvent.SELECTED)
 					mainFrame.getVariantTable().setRowSelectionAllowed(true);
@@ -137,6 +139,7 @@ public class NavigationPanel extends JPanel {
 		button_sample_mask.setToolTipText("Show/Hide variants based on a selection of samples");
 		button_sample_mask.setPreferredSize(new Dimension(54,54));
 		button_sample_mask.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(ItemEvent e) {
 				sampleMask();
 			}
@@ -153,6 +156,7 @@ public class NavigationPanel extends JPanel {
 		button_interest_yes.setToolTipText("Show/Hide variants marked as 'of interest' (if column " + Field.variant_of_interest.getName() + " is present)");
 		button_interest_yes.setPreferredSize(new Dimension(54,54));
 		button_interest_yes.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(ItemEvent e) {
 				updateInterestFiltering();
 			}
@@ -164,6 +168,7 @@ public class NavigationPanel extends JPanel {
 		button_interest_maybe.setToolTipText("Show/Hide variants not marked as 'of interest'/'no interesting' (if column " + Field.variant_of_interest.getName() + " is present)");
 		button_interest_maybe.setPreferredSize(new Dimension(54,54));
 		button_interest_maybe.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(ItemEvent e) {
 				updateInterestFiltering(); 
 			}
@@ -175,6 +180,7 @@ public class NavigationPanel extends JPanel {
 		button_interest_no.setToolTipText("Show/Hide variants marked as 'not interesting' (if column " + Field.variant_of_interest.getName() + " is present)");
 		button_interest_no.setPreferredSize(new Dimension(54,54));
 		button_interest_no.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(ItemEvent e) {
 				updateInterestFiltering(); 
 			}
@@ -191,6 +197,7 @@ public class NavigationPanel extends JPanel {
 		button_evaluation_unclassified.setToolTipText("Show/Hide variants not evaluated (if column " + Field.evaluation.getName() + " is present)");
 		button_evaluation_unclassified.setPreferredSize(new Dimension(54,54));
 		button_evaluation_unclassified.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(ItemEvent e) {
 				updateEvaluationFiltering();
 			}
@@ -202,6 +209,7 @@ public class NavigationPanel extends JPanel {
 		button_evaluation_1.setToolTipText("Show/Hide variants evaluated as Type I - Polymorphism (if column " + Field.evaluation.getName() + " is present)");
 		button_evaluation_1.setPreferredSize(new Dimension(54,54));
 		button_evaluation_1.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(ItemEvent e) {
 				updateEvaluationFiltering();
 			}
@@ -213,6 +221,7 @@ public class NavigationPanel extends JPanel {
 		button_evaluation_2.setToolTipText("Show/Hide variants evaluated as Type II - Variant Likely Benign (if column " + Field.evaluation.getName() + " is present)");
 		button_evaluation_2.setPreferredSize(new Dimension(54,54));
 		button_evaluation_2.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(ItemEvent e) {
 				updateEvaluationFiltering();
 			}
@@ -224,6 +233,7 @@ public class NavigationPanel extends JPanel {
 		button_evaluation_3.setToolTipText("Show/Hide variants evaluated as Type III - Variant of Unknown Significance (if column " + Field.evaluation.getName() + " is present)");
 		button_evaluation_3.setPreferredSize(new Dimension(54,54));
 		button_evaluation_3.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(ItemEvent e) {
 				updateEvaluationFiltering();
 			}
@@ -235,6 +245,7 @@ public class NavigationPanel extends JPanel {
 		button_evaluation_4.setToolTipText("Show/Hide variants evaluated as Type IV - Variant Likely Pathogenic (if column " + Field.evaluation.getName() + " is present)");
 		button_evaluation_4.setPreferredSize(new Dimension(54,54));
 		button_evaluation_4.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(ItemEvent e) {
 				updateEvaluationFiltering();
 			}
@@ -246,6 +257,7 @@ public class NavigationPanel extends JPanel {
 		button_evaluation_5.setToolTipText("Show/Hide variants evaluated as Type V - Pathogenic Mutation (if column " + Field.evaluation.getName() + " is present)");
 		button_evaluation_5.setPreferredSize(new Dimension(54,54));
 		button_evaluation_5.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(ItemEvent e) {
 				updateEvaluationFiltering();
 			}
@@ -261,6 +273,7 @@ public class NavigationPanel extends JPanel {
 		button_add.setToolTipText("Create a new columns mask for this analysis");
 		button_add.setPreferredSize(new Dimension(54,54));
 		button_add.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				addNewColumnMask();
 			}
@@ -285,9 +298,11 @@ public class NavigationPanel extends JPanel {
 		selection_all.setToolTipText("Request all columns available in the database");
 		selection_all.setSelected(true);
 		selection_all.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(ItemEvent arg0) {
 				if (arg0.getStateChange() == ItemEvent.SELECTED){
 					new Thread(new Runnable() {
+						@Override
 						public void run() {
 							mainFrame.refreshTableView();
 						}
@@ -300,9 +315,11 @@ public class NavigationPanel extends JPanel {
 
 		selection_custom = new JRadioButton("Columns mask");
 		selection_custom.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(ItemEvent arg0) {
 				if (arg0.getStateChange() == ItemEvent.SELECTED){
 					new Thread(new Runnable() {
+						@Override
 						public void run() {
 							if (loadedSelection == null){
 								loadMaskFromProfile();
@@ -337,6 +354,7 @@ public class NavigationPanel extends JPanel {
 
 	public void sampleMask(){
 		new Thread(new Runnable(){
+			@Override
 			public void run(){
 				try{
 					setIcon();
@@ -359,6 +377,7 @@ public class NavigationPanel extends JPanel {
 	
 	public void updateInterestFiltering(){
 		new Thread(new Runnable(){
+			@Override
 			public void run(){
 				try{
 					setIcon();
@@ -372,6 +391,7 @@ public class NavigationPanel extends JPanel {
 	
 	public void updateEvaluationFiltering(){
 		new Thread(new Runnable(){
+			@Override
 			public void run(){
 				try{
 					setIcon();

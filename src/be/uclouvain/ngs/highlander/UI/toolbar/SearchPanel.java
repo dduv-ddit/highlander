@@ -79,7 +79,8 @@ public class SearchPanel extends JPanel {
 	    final RowFilter<VariantsTableModel, Object> rff = rf;
 			Highlander.waitingPanel.start();
 			new Thread(new Runnable(){
-	  		public void run(){
+	  		@Override
+				public void run(){
 	  			try{
 	  				table.setTextFilter(rff,getTyppedText());
 	  			}catch(Exception ex){

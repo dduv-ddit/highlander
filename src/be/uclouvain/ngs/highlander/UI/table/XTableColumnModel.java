@@ -87,7 +87,7 @@ public class XTableColumnModel extends DefaultTableColumnModel {
             
             for(int invisibleIndex = 0; invisibleIndex < noInvisibleColumns; ++invisibleIndex) {
                 TableColumn visibleColumn   = (visibleIndex < noVisibleColumns ? (TableColumn)tableColumns.get(visibleIndex) : null);
-                TableColumn testColumn      = (TableColumn)allTableColumns.get(invisibleIndex);
+                TableColumn testColumn      = allTableColumns.get(invisibleIndex);
                 
                 if(testColumn == column) {
                     if(visibleColumn != column) {
@@ -111,7 +111,7 @@ public class XTableColumnModel extends DefaultTableColumnModel {
         
         for(int columnIndex = 0; columnIndex < noColumns; ++columnIndex) {
             TableColumn visibleColumn = (columnIndex < tableColumns.size() ? (TableColumn)tableColumns.get(columnIndex) : null);
-            TableColumn invisibleColumn = (TableColumn)allTableColumns.get(columnIndex);
+            TableColumn invisibleColumn = allTableColumns.get(columnIndex);
             
             if(visibleColumn != invisibleColumn) {
                 super.addColumn(invisibleColumn);
@@ -130,7 +130,7 @@ public class XTableColumnModel extends DefaultTableColumnModel {
  */
     public TableColumn getColumnByModelIndex(int modelColumnIndex) {
         for (int columnIndex = 0; columnIndex < allTableColumns.size(); ++columnIndex) {
-            TableColumn column = (TableColumn)allTableColumns.elementAt(columnIndex);
+            TableColumn column = allTableColumns.elementAt(columnIndex);
             if(column.getModelIndex() == modelColumnIndex) {
                 return column;
             }
@@ -152,7 +152,8 @@ public class XTableColumnModel extends DefaultTableColumnModel {
  * @see #removeColumn
  * @exception IllegalArgumentException if <code>column</code> is <code>null</code>
  */    
-    public void addColumn(TableColumn column) {
+    @Override
+		public void addColumn(TableColumn column) {
         allTableColumns.addElement(column);
         super.addColumn(column);
     }
@@ -163,7 +164,8 @@ public class XTableColumnModel extends DefaultTableColumnModel {
  * @param column the column to be added
  * @see #addColumn
  */    
-    public void removeColumn(TableColumn column) {
+    @Override
+		public void removeColumn(TableColumn column) {
         int allColumnsIndex = allTableColumns.indexOf(column);
         if(allColumnsIndex != -1) {
             allTableColumns.removeElementAt(allColumnsIndex);
@@ -181,13 +183,14 @@ public class XTableColumnModel extends DefaultTableColumnModel {
      * 						<code>newIndex</code>
      *						are not in [0, getColumnCount() - 1]
      */
-    public void moveColumn(int oldIndex, int newIndex) {
+    @Override
+		public void moveColumn(int oldIndex, int newIndex) {
 	if ((oldIndex < 0) || (oldIndex >= getColumnCount()) ||
 	    (newIndex < 0) || (newIndex >= getColumnCount()))
 	    throw new IllegalArgumentException("moveColumn() - Index out of range");
         
-        TableColumn fromColumn  = (TableColumn) tableColumns.get(oldIndex);
-        TableColumn toColumn    = (TableColumn) tableColumns.get(newIndex);
+        TableColumn fromColumn  = tableColumns.get(oldIndex);
+        TableColumn toColumn    = tableColumns.get(newIndex);
         
         int allColumnsOldIndex  = allTableColumns.indexOf(fromColumn);
         int allColumnsNewIndex  = allTableColumns.indexOf(toColumn);
@@ -251,7 +254,7 @@ public class XTableColumnModel extends DefaultTableColumnModel {
         TableColumn column;
         
         for(int columnIndex = 0; columnIndex < noColumns; ++columnIndex) {
-	    column = (TableColumn)columns.get(columnIndex);
+	    column = columns.get(columnIndex);
 
             if(identifier.equals(column.getIdentifier()))
 		return columnIndex;
@@ -272,6 +275,6 @@ public class XTableColumnModel extends DefaultTableColumnModel {
      *				at <code>columnIndex</code>
      */
     public TableColumn getColumn(int columnIndex, boolean onlyVisible) {
-	return (TableColumn)tableColumns.elementAt(columnIndex);
+	return tableColumns.elementAt(columnIndex);
     }
 }

@@ -210,7 +210,7 @@ public class DemoDbGenerator {
 				try (Results res = DB.select(schemaFrom, query, true)) {
 					while (res.next()){
 						if((++p)%10_000 == 0){
-							System.out.println(df.format(System.currentTimeMillis()) + " - " + Tools.longToString(p) + " / " + Tools.longToString(total) + " records prepared to be inserted - " + Tools.doubleToString(((double)Tools.getUsedMemoryInMb()), 0, false) + " Mb / "+ (Tools.doubleToString(((double)(Runtime.getRuntime().maxMemory() / 1024 /1024)), 0, false)) + " Mb of RAM used");
+							System.out.println(df.format(System.currentTimeMillis()) + " - " + Tools.longToString(p) + " / " + Tools.longToString(total) + " records prepared to be inserted - " + Tools.doubleToString((Tools.getUsedMemoryInMb()), 0, false) + " Mb / "+ (Tools.doubleToString((Runtime.getRuntime().maxMemory() / 1024 /1024), 0, false)) + " Mb of RAM used");
 						}
 						for (int i = 0 ; i < columns.size() ; i++){
 							String column = columns.get(i);

@@ -27,6 +27,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FileDialog;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -131,6 +132,7 @@ public class AnalysesPanel extends ManagerPanel {
 		JButton button_up = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleUp, 24));
 		button_up.setToolTipText("Put selected analysis before in order of appearance in Highlander toolbar");
 		button_up.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				reorderAnalysis(listAnalyses.getSelectedIndex(), true);
 			}
@@ -144,6 +146,7 @@ public class AnalysesPanel extends ManagerPanel {
 		JButton button_down = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleDown, 24));
 		button_down.setToolTipText("Put selected analysis after in order of appearance in Highlander toolbar");
 		button_down.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				reorderAnalysis(listAnalyses.getSelectedIndex(), false);
 			}
@@ -159,7 +162,7 @@ public class AnalysesPanel extends ManagerPanel {
 		
 		panel_right.add(scrollData, BorderLayout.CENTER);
 		
-		JPanel southPanel = new JPanel(new WrapLayout(WrapLayout.CENTER));
+		JPanel southPanel = new JPanel(new WrapLayout(FlowLayout.CENTER));
 		add(southPanel, BorderLayout.SOUTH);
 
 		JButton createNewButton = new JButton("Create new analysis", Resources.getScaledIcon(Resources.i3dPlus, 16));
@@ -241,6 +244,7 @@ public class AnalysesPanel extends ManagerPanel {
 								String filename = d.getDirectory() + d.getFile();
 								File file = new File(filename);
 								SwingUtilities.invokeLater(new Runnable() {
+									@Override
 									public void run() {
 										waitingPanel.setVisible(true);
 										waitingPanel.start();
@@ -253,6 +257,7 @@ public class AnalysesPanel extends ManagerPanel {
 									ProjectManager.toConsole(ex);			
 								}
 								SwingUtilities.invokeLater(new Runnable() {
+									@Override
 									public void run() {
 										waitingPanel.setVisible(false);
 										waitingPanel.stop();
@@ -620,6 +625,7 @@ public class AnalysesPanel extends ManagerPanel {
 				JOptionPane.showMessageDialog(this, "Analysis '"+analysisStr+"' already exists", "Error", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross, 64));
 			}else{
 				SwingUtilities.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						waitingPanel.setVisible(true);
 						waitingPanel.start();
@@ -673,6 +679,7 @@ public class AnalysesPanel extends ManagerPanel {
 				}
 				ProjectManager.setHardUpdate(false);
 				SwingUtilities.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						waitingPanel.setVisible(false);
 						waitingPanel.stop();
@@ -688,6 +695,7 @@ public class AnalysesPanel extends ManagerPanel {
 		dialog.setVisible(true);
 		if (dialog.validate){
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(true);
 					waitingPanel.start();
@@ -722,6 +730,7 @@ public class AnalysesPanel extends ManagerPanel {
 				ProjectManager.toConsole(ex);
 			}
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(false);
 					waitingPanel.stop();
@@ -737,6 +746,7 @@ public class AnalysesPanel extends ManagerPanel {
 			return;
 		}else if (res == JOptionPane.YES_OPTION){
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(true);
 					waitingPanel.start();
@@ -760,6 +770,7 @@ public class AnalysesPanel extends ManagerPanel {
 				ProjectManager.toConsole(ex);
 			}
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					waitingPanel.setVisible(false);
 					waitingPanel.stop();
@@ -819,7 +830,7 @@ public class AnalysesPanel extends ManagerPanel {
 		public JPanel getMainPanel(){
 			JPanel panel = new JPanel(new BorderLayout());
 
-			JPanel checkBoxesPanel = new JPanel(new WrapLayout(WrapLayout.LEADING, 10, 5));		
+			JPanel checkBoxesPanel = new JPanel(new WrapLayout(FlowLayout.LEADING, 10, 5));		
 			generateBed = new JCheckBox("Generate a corresponding bed file");
 			checkBoxesPanel.add(generateBed);
 			includeCDS = new JCheckBox("Include coding sequences");
@@ -863,7 +874,7 @@ public class AnalysesPanel extends ManagerPanel {
 			biotypesScrollPane.setBorder(BorderFactory.createTitledBorder("Select which Ensembl biotypes to include"));
 			panel.add(biotypesScrollPane, BorderLayout.CENTER);
 
-			JPanel validationPanel = new JPanel(new WrapLayout(WrapLayout.LEADING, 10, 5));
+			JPanel validationPanel = new JPanel(new WrapLayout(FlowLayout.LEADING, 10, 5));
 			JButton importButton = new JButton(" Generate coverage regions ");
 			importButton.addActionListener(new ActionListener() {
 				@Override

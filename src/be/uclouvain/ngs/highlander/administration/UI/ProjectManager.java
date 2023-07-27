@@ -39,10 +39,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.WindowConstants;
 import javax.swing.text.DefaultEditorKit;
 
 import java.awt.Dimension;
@@ -95,6 +97,7 @@ import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
 import be.uclouvain.ngs.highlander.datatype.Analysis;
 import be.uclouvain.ngs.highlander.datatype.AnalysisFull;
 
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
@@ -172,7 +175,7 @@ public class ProjectManager extends JFrame {
 					consoleFrame.add(new JScrollPane(console), BorderLayout.CENTER);
 					consoleFrame.setIconImage(Resources.getScaledIcon(Resources.iAdminstrationTools,64).getImage());
 					consoleFrame.setTitle("Console");
-					consoleFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+					consoleFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 					Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 					int width = screenSize.width - (screenSize.width/4*3);
 					int height = (int)(screenSize.height*0.95);
@@ -187,7 +190,7 @@ public class ProjectManager extends JFrame {
 	}
 
 	private void initUI(){
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP);
 		getContentPane().add(tabbedPane, BorderLayout.CENTER);		
 		tabbedPane.addTab("Project management", null, getTabProjectsManagement(), null);
 		tabbedPane.addTab("Database management", null, getTabDatabaseManagement(), null);
@@ -201,7 +204,7 @@ public class ProjectManager extends JFrame {
 		projectsPanel = new ProjectsPanel(this);
 		samplesPanel = new SamplesPanel(this);
 		JPanel panel = new JPanel(new BorderLayout());
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);		
+		JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP);		
 		tabbedPane.addTab("Projects", null, projectsPanel, null);
 		tabbedPane.addTab("Post-importation steps", null, new PostImportationPanel(this), null);
 		tabbedPane.addTab("Samples", null, samplesPanel, null);
@@ -213,7 +216,7 @@ public class ProjectManager extends JFrame {
 		analysesPanel = new AnalysesPanel(this);
 		reportsPanel = new ReportsPanel(this);
 		JPanel panel = new JPanel(new BorderLayout());
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);		
+		JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP);		
 		tabbedPane.addTab("Analyses", null, analysesPanel, null);
 		tabbedPane.addTab("References", null, new ReferencesPanel(this), null);
 		tabbedPane.addTab("Fields", null, new FieldsPanel(this), null);
@@ -228,7 +231,7 @@ public class ProjectManager extends JFrame {
 
 	private JPanel getTabClientManagement(){
 		JPanel panel = new JPanel(new BorderLayout());
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);		
+		JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP);		
 		tabbedPane.addTab("Global settings", null, new GlobalSettingsPanel(this), null);
 		tabbedPane.addTab("External links", null, new LinksPanel(this), null);
 		tabbedPane.addTab("Default columns", null, new DefaultColumnsPanel(this), null);
@@ -238,7 +241,7 @@ public class ProjectManager extends JFrame {
 	
 	private JPanel getTabUserManagement(){
 		JPanel panel = new JPanel(new BorderLayout());
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);		
+		JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP);		
 		tabbedPane.addTab("Management", null, new UserManagementPanel(this), null);
 		tabbedPane.addTab("Sample permissions", null, new UserPermissionsPanel(this), null);
 		tabbedPane.addTab("Mail users", null, new MailUsers(this), null);
@@ -248,7 +251,7 @@ public class ProjectManager extends JFrame {
 
 	private JPanel getTabTools(){
 		JPanel panel = new JPanel(new BorderLayout());
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);		
+		JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP);		
 		tabbedPane.addTab("VCF tools", null, new VcfToolsPanel(this), null);
 		if (betaActive) {
 			relauncherPanel = new RelauncherPanel(this);
@@ -311,6 +314,7 @@ public class ProjectManager extends JFrame {
 		System.setOut(new PrintStream(pOut));
 		System.setErr(new PrintStream(pOut));
 		new Thread(new Runnable(){
+			@Override
 			public void run(){
 				try (PipedInputStream pIn = new PipedInputStream(pOut)){					
 					try (BufferedReader reader = new BufferedReader(new InputStreamReader(pIn))){
@@ -575,6 +579,7 @@ public class ProjectManager extends JFrame {
 	}
 	
 	//Overridden so we can exit when window is closed
+	@Override
 	protected void processWindowEvent(WindowEvent e) {
 		super.processWindowEvent(e);
 		if (e.getID() == WindowEvent.WINDOW_CLOSING) {
@@ -624,19 +629,19 @@ public class ProjectManager extends JFrame {
 					if (Tools.isMac()){
 						for (String map : new String[]{"EditorPane.focusInputMap","FormattedTextField.focusInputMap","PasswordField.focusInputMap","TextArea.focusInputMap","TextField.focusInputMap","TextPane.focusInputMap"}){
 							im = (InputMap) UIManager.get(map);
-							im.put(KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.META_DOWN_MASK), DefaultEditorKit.copyAction);
-							im.put(KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.META_DOWN_MASK), DefaultEditorKit.pasteAction);
-							im.put(KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.META_DOWN_MASK), DefaultEditorKit.cutAction);
-							im.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.META_DOWN_MASK), DefaultEditorKit.selectAllAction);
+							im.put(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.META_DOWN_MASK), DefaultEditorKit.copyAction);
+							im.put(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.META_DOWN_MASK), DefaultEditorKit.pasteAction);
+							im.put(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.META_DOWN_MASK), DefaultEditorKit.cutAction);
+							im.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.META_DOWN_MASK), DefaultEditorKit.selectAllAction);
 						}
 						//IMPORTANT: JTable.processKeyBinding has a bug (it doesn't check if the meta key is pressed before triggering the cell editor)
 						//Don't forget to override it in each JTable to allow the meta+V to work correctly on MacOSX 
 						for (String map : new String[]{"List.focusInputMap","Table.ancestorInputMap","Tree.focusInputMap"}){
 							im = (InputMap) UIManager.get(map);
-							im.put(KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.META_DOWN_MASK), "copy");
-							im.put(KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.META_DOWN_MASK), "paste");
-							im.put(KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.META_DOWN_MASK), "cut");
-							im.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.META_DOWN_MASK), "selectAll");
+							im.put(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.META_DOWN_MASK), "copy");
+							im.put(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.META_DOWN_MASK), "paste");
+							im.put(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.META_DOWN_MASK), "cut");
+							im.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.META_DOWN_MASK), "selectAll");
 						}			
 					}	
 					break;
@@ -678,6 +683,7 @@ public class ProjectManager extends JFrame {
 			Highlander.setLoggedUser(user);
 			final ProjectManager pm = new ProjectManager();
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					pm.validate();
 					//Center the window

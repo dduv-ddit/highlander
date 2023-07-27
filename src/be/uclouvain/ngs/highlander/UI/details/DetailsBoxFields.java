@@ -41,6 +41,7 @@ import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
@@ -82,23 +83,28 @@ public class DetailsBoxFields extends DetailsBox {
 		initCommonUI(visible);
 	}
 
+	@Override
 	public DetailsPanel getDetailsPanel(){
 		return mainPanel;
 	}
 
+	@Override
 	public String getTitle(){
 		return WordUtils.capitalize(category.getName());
 	}
 
 
+	@Override
 	public Palette getColor() {
 		return category.getColor();
 	}
 
+	@Override
 	protected boolean isDetailsLoaded(){
 		return detailsLoaded;
 	}
 
+	@Override
 	protected void loadDetails(){
 		try{
 			AnalysisFull analysis = Highlander.getCurrentAnalysis();
@@ -210,6 +216,7 @@ public class DetailsBoxFields extends DetailsBox {
 						}
 						final DetailsTableModel model = new DetailsTableModel(fields, values);
 						table = new JTable(model){
+							@Override
 							public String getToolTipText(MouseEvent e) {
 								String tip = null;
 								java.awt.Point p = e.getPoint();
@@ -276,6 +283,7 @@ public class DetailsBoxFields extends DetailsBox {
 	}
 	
 	private class ColoredTableCellRenderer extends MultiLineTableCellRenderer {
+		@Override
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 			Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 			JTextArea textArea = (JTextArea) comp;
@@ -294,7 +302,7 @@ public class DetailsBoxFields extends DetailsBox {
 				odd = Resources.getColor(Palette.Green, 600, true);
 			}
 			Field field = (column == 0) ? new Field("field") : ((DetailsTableModel)table.getModel()).getRowField(row);
-			return Highlander.getCellRenderer().renderCell(textArea, value, field, JLabel.LEFT, row, isSelected, even, odd , false);
+			return Highlander.getCellRenderer().renderCell(textArea, value, field, SwingConstants.LEFT, row, isSelected, even, odd , false);
 		}
 	}
 
@@ -307,10 +315,12 @@ public class DetailsBoxFields extends DetailsBox {
 			this.values = values;
 		}
 
+		@Override
 		public int getColumnCount() {
 			return 2;
 		}
 
+		@Override
 		public String getColumnName(int col) {
 			switch(col){
 			case 0:
@@ -337,14 +347,17 @@ public class DetailsBoxFields extends DetailsBox {
 			return fields.get(row).getHtmlTooltip();
 		}
 		
+		@Override
 		public int getRowCount() {
 			return fields.size();
 		}
 
+		@Override
 		public Class<?> getColumnClass(int columnIndex) {
 			return String.class;
 		}
 
+		@Override
 		public Object getValueAt(int row, int col) {
 			switch(col){
 			case 0:
@@ -356,9 +369,11 @@ public class DetailsBoxFields extends DetailsBox {
 			}
 		}
 
+		@Override
 		public void setValueAt(Object value, int row, int col) {
 		}
 
+		@Override
 		public boolean isCellEditable(int rowIndex, int columnIndex) {
 			return false;
 		}

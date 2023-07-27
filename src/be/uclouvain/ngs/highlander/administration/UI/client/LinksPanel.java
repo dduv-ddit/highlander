@@ -26,6 +26,7 @@ package be.uclouvain.ngs.highlander.administration.UI.client;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FileDialog;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -168,6 +169,7 @@ public class LinksPanel extends ManagerPanel {
 		JButton button_up = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleUp, 24));
 		button_up.setToolTipText("Put selected analysis before in order of appearance in Highlander toolbar");
 		button_up.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				reorderLinks(selectedIndex, true);
 			}
@@ -181,6 +183,7 @@ public class LinksPanel extends ManagerPanel {
 		JButton button_down = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleDown, 24));
 		button_down.setToolTipText("Put selected analysis after in order of appearance in Highlander toolbar");
 		button_down.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				reorderLinks(selectedIndex, false);
 			}
@@ -234,7 +237,7 @@ public class LinksPanel extends ManagerPanel {
 	
 	private void fillButtons() {
 		scrollButtons.setViewportView(null);
-		JPanel buttonPanel = new JPanel(new WrapLayout(WrapLayout.LEADING));
+		JPanel buttonPanel = new JPanel(new WrapLayout(FlowLayout.LEADING));
 		for (ExternalLink link : availableLinks) {
 			JButton button = link.getButton();
 			button.addActionListener(new ActionListener() {
@@ -281,6 +284,7 @@ public class LinksPanel extends ManagerPanel {
 								String filename = d.getDirectory() + d.getFile();
 								File file = new File(filename);
 								SwingUtilities.invokeLater(new Runnable() {
+									@Override
 									public void run() {
 										waitingPanel.setVisible(true);
 										waitingPanel.start();
@@ -294,6 +298,7 @@ public class LinksPanel extends ManagerPanel {
 									ProjectManager.toConsole(ex);			
 								}
 								SwingUtilities.invokeLater(new Runnable() {
+									@Override
 									public void run() {
 										waitingPanel.setVisible(false);
 										waitingPanel.stop();
@@ -314,6 +319,7 @@ public class LinksPanel extends ManagerPanel {
 						@Override
 						public void run() {
 							SwingUtilities.invokeLater(new Runnable() {
+								@Override
 								public void run() {
 									waitingPanel.setVisible(true);
 									waitingPanel.start();
@@ -327,6 +333,7 @@ public class LinksPanel extends ManagerPanel {
 								ProjectManager.toConsole(ex);			
 							}
 							SwingUtilities.invokeLater(new Runnable() {
+								@Override
 								public void run() {
 									waitingPanel.setVisible(false);
 									waitingPanel.stop();
@@ -527,6 +534,7 @@ public class LinksPanel extends ManagerPanel {
 
 	public void createExternalLink(){
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				waitingPanel.setVisible(true);
 				waitingPanel.start();
@@ -577,6 +585,7 @@ public class LinksPanel extends ManagerPanel {
 			}
 		}
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				waitingPanel.setVisible(false);
 				waitingPanel.stop();

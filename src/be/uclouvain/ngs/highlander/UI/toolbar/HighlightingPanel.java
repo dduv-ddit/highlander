@@ -76,6 +76,7 @@ public class HighlightingPanel extends JPanel {
 		btnSave.setToolTipText("Save current highlighting rules set in your profile");
 		btnSave.setPreferredSize(new Dimension(54,54));
 		btnSave.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					String highlightingName = ProfileTree.showProfileDialog(mainframe, Action.SAVE, UserData.HIGHLIGHTING, Highlander.getCurrentAnalysis().toString(), "Save "+UserData.HIGHLIGHTING.getName()+" to your profile", currentHighlightName);
@@ -101,6 +102,7 @@ public class HighlightingPanel extends JPanel {
 		btnLoad.setToolTipText("Load a highlighting rules set from your profile");
 		btnLoad.setPreferredSize(new Dimension(54,54));
 		btnLoad.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				String highlightingName = ProfileTree.showProfileDialog(mainframe, Action.LOAD, UserData.HIGHLIGHTING, Highlander.getCurrentAnalysis().toString(), "Load highlighting rules set from your profile");
 				if (highlightingName != null){
@@ -123,6 +125,7 @@ public class HighlightingPanel extends JPanel {
 		button_add_highlighting.setToolTipText("Add highlighting rule");
 		button_add_highlighting.setPreferredSize(new Dimension(54,54));
 		button_add_highlighting.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (table == null) {
 					JOptionPane.showMessageDialog(new JFrame(), "Table is empty, you must first generate a filter.", "No table", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
@@ -144,6 +147,7 @@ public class HighlightingPanel extends JPanel {
 		button_add_heatmap.setToolTipText("Add heat map");
 		button_add_heatmap.setPreferredSize(new Dimension(54,54));
 		button_add_heatmap.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (table == null) {
 					JOptionPane.showMessageDialog(new JFrame(), "Table is empty, you must first generate a filter.", "No table", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
@@ -172,9 +176,11 @@ public class HighlightingPanel extends JPanel {
 		btnRemoveAll.setToolTipText("Remove all filtering criteria from the list");
 		btnRemoveAll.setPreferredSize(new Dimension(54,54));
 		btnRemoveAll.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
-	  			public void run(){
+	  			@Override
+					public void run(){
 	  				highlightCriteria.removeAll();
 	  				currentHighlightName = null;	  				
 	  				Highlander.getCellRenderer().clearHighlighting();

@@ -119,6 +119,7 @@ public class FilteringPanel extends JPanel {
 		btnTreeView.setToolTipText("View/Build filter in a tree interface");
 		btnTreeView.setPreferredSize(new Dimension(54,54));
 		btnTreeView.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				treeView();
 			}
@@ -129,6 +130,7 @@ public class FilteringPanel extends JPanel {
 		btnSave.setToolTipText("Save current filters in your profile");
 		btnSave.setPreferredSize(new Dimension(54,54));
 		btnSave.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				saveCurrentFilter(mainFrame);
 			}
@@ -139,6 +141,7 @@ public class FilteringPanel extends JPanel {
 		btnLoad.setToolTipText("Load a filter from your profile");
 		btnLoad.setPreferredSize(new Dimension(54,54));
 		btnLoad.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				addFilter(AddChoice.LoadCombo, null, mainFrame);
 			}
@@ -149,6 +152,7 @@ public class FilteringPanel extends JPanel {
 		btnLoadAnd.setToolTipText("Add a filter from your profile to the existing ones, using the logical operator AND (i.e. results will be the INTERSECTION of filters)");
 		btnLoadAnd.setPreferredSize(new Dimension(54,54));
 		btnLoadAnd.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				addFilter(AddChoice.LoadCombo, LogicalOperator.AND, mainFrame);
 			}
@@ -160,6 +164,7 @@ public class FilteringPanel extends JPanel {
 		btnLoadOr.setToolTipText("Add a filter from your profile to the existing ones, using the logical operator OR (i.e. results will be the UNION of filters)");
 		btnLoadOr.setPreferredSize(new Dimension(54,54));
 		btnLoadOr.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				addFilter(AddChoice.LoadCombo, LogicalOperator.OR, mainFrame);
 			}
@@ -170,8 +175,10 @@ public class FilteringPanel extends JPanel {
 		btnAddCustom = new JButton(Resources.getScaledIcon(Resources.iFilterAddCustom, 40));
 		btnAddCustom.setToolTipText("Add a new custom filter");
 		btnAddCustom.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						addFilter(AddChoice.NewCustom, null, mainFrame);
 					}
@@ -184,8 +191,10 @@ public class FilteringPanel extends JPanel {
 		btnAddCustomAnd = new JButton(Resources.getScaledIcon(Resources.iFilterAddCustomAnd, 40));
 		btnAddCustomAnd.setToolTipText("Add a custom filter to the existing ones, using the logical operator AND (i.e. results will be the INTERSECTION of filters)");
 		btnAddCustomAnd.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						addFilter(AddChoice.NewCustom, LogicalOperator.AND, mainFrame);
 					}
@@ -199,8 +208,10 @@ public class FilteringPanel extends JPanel {
 		btnAddCustomOr = new JButton(Resources.getScaledIcon(Resources.iFilterAddCustomOr, 40));
 		btnAddCustomOr.setToolTipText("Add a custom filter to the existing ones, using the logical operator OR (i.e. results will be the UNION of filters)");
 		btnAddCustomOr.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						addFilter(AddChoice.NewCustom, LogicalOperator.OR, mainFrame);
 					}
@@ -214,8 +225,10 @@ public class FilteringPanel extends JPanel {
 		btnAddmagic = new JButton(Resources.getScaledIcon(Resources.iFilterAddMagic, 40));
 		btnAddmagic.setToolTipText("Add a new magic filter");
 		btnAddmagic.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						addFilter(AddChoice.NewMagic, null, mainFrame);
 					}
@@ -228,8 +241,10 @@ public class FilteringPanel extends JPanel {
 		btnAddmagicAnd = new JButton(Resources.getScaledIcon(Resources.iFilterAddMagicAnd, 40));
 		btnAddmagicAnd.setToolTipText("Add a magic filter to the existing ones, using the logical operator AND (i.e. results will be the INTERSECTION of filters)");
 		btnAddmagicAnd.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						addFilter(AddChoice.NewMagic, LogicalOperator.AND, mainFrame);
 					}
@@ -243,8 +258,10 @@ public class FilteringPanel extends JPanel {
 		btnAddmagicOr = new JButton(Resources.getScaledIcon(Resources.iFilterAddMagicOr, 40));
 		btnAddmagicOr.setToolTipText("Add a magic filter to the existing ones, using the logical operator OR (i.e. results will be the UNION of filters)");
 		btnAddmagicOr.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						addFilter(AddChoice.NewMagic, LogicalOperator.OR, mainFrame);
 					}
@@ -261,8 +278,10 @@ public class FilteringPanel extends JPanel {
 		btnRemoveAll.setToolTipText("Remove all filtering criteria from the list");
 		btnRemoveAll.setPreferredSize(new Dimension(54,54));
 		btnRemoveAll.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						clearFilter();
 					}
@@ -275,8 +294,10 @@ public class FilteringPanel extends JPanel {
 		btnSamples.setToolTipText("Get number and list of samples included using current filtering criteria");
 		btnSamples.setPreferredSize(new Dimension(54,54));
 		btnSamples.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						listSamples();
 					}
@@ -289,8 +310,10 @@ public class FilteringPanel extends JPanel {
 		btnCount.setToolTipText("Count variants from the database using current filters");
 		btnCount.setPreferredSize(new Dimension(54,54));
 		btnCount.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						countVariants();
 					}
@@ -303,8 +326,10 @@ public class FilteringPanel extends JPanel {
 		btnApply.setToolTipText("Fetch variants from the database using current filters");
 		btnApply.setPreferredSize(new Dimension(54,54));
 		btnApply.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						mainFrame.refreshTable();
 					}
@@ -351,12 +376,14 @@ public class FilteringPanel extends JPanel {
 		treeView.setVisible(true);
 		if (treeView.getResult() == Result.SUBMIT){
 			new Thread(new Runnable(){
+				@Override
 				public void run(){
 					mainFrame.refreshTable();
 				}
 			}, "FilteringPanel.refreshTable").start();
 		}else if (treeView.getResult() == Result.COUNT){
 			new Thread(new Runnable(){
+				@Override
 				public void run(){
 					countVariants();
 				}
@@ -557,7 +584,7 @@ public class FilteringPanel extends JPanel {
 						JOptionPane.INFORMATION_MESSAGE, Resources.getScaledIcon(Resources.iCount,64));
 
 			}
-		} catch (com.mysql.jdbc.exceptions.MySQLStatementCancelledException ex){
+		} catch (com.mysql.cj.jdbc.exceptions.MySQLStatementCancelledException ex){
 			Highlander.waitingPanel.setProgressString("Cancelling query", true);
 		}catch (Exception ex){
 			Tools.exception(ex);

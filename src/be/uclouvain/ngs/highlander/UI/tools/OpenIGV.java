@@ -259,8 +259,10 @@ public class OpenIGV extends JDialog {
 
 		JButton btnApply = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 24));
 		btnApply.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {				
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						viewInIGV();
 					}
@@ -271,6 +273,7 @@ public class OpenIGV extends JDialog {
 
 		JButton btnCancel = new JButton(Resources.getScaledIcon(Resources.iCross, 24));
 		btnCancel.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				dispose();
 			}
@@ -450,6 +453,7 @@ public class OpenIGV extends JDialog {
 
 		JButton btnAddSample = new JButton("Add sample",Resources.getScaledIcon(Resources.i3dPlus, 24));
 		btnAddSample.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				searchSample();
 			}
@@ -488,11 +492,12 @@ public class OpenIGV extends JDialog {
 		memorySlider.setPaintLabels(false);
 		memorySlider.setSnapToTicks(true);
 		memorySlider.addChangeListener(new ChangeListener() {
+			@Override
 			public void stateChanged(ChangeEvent e) {
 				JSlider source = (JSlider) e.getSource();
 				int memory = source.getValue();
 				if (memory == 0) memory = 256;
-				lblAmount.setText("Memory allowed : " +((memory < 1024)?memory+" Mb":Tools.doubleToString((double)memory/1024.0, 1, false)+" Gb"));
+				lblAmount.setText("Memory allowed : " +((memory < 1024)?memory+" Mb":Tools.doubleToString(memory/1024.0, 1, false)+" Gb"));
 			}
 		});
 		GridBagConstraints gbc_rdbtndbsnp = new GridBagConstraints();
@@ -524,7 +529,7 @@ public class OpenIGV extends JDialog {
 		for (Component c : bamPanel.getComponents()){
 			if (c instanceof JCheckBox){
 				if (!((JCheckBox)c).getText().equals("Alignment (BAM)")) {
-					AnalysisFull a = analysesBam.get((JCheckBox)c);
+					AnalysisFull a = analysesBam.get(c);
 					if (!bams.containsKey(a)){
 						bams.put(a, new TreeSet<String>());
 					}
@@ -585,7 +590,7 @@ public class OpenIGV extends JDialog {
 		for (Component c : bamPanel.getComponents()){
 			if (c instanceof JCheckBox){
 				if (!((JCheckBox)c).getText().equals("Alignment (BAM)") && ((JCheckBox)c).isSelected()) {
-					AnalysisFull a = analysesBam.get((JCheckBox)c);
+					AnalysisFull a = analysesBam.get(c);
 					if (!selectedBams.containsKey(a)){
 						selectedBams.put(a, new TreeSet<String>());
 					}
@@ -596,7 +601,7 @@ public class OpenIGV extends JDialog {
 		for (Component c : vcfPanel.getComponents()){
 			if (c instanceof JCheckBox){
 				if (!((JCheckBox)c).getText().equals("Variants (VCF)") && ((JCheckBox)c).isSelected()) {
-					AnalysisFull a = analysesVcf.get((JCheckBox)c);
+					AnalysisFull a = analysesVcf.get(c);
 					if (!selectedVcfs.containsKey(a)){
 						selectedVcfs.put(a, new TreeSet<String>());
 					}
@@ -739,6 +744,7 @@ public class OpenIGV extends JDialog {
 			this.is = is;
 		}
 
+		@Override
 		public void run() {
 			try (InputStreamReader isr = new InputStreamReader(is)){
 				try (BufferedReader br = new BufferedReader(isr)){

@@ -45,7 +45,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import java.sql.ResultSetMetaData;
-import java.sql.Timestamp;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.EnumMap;
@@ -64,6 +64,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JToggleButton;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
 import javax.swing.table.AbstractTableModel;
@@ -72,9 +73,12 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFDataFormat;
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -189,6 +193,7 @@ public class IonCoverage extends JFrame {
 					@Override
 					public void run() {
 						SwingUtilities.invokeLater(new Runnable() {
+							@Override
 							public void run() {
 								waitingPanel.setVisible(true);
 								waitingPanel.start();
@@ -201,6 +206,7 @@ public class IonCoverage extends JFrame {
 							}
 						}
 						SwingUtilities.invokeLater(new Runnable() {
+							@Override
 							public void run() {
 								waitingPanel.setVisible(false);
 								waitingPanel.stop();
@@ -233,6 +239,7 @@ public class IonCoverage extends JFrame {
 
 		JButton btnClose = new JButton(Resources.getScaledIcon(Resources.iCross, 24));
 		btnClose.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				dispose();
 			}
@@ -241,8 +248,10 @@ public class IonCoverage extends JFrame {
 
 		JButton export = new JButton(Resources.getScaledIcon(Resources.iExcel, 24));
 		export.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
+					@Override
 					public void run(){
 						export(Bed.values()[tabs.getSelectedIndex()/Bed.values().length], Grouping.values()[tabs.getSelectedIndex()%Bed.values().length]);
 					}
@@ -253,8 +262,10 @@ public class IonCoverage extends JFrame {
 
 		final JToggleButton colors = new JToggleButton("Germinal", Resources.getScaledIcon(Resources.iHighlighting, 24), germinal);
 		colors.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				SwingUtilities.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						if (germinal){
 							germinal = false;
@@ -318,8 +329,10 @@ public class IonCoverage extends JFrame {
 				tabs.addTab(tabName, scrollPane);
 
 				JTable table = new JTable(){
+					@Override
 					protected JTableHeader createDefaultTableHeader() {
 						return new JTableHeader(columnModel) {
+							@Override
 							public String getToolTipText(MouseEvent e) {
 								java.awt.Point p = e.getPoint();
 								int index = columnModel.getColumnIndexAtX(p.x);
@@ -351,15 +364,16 @@ public class IonCoverage extends JFrame {
 	}	
 
 	private class ColoredTableCellRenderer extends DefaultTableCellRenderer {
+		@Override
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 			Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 			JLabel label = (JLabel) comp;
 			String colname = table.getColumnName(column);
 
 			if (leftAligned.contains(colname)){
-				label.setHorizontalAlignment(JLabel.LEFT);
+				label.setHorizontalAlignment(SwingConstants.LEFT);
 			}else{
-				label.setHorizontalAlignment(JLabel.CENTER);
+				label.setHorizontalAlignment(SwingConstants.CENTER);
 			}
 
 			if (value == null) {
@@ -404,29 +418,36 @@ public class IonCoverage extends JFrame {
 			this.classes = classes;
 		}
 
+		@Override
 		public int getColumnCount() {
 			return headers.length;
 		}
 
+		@Override
 		public String getColumnName(int col) {
 			return headers[col];
 		}
 
+		@Override
 		public int getRowCount() {
 			return data.length;
 		}
 
+		@Override
 		public Class<?> getColumnClass(int col) {
 			return classes[col];
 		}
 
+		@Override
 		public Object getValueAt(int row, int col) {
 			return data[row][col];
 		}
 
+		@Override
 		public void setValueAt(Object value, int row, int col) {
 		}
 
+		@Override
 		public boolean isCellEditable(int rowIndex, int columnIndex) {
 			return false;
 		}
@@ -593,7 +614,7 @@ public class IonCoverage extends JFrame {
 				}
 				for (int r=1 ; r < rowCount ; r++){
 					for (int c=2 ; c < colCount ; c++){
-						data[0][c] = Double.parseDouble(data[0][c].toString()) + (Double.parseDouble(data[r][c].toString())/(double)(rowCount-1));
+						data[0][c] = Double.parseDouble(data[0][c].toString()) + (Double.parseDouble(data[r][c].toString())/(rowCount-1));
 					}
 				}
 			}
@@ -645,66 +666,67 @@ public class IonCoverage extends JFrame {
 				JTable table = tables.get(bed).get(grouping);
 				HeatMap heatMap = heatMaps.get(table);
 				try{
-					Workbook wb = new SXSSFWorkbook(100);  		
-					Sheet sheet = wb.createSheet("coverage info");
-					sheet.createFreezePane(0, 1);		
-					int r = 0;
-					Row row = sheet.createRow(r++);
-					row.setHeightInPoints(50);
-					for (int c = 0 ; c < table.getColumnCount() ; c++){
-						row.createCell(c).setCellValue(table.getColumnName(c));
-					}
-					sheet.setAutoFilter(new CellRangeAddress(0, 0, 0, table.getColumnCount()-1));
-					int nrow = table.getRowCount();
-					waitingPanel.setProgressString("Exporting "+Tools.doubleToString(nrow, 0, false)+" rows", false);
-					waitingPanel.setProgressMaximum(nrow);
-
-					Map<String, XSSFCellStyle> styles = new HashMap<String, XSSFCellStyle>();		  	
-					for (int i=0 ; i < nrow ; i++ ){
-						waitingPanel.setProgressValue(r);
-						row = sheet.createRow(r++);
+					try(Workbook wb = new SXSSFWorkbook(100)){  		
+						Sheet sheet = wb.createSheet("coverage info");
+						sheet.createFreezePane(0, 1);		
+						int r = 0;
+						Row row = sheet.createRow(r++);
+						row.setHeightInPoints(50);
 						for (int c = 0 ; c < table.getColumnCount() ; c++){
-							Cell cell = row.createCell(c);
-							if (table.getValueAt(i, c) != null){
-								String colname = table.getColumnName(c);
-								Object value = table.getValueAt(i, c);
-								Color color = null;
-								if (value != null){
-									if (hasHeatMap.contains(colname)){
-										color = heatMap.getColor(i, c);
+							row.createCell(c).setCellValue(table.getColumnName(c));
+						}
+						sheet.setAutoFilter(new CellRangeAddress(0, 0, 0, table.getColumnCount()-1));
+						int nrow = table.getRowCount();
+						waitingPanel.setProgressString("Exporting "+Tools.doubleToString(nrow, 0, false)+" rows", false);
+						waitingPanel.setProgressMaximum(nrow);
+
+						Map<String, XSSFCellStyle> styles = new HashMap<String, XSSFCellStyle>();		  	
+						for (int i=0 ; i < nrow ; i++ ){
+							waitingPanel.setProgressValue(r);
+							row = sheet.createRow(r++);
+							for (int c = 0 ; c < table.getColumnCount() ; c++){
+								Cell cell = row.createCell(c);
+								if (table.getValueAt(i, c) != null){
+									String colname = table.getColumnName(c);
+									Object value = table.getValueAt(i, c);
+									Color color = null;
+									if (value != null){
+										if (hasHeatMap.contains(colname)){
+											color = heatMap.getColor(i, c);
+										}
+									}  		
+									String styleKey  = generateCellStyleKey(color, !leftAligned.contains(colname), percent.contains(colname), (table.getColumnClass(c) == Long.class || table.getColumnClass(c) == Integer.class));
+									if (!styles.containsKey(styleKey)){
+										styles.put(styleKey, createCellStyle(sheet, cell, color, !leftAligned.contains(colname), percent.contains(colname), (table.getColumnClass(c) == Long.class || table.getColumnClass(c) == Integer.class)));
 									}
-								}  		
-								String styleKey  = generateCellStyleKey(color, !leftAligned.contains(colname), percent.contains(colname), (table.getColumnClass(c) == Long.class || table.getColumnClass(c) == Integer.class));
-								if (!styles.containsKey(styleKey)){
-									styles.put(styleKey, createCellStyle(sheet, cell, color, !leftAligned.contains(colname), percent.contains(colname), (table.getColumnClass(c) == Long.class || table.getColumnClass(c) == Integer.class)));
+									cell.setCellStyle(styles.get(styleKey));
+									if (table.getColumnClass(c) == OffsetDateTime.class)
+										cell.setCellValue(((OffsetDateTime)value).toLocalDateTime());
+									else if (table.getColumnClass(c) == Integer.class)
+										cell.setCellValue(Integer.parseInt(value.toString()));
+									else if (table.getColumnClass(c) == Long.class)
+										cell.setCellValue(Long.parseLong(value.toString()));
+									else if (table.getColumnClass(c) == Double.class)
+										cell.setCellValue(Double.parseDouble(value.toString()));
+									else if (table.getColumnClass(c) == Boolean.class)
+										cell.setCellValue(Boolean.parseBoolean(value.toString()));
+									else 
+										cell.setCellValue(StringUtils.left(value.toString(), 32765)); //The maximum length of cell contents (text) is 32767 characters
 								}
-								cell.setCellStyle(styles.get(styleKey));
-								if (table.getColumnClass(c) == Timestamp.class)
-									cell.setCellValue((Timestamp)value);
-								else if (table.getColumnClass(c) == Integer.class)
-									cell.setCellValue(Integer.parseInt(value.toString()));
-								else if (table.getColumnClass(c) == Long.class)
-									cell.setCellValue(Long.parseLong(value.toString()));
-								else if (table.getColumnClass(c) == Double.class)
-									cell.setCellValue(Double.parseDouble(value.toString()));
-								else if (table.getColumnClass(c) == Boolean.class)
-									cell.setCellValue(Boolean.parseBoolean(value.toString()));
-								else 
-									cell.setCellValue(value.toString());
 							}
 						}
+						for (int c = 0 ; c < table.getColumnCount() ; c++){
+							//sheet.autoSizeColumn(c);
+							//Don't work with Java 7, Windows 7 and fonts not installed in the JVM. Here by default it would be Calibri, and then size is evaluated to zero for strings
+							//http://stackoverflow.com/questions/16943493/apache-poi-autosizecolumn-resizes-incorrectly
+						}
+						waitingPanel.setProgressValue(nrow);
+						waitingPanel.setProgressString("Writing file ...",true);		
+						try (FileOutputStream fileOut = new FileOutputStream(xls)){
+							wb.write(fileOut);
+						}
+						waitingPanel.setProgressDone();
 					}
-					for (int c = 0 ; c < table.getColumnCount() ; c++){
-						//sheet.autoSizeColumn(c);
-						//Don't work with Java 7, Windows 7 and fonts not installed in the JVM. Here by default it would be Calibri, and then size is evaluated to zero for strings
-						//http://stackoverflow.com/questions/16943493/apache-poi-autosizecolumn-resizes-incorrectly
-					}
-					waitingPanel.setProgressValue(nrow);
-					waitingPanel.setProgressString("Writing file ...",true);		
-					try (FileOutputStream fileOut = new FileOutputStream(xls)){
-						wb.write(fileOut);
-					}
-					waitingPanel.setProgressDone();
 				}catch(Exception ex){
 					waitingPanel.forceStop();
 					throw ex;
@@ -725,8 +747,8 @@ public class IonCoverage extends JFrame {
 	private XSSFCellStyle createCellStyle(Sheet sheet, Cell cell, Color color, boolean centered, boolean percent, boolean number){
 		XSSFCellStyle cs = (XSSFCellStyle)sheet.getWorkbook().createCellStyle();
 		if (color != null){
-			cs.setFillPattern(CellStyle.SOLID_FOREGROUND);
-			cs.setFillForegroundColor(new XSSFColor(color));  		
+			cs.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+			cs.setFillForegroundColor(new XSSFColor(color, null));  		
 		}
 		if (percent){
 			cs.setDataFormat(HSSFDataFormat.getBuiltinFormat("0%"));
@@ -735,12 +757,12 @@ public class IonCoverage extends JFrame {
 			cs.setDataFormat(HSSFDataFormat.getBuiltinFormat("#,##0"));
 		}
 		if (centered){
-			cs.setAlignment(CellStyle.ALIGN_CENTER);
+			cs.setAlignment(HorizontalAlignment.CENTER);
 		}
-		cs.setBorderBottom(CellStyle.BORDER_DASHED);
-		cs.setBorderTop(CellStyle.BORDER_DASHED);
-		cs.setBorderLeft(CellStyle.BORDER_DASHED);
-		cs.setBorderRight(CellStyle.BORDER_DASHED);
+		cs.setBorderBottom(BorderStyle.DASHED);
+		cs.setBorderTop(BorderStyle.DASHED);
+		cs.setBorderLeft(BorderStyle.DASHED);
+		cs.setBorderRight(BorderStyle.DASHED);
 		return cs;
 	}
 

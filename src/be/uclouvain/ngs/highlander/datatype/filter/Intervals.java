@@ -74,6 +74,7 @@ public class Intervals extends MagicFilter {
 		inside = true;
 	}
 
+	@Override
 	public FilterType getFilterType(){
 		return FilterType.INTERVALS;
 	}
@@ -82,10 +83,12 @@ public class Intervals extends MagicFilter {
 		return intervals;
 	}
 
+	@Override
 	public Set<String> getIncludedSamples(){
 		return samples;
 	}
 
+	@Override
 	public Set<String> getExcludedSamples(){
 		return new TreeSet<String>();
 	}
@@ -94,6 +97,7 @@ public class Intervals extends MagicFilter {
 		return inside;
 	}
 
+	@Override
 	public String toString(){
 		StringBuilder sb = new StringBuilder();
 		sb.append(getFilterType().getName() + ": ");
@@ -117,6 +121,7 @@ public class Intervals extends MagicFilter {
 		return sb.toString();
 	}
 
+	@Override
 	public String toHtmlString(){
 		StringBuilder sb = new StringBuilder();
 		sb.append("<html>");
@@ -145,6 +150,7 @@ public class Intervals extends MagicFilter {
 		return sb.toString();
 	}
 
+	@Override
 	public boolean isFilterValid(){
 		if (samples.isEmpty()){
 			return false;
@@ -157,6 +163,7 @@ public class Intervals extends MagicFilter {
 		}
 	}
 
+	@Override
 	public List<String> getValidationProblems(){
 		List<String> problems = new ArrayList<String>();
 		if (preFiltering != null){
@@ -170,6 +177,7 @@ public class Intervals extends MagicFilter {
 		return problems;
 	}
 
+	@Override
 	public String getSaveString(){
 		StringBuilder sb = new StringBuilder();
 		for (Interval interval : intervals){
@@ -194,6 +202,7 @@ public class Intervals extends MagicFilter {
 		return sb.toString();
 	}
 
+	@Override
 	public String parseSaveString(String saveString){
 		StringBuilder sb = new StringBuilder();
 		boolean hasPrefilter = saveString.indexOf('µ') > 0;
@@ -218,6 +227,7 @@ public class Intervals extends MagicFilter {
 		return sb.toString();
 	}
 
+	@Override
 	public Filter loadCriterion(FilteringPanel filteringPanel, String saveString) throws Exception {
 		boolean hasPrefilter = saveString.indexOf('µ') > 0;
 		String prefilter = (hasPrefilter) ? saveString.substring(saveString.indexOf('µ')+1) : "NO_PREFILTERING";		
@@ -239,6 +249,7 @@ public class Intervals extends MagicFilter {
 		return new Intervals(filteringPanel, setI, setP, i, loadPreFiltering);
 	}
 
+	@Override
 	public boolean checkFieldCompatibility(Analysis analysis){
 		if (!Field.variant_sample_id.hasAnalysis(analysis)) return false;
 		if (!Field.chr.hasAnalysis(analysis)) return false;
@@ -251,11 +262,13 @@ public class Intervals extends MagicFilter {
 		return true;
 	}
 
+	@Override
 	public boolean changeAnalysis(Analysis analysis){
 		if (preFiltering != null) return preFiltering.changeAnalysis(analysis);
 		return (checkFieldCompatibility(analysis));
 	}
 
+	@Override
 	public void editFilter(){
 		CreateMagicFilter cmf = new CreateMagicFilter(filteringPanel, this);
 		Tools.centerWindow(cmf, false);
@@ -270,10 +283,12 @@ public class Intervals extends MagicFilter {
 		}
 	}
 
+	@Override
 	public int getNumberOfVariants() {
 		return nVariants;
 	}
 
+	@Override
 	public Map<Integer,String> getResultIds(Set<String> autoSamples) throws Exception {
 		nVariants = -1;
 		if (samples.isEmpty()) {
