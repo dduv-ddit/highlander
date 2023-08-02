@@ -306,7 +306,7 @@ public class SqlGenerator {
 		fw.append("  `update_hard` BOOLEAN DEFAULT FALSE COMMENT 'Set to true when a table is currently being updated.',\n");
 		fw.append("  `beta_functionalities` BOOLEAN DEFAULT FALSE COMMENT 'Set to true to activate functionnalities that still need testing',\n");
 		fw.append("  PRIMARY KEY (`version`) \n");
-		fw.append(") ENGINE=MyISAM DEFAULT CHARSET=latin1;\n");
+		fw.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n");
 		return fw;
 	}
 
@@ -326,7 +326,7 @@ public class SqlGenerator {
 		fw.append("  `value` VARCHAR(1500) DEFAULT NULL,\n");
 		fw.append("  `description` TEXT NOT NULL,\n");
 		fw.append("  PRIMARY KEY (`section`,`setting`)\n");
-		fw.append(") ENGINE=MyISAM DEFAULT CHARSET=latin1;\n");
+		fw.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n");
 		return fw;
 	}
 
@@ -365,7 +365,7 @@ public class SqlGenerator {
 		fw.append("  `description` TEXT DEFAULT NULL,\n");
 		fw.append("  PRIMARY KEY (`id`),\n");
 		fw.append("  INDEX `id` (`reference`)\n");
-		fw.append(") ENGINE=MyISAM DEFAULT CHARSET=latin1;\n");
+		fw.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n");
 		return fw;
 	}
 	
@@ -411,7 +411,7 @@ public class SqlGenerator {
 		fw.append("  `file_description` TEXT DEFAULT NULL,\n");
 		fw.append("  PRIMARY KEY (`id`),\n");
 		fw.append("  INDEX `id` (`software`)\n");
-		fw.append(") ENGINE=MyISAM DEFAULT CHARSET=latin1;\n");
+		fw.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n");
 		return fw;
 	}
 	
@@ -473,7 +473,7 @@ public class SqlGenerator {
 		fw.append("  `enable` BOOLEAN DEFAULT TRUE,\n");
 		fw.append("  PRIMARY KEY (`id`),\n");
 		fw.append("  INDEX `id` (`name`)\n");
-		fw.append(") ENGINE=MyISAM DEFAULT CHARSET=latin1;\n");
+		fw.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n");
 		return fw;
 	}
 	
@@ -486,7 +486,7 @@ public class SqlGenerator {
 		fw.append("  `pathology_description` TEXT NOT NULL,\n");
 		fw.append("  PRIMARY KEY (`pathology_id`),\n");
 		fw.append("	 UNIQUE KEY `pathology_UNIQUE` (`pathology`)\n");
-		fw.append(") ENGINE=MyISAM DEFAULT CHARSET=latin1;\n");
+		fw.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n");
 		return fw;
 	}
 
@@ -499,7 +499,7 @@ public class SqlGenerator {
 		fw.append("  `population_description` TEXT NOT NULL,\n");
 		fw.append("  PRIMARY KEY (`population_id`),\n");
 		fw.append("	 UNIQUE KEY `population_UNIQUE` (`population`)\n");
-		fw.append(") ENGINE=MyISAM DEFAULT CHARSET=latin1;\n");
+		fw.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n");
 		return fw;
 	}
 	
@@ -551,7 +551,7 @@ public class SqlGenerator {
 		fw.append("  `size` VARCHAR(45) NOT NULL DEFAULT 'medium' COMMENT 'Width of the column in the GUI, defined in the field_sizes table',\n");
 		fw.append("  `alignment` ENUM('LEFT','CENTER','RIGHT') NOT NULL DEFAULT 'CENTER' COMMENT 'Column alignment in the GUI',\n");
 		fw.append("  PRIMARY KEY (`field`)\n");
-		fw.append(") ENGINE=MyISAM DEFAULT CHARSET=latin1;\n");
+		fw.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n");
 		return fw;
 	}
 
@@ -1479,7 +1479,7 @@ public class SqlGenerator {
 			fw.append("  `field` VARCHAR(255) NOT NULL,\n");
 			fw.append("  `analysis` varchar(255) NOT NULL,\n");
 			fw.append("  PRIMARY KEY (`field`, `analysis`) \n");
-			fw.append(") ENGINE=MyISAM DEFAULT CHARSET=latin1;\n");
+			fw.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n");
 			return fw;
 		}
 	
@@ -1490,7 +1490,7 @@ public class SqlGenerator {
 		fw.append("  `field` VARCHAR(255) NOT NULL,\n");
 		fw.append("  `tag` varchar(255) NOT NULL,\n");
 		fw.append("  PRIMARY KEY (`field`, `tag`) \n");
-		fw.append(") ENGINE=MyISAM DEFAULT CHARSET=latin1;\n");
+		fw.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n");
 		return fw;
 	}
 	
@@ -1503,7 +1503,7 @@ public class SqlGenerator {
 		fw.append("  `has_generic_detail_box` BOOLEAN NOT NULL DEFAULT TRUE COMMENT 'If a generic detail box must be shown in the GUI',\n");
 		fw.append("  `color` ENUM('Amber','Blue','BlueGray','Brown','Cyan','DeepOrange','DeepPurple','Gray','Green','Indigo','LightBlue','LightGreen','Lime','Orange','Pink','Purple','Red','Teal','Yellow') NOT NULL DEFAULT 'Gray' COMMENT 'Color of the category e.g. in detail boxes',\n");
 		fw.append("  PRIMARY KEY (`category`)\n");
-		fw.append(") ENGINE=MyISAM DEFAULT CHARSET=latin1;\n");
+		fw.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n");
 		return fw;
 	}
 
@@ -1548,7 +1548,7 @@ public class SqlGenerator {
 		fw.append("  `size` VARCHAR(45) NOT NULL,\n");
 		fw.append("  `width` INT(11) NOT NULL,\n");
 		fw.append("  PRIMARY KEY (`size`)\n");
-		fw.append(") ENGINE=MyISAM DEFAULT CHARSET=latin1;\n");
+		fw.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n");
 		return fw;
 	}
 
@@ -1626,7 +1626,7 @@ public class SqlGenerator {
 		fw.append("  INDEX `pathology_id` (`pathology_id`),\n");
 		fw.append("  INDEX `population_id` (`population_id`),\n");
 		fw.append("  INDEX `run_label` (`run_label`)\n");
-		fw.append(") ENGINE=MyISAM DEFAULT CHARSET=latin1;\n");
+		fw.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n");
 		return fw;
 	}
 
@@ -1637,7 +1637,7 @@ public class SqlGenerator {
 		fw.append("  `project_id` INT NOT NULL,\n");
 		fw.append("  `username` VARCHAR(16) NOT NULL,\n");
 		fw.append("  PRIMARY KEY (`project_id`, `username`) \n");
-		fw.append(") ENGINE=MyISAM DEFAULT CHARSET=latin1;\n");
+		fw.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n");
 		return fw;
 	}
 
@@ -1676,7 +1676,7 @@ public class SqlGenerator {
 		fw.append("  `users_warned` BOOLEAN DEFAULT FALSE,\n");
 		fw.append("  PRIMARY KEY (`project_id`, `analysis`), \n");
 		fw.append("  INDEX `run_path` (`run_path`)\n");
-		fw.append(") ENGINE=MyISAM DEFAULT CHARSET=latin1;\n");
+		fw.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n");
 		return fw;
 	}
 
@@ -1692,7 +1692,7 @@ public class SqlGenerator {
 		fw.append("  `rights` ENUM('user','administrator','inactive') NOT NULL DEFAULT 'user',\n");
 		fw.append("  `group` varchar(255) NOT NULL DEFAULT 'Main',\n");
 		fw.append("  PRIMARY KEY  (`username`)\n");
-		fw.append(") ENGINE=MyISAM DEFAULT CHARSET=latin1;\n");
+		fw.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n");
 		return fw;
 	}
 
@@ -1716,7 +1716,7 @@ public class SqlGenerator {
 		fw.append("	 INDEX `type` (`type`),\n");
 		fw.append("	 INDEX `key` (`key`(5))\n");
 
-		fw.append(") ENGINE=MyISAM DEFAULT CHARSET=latin1;\n");
+		fw.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n");
 		return fw;
 	}
 
@@ -1736,7 +1736,7 @@ public class SqlGenerator {
 		fw.append("  `vcf_extension` VARCHAR(255) NOT NULL,\n");
 		fw.append("  `variant_caller` ENUM('GATK', 'MUTECT', 'TORRENT', 'LIFESCOPE', 'SV', 'OTHER') NOT NULL DEFAULT 'OTHER',\n");
 		fw.append("  PRIMARY KEY (`analysis`) \n");
-		fw.append(") ENGINE=MyISAM DEFAULT CHARSET=latin1;\n");
+		fw.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n");
 		return fw;
 	}
 
@@ -2119,7 +2119,7 @@ public class SqlGenerator {
 		fw.append(" `ancestral_allele_vindijia_neandertal` VARCHAR(3) DEFAULT NULL,\n");
 		fw.append("	`insert_date_static` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,\n");
 		fw.append("	PRIMARY KEY (`variant_static_id`),\n");
-		fw.append("	UNIQUE KEY `variant` (`pos`,`chr`,`alternative`,`reference`,`length`,`gene_symbol`),\n");
+		fw.append("	UNIQUE KEY `variant` (`pos`,`chr`),\n");
 		fw.append("	INDEX `gene_symbol` (`gene_symbol`(25)),\n");
 		fw.append("	INDEX `gnomad_wes_af` (`gnomad_wes_af`),\n");	
 		fw.append("	INDEX `gnomad_wes_popmax_af` (`gnomad_wes_popmax_af`),\n");	
@@ -2128,7 +2128,7 @@ public class SqlGenerator {
 		fw.append("	INDEX `consensus_prediction` (`consensus_prediction`),\n");
 		fw.append("	INDEX `snpeff_effect` (`snpeff_effect`),\n");
 		fw.append("	INDEX `snpeff_all_effects` (`snpeff_all_effects`)\n");
-		fw.append(") ENGINE=MyISAM DEFAULT CHARSET=latin1;\n");
+		fw.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n");
 		return fw;
 	}
 
@@ -2175,11 +2175,11 @@ public class SqlGenerator {
 		fw.append("	`repeat_number_alt` SMALLINT DEFAULT NULL,\n");
 		fw.append("	`insert_date_sample` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,\n");
 		fw.append("	PRIMARY KEY (`variant_sample_id`),\n");
-		fw.append("	UNIQUE KEY `private_variant` (`pos`,`gene_symbol`,`project_id`,`alternative`,`reference`,`chr`,`length`),\n");
-		fw.append("	INDEX `variant` (`pos`,`chr`,`alternative`,`reference`,`length`,`gene_symbol`),\n");
+		fw.append("	UNIQUE KEY `private_variant` (`pos`,`gene_symbol`,`project_id`),\n");
+		fw.append("	INDEX `variant` (`pos`,`chr`),\n");
 		fw.append("	INDEX `project` (`project_id`),\n");
 		fw.append("	INDEX `gene_symbol` (`gene_symbol`(25))\n");
-		fw.append(") ENGINE=MyISAM DEFAULT CHARSET=latin1;\n");
+		fw.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n");
 		return fw;
 	}
 	
@@ -2197,11 +2197,11 @@ public class SqlGenerator {
 		fw.append("	`project_id` INT(10) UNSIGNED NOT NULL,\n");
 		fw.append("	`insert_date_custom` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,\n");
 		fw.append("	PRIMARY KEY (`variant_custom_id`),\n");
-		fw.append("	UNIQUE KEY `private_variant` (`pos`,`gene_symbol`,`project_id`,`alternative`,`reference`,`chr`,`length`),\n");
-		fw.append("	INDEX `variant` (`pos`,`chr`,`alternative`,`reference`,`length`,`gene_symbol`),\n");
+		fw.append("	UNIQUE KEY `private_variant` (`pos`,`gene_symbol`,`project_id`),\n");
+		fw.append("	INDEX `variant` (`pos`,`chr`),\n");
 		fw.append("	INDEX `project` (`project_id`),\n");
 		fw.append("	INDEX `gene_symbol` (`gene_symbol`(25))\n");
-		fw.append(") ENGINE=MyISAM DEFAULT CHARSET=latin1;\n");
+		fw.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n");
 		return fw;
 	}
 	
@@ -2314,7 +2314,7 @@ public class SqlGenerator {
 		fw.append("	PRIMARY KEY (`gene_id`),\n");
 		fw.append("	UNIQUE KEY `gene_symbol` (`gene_symbol`),\n");
 		fw.append("	INDEX `gene_ensembl` (`gene_ensembl`)\n");
-		fw.append(") ENGINE=MyISAM DEFAULT CHARSET=latin1;\n");
+		fw.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n");
 		return fw;
 	}
 	
@@ -2453,9 +2453,9 @@ public class SqlGenerator {
 		fw.append("	`somatic_hom` INT NOT NULL DEFAULT 0 COMMENT 'Count of homozygous individuals in this analysis (somatic samples) at this position.',\n");
 		fw.append("	`somatic_pathologies` SMALLINT NOT NULL DEFAULT 0 COMMENT 'Number of pathologies in this analysis having at least one individual with the SAME variation at same position in somatic samples.',\n");
 		fw.append("	PRIMARY KEY (`id`),\n");
-		fw.append("	UNIQUE KEY `variant` (`pos`,`chr`,`alternative`,`reference`,`length`),\n");
+		fw.append("	UNIQUE KEY `variant` (`pos`,`chr`),\n");
 		fw.append("	INDEX `local_af` (`local_af`)\n");
-		fw.append(") ENGINE=MyISAM DEFAULT CHARSET=latin1;\n");
+		fw.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n");
 		return fw;
 	}
 	
@@ -2490,10 +2490,10 @@ public class SqlGenerator {
 		fw.append("	`somatic_hom` INT NOT NULL DEFAULT 0 COMMENT 'Count of homozygous individuals in this analysis (somatic samples) at this position.',\n");
 		
 		fw.append("	PRIMARY KEY (`id`),\n");
-		fw.append("	INDEX `variant` (`pos`,`chr`,`alternative`,`reference`,`length`),\n");
+		fw.append("	INDEX `variant` (`pos`,`chr`),\n");
 		fw.append("	INDEX `pathology_id` (`pathology_id`),\n");
 		fw.append("	INDEX `local_af` (`local_af`)\n");
-		fw.append(") ENGINE=MyISAM DEFAULT CHARSET=latin1;\n");
+		fw.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n");
 		return fw;
 	}
 	
@@ -2512,8 +2512,8 @@ public class SqlGenerator {
 		fw.append("	`variant_of_interest` BOOLEAN DEFAULT NULL COMMENT 'Comments about the variant (whatever the sample), either visible only by username, or visible and modifiable by all users if username is set to PUBLIC.',\n");
 		fw.append("	`variant_comments` LONGTEXT NOT NULL COMMENT 'Comments about the variant (whatever the sample), either visible only by username, or visible and modifiable by all users if username is set to PUBLIC.',\n");
 		fw.append("	PRIMARY KEY  (`id`),\n");
-		fw.append("	UNIQUE KEY `variant_username` (`pos`,`chr`,`alternative`,`reference`,`length`,`gene_symbol`,`username`)\n");
-		fw.append(") ENGINE=MyISAM DEFAULT CHARSET=latin1;\n");
+		fw.append("	UNIQUE KEY `variant_username` (`pos`,`chr`,`username`)\n");
+		fw.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n");
 		return fw;
 	}
 
@@ -2528,7 +2528,7 @@ public class SqlGenerator {
 		fw.append("	`gene_comments` LONGTEXT NOT NULL COMMENT 'Comments about the gene, if any, either visible only by username, or visible and modifiable by all users if username is set to PUBLIC.',\n");
 		fw.append("	PRIMARY KEY  (`id`),\n");
 		fw.append("	UNIQUE KEY `gene_username` (`gene_symbol`,`username`)\n");
-		fw.append(") ENGINE=MyISAM DEFAULT CHARSET=latin1;\n");
+		fw.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n");
 		return fw;
 	}
 
@@ -2543,7 +2543,7 @@ public class SqlGenerator {
 		fw.append("	`sample_comments` LONGTEXT NOT NULL COMMENT 'Comments about the sample, if any, either visible only by username, or visible and modifiable by all users if username is set to PUBLIC.',\n");
 		fw.append("	PRIMARY KEY  (`id`),\n");
 		fw.append("	UNIQUE KEY `project_username` (`project_id`,`username`)\n");
-		fw.append(") ENGINE=MyISAM DEFAULT CHARSET=latin1;\n");
+		fw.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n");
 		return fw;
 	}
 	
@@ -2582,9 +2582,9 @@ public class SqlGenerator {
 		fw.append("	`evaluation_comments_date` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Date and time of the last change to the evaluation_comments field.',\n");
 		fw.append("	`history` LONGTEXT NOT NULL COMMENT 'History of evaluation modifications, including username and date.',\n");
 		fw.append("	PRIMARY KEY (`id`),\n");
-		fw.append("	UNIQUE KEY `variant_project` (`pos`,`chr`,`alternative`,`reference`,`length`,`gene_symbol`,`project_id`),\n");
+		fw.append("	UNIQUE KEY `variant_project` (`pos`,`chr`,`project_id`),\n");
 		fw.append("	INDEX `project` (`project_id`)\n");
-		fw.append(") ENGINE = MyISAM DEFAULT CHARSET=latin1;\n");
+		fw.append(") ENGINE = InnoDB DEFAULT CHARSET=utf8;\n");
 		return fw;
 	}
 
@@ -2605,8 +2605,8 @@ public class SqlGenerator {
 		fw.append("	`num_evaluated_as_type_4` INT DEFAULT 0 COMMENT 'Number of samples in which this variant has been evaluated as \\'IV - Variant Likely Pathogenic\\'',\n");
 		fw.append("	`num_evaluated_as_type_5` INT DEFAULT 0 COMMENT 'Number of samples in which this variant has been evaluated as \\'V - Pathogenic Mutation\\'',\n");
 		fw.append("	PRIMARY KEY (`id`),\n");
-		fw.append("	UNIQUE KEY `variant` (`pos`,`chr`,`alternative`,`reference`,`length`,`gene_symbol`)\n");
-		fw.append(") ENGINE = MyISAM DEFAULT CHARSET=latin1;\n");
+		fw.append("	UNIQUE KEY `variant` (`pos`,`chr`)\n");
+		fw.append(") ENGINE = InnoDB DEFAULT CHARSET=utf8;\n");
 		return fw;
 	}
 	
@@ -2619,7 +2619,7 @@ public class SqlGenerator {
 		fw.append("	`value` TEXT NOT NULL,\n");
 		fw.append("	PRIMARY KEY  (`id`),\n");
 		fw.append("	INDEX `field` (`field`(10))\n");
-		fw.append(") ENGINE=MyISAM DEFAULT CHARSET=latin1;\n");
+		fw.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n");
 		return fw;
 	}
 
@@ -2640,7 +2640,7 @@ public class SqlGenerator {
 		fw.append("  PRIMARY KEY  (`region_id`),\n");
 		fw.append("  INDEX `chr` (`chr`),\n");
 		fw.append("  INDEX `gene_symbol` (`gene_symbol`)\n");
-		fw.append(") ENGINE=MyISAM DEFAULT CHARSET=latin1;\n");
+		fw.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n");
 		return fw;
 	}
 	
@@ -2660,7 +2660,7 @@ public class SqlGenerator {
 		fw.append("  `num_pos_1000x` INT DEFAULT NULL,\n");
 		fw.append("  `num_pos_5000x` INT DEFAULT NULL,\n");
 		fw.append("  PRIMARY KEY  (`region_id`,`project_id`)\n");
-		fw.append(") ENGINE=MyISAM DEFAULT CHARSET=latin1;\n");
+		fw.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n");
 		return fw;
 	}
 	
