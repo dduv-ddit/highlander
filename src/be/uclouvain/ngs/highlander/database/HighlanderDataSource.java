@@ -82,7 +82,7 @@ public class HighlanderDataSource {
 		config.setMinimumIdle(0);
 		config.setMaximumPoolSize(maxPoolSize);
 		config.setIdleTimeout(180000);
-		config.setValidationTimeout(30000); //Problems @St-Luc with default 5000
+		config.setValidationTimeout(100000); //Problems @St-Luc with default 5000, then later also with 30000
 		config.addDataSourceProperty( "cachePrepStmts" , "true" );
 		config.addDataSourceProperty( "prepStmtCacheSize" , "250" );
 		config.addDataSourceProperty( "prepStmtCacheSqlLimit" , "2048" );
