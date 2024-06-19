@@ -23,28 +23,49 @@
 
 package be.uclouvain.ngs.highlander.tools;
 
+import java.awt.FileDialog;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Parameters;
+import be.uclouvain.ngs.highlander.Resources;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.administration.DbBuilder;
+import be.uclouvain.ngs.highlander.database.Field;
 import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
 import be.uclouvain.ngs.highlander.datatype.Analysis;
 import be.uclouvain.ngs.highlander.datatype.AnalysisFull;
+import be.uclouvain.ngs.highlander.datatype.Gene;
+import be.uclouvain.ngs.highlander.datatype.MutatedSequence;
+import be.uclouvain.ngs.highlander.datatype.Reference;
+import be.uclouvain.ngs.highlander.datatype.Variant;
+import be.uclouvain.ngs.highlander.datatype.MutatedSequence.Type;
 
 /**
 * This class is only used for internal tests of new functionalities. 
@@ -304,11 +325,176 @@ public class Tests {
 			}
 		}
 	}
-	
+
+	public static void exportSequences() throws Exception {
+		int[] variant_sample_ids = new int[] {
+				604492402,	
+				604502095,
+				604486564,	
+				604554905,	
+				604477395,	
+				604479082,	
+				604479733,	
+				604482381,	
+				604486563,	
+				604489230,	
+				604505790,	
+				604521552,	//INS 1 FWD stop dans même exon
+				604505795,	//INS 1 REV stop dans même exon
+				604555590,	//INS 1 REV stop dans autre exon
+				604555196,	//DEL 2 REV stop dans même exon (+ que 12)
+				604550088,	//DEL 2 FWD stop dans même exon (+ que 12)
+				604486795,	//STOP LOST REV
+				604492042,	//STOP LOST FWD
+		};
+		int rangeAA = 12;
+		File xls = new File("C:\\Users\\Raphaël\\Downloads\\Test_export_sequences.xlsx");
+		try(Workbook wb = new SXSSFWorkbook(100)){  		
+			Sheet sheet = wb.createSheet("test");
+			sheet.createFreezePane(0, 1);		
+			int r = 0;
+			Row row = sheet.createRow(r++);
+			String[] headers = new String[] {
+					"variantSampleId",
+					"sample",
+					"chr",
+					"pos",
+					"ref",
+					"alt",
+					"gene",
+					"type",
+					"strand",
+					"hgvs",
+					"effect",
+					"nucleotides reference (forward)",
+					"length",
+					"nucleotides mutation (forward)",
+					"length",
+					"nucleotides reference (reverse complement)",
+					"length",
+					"nucleotides mutation (reverse complement)",
+					"length",
+					"amino acids reference",
+					"length",
+					"amino acids mutation",
+					"length",
+			};
+			for (int c = 0 ; c < headers.length ; c++){
+				Cell cell = row.createCell(c);
+				cell.setCellValue(headers[c]);
+			}
+			sheet.setAutoFilter(new CellRangeAddress(0, 0, 0, headers.length));							
+			for (int id : variant_sample_ids) {
+				String sample = "?";
+				String ensg = "?";
+				String hgvs = "?";
+				String eff = "?";
+				String strand = "?";
+				try (Results res = Highlander.getDB().select(Schema.HIGHLANDER, 
+						"SELECT " + Field.sample + ", " + Field.transcript_ensembl + ", " + Field.hgvs_protein + ", " + Field.snpeff_effect + " "
+								+ "FROM " + Highlander.getCurrentAnalysis().getFromSampleAnnotations()
+								+ Highlander.getCurrentAnalysis().getJoinStaticAnnotations()
+								+ Highlander.getCurrentAnalysis().getJoinGeneAnnotations()
+								+ Highlander.getCurrentAnalysis().getJoinProjects()
+								+ "WHERE "+Field.variant_sample_id.getQueryWhereName(Highlander.getCurrentAnalysis(), false)+" = " + id
+						)) {
+					if (res.next()){
+						sample = res.getString(1);
+						ensg = res.getString(2);
+						hgvs = (res.getObject(3) != null) ? res.getString(3) : "";
+						eff = (res.getObject(4) != null) ? res.getString(4) : "";
+					}else{
+						throw new Exception("Id " + id + " not found in the database");
+					}
+				}
+				Variant variant = new Variant(id);
+				Reference genome = Highlander.getCurrentAnalysis().getReference();
+				if (ensg != null) {
+					Gene gene = new Gene(ensg, genome, variant.getChromosome(), true);
+					strand = (gene.isStrandPositive()) ? "+" : "-";
+					boolean hasNewStop = (eff.equalsIgnoreCase("FRAME_SHIFT") || eff.equalsIgnoreCase("STOP_LOST"));
+					MutatedSequence seq =  new MutatedSequence(variant, gene, genome, rangeAA, hasNewStop);
+					System.out.println(id + "\t" + sample + "\t" + seq.getVariant().getChromosome() + "\t" + seq.getVariant().getPosition() + "\t" + seq.getVariant().getReference() + "\t" + seq.getVariant().getAlternative() + "\t" + seq.getGene().getGeneSymbol() + "\t" + strand + "\t" + hgvs + "\t" + eff + "\t" + seq.getSequence(Type.NUCLEOTIDES, false, false) + "\t" + seq.getSequence(Type.NUCLEOTIDES, true, false) + "\t" + seq.getSequence(Type.NUCLEOTIDES, false, true) + "\t" + seq.getSequence(Type.NUCLEOTIDES, true, true) + "\t" + seq.getSequence(Type.AMINO_ACIDS, false, false) + "\t" + seq.getSequence(Type.AMINO_ACIDS, true, false));
+					row = sheet.createRow(r++);								
+					int c=0;
+					Cell cell = row.createCell(c++);
+					cell.setCellValue(id);
+					cell = row.createCell(c++);
+					cell.setCellValue(sample);
+					cell = row.createCell(c++);
+					cell.setCellValue(seq.getVariant().getChromosome() );
+					cell = row.createCell(c++);
+					cell.setCellValue(seq.getVariant().getPosition());
+					cell = row.createCell(c++);
+					cell.setCellValue(seq.getVariant().getReference());
+					cell = row.createCell(c++);
+					cell.setCellValue(seq.getVariant().getAlternative());
+					cell = row.createCell(c++);
+					cell.setCellValue(seq.getGene().getGeneSymbol());
+					cell = row.createCell(c++);
+					cell.setCellValue(seq.getVariant().getVariantType().toString());
+					cell = row.createCell(c++);
+					cell.setCellValue(strand);
+					cell = row.createCell(c++);
+					cell.setCellValue(hgvs);
+					cell = row.createCell(c++);
+					cell.setCellValue(eff);
+					cell = row.createCell(c++);
+					cell.setCellValue(seq.getSequence(Type.NUCLEOTIDES, false, false));
+					cell = row.createCell(c++);
+					cell.setCellValue(seq.getSequence(Type.NUCLEOTIDES, false, false).length());
+					cell = row.createCell(c++);
+					cell.setCellValue(seq.getSequence(Type.NUCLEOTIDES, true, false));
+					cell = row.createCell(c++);
+					cell.setCellValue(seq.getSequence(Type.NUCLEOTIDES, true, false).length());
+					cell = row.createCell(c++);
+					cell.setCellValue(seq.getSequence(Type.NUCLEOTIDES, false, true));
+					cell = row.createCell(c++);
+					cell.setCellValue(seq.getSequence(Type.NUCLEOTIDES, false, true).length());
+					cell = row.createCell(c++);
+					cell.setCellValue(seq.getSequence(Type.NUCLEOTIDES, true, true));
+					cell = row.createCell(c++);
+					cell.setCellValue(seq.getSequence(Type.NUCLEOTIDES, true, true).length());
+					cell = row.createCell(c++);
+					cell.setCellValue(seq.getSequence(Type.AMINO_ACIDS, false, false));
+					cell = row.createCell(c++);
+					cell.setCellValue(seq.getSequence(Type.AMINO_ACIDS, false, false).length());
+					cell = row.createCell(c++);
+					cell.setCellValue(seq.getSequence(Type.AMINO_ACIDS, true, false));
+					cell = row.createCell(c++);
+					cell.setCellValue(seq.getSequence(Type.AMINO_ACIDS, true, false).length());
+				}else {
+					System.out.println(id + "\t" + sample + "\t" + variant.getChromosome() + "\t" + variant.getPosition() + "\t" + variant.getReference() + "\t" + variant.getAlternative() + "\t" + "NO GENE");
+					row = sheet.createRow(r++);								
+					int c=0;
+					Cell cell = row.createCell(c++);
+					cell.setCellValue(id);
+					cell = row.createCell(c++);
+					cell.setCellValue(sample);
+					cell = row.createCell(c++);
+					cell.setCellValue(variant.getChromosome() );
+					cell = row.createCell(c++);
+					cell.setCellValue(variant.getPosition());
+					cell = row.createCell(c++);
+					cell.setCellValue(variant.getReference());
+					cell = row.createCell(c++);
+					cell.setCellValue(variant.getAlternative());
+				}
+			}
+			try (FileOutputStream fileOut = new FileOutputStream(xls)){
+				wb.write(fileOut);
+			}
+		}
+
+	}
 	
 	public static void main(String[] args) {
 		try {
-			Highlander.initialize(new Parameters(false, new File("..\\config\\GEHU admin\\settings.xml")), 20);			
+			//Highlander.initialize(new Parameters(false, new File("..\\config\\GEHU admin\\settings.xml")), 20);			
+			Highlander.initialize(new Parameters(false, new File("..\\config\\GEHU\\settings.xml.ddus")), 20);			
+			
+			exportSequences();
+			
 			/*
 			reimportAllFastQC(true);
 			*/

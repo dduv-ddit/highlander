@@ -719,6 +719,7 @@ public class ToolsPanel extends JPanel {
 										"ref",
 										"alt",
 										"gene",
+										"type",
 										"strand",
 										"hgvs",
 										"effect",
@@ -763,7 +764,8 @@ public class ToolsPanel extends JPanel {
 									if (ensg != null) {
 										Gene gene = new Gene(ensg, genome, variant.getChromosome(), true);
 										strand = (gene.isStrandPositive()) ? "+" : "-";
-										MutatedSequence seq = new MutatedSequence(variant, gene, genome, rangeAA);
+										boolean hasNewStop = (eff.equalsIgnoreCase("FRAME_SHIFT") || eff.equalsIgnoreCase("STOP_LOST"));
+										MutatedSequence seq = new MutatedSequence(variant, gene, genome, rangeAA, hasNewStop);
 										System.out.println(id + "\t" + sample + "\t" + seq.getVariant().getChromosome() + "\t" + seq.getVariant().getPosition() + "\t" + seq.getVariant().getReference() + "\t" + seq.getVariant().getAlternative() + "\t" + seq.getGene().getGeneSymbol() + "\t" + strand + "\t" + hgvs + "\t" + eff + "\t" + seq.getSequence(Type.NUCLEOTIDES, false, false) + "\t" + seq.getSequence(Type.NUCLEOTIDES, true, false) + "\t" + seq.getSequence(Type.NUCLEOTIDES, false, true) + "\t" + seq.getSequence(Type.NUCLEOTIDES, true, true) + "\t" + seq.getSequence(Type.AMINO_ACIDS, false, false) + "\t" + seq.getSequence(Type.AMINO_ACIDS, true, false));
 										row = sheet.createRow(r++);								
 										int c=0;
@@ -781,6 +783,8 @@ public class ToolsPanel extends JPanel {
 										cell.setCellValue(seq.getVariant().getAlternative());
 										cell = row.createCell(c++);
 										cell.setCellValue(seq.getGene().getGeneSymbol());
+										cell = row.createCell(c++);
+										cell.setCellValue(seq.getVariant().getVariantType().toString());
 										cell = row.createCell(c++);
 										cell.setCellValue(strand);
 										cell = row.createCell(c++);

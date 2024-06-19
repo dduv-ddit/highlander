@@ -51,7 +51,7 @@ public class MutatedSequence {
 	private boolean stopReached = false;
 	private boolean insDone = false;
 	
-	public MutatedSequence(Variant variant, Gene gene, Reference genome, int rangeAA) throws Exception {
+	public MutatedSequence(Variant variant, Gene gene, Reference genome, int rangeAA, boolean hasNewStop) throws Exception {
 		this.variant = variant;
 		this.gene = gene;
 		this.genome = genome;
@@ -59,7 +59,9 @@ public class MutatedSequence {
 		List<Interval> intervals = new ArrayList<Interval>();			
 		if (gene.isExonic(variant.getPosition(), false)) {
 			int rangeLeft = rangeAA*3;
+			if (hasNewStop && !gene.isStrandPositive()) rangeLeft = 900;
 			int rangeRight = rangeAA*3;
+			if (hasNewStop && gene.isStrandPositive()) rangeRight = 900;
 			int codonPos = gene.getCodonPos(variant.getPosition(), variant);
 			String AAs = gene.getAminoAcid(variant.getPosition(), variant);
 			if (!AAs.equals("#") && AAs.length() == 1) {
@@ -143,12 +145,18 @@ public class MutatedSequence {
 			}
 			stopReached = false;
 			insDone = false;
+			int lastPos = -1;
 			if (gene.isStrandPositive()) {
 				for (Interval interval : intervals) {
-					for (int pos = interval.getStart() ; pos <= interval.getEnd() && !stopReached ; pos++){
+					for (int pos = interval.getStart() ; pos <= interval.getEnd()+1 && !stopReached ; pos++){
 						processReference(pos, true);
 						processMutant(pos, true);
+						lastPos = pos;
 					}
+				}
+				if (hasNewStop && !stopReached) {
+					String utr = (new Interval(genome, variant.getChromosome(), lastPos+1, lastPos+301)).getReferenceSequence();
+					processUTR(utr, true);
 				}
 			}else {
 				for (int i=intervals.size()-1 ; i >= 0 ; i--) {
@@ -156,11 +164,17 @@ public class MutatedSequence {
 					for (int pos = interval.getEnd() ; pos >= interval.getStart() && !stopReached ; pos--){
 						processReference(pos, false);
 						processMutant(pos, false);
+						lastPos = pos;
 					}									
+				}
+				if (hasNewStop && !stopReached) {
+					String utr = (new Interval(genome, variant.getChromosome(), lastPos-301, lastPos-1)).getReferenceSequence();
+					utr = Tools.reverseComplement(utr);
+					processUTR(utr, false);
 				}
 				nucl_rev_ref = Tools.reverseComplement(nucl_ref);
 				nucl_rev_mut = Tools.reverseComplement(nucl_mut);
-			}
+			}			
 		}
 	}
 
@@ -205,6 +219,20 @@ public class MutatedSequence {
 			} else {
 				nucl_mut = gene.getNucleotide(pos) + nucl_mut;
 			}
+		}
+	}
+	
+	private void processUTR(String utr, boolean fwd) {
+		for (int pos = 0 ; !stopReached ; pos+=3){
+			String codon = utr.substring(pos, pos+3);
+			char AA = Tools.nucleotidesToProtein(codon);
+			aa_mut += AA;
+			if (fwd) {
+				nucl_mut += codon;
+			} else  {
+				nucl_mut = Tools.reverseComplement(codon) + nucl_mut;
+			}
+			stopReached = (AA == '*');		
 		}
 	}
 	
