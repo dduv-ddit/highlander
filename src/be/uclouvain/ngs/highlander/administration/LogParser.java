@@ -90,8 +90,8 @@ public class LogParser {
 					String[] path = args[i].split("/");
 					String[] name = path[path.length-1].split("\\.");
 					jobIds.add(Integer.parseInt(name[0]));
-					runs.add(name[1]);
-					samples.add(name[2]);
+					samples.add(name[1]);
+					runs.add(name[name.length-1]);
 				}catch(Exception ex) {
 					System.err.println("Cannot parse job name : '"+args[i]+"'");
 				}
