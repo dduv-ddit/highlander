@@ -1943,6 +1943,8 @@ public class IonImporter extends JFrame {
 														while ((line = br.readLine()) != null){
 															if (!line.startsWith("track")){
 																String[] array = line.split("\t");
+																System.out.println(line);
+																System.out.println(array);
 																String chr = array[0];
 																if (chr.startsWith("chr")) {
 																	chr = chr.substring(3);

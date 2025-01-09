@@ -48,12 +48,19 @@ import java.util.List;
 import javax.swing.InputMap;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
+import javax.swing.text.DefaultEditorKit;
+
+import com.install4j.api.launcher.ApplicationLauncher;
 
 import apple.dts.samplecode.osxadapter.OSXAdapter;
 import be.uclouvain.ngs.highlander.UI.details.DetailsPanel;
@@ -80,9 +87,9 @@ import be.uclouvain.ngs.highlander.administration.users.User.UserData;
 import be.uclouvain.ngs.highlander.database.Category;
 import be.uclouvain.ngs.highlander.database.Field;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase;
+import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
 import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.VariantResults;
-import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
 import be.uclouvain.ngs.highlander.datatype.AnalysisFull;
 import be.uclouvain.ngs.highlander.datatype.ExternalLink;
 import be.uclouvain.ngs.highlander.datatype.HighlightingRule;
@@ -90,18 +97,10 @@ import be.uclouvain.ngs.highlander.datatype.VariantsList;
 import be.uclouvain.ngs.highlander.datatype.filter.ComboFilter;
 import be.uclouvain.ngs.highlander.datatype.filter.Filter;
 
-import com.install4j.api.launcher.ApplicationLauncher;
-
-import javax.swing.JPanel;
-import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
-import javax.swing.plaf.basic.BasicSplitPaneUI;
-import javax.swing.text.DefaultEditorKit;
-
 public class Highlander extends JFrame {
 
 	static final public String version = "18";
-	static final public String databaseRequiredVersion = "18";
+	static final public String databaseRequiredVersion = "17.13"; //TODO change to 18
 
 	private static Parameters parameters;
 	private static User user = null;
