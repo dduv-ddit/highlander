@@ -45,8 +45,6 @@ import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.administration.AlamutParser;
 import be.uclouvain.ngs.highlander.database.DBUtils;
 import be.uclouvain.ngs.highlander.database.Field;
-import be.uclouvain.ngs.highlander.database.HighlanderDatabase;
-import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.Field.Aloft;
 import be.uclouvain.ngs.highlander.database.Field.Annotation;
 import be.uclouvain.ngs.highlander.database.Field.FitCons;
@@ -54,8 +52,10 @@ import be.uclouvain.ngs.highlander.database.Field.ImpactPrediction;
 import be.uclouvain.ngs.highlander.database.Field.JSon;
 import be.uclouvain.ngs.highlander.database.Field.SplicingPrediction;
 import be.uclouvain.ngs.highlander.database.Field.Tag;
+import be.uclouvain.ngs.highlander.database.HighlanderDatabase;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.DBMS;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.datatype.AnalysisFull.VariantCaller;
 import be.uclouvain.ngs.highlander.datatype.SNPEffect.Effect;
 import be.uclouvain.ngs.highlander.datatype.SNPEffect.Impact;
@@ -247,7 +247,7 @@ public class AnnotatedVariant {
 		for (int altIdx=0 ; altIdx < numAlleles ; altIdx++){
 			AnnotatedVariant va = new AnnotatedVariant(this);
 			long t = System.currentTimeMillis();
-			va.setVCFLine(vcfHeader, vcfLine, altIdx, sample);
+			va.setVCFLine(vcfHeader, vcfLine, altIdx, sample, silent);
 			time.put(Annotation.VCF, time.get(Annotation.VCF)+(System.currentTimeMillis()-t));
 			t = System.currentTimeMillis();
 			//Annotation that are independant of gene
@@ -322,7 +322,7 @@ public class AnnotatedVariant {
 	
 	public void setAllSVAnnotations(String[] annotSVHeader, String[] annotSVLine, boolean fullOnlyFields, String sample, boolean silent) throws Exception {
 		long t = System.currentTimeMillis();
-		setAnnotSVLine(annotSVHeader, annotSVLine, fullOnlyFields, sample);
+		setAnnotSVLine(annotSVHeader, annotSVLine, fullOnlyFields, sample, silent);
 		time.put(Annotation.ANNOTSV, time.get(Annotation.ANNOTSV)+(System.currentTimeMillis()-t));
 		t = System.currentTimeMillis();
 		if (!fullOnlyFields && getValue(Field.gene_symbol) != null && getValue(Field.gene_symbol).toString().length() > 0) {
@@ -453,8 +453,9 @@ public class AnnotatedVariant {
 	 * @param line the full VCF line describing the variant
 	 * @param altIdx index of the allele. First alternative allele is 0, second alternative allele is 1, etc. Do not take into account reference allele (when ref is also in a list, we use altidx+1).
 	 * @param sample name of the sample, needed if multiple sample headers are present. Can be set to null, and use sample field if {@link #setProject(int) setProject} method has been called.
+	 * @param silent set to false to get reason of non-existing variants
 	 */
-	public void setVCFLine(String[] header, String[] line, int altIdx, String sample){
+	public void setVCFLine(String[] header, String[] line, int altIdx, String sample, boolean silent){
 		this.altIdx = altIdx;
 		//Build a parsing map with information from Highlander database
 		Map<String,Map<String,List<Field>>> parser = new HashMap<>(); // [VCF header] -> [VCF ID] -> [all fields linked to header->ID]
@@ -489,7 +490,7 @@ public class AnnotatedVariant {
 			}else if (header[col].equalsIgnoreCase("POS")){
 				headerLeft--;
 				setFieldValue(parser.get("POS").get("NULL"), line[col], altIdx);
-				setRefAlt();
+				setRefAlt(silent);
 			}else if (header[col].equalsIgnoreCase("ID")){
 				headerLeft--;
 				String id = line[col];
@@ -499,7 +500,7 @@ public class AnnotatedVariant {
 				headerLeft--;
 				setFieldValue(parser.get("REF").get("NULL"), line[col], altIdx);
 				//Compute variant_type field
-				setRefAlt();
+				setRefAlt(silent);
 			}else if (header[col].equalsIgnoreCase("ALT")){
 				headerLeft--;
 				setFieldValue(parser.get("ALT").get("NULL"), line[col], altIdx);
@@ -507,9 +508,12 @@ public class AnnotatedVariant {
 				nAlt = line[col].split(",").length;
 				entries.put(Field.allele_num, nAlt+1);
 				//Compute variant_type field
-				setRefAlt();
+				setRefAlt(silent);
 				//Handle * alternative allele
-				if (entries.get(Field.alternative).toString().equals("*")) exist = false;
+				if (entries.get(Field.alternative).toString().equals("*")) {
+					exist = false;
+					if (!silent) System.out.println("Variant " + toString() + " not imported because alternative allele is equal to *");
+				}
 			}else if (header[col].equalsIgnoreCase("QUAL")){
 				headerLeft--;
 				setFieldValue(parser.get("QUAL").get("NULL"), line[col], altIdx);
@@ -607,6 +611,7 @@ public class AnnotatedVariant {
 							entries.put(Field.allelic_depth_proportion_alt, allelic_depth_proportion_alt);
 						}else{
 							exist = false;
+							if (!silent) System.out.println("Variant " + toString() + " not imported because AD equals .");
 						}
 					}else if (formatFields[i].equals("RO")){ 
 						//Torrent Caller Reference allele observation count
@@ -616,6 +621,7 @@ public class AnnotatedVariant {
 							entries.put(Field.allelic_depth_proportion_ref, (double)((int)entries.get(Field.allelic_depth_ref)) / Math.max(read_depth, 1)); 
 						}else{
 							exist = false;
+							if (!silent) System.out.println("Variant " + toString() + " not imported because Torrent Caller Reference allele observation count equals .");
 						}
 					}else if (formatFields[i].equals("AO")){ 
 						//Torrent Caller Alternate allele observation count
@@ -625,12 +631,16 @@ public class AnnotatedVariant {
 							entries.put(Field.allelic_depth_proportion_alt, (double)((int)entries.get(Field.allelic_depth_alt)) / Math.max(read_depth, 1)); 
 						}else{
 							exist = false;
+							if (!silent) System.out.println("Variant " + toString() + " not imported because Torrent Caller Alternate allele observation count equals .");
 						}
 					}else if (formatFields[i].equals("GT")){
 						//Genotype
 						String genotype = format[i]; 
 						entries.put(Field.zygosity, parseZygosity(genotype));
-						if (!isAltInGenotype(genotype, altIdx)) exist = false;
+						if (!isAltInGenotype(genotype, altIdx)) {
+							exist = false;
+							if (!silent) System.out.println("Variant " + toString() + " not imported because alternative allele is not in genotype (GT)");
+						}
 					}else if (formatFields[i].equals("PL")){
 						//Genotype likelihoods
 						String[] PL = format[i].split(",");
@@ -1260,7 +1270,7 @@ public class AnnotatedVariant {
 
 	//TODO mettre le nom des champs dans les settings globaux, au cas où ils changeraient.
 	//TODO tester si field est null avant setFieldValue, au cas ces champs seraient manquant en db, et envoyer un message d'erreur correct (champ doit être associé à l'analyse)
-	public void setAnnotSVLine(String[] header, String[] line, boolean fullOnlyFields, String sample){
+	public void setAnnotSVLine(String[] header, String[] line, boolean fullOnlyFields, String sample, boolean silent){
 		Map<String,Field> parser = new HashMap<>();
 		for (Field field : Field.getAvailableFields(analysis, false)) {
 			if (field.getAnnotationCode() == Annotation.ANNOTSV) {						
@@ -1310,7 +1320,7 @@ public class AnnotatedVariant {
 				if (value != null && value.length() > 0) setFieldValue(parser.get(header[col]), value);
 			}
 		}
-		if (!fullOnlyFields) setVCFLine(vcfHeaders.toArray(new String[0]), vcfLine.toArray(new String[0]), 0, sample);
+		if (!fullOnlyFields) setVCFLine(vcfHeaders.toArray(new String[0]), vcfLine.toArray(new String[0]), 0, sample, silent);
 	}
 	
 	/**
@@ -1344,7 +1354,7 @@ public class AnnotatedVariant {
 	 * Same kind of behaviour happens a lot with Ion Torrent VCF, sometimes with no apparent reason.
 	 * 
 	 */
-	public void setRefAlt(){
+	public void setRefAlt(boolean silent){
 		if (entries.get(Field.reference) != null && 
 				entries.get(Field.alternative) != null &&
 				entries.get(Field.pos) != null) {
@@ -1446,6 +1456,7 @@ public class AnnotatedVariant {
 					//This is NOT a variant, both reference and alternative are identical.
 					variant_type = VariantType.MNV;
 					exist = false;
+					if (!silent) System.out.println("Variant " + toString() + " not imported because both reference and alternative are identical");
 				}
 			}
 			entries.put(Field.variant_type, variant_type);

@@ -38,10 +38,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
-import java.time.OffsetDateTime;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -69,26 +68,26 @@ import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Parameters;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.database.DBUtils;
-import be.uclouvain.ngs.highlander.database.Field;
-import be.uclouvain.ngs.highlander.database.HighlanderDatabase;
-import be.uclouvain.ngs.highlander.database.Results;
-import be.uclouvain.ngs.highlander.database.SqlGenerator;
 import be.uclouvain.ngs.highlander.database.DBUtils.VariantKind;
 import be.uclouvain.ngs.highlander.database.DBUtils.VariantNovelty;
+import be.uclouvain.ngs.highlander.database.Field;
 import be.uclouvain.ngs.highlander.database.Field.Annotation;
 import be.uclouvain.ngs.highlander.database.Field.StructuralVariantType;
+import be.uclouvain.ngs.highlander.database.HighlanderDatabase;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.DBMS;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
+import be.uclouvain.ngs.highlander.database.SqlGenerator;
 import be.uclouvain.ngs.highlander.datatype.Analysis;
 import be.uclouvain.ngs.highlander.datatype.AnalysisFull;
+import be.uclouvain.ngs.highlander.datatype.AnalysisFull.VariantCaller;
 import be.uclouvain.ngs.highlander.datatype.AnnotatedVariant;
 import be.uclouvain.ngs.highlander.datatype.ExternalLink;
 import be.uclouvain.ngs.highlander.datatype.Gene;
 import be.uclouvain.ngs.highlander.datatype.Interval;
 import be.uclouvain.ngs.highlander.datatype.Reference;
-import be.uclouvain.ngs.highlander.datatype.Variant;
-import be.uclouvain.ngs.highlander.datatype.AnalysisFull.VariantCaller;
 import be.uclouvain.ngs.highlander.datatype.SNPEffect.Zygosity;
+import be.uclouvain.ngs.highlander.datatype.Variant;
 
 public class DbBuilder {
 
@@ -1959,6 +1958,8 @@ public class DbBuilder {
 											}
 											writerCustom.write(annotatedVariant.getInsertionString(DB.getDataSource(Schema.HIGHLANDER).getDBMS(), analysis.getTableCustomAnnotations()));											
 											if (counter % 5000 == 0) System.out.println(sample + " - " + df.format(System.currentTimeMillis()) + " - " + counter + " variants annotated ..."); 												
+										}else if (verbose && annotatedVariant == null) {
+											System.out.println("Variant from line " + lineCount + " not imported because it's null");
 										}
 									}catch (Exception ex){
 										System.err.println("WARNING -- Problem with line " + lineCount + " of " + annotsvFile);
