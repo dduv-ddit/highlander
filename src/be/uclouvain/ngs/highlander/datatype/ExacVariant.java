@@ -32,8 +32,8 @@ package be.uclouvain.ngs.highlander.datatype;
 import java.util.Set;
 
 import be.uclouvain.ngs.highlander.database.Field;
-import be.uclouvain.ngs.highlander.database.HighlanderDatabase;
 import be.uclouvain.ngs.highlander.database.Field.Annotation;
+import be.uclouvain.ngs.highlander.database.HighlanderDatabase;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.DBMS;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
 
@@ -124,7 +124,7 @@ public class ExacVariant extends AnnotatedVariant {
 	 * @param altIdx index of the allele. First alternative allele is 0, second alternative allele is 1, etc. Do not take into account reference allele (when ref is also in a list, we use altidx+1).
 	 */
 	@Override
-	public void setVCFLine(String[] header, String[] line, int altIdx, String sample){
+	public void setVCFLine(String[] header, String[] line, int altIdx, String sample, boolean silent){
 		//TODO BURDEN - utiliser le parser comme dans Annotated variant
 		int nAlt = 1;
 		for (int col=0 ; col < header.length ; col++){
@@ -132,7 +132,7 @@ public class ExacVariant extends AnnotatedVariant {
 				entries.put(Field.chr, line[col].replace("chr", "")); 
 			}else if (header[col].equalsIgnoreCase("POS")){
 				entries.put(Field.pos, Integer.parseInt(line[col]));
-				setRefAlt();	
+				setRefAlt(silent);	
 			}else if (header[col].equalsIgnoreCase("ID")){
 				String dbsnp_id = line[col];
 				entries.put(Field.dbsnp_id, dbsnp_id); 
@@ -141,12 +141,12 @@ public class ExacVariant extends AnnotatedVariant {
 				//else dbsnp_flagged = true;
 			}else if (header[col].equalsIgnoreCase("REF")){
 				entries.put(Field.reference, line[col]); 
-				setRefAlt();	
+				setRefAlt(silent);	
 			}else if (header[col].equalsIgnoreCase("ALT")){
 				entries.put(Field.alternative, line[col].split(",")[altIdx]); 
 				nAlt = line[col].split(",").length;
 				entries.put(Field.allele_num, nAlt+1); 
-				setRefAlt();	
+				setRefAlt(silent);	
 			}else if (header[col].equalsIgnoreCase("QUAL")){
 				try{
 					entries.put(Field.confidence, Double.parseDouble(line[col])); 

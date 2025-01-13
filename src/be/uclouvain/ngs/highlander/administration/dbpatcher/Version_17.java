@@ -44,17 +44,17 @@ import be.uclouvain.ngs.highlander.administration.DbUpdater;
 import be.uclouvain.ngs.highlander.database.Category;
 import be.uclouvain.ngs.highlander.database.DBUtils;
 import be.uclouvain.ngs.highlander.database.Field;
+import be.uclouvain.ngs.highlander.database.Field.Annotation;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase;
+import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
 import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.SqlGenerator;
-import be.uclouvain.ngs.highlander.database.Field.Annotation;
-import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
 import be.uclouvain.ngs.highlander.datatype.Analysis;
 import be.uclouvain.ngs.highlander.datatype.AnalysisFull;
+import be.uclouvain.ngs.highlander.datatype.AnalysisFull.VariantCaller;
 import be.uclouvain.ngs.highlander.datatype.AnnotatedVariant;
 import be.uclouvain.ngs.highlander.datatype.Reference;
 import be.uclouvain.ngs.highlander.datatype.Report;
-import be.uclouvain.ngs.highlander.datatype.AnalysisFull.VariantCaller;
 import be.uclouvain.ngs.highlander.tools.ExomeBed;
 import be.uclouvain.ngs.highlander.tools.ExomeBed.Region;
 
@@ -865,7 +865,7 @@ public class Version_17 extends Version {
 						AnnotatedVariant.extractFromSqlResultSet(variant, res, fieldsToInclude);
 						//toConsole("extractFromSqlResultSet variant : " + variant.toString());
 						//toConsole("Field.getAvailableFields(analysis, false): " + Field.getAvailableFields(analysis, false));
-						variant.setRefAlt();
+						variant.setRefAlt(false);
 						writerSample.write(variant.getInsertionString(Highlander.getDB().getDataSource(Schema.HIGHLANDER).getDBMS(), analysis.getTableSampleAnnotations()));											
 						writerCustom.write(variant.getInsertionString(Highlander.getDB().getDataSource(Schema.HIGHLANDER).getDBMS(), analysis.getTableCustomAnnotations()));
 						if (!uniqueVariants.contains(variant.toString())) {
