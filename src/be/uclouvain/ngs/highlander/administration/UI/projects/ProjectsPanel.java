@@ -89,10 +89,10 @@ import be.uclouvain.ngs.highlander.administration.UI.Sample;
 import be.uclouvain.ngs.highlander.administration.users.User;
 import be.uclouvain.ngs.highlander.database.DBUtils;
 import be.uclouvain.ngs.highlander.database.Field;
-import be.uclouvain.ngs.highlander.database.HighlanderDatabase;
-import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.Field.SampleType;
+import be.uclouvain.ngs.highlander.database.HighlanderDatabase;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.datatype.Analysis;
 import be.uclouvain.ngs.highlander.datatype.AnalysisFull;
 import ca.odell.glazedlists.EventList;
@@ -1027,7 +1027,7 @@ public class ProjectsPanel extends ManagerPanel {
 		 */
 		public ExcelAdapter(JTable myJTable){
 			table = myJTable;
-			KeyStroke paste = KeyStroke.getKeyStroke(KeyEvent.VK_V,Toolkit.getDefaultToolkit().getMenuShortcutKeyMask(),false);
+			KeyStroke paste = KeyStroke.getKeyStroke(KeyEvent.VK_V,Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(),false);
 			table.registerKeyboardAction(this,"Paste",paste,JComponent.WHEN_FOCUSED);
 			KeyStroke delete = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,0,false);
 			table.registerKeyboardAction(this,"Delete",delete,JComponent.WHEN_FOCUSED);

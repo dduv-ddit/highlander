@@ -72,9 +72,6 @@ import java.util.Locale;
 import java.util.Properties;
 import java.util.Set;
 
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.activation.FileDataSource;
 import javax.mail.Message;
 import javax.mail.Session;
 import javax.mail.Transport;
@@ -401,12 +398,20 @@ public class Tools {
 		MimeMultipart multipart = new MimeMultipart();
 		multipart.addBodyPart(messageBodyPart);
 
+		/* Old JavaMail library
 		for (File file : attachments){
 			messageBodyPart = new MimeBodyPart();
 			DataSource source = new FileDataSource(file);
 			messageBodyPart.setDataHandler(new DataHandler(source));
 			messageBodyPart.setFileName(file.getName());
 			multipart.addBodyPart(messageBodyPart);
+		}
+		*/
+
+		for (File file : attachments){
+			MimeBodyPart attachPart = new MimeBodyPart();
+			attachPart.attachFile(file);
+			multipart.addBodyPart(attachPart);
 		}
 
 		message.setContent(multipart); 
@@ -510,7 +515,7 @@ public class Tools {
 	 */
 	public static long getMaxPhysicalMemory(){
 		com.sun.management.OperatingSystemMXBean os = (com.sun.management.OperatingSystemMXBean)java.lang.management.ManagementFactory.getOperatingSystemMXBean();
-		long max = os.getTotalPhysicalMemorySize() / 1024 /1024;
+		long max = os.getTotalMemorySize() / 1024 /1024;
 		//long max = SystemInfo.getPhysicalMemory() / 1024 /1024; --> let's try to avoid using install4j, so it doesn't complain when the system library is absent
 		if (Integer.parseInt(System.getProperty( "sun.arch.data.model" )) == 32 && max > 2048 ) max = 2048;
 		/* Not necessary if Install4j is not used
@@ -548,7 +553,7 @@ public class Tools {
 		try {
 			if (URLName.contains("ftp://")){
 				//TODO LONGTERM - handle proxy
-				return FTPUtils.resourceAvailable(new URL(URLName));
+				return FTPUtils.resourceAvailable(new URI(URLName).toURL());
 			}else{
 				Proxy proxy = Proxy.NO_PROXY;
 				boolean bypass = false;
@@ -562,7 +567,7 @@ public class Tools {
 				}
 				HttpURLConnection.setFollowRedirects(false);
 				//HttpURLConnection.setInstanceFollowRedirects(false)
-				HttpURLConnection con = (HttpURLConnection) new URL(URLName).openConnection(proxy);
+				HttpURLConnection con = (HttpURLConnection) new URI(URLName).toURL().openConnection(proxy);
 				con.setRequestMethod("HEAD");
 				return (con.getResponseCode() == HttpURLConnection.HTTP_OK);		
 			}

@@ -24,41 +24,36 @@
 package be.uclouvain.ngs.highlander.administration.iontorrent;
 
 
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.KeyStroke;
-
 import java.awt.BorderLayout;
-
-import javax.swing.JButton;
-
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FileDialog;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FileDialog;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.Toolkit;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-
 import javax.swing.JTable;
+import javax.swing.KeyStroke;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.table.AbstractTableModel;
@@ -104,18 +99,18 @@ public class AskGeneList extends JDialog  {
 				FileDialog chooser = new FileDialog(AskGeneList.this, "Choose a plain text file containing 1 gene per line", FileDialog.LOAD);
 				chooser.setVisible(true);
 				if (chooser.getFile() != null) {
-		      try {
+					try {
 						File file = new File(chooser.getDirectory() + chooser.getFile());
-						FileReader fr = new FileReader(file);
-						BufferedReader br = new BufferedReader(fr);
-						String line;
-						int row=0;
-						while (table.getValueAt(row, 0) != null) row++;
-						while ((line = br.readLine()) != null){
-							table.setValueAt(line, row++, 0);
+						try(FileReader fr = new FileReader(file)){
+							try(BufferedReader br = new BufferedReader(fr)){
+								String line;
+								int row=0;
+								while (table.getValueAt(row, 0) != null) row++;
+								while ((line = br.readLine()) != null){
+									table.setValueAt(line, row++, 0);
+								}
+							}
 						}
-						br.close();
-						fr.close();
 						tmodel.fireTableDataChanged();
 					} catch (Exception ex) {
 						Tools.exception(ex);
@@ -294,7 +289,7 @@ public class AskGeneList extends JDialog  {
 		 */
 		public ExcelAdapter(JTable myJTable){
 			table = myJTable;
-			KeyStroke paste = KeyStroke.getKeyStroke(KeyEvent.VK_V,Toolkit.getDefaultToolkit().getMenuShortcutKeyMask(),false);
+			KeyStroke paste = KeyStroke.getKeyStroke(KeyEvent.VK_V,Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(),false);
 			table.registerKeyboardAction(this,"Paste",paste,JComponent.WHEN_FOCUSED);
 			KeyStroke delete = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,0,false);
 			table.registerKeyboardAction(this,"Delete",delete,JComponent.WHEN_FOCUSED);

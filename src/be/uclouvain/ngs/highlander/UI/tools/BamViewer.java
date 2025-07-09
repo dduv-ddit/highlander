@@ -47,8 +47,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.URI;
 import java.net.URL;
-
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -103,15 +103,15 @@ import org.broad.igv.util.HttpUtils;
 
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Resources;
-import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.Resources.Palette;
+import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.misc.AlignmentPanel;
-import be.uclouvain.ngs.highlander.UI.misc.WaitingPanel;
 import be.uclouvain.ngs.highlander.UI.misc.AlignmentPanel.ColorBy;
+import be.uclouvain.ngs.highlander.UI.misc.WaitingPanel;
 import be.uclouvain.ngs.highlander.UI.table.MultiLineTableCellRenderer;
 import be.uclouvain.ngs.highlander.database.Field;
-import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.datatype.Analysis;
 import be.uclouvain.ngs.highlander.datatype.AnalysisFull;
 import be.uclouvain.ngs.highlander.datatype.Interval;
@@ -119,10 +119,10 @@ import be.uclouvain.ngs.highlander.datatype.Reference;
 import be.uclouvain.ngs.highlander.datatype.Variant;
 import be.uclouvain.ngs.highlander.tools.ViewBam;
 import net.sf.samtools.SAMFileReader;
+import net.sf.samtools.SAMFileReader.ValidationStringency;
 import net.sf.samtools.SAMRecordIterator;
 import net.sf.samtools.seekablestream.SeekableBufferedStream;
 import net.sf.samtools.seekablestream.SeekableFTPStream;
-import net.sf.samtools.SAMFileReader.ValidationStringency;
 
 public class BamViewer extends JFrame {
 
@@ -560,7 +560,7 @@ public class BamViewer extends JFrame {
 			for (String sample : bams.get(analysis)){
 				waitingPanel.setProgressValue(++count);
 				try{
-					URL url = new URL(analysis.getBamURL(sample));
+					URL url = new URI(analysis.getBamURL(sample)).toURL();
 					if (Tools.exists(url.toString())){
 						SAMFileReader samfr = (url.toString().startsWith("ftp")) ? new SAMFileReader(new SeekableBufferedStream(new SeekableFTPStream(url)), getIndexFile(url, null), false) : new SAMFileReader(url, getIndexFile(url, null), false);
 						samfr.setValidationStringency(ValidationStringency.SILENT);
@@ -710,7 +710,7 @@ public class BamViewer extends JFrame {
 		String filename = posString.toString() + "@" + sampleString.toString();
 		filename = Integer.toString(Math.abs(filename.hashCode()));
 		try{
-			URL url = new URL(lastAnalysis.getBamURL(lastSample).replaceAll(lastAnalysis.toString(), "bamout").replace(lastSample+".bam", filename));
+			URL url = new URI(lastAnalysis.getBamURL(lastSample).replaceAll(lastAnalysis.toString(), "bamout").replace(lastSample+".bam", filename)).toURL();
 			if (!Tools.exists(url.toString())){
 				waitingPanel.setProgressString("Launching BamCheck on server", true);
 				if (Highlander.getParameters().getUrlForPhpScripts() == null) {
@@ -860,7 +860,7 @@ public class BamViewer extends JFrame {
 		}
 		patterns.put(NREADS, 0);
 		try{
-			URL url = new URL(analysis.getBamURL(sample));
+			URL url = new URI(analysis.getBamURL(sample)).toURL();
 			if (Tools.exists(url.toString())){
 				SAMFileReader samfr = (url.toString().startsWith("ftp")) ? new SAMFileReader(new SeekableBufferedStream(new SeekableFTPStream(url)), getIndexFile(url, null), false) : new SAMFileReader(url, getIndexFile(url, null), false);
 				samfr.setValidationStringency(ValidationStringency.SILENT);
@@ -889,7 +889,7 @@ public class BamViewer extends JFrame {
 		return patterns.get(NREADS);
 	}
 
-	static File getIndexFile(URL url, String indexPath) throws IOException {
+	static File getIndexFile(URL url, String indexPath) throws Exception {
 
 		String urlString = url.toString();
 		File indexFile = getTmpIndexFile(urlString);
@@ -919,50 +919,31 @@ public class BamViewer extends JFrame {
 		return indexFile;
 	}
 
-	private static void loadIndexFile(String path, String indexPath, File indexFile) throws IOException {
-		InputStream is = null;
-		OutputStream os = null;
-
-		try {
-			String idx = (indexPath != null && indexPath.length() > 0) ? indexPath : path + ".bai";
-			URL indexURL = new URL(idx);
-			os = new FileOutputStream(indexFile);
-			try {
-				is = HttpUtils.getInstance().openConnectionStream(indexURL);
-			} catch (FileNotFoundException e) {
+	private static void loadIndexFile(String path, String indexPath, File indexFile) throws Exception {
+		String idx = (indexPath != null && indexPath.length() > 0) ? indexPath : path + ".bai";
+		URL indexURL = new URI(idx).toURL();
+		try(OutputStream os = new FileOutputStream(indexFile)){
+			try (InputStream is = HttpUtils.getInstance().openConnectionStream(indexURL)){
+				byte[] buf = new byte[512000];
+				int bytesRead;
+				while ((bytesRead = is.read(buf)) != -1) {
+					os.write(buf, 0, bytesRead);
+				}
+			}catch(FileNotFoundException e) {
 				// Try other index convention
 				String baseName = path.substring(0, path.length() - 4);
-				indexURL = new URL(baseName + ".bai");
-
-				try {
-					is = org.broad.igv.util.HttpUtils.getInstance().openConnectionStream(indexURL);
-				} catch (FileNotFoundException e1) {
+				indexURL = new URI(baseName + ".bai").toURL();
+				try(InputStream is = org.broad.igv.util.HttpUtils.getInstance().openConnectionStream(indexURL)){
+					byte[] buf = new byte[512000];
+					int bytesRead;
+					while ((bytesRead = is.read(buf)) != -1) {
+						os.write(buf, 0, bytesRead);
+					}
+				}catch (FileNotFoundException e1) {
 					MessageUtils.showMessage("Index file not found for file: " + path);
 					throw new DataLoadException("Index file not found for file: " + path, path);
 				}
 			}
-			byte[] buf = new byte[512000];
-			int bytesRead;
-			while ((bytesRead = is.read(buf)) != -1) {
-				os.write(buf, 0, bytesRead);
-			}
-
-		} finally {
-			if (is != null) {
-				try {
-					is.close();
-				} catch (IOException e) {
-					e.printStackTrace(); 
-				}
-			}
-			if (os != null) {
-				try {
-					os.close();
-				} catch (IOException e) {
-					e.printStackTrace(); 
-				}
-			}
-
 		}
 	}
 
@@ -1229,7 +1210,7 @@ public class BamViewer extends JFrame {
 	}
 
 	public static AlignmentPanel getAlignmentPanel(AnalysisFull analysis, String sample, Interval interval, Variant highlightedVariant, boolean showSoftClippedBases, boolean squished, boolean frameShift, ColorBy colorBy, boolean drawReference, int width, JProgressBar progress) throws Exception {
-		URL url = new URL(analysis.getBamURL(sample));
+		URL url = new URI(analysis.getBamURL(sample)).toURL();
 		return getAlignmentPanel(url, interval, highlightedVariant, showSoftClippedBases, squished, frameShift, colorBy, drawReference, width, progress);
 	}
 

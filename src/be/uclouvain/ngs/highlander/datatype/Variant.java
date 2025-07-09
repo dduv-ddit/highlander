@@ -30,7 +30,6 @@
 package be.uclouvain.ngs.highlander.datatype;
 
 import java.io.StringWriter;
-
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -41,10 +40,10 @@ import com.google.gson.JsonParser;
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.database.Field;
-import be.uclouvain.ngs.highlander.database.HighlanderDatabase;
-import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.Field.StructuralVariantType;
+import be.uclouvain.ngs.highlander.database.HighlanderDatabase;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.datatype.SNPEffect.VariantType;
 import net.sf.samtools.SAMFileHeader;
 import net.sf.samtools.SAMFileReader;
@@ -464,8 +463,8 @@ public class Variant implements Comparable<Variant> {
 					return variantType.compareTo(variantType);
 				}
 			}else{
-				Integer a = new Integer(pos);
-				Integer b = new Integer(v.pos);
+				Integer a = Integer.valueOf(pos);
+				Integer b = Integer.valueOf(v.pos);
 				return a.compareTo(b);
 			}
 		}else{

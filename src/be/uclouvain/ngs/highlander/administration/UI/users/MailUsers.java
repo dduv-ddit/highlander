@@ -36,9 +36,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.activation.FileDataSource;
 import javax.mail.Message;
 import javax.mail.Session;
 import javax.mail.Transport;
@@ -60,8 +57,8 @@ import be.uclouvain.ngs.highlander.Resources;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.administration.UI.ManagerPanel;
 import be.uclouvain.ngs.highlander.administration.UI.ProjectManager;
-import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
 
 /**
 * @author Raphael Helaers
@@ -213,6 +210,7 @@ public class MailUsers extends ManagerPanel {
 		MimeMultipart multipart = new MimeMultipart();
 		multipart.addBodyPart(messageBodyPart);
 
+		/* Old JavaMail library
 		for (File file : attachments){
 			messageBodyPart = new MimeBodyPart();
 			DataSource source = new FileDataSource(file);
@@ -220,7 +218,14 @@ public class MailUsers extends ManagerPanel {
 			messageBodyPart.setFileName(file.getName());
 			multipart.addBodyPart(messageBodyPart);
 		}
+		*/
 
+		for (File file : attachments){
+			MimeBodyPart attachPart = new MimeBodyPart();
+			attachPart.attachFile(file);
+			multipart.addBodyPart(attachPart);
+		}
+		
 		message.setContent(multipart); 
 
 		transport.connect();

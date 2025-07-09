@@ -35,7 +35,6 @@ import javax.swing.JPanel;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.toolbar.HighlightingPanel;
 import be.uclouvain.ngs.highlander.database.Field;
-import be.uclouvain.ngs.highlander.datatype.Analysis;
 
 public abstract class HighlightingRule extends JPanel {
 

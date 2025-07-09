@@ -36,9 +36,9 @@ import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -62,9 +62,9 @@ import be.uclouvain.ngs.highlander.datatype.Analysis;
 import be.uclouvain.ngs.highlander.datatype.AnalysisFull;
 import be.uclouvain.ngs.highlander.datatype.Gene;
 import be.uclouvain.ngs.highlander.datatype.Reference;
-import be.uclouvain.ngs.highlander.datatype.Variant;
 import be.uclouvain.ngs.highlander.datatype.SNPEffect.VariantType;
 import be.uclouvain.ngs.highlander.datatype.SNPEffect.Zygosity;
+import be.uclouvain.ngs.highlander.datatype.Variant;
 
 public class DBUtils {
 
@@ -470,7 +470,7 @@ public class DBUtils {
 				}
 				String server = "http://"+genome+".rest.ensembl.org";	
 				String ext = "/map/translation/"+protein+"/"+proteinPosition+"-"+proteinPosition+"?";
-				URL url = new URL(server + ext);
+				URL url = new URI(server + ext).toURL();
 
 				Proxy proxy = Proxy.NO_PROXY;
 				boolean bypass = false;

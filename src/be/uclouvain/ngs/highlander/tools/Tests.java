@@ -23,24 +23,18 @@
 
 package be.uclouvain.ngs.highlander.tools;
 
-import java.awt.FileDialog;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
-
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -53,19 +47,18 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Parameters;
-import be.uclouvain.ngs.highlander.Resources;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.administration.DbBuilder;
 import be.uclouvain.ngs.highlander.database.Field;
-import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.datatype.Analysis;
 import be.uclouvain.ngs.highlander.datatype.AnalysisFull;
 import be.uclouvain.ngs.highlander.datatype.Gene;
 import be.uclouvain.ngs.highlander.datatype.MutatedSequence;
+import be.uclouvain.ngs.highlander.datatype.MutatedSequence.Type;
 import be.uclouvain.ngs.highlander.datatype.Reference;
 import be.uclouvain.ngs.highlander.datatype.Variant;
-import be.uclouvain.ngs.highlander.datatype.MutatedSequence.Type;
 
 /**
 * This class is only used for internal tests of new functionalities. 
@@ -192,7 +185,7 @@ public class Tests {
 	}
 	
 	public static void testPHPWithHttpURLConnection() throws Exception {
-		URL url = new URL(Highlander.getParameters().getUrlForPhpScripts()+"/bamcheck.php");
+		URL url = new URI(Highlander.getParameters().getUrlForPhpScripts()+"/bamcheck.php").toURL();
 		Map<String,Object> params = new LinkedHashMap<>();
     params.put("filename", "99999");
     params.put("patients", "\"panels_torrent_caller|VA-1159-T.pVMGENES;panels_torrent_caller|VA-1167-T.pVMGENES;panels_torrent_caller|VA-1179-T.pVMGENES;panels_torrent_caller|VA-1192-T.pVMGENES;panels_torrent_caller|VA-1206-T.pVMGENES;panels_torrent_caller|VA-1211-T.pVMGENES;panels_torrent_caller|VA-1217-T.pVMGENES;panels_torrent_caller|VA-1218-T.pVMGENES;panels_torrent_caller|VA-1230-T.pVMGENES;panels_torrent_caller|VA-1246-T.pVMGENES;panels_torrent_caller|VA-1249-T.pVMGENES;panels_torrent_caller|VA-1250-T.pVMGENES\"");

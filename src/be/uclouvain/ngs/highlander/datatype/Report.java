@@ -24,6 +24,8 @@
 package be.uclouvain.ngs.highlander.datatype;
 
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Map;
 import java.util.Set;
@@ -31,8 +33,8 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
 
 /**
  * Software included in the analysis pipeline can generate files needed by Highlander.
@@ -196,9 +198,9 @@ public class Report implements Comparable<Report> {
 		}
 	}
 	
-	public URL getUrlForFile(String file, String project, String sample) throws MalformedURLException {
+	public URL getUrlForFile(String file, String project, String sample) throws MalformedURLException, URISyntaxException {
 		String url = Highlander.getParameters().getUrlForReports()+"/"+project+"/"+path+"/"+sample+"/";
-		return new URL(url+sample+file);
+		return new URI(url+sample+file).toURL();
 	}
 	
 	@Override

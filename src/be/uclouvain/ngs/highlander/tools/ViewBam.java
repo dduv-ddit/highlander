@@ -38,8 +38,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URI;
 import java.net.URL;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -65,17 +65,17 @@ import org.broad.igv.util.HttpUtils;
 
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Parameters;
-import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.datatype.AnalysisFull;
 import be.uclouvain.ngs.highlander.datatype.Interval;
 import be.uclouvain.ngs.highlander.datatype.Reference;
-import be.uclouvain.ngs.highlander.datatype.Variant;
 import be.uclouvain.ngs.highlander.datatype.SNPEffect.VariantType;
+import be.uclouvain.ngs.highlander.datatype.Variant;
 import net.sf.samtools.SAMFileReader;
+import net.sf.samtools.SAMFileReader.ValidationStringency;
 import net.sf.samtools.SAMRecord;
 import net.sf.samtools.SAMRecordIterator;
-import net.sf.samtools.SAMFileReader.ValidationStringency;
 import net.sf.samtools.seekablestream.SeekableBufferedStream;
 import net.sf.samtools.seekablestream.SeekableFTPStream;
 
@@ -158,7 +158,7 @@ public class ViewBam {
 		return output;
 	}
 
-	public ViewBam(URL url) throws IOException {
+	public ViewBam(URL url) throws Exception {
 		SAMFileReader samfr= (url.toString().startsWith("ftp")) ? new SAMFileReader(new SeekableBufferedStream(new SeekableFTPStream(url)), getIndexFile(url, null), false) : new SAMFileReader(url, getIndexFile(url, null), false);
 		samfr.setValidationStringency(ValidationStringency.SILENT);
 		inputBams.put(url.getFile(), samfr);
@@ -168,7 +168,7 @@ public class ViewBam {
 		for (AnalysisFull analysis : samples.keySet()) {
 			for (String sample : samples.get(analysis)) {
 			System.err.print(".");
-			URL url = new URL(urlPath + "/" + analysis + "/" + sample+".bam");
+			URL url = new URI(urlPath + "/" + analysis + "/" + sample+".bam").toURL();
 			SAMFileReader samfr= (url.toString().startsWith("ftp")) ? new SAMFileReader(new SeekableBufferedStream(new SeekableFTPStream(url)), getIndexFile(url, null), false) : new SAMFileReader(url, getIndexFile(url, null), false);
 			samfr.setValidationStringency(ValidationStringency.SILENT);
 			inputBams.put(analysis + "|" + sample, samfr);
@@ -177,7 +177,7 @@ public class ViewBam {
 		System.err.println("!");
 	}	
 
-	File getIndexFile(URL url, String indexPath) throws IOException {
+	File getIndexFile(URL url, String indexPath) throws Exception {
 
 		String urlString = url.toString();
 		File indexFile = getTmpIndexFile(urlString);
@@ -207,50 +207,32 @@ public class ViewBam {
 		return indexFile;
 	}
 
-	private void loadIndexFile(String path, String indexPath, File indexFile) throws IOException {
-		InputStream is = null;
-		OutputStream os = null;
-
-		try {
-			String idx = (indexPath != null && indexPath.length() > 0) ? indexPath : path + ".bai";
-			URL indexURL = new URL(idx);
-			os = new FileOutputStream(indexFile);
-			try {
-				is = HttpUtils.getInstance().openConnectionStream(indexURL);
+	private void loadIndexFile(String path, String indexPath, File indexFile) throws Exception {
+		String idx = (indexPath != null && indexPath.length() > 0) ? indexPath : path + ".bai";
+		URL indexURL = new URI(idx).toURL();
+		try(OutputStream os = new FileOutputStream(indexFile)){
+			try(InputStream is = HttpUtils.getInstance().openConnectionStream(indexURL)){
+				byte[] buf = new byte[512000];
+				int bytesRead;
+				while ((bytesRead = is.read(buf)) != -1) {
+					os.write(buf, 0, bytesRead);
+				}
 			} catch (FileNotFoundException e) {
 				// Try other index convention
 				String baseName = path.substring(0, path.length() - 4);
-				indexURL = new URL(baseName + ".bai");
+				indexURL = new URI(baseName + ".bai").toURL();
 
-				try {
-					is = org.broad.igv.util.HttpUtils.getInstance().openConnectionStream(indexURL);
+				try(InputStream is = org.broad.igv.util.HttpUtils.getInstance().openConnectionStream(indexURL)){
+					byte[] buf = new byte[512000];
+					int bytesRead;
+					while ((bytesRead = is.read(buf)) != -1) {
+						os.write(buf, 0, bytesRead);
+					}
 				} catch (FileNotFoundException e1) {
 					MessageUtils.showMessage("Index file not found for file: " + path);
 					throw new DataLoadException("Index file not found for file: " + path, path);
 				}
 			}
-			byte[] buf = new byte[512000];
-			int bytesRead;
-			while ((bytesRead = is.read(buf)) != -1) {
-				os.write(buf, 0, bytesRead);
-			}
-
-		} finally {
-			if (is != null) {
-				try {
-					is.close();
-				} catch (IOException e) {
-					e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-				}
-			}
-			if (os != null) {
-				try {
-					os.close();
-				} catch (IOException e) {
-					e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-				}
-			}
-
 		}
 	}
 
@@ -759,13 +741,13 @@ public class ViewBam {
 				if (input != null){
 					vb = new ViewBam(P, input);
 				}else {
-					vb = new ViewBam(P, new URL(url));
+					vb = new ViewBam(P, new URI(url).toURL());
 				}
 			}else if (input != null){
 				vb = new ViewBam(input, recursive);
 			}else if (url != null){
 				try{
-					vb = new ViewBam(new URL(url));
+					vb = new ViewBam(new URI(url).toURL());
 				}catch(Exception ex){
 					ex.printStackTrace();
 					return;

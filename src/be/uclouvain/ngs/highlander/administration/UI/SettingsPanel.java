@@ -44,7 +44,6 @@ import javax.swing.JPanel;
 import be.uclouvain.ngs.highlander.Resources;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.misc.WrapLayout;
-import be.uclouvain.ngs.highlander.administration.UI.ProjectManager;
 
 /**
 * @author Raphael Helaers

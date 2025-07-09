@@ -70,8 +70,6 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
 
-import org.apache.batik.ext.swing.GridBagConstants;
-
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Resources;
 import be.uclouvain.ngs.highlander.Tools;
@@ -237,7 +235,7 @@ public class DetailsPanel extends JScrollPane implements DropTargetListener {
 					int x=0;
 					JPanel bringOnTopPanel = new JPanel(new GridBagLayout());
 					JLabel categoriesLabel = new JLabel("Categories", Resources.getScaledIcon(Resources.iSearch, 24), SwingConstants.LEFT);
-					bringOnTopPanel.add(categoriesLabel, new GridBagConstraints(x++, y, 1, 1, 0.0, 0.0, GridBagConstants.WEST, GridBagConstraints.NONE, new Insets(3, 5, 3, 5), 0, 0));
+					bringOnTopPanel.add(categoriesLabel, new GridBagConstraints(x++, y, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(3, 5, 3, 5), 0, 0));
 					DetailsBox[] categoriesArr = new TreeSet<DetailsBox>(detailsBoxes).toArray(new DetailsBox[0]);
 					EventList<DetailsBox> categories = GlazedLists.eventListOf(categoriesArr);
 					final JComboBox<DetailsBox> detailsBoxesComboBox = new JComboBox<DetailsBox>(categoriesArr);
@@ -253,7 +251,7 @@ public class DetailsPanel extends JScrollPane implements DropTargetListener {
 							support.setStrict(false);
 						}
 					});		
-					bringOnTopPanel.add(detailsBoxesComboBox, new GridBagConstraints(x++, y, 1, 1, 1.0, 0.0, GridBagConstants.WEST, GridBagConstraints.HORIZONTAL, new Insets(3, 5, 3, 5), 0, 0));
+					bringOnTopPanel.add(detailsBoxesComboBox, new GridBagConstraints(x++, y, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(3, 5, 3, 5), 0, 0));
 					JButton bringOnTopButton = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleUp, 20));
 					bringOnTopButton.setToolTipText("Bring selected box on top");
 					bringOnTopButton.addActionListener(new ActionListener() {
@@ -267,7 +265,7 @@ public class DetailsPanel extends JScrollPane implements DropTargetListener {
 							});
 						}
 					});
-					bringOnTopPanel.add(bringOnTopButton, new GridBagConstraints(x++, y, 1, 1, 0.0, 0.0, GridBagConstants.WEST, GridBagConstraints.NONE, new Insets(3, 0, 3, 5), 0, 0));
+					bringOnTopPanel.add(bringOnTopButton, new GridBagConstraints(x++, y, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(3, 0, 3, 5), 0, 0));
 					JButton resetButton = new JButton(Resources.getScaledIcon(Resources.iReset, 20));
 					resetButton.setToolTipText("Reset boxes to default order");
 					resetButton.addActionListener(new ActionListener() {
@@ -299,11 +297,11 @@ public class DetailsPanel extends JScrollPane implements DropTargetListener {
 							}
 						}
 					});
-					bringOnTopPanel.add(resetButton, new GridBagConstraints(x++, y, 1, 1, 0.0, 0.0, GridBagConstants.WEST, GridBagConstraints.NONE, new Insets(3, 0, 3, 5), 0, 0));
+					bringOnTopPanel.add(resetButton, new GridBagConstraints(x++, y, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(3, 0, 3, 5), 0, 0));
 					y++;
 					x=0;
 					JLabel fieldsLabel = new JLabel("Fields", Resources.getScaledIcon(Resources.iSearch, 24), SwingConstants.LEFT);
-					bringOnTopPanel.add(fieldsLabel, new GridBagConstraints(x++, y, 1, 1, 0.0, 0.0, GridBagConstants.WEST, GridBagConstraints.NONE, new Insets(3, 5, 3, 5), 0, 0));
+					bringOnTopPanel.add(fieldsLabel, new GridBagConstraints(x++, y, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(3, 5, 3, 5), 0, 0));
 					Field[] fieldsArr = Field.getAvailableFields(Highlander.getCurrentAnalysis(), true).toArray(new Field[0]);
 					EventList<Field> fields = GlazedLists.eventListOf(fieldsArr);
 					final JComboBox<Field> comboBox_field = new JComboBox<Field>(fieldsArr);
@@ -358,7 +356,7 @@ public class DetailsPanel extends JScrollPane implements DropTargetListener {
 					ComboboxToolTipRenderer renderer = new ComboboxToolTipRenderer();
 					renderer.setTooltips(Field.getAvailableFields(Highlander.getCurrentAnalysis(), true));
 					comboBox_field.setRenderer(renderer);
-					bringOnTopPanel.add(comboBox_field, new GridBagConstraints(x++, y, 1, 1, 1.0, 0.0, GridBagConstants.WEST, GridBagConstraints.HORIZONTAL, new Insets(3, 5, 3, 5), 0, 0));
+					bringOnTopPanel.add(comboBox_field, new GridBagConstraints(x++, y, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(3, 5, 3, 5), 0, 0));
 					JButton gotoButton = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleDown, 20));
 					gotoButton.setToolTipText("Scroll to field");
 					gotoButton.addActionListener(new ActionListener() {
@@ -427,7 +425,7 @@ public class DetailsPanel extends JScrollPane implements DropTargetListener {
 							}
 						}
 					});
-					bringOnTopPanel.add(gotoButton, new GridBagConstraints(x++, y, 1, 1, 0.0, 0.0, GridBagConstants.WEST, GridBagConstraints.NONE, new Insets(3, 0, 3, 5), 0, 0));
+					bringOnTopPanel.add(gotoButton, new GridBagConstraints(x++, y, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(3, 0, 3, 5), 0, 0));
 					JButton collapseButton = new JButton(Resources.getScaledIcon(Resources.i2dMinus, 20));
 					collapseButton.setToolTipText("Collapse all boxes");
 					collapseButton.addActionListener(new ActionListener() {
@@ -443,7 +441,7 @@ public class DetailsPanel extends JScrollPane implements DropTargetListener {
 							}).start();
 						}
 					});
-					bringOnTopPanel.add(collapseButton, new GridBagConstraints(x++, y, 1, 1, 0.0, 0.0, GridBagConstants.WEST, GridBagConstraints.NONE, new Insets(3, 0, 3, 5), 0, 0));
+					bringOnTopPanel.add(collapseButton, new GridBagConstraints(x++, y, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(3, 0, 3, 5), 0, 0));
 					y++;
 					x=0;
 					borderPanel.add(bringOnTopPanel, BorderLayout.NORTH);

@@ -28,7 +28,6 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 
 import be.uclouvain.ngs.highlander.UI.misc.WaitingPanel;
-import be.uclouvain.ngs.highlander.administration.UI.ProjectManager;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase;
 
 /**

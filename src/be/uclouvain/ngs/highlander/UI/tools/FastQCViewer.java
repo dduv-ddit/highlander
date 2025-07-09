@@ -39,8 +39,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.net.URL;
-
+import java.net.URI;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -65,8 +64,8 @@ import be.uclouvain.ngs.highlander.UI.dialog.CreateRunSelection;
 import be.uclouvain.ngs.highlander.UI.misc.WaitingPanel;
 import be.uclouvain.ngs.highlander.UI.misc.WrapLayout;
 import be.uclouvain.ngs.highlander.administration.DbBuilder.FastqcResult;
-import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.datatype.Report;
 import be.uclouvain.ngs.highlander.datatype.RunNGS;
 
@@ -298,7 +297,7 @@ public class FastQCViewer extends JFrame {
 					panel.add(top, BorderLayout.NORTH);
 					String url = Highlander.getParameters().getUrlForReports()+"/"+project+"/"+fastqcReport.getPath()+"/"+sample+"/Images/"+imageName;
 					if (Tools.exists(url)){
-						ImageIcon image = new ImageIcon(new URL(url));
+						ImageIcon image = new ImageIcon(new URI(url).toURL());
 						int width = image.getIconWidth();
 						int height = image.getIconHeight();
 						switch(boxScale.getSelectedItem().toString()){

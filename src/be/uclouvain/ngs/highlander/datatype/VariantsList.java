@@ -48,7 +48,6 @@ import be.uclouvain.ngs.highlander.UI.toolbar.NavigationPanel;
 import be.uclouvain.ngs.highlander.UI.toolbar.SortingPanel;
 import be.uclouvain.ngs.highlander.administration.users.User.UserData;
 import be.uclouvain.ngs.highlander.database.Field;
-import be.uclouvain.ngs.highlander.datatype.Analysis;
 import be.uclouvain.ngs.highlander.datatype.HighlightingRule.RuleType;
 import be.uclouvain.ngs.highlander.datatype.filter.ComboFilter;
 import be.uclouvain.ngs.highlander.datatype.filter.ListOfVariants;

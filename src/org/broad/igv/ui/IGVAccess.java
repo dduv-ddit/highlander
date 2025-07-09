@@ -29,25 +29,23 @@
 
 package org.broad.igv.ui;
 
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-
-import javax.swing.ToolTipManager;
-
 import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.KeyboardFocusManager;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import javax.swing.ToolTipManager;
+
 import org.broad.igv.PreferenceManager;
 import org.broad.igv.track.FeatureTrack;
 import org.broad.igv.track.SequenceTrack;
 import org.broad.igv.track.Track;
-import org.broad.igv.ui.IGV;
 import org.broad.igv.ui.Main.IGVArgs;
 import org.broad.igv.ui.event.GlobalKeyDispatcher;
 import org.broad.igv.util.HttpUtils;

@@ -12,13 +12,16 @@
 	<classpathentry kind="lib" path="lib/picard-tools-1.107/ViewSam.jar"/>
 	<classpathentry kind="lib" path="lib/IGV_2.3.32/batik-codec__V1.7.jar"/>
 	<classpathentry kind="lib" path="lib/IGV_2.3.32/goby-io-igv__V1.0.jar"/>
-	<classpathentry kind="lib" path="lib/IGV_2.3.32/igv.jar" sourcepath="lib/IGV_2.3.32/src"/>
 	<classpathentry kind="lib" path="lib/colt/lib/colt.jar" sourcepath="lib/colt/src">
 		<attributes>
 			<attribute name="javadoc_location" value="file:/D:/Dropbox/Projets/NGS Highlander/lib/colt/doc/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.8.0_161"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk-21.0.3+9_adoptium">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="lib/minimal-json/minimal-json-0.9.4.jar" sourcepath="lib/minimal-json/minimal-json-0.9.4-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:platform:/resource/Highlander/lib/minimal-json/minimal-json-0.9.4-javadoc.jar!/"/>
@@ -49,5 +52,6 @@
 	<classpathentry kind="lib" path="lib/poi-5.0.0/ooxml-lib/commons-compress-1.20.jar"/>
 	<classpathentry kind="lib" path="lib/poi-5.0.0/ooxml-lib/xmlbeans-4.0.0.jar"/>
 	<classpathentry kind="lib" path="lib/mysql-connector-java-8.0.32/mysql-connector-j-8.0.32.jar" sourcepath="lib/mysql-connector-java-8.0.32/src"/>
+	<classpathentry kind="lib" path="lib/IGV_2.3.32/igv.jar" sourcepath="lib/IGV_2.3.32/src.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

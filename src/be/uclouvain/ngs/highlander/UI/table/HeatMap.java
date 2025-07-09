@@ -64,7 +64,7 @@ public class HeatMap {
 					int min = 0;
 					int max = dim.width;
 					for (int x=0 ; x < max ; x++){
-						g.setColor(getColor(ColorRange.this, new Integer(x), new Integer(min), new Integer(max), Integer.class));
+						g.setColor(getColor(ColorRange.this, Integer.valueOf(x), Integer.valueOf(min), Integer.valueOf(max), Integer.class));
 						g.fillRect(x, 0, 1, dim.height);
 					}
 				}

@@ -30,7 +30,6 @@
 package be.uclouvain.ngs.highlander.datatype;
 
 import java.io.StringWriter;
-
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -42,8 +41,8 @@ import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.database.DBUtils;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase;
-import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
 import net.sf.samtools.SAMFileHeader;
 import net.sf.samtools.SAMFileReader;
 import net.sf.samtools.SAMTextHeaderCodec;
@@ -178,23 +177,23 @@ public class Interval implements Comparable<Interval> {
 	public int compareTo(Interval i){
 		if (chr.equals(i.chr)){
 			if (start == i.start){
-				Integer a = new Integer(end);
-				Integer b = new Integer(i.end);
+				Integer a = Integer.valueOf(end);
+				Integer b = Integer.valueOf(i.end);
 				return a.compareTo(b);
 			}else{
-				Integer a = new Integer(start);
-				Integer b = new Integer(i.start);
+				Integer a = Integer.valueOf(start);
+				Integer b = Integer.valueOf(i.start);
 				return a.compareTo(b);
 			}				
 		}else{
 			try {
 				Integer a;
-				if (chr.equalsIgnoreCase("X")) a = new Integer(23);
-				else if (chr.equalsIgnoreCase("Y")) a = new Integer(24);
+				if (chr.equalsIgnoreCase("X")) a = Integer.valueOf(23);
+				else if (chr.equalsIgnoreCase("Y")) a = Integer.valueOf(24);
 				else a = Integer.parseInt(chr);
 				Integer b;
-				if (i.chr.equalsIgnoreCase("X")) b = new Integer(23);
-				else if (i.chr.equalsIgnoreCase("Y")) b = new Integer(24);
+				if (i.chr.equalsIgnoreCase("X")) b = Integer.valueOf(23);
+				else if (i.chr.equalsIgnoreCase("Y")) b = Integer.valueOf(24);
 				else b = Integer.parseInt(i.chr);
 				return a.compareTo(b);
 			}catch (NumberFormatException ex) {

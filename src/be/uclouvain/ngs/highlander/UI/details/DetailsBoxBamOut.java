@@ -32,8 +32,8 @@ package be.uclouvain.ngs.highlander.UI.details;
 import java.awt.BorderLayout;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.URI;
 import java.net.URL;
-
 
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
@@ -49,13 +49,13 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.tools.BamViewer;
-import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.datatype.AnalysisFull;
+import be.uclouvain.ngs.highlander.datatype.AnalysisFull.VariantCaller;
 import be.uclouvain.ngs.highlander.datatype.Interval;
 import be.uclouvain.ngs.highlander.datatype.Reference;
 import be.uclouvain.ngs.highlander.datatype.Variant;
-import be.uclouvain.ngs.highlander.datatype.AnalysisFull.VariantCaller;
 
 /**
  * Alignment visualization of the BamOut output of GATK HaplotypeCaller.
@@ -98,7 +98,7 @@ public class DetailsBoxBamOut extends DetailsBoxAlignment {
 				}
 				if (sample.length() > 0){
 					Variant variant = new Variant(variantSampleId);
-					URL url = new URL(analysis.getBamURL(sample).replaceAll(analysis.toString(), "bamout").replace(".bam", "_"+variant.getChromosome()+"_"+variant.getPosition()+".bam"));
+					URL url = new URI(analysis.getBamURL(sample).replaceAll(analysis.toString(), "bamout").replace(".bam", "_"+variant.getChromosome()+"_"+variant.getPosition()+".bam")).toURL();
 					if (!Tools.exists(url.toString())){
 						bar.setIndeterminate(true);
 						bar.setString("Waiting for GATK BamOut to finish on server");

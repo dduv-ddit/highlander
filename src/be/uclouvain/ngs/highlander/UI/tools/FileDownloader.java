@@ -40,17 +40,15 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-
+import java.net.URI;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.Map.Entry;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -70,8 +68,8 @@ import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Resources;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.dialog.AskSamplesDialog;
-import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.datatype.Analysis;
 import be.uclouvain.ngs.highlander.datatype.AnalysisFull;
 import be.uclouvain.ngs.highlander.datatype.Report;
@@ -310,7 +308,7 @@ public class FileDownloader extends JFrame {
 						String output = localDir + "/" + sample + file;
 						try {
 							Tools.httpDownload(report.getUrlForFile(file, project, sample), new File(output));
-						}catch(IOException ex) {
+						}catch(Exception ex) {
 							errors.add(output + " [ " +ex.getMessage()+ " ]");
 							ex.printStackTrace();
 						}
@@ -323,8 +321,8 @@ public class FileDownloader extends JFrame {
 			p.setStringPainted(true);
 			String output = localDir + "/" + sample + ".vcf";
 			try {
-				Tools.httpDownload(new URL(analysis.getVcfURL(sample)), new File(output));
-			}catch(IOException ex) {
+				Tools.httpDownload(new URI(analysis.getVcfURL(sample)).toURL(), new File(output));
+			}catch(Exception ex) {
 				errors.add(output + " [ " +ex.getMessage()+ " ]");
 				ex.printStackTrace();
 			}
@@ -335,16 +333,16 @@ public class FileDownloader extends JFrame {
 			String bam = analysis.getBamURL(sample);
 			String output = localDir + "/" + sample + ".bam";
 			try {
-				Tools.httpDownload(new URL(bam), new File(output));
-			}catch(IOException ex) {
+				Tools.httpDownload(new URI(bam).toURL(), new File(output));
+			}catch(Exception ex) {
 				errors.add(output + " [ " +ex.getMessage()+ " ]");
 				ex.printStackTrace();
 			}
 			p.setString("Downloading " + sample + " alignment index (BAI)");
 			p.setStringPainted(true);
 			try {
-				Tools.httpDownload(new URL(bam.replace(".bam", ".bai")), new File(output.replace(".bam", ".bai")));
-			}catch(IOException ex) {
+				Tools.httpDownload(new URI(bam.replace(".bam", ".bai")).toURL(), new File(output.replace(".bam", ".bai")));
+			}catch(Exception ex) {
 				errors.add(output.replace(".bam", ".bai") + " [ " +ex.getMessage()+ " ]");
 				ex.printStackTrace();
 			}
