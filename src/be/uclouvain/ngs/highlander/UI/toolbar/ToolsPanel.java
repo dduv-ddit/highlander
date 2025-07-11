@@ -39,6 +39,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -74,8 +75,6 @@ import be.uclouvain.ngs.highlander.UI.misc.ToolbarScrollablePanel;
 import be.uclouvain.ngs.highlander.UI.tools.AlignmentViewer;
 import be.uclouvain.ngs.highlander.UI.tools.BamViewer;
 import be.uclouvain.ngs.highlander.UI.tools.BurdenTest;
-import be.uclouvain.ngs.highlander.UI.tools.BurdenTest.Source;
-import be.uclouvain.ngs.highlander.UI.tools.ConverterHGMD;
 import be.uclouvain.ngs.highlander.UI.tools.CoverageInfo;
 import be.uclouvain.ngs.highlander.UI.tools.CtdnaEstimation;
 import be.uclouvain.ngs.highlander.UI.tools.Exomiser;
@@ -83,25 +82,26 @@ import be.uclouvain.ngs.highlander.UI.tools.Exomiser.Mode;
 import be.uclouvain.ngs.highlander.UI.tools.FastQCViewer;
 import be.uclouvain.ngs.highlander.UI.tools.FileDownloader;
 import be.uclouvain.ngs.highlander.UI.tools.Kraken;
-import be.uclouvain.ngs.highlander.UI.tools.M6AScanner;
 import be.uclouvain.ngs.highlander.UI.tools.OpenIGV;
 import be.uclouvain.ngs.highlander.UI.tools.PedigreeChecker;
 import be.uclouvain.ngs.highlander.UI.tools.RunCharts;
 import be.uclouvain.ngs.highlander.UI.tools.RunStatistics;
 import be.uclouvain.ngs.highlander.UI.tools.VariantAnnotator;
 import be.uclouvain.ngs.highlander.UI.tools.VariantDistributionCharts;
+import be.uclouvain.ngs.highlander.UI.tools.BurdenTest.Source;
+import be.uclouvain.ngs.highlander.UI.tools.ConverterHGMD;
 import be.uclouvain.ngs.highlander.database.Field;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase;
-import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
 import be.uclouvain.ngs.highlander.database.Results;
+import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
 import be.uclouvain.ngs.highlander.datatype.AnalysisFull;
-import be.uclouvain.ngs.highlander.datatype.AnalysisFull.VariantCaller;
 import be.uclouvain.ngs.highlander.datatype.Gene;
 import be.uclouvain.ngs.highlander.datatype.MutatedSequence;
 import be.uclouvain.ngs.highlander.datatype.MutatedSequence.Type;
 import be.uclouvain.ngs.highlander.datatype.Reference;
 import be.uclouvain.ngs.highlander.datatype.Report;
 import be.uclouvain.ngs.highlander.datatype.Variant;
+import be.uclouvain.ngs.highlander.datatype.AnalysisFull.VariantCaller;
 import be.uclouvain.ngs.highlander.datatype.filter.ComboFilter;
 import be.uclouvain.ngs.highlander.datatype.filter.CustomFilter;
 import be.uclouvain.ngs.highlander.datatype.filter.Filter.FilterType;
@@ -389,27 +389,6 @@ public class ToolsPanel extends JPanel {
 			}
 		});
 
-		JButton scanForM6A = new JButton(Resources.getScaledIcon(Resources.iM6A, 40));
-		scanForM6A.setPreferredSize(new Dimension(54,54));
-		scanForM6A.setToolTipText("<html><b>M6A Scanner</b><br>"
-				+ "VUS in the 3'UTR may be driving change in M6A mark deposition therefore affecting mRNA stability or translation rate.<br>"
-				+ "The motif in mRNA that signals a potential M6A (N6-methyladenosine) mark deposition is typically the consensus sequence <code>DRACH</code>.<br>"
-				+ "This motif is recognized by the methyltransferase complex responsible for adding the m6A modification to the RNA molecule.<br>"
-				+ "The presence of this motif in mRNA plays a crucial role in various aspects of RNA metabolism, including stability, splicing, export, and translation.<br>"
-				+ "This tool will scan the 3'UTR of all selected samples, and check if variants could destroy or create DRACH patterns.<br>"
-				+ "</html>");
-		scanForM6A.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				new Thread(new Runnable(){
-					@Override
-					public void run(){
-						scanForM6A();
-					}
-				}, "ToolsPanel.scanForM6A").start();
-			}
-		});
-		
 		JButton importHGMD = new JButton(Resources.getScaledIcon(Resources.iHGMD, 40));
 		importHGMD.setPreferredSize(new Dimension(54,54));
 		importHGMD.setToolTipText("<html><b>HGMD importation</b><br>"
@@ -589,7 +568,6 @@ public class ToolsPanel extends JPanel {
 		panel.add(exomiser);
 		panel.add(kraken);
 		panel.add(variantAnnotator);
-		panel.add(scanForM6A);
 		panel.add(importHGMD);
 		panel.add(getSeparator());
 
@@ -962,18 +940,6 @@ public class ToolsPanel extends JPanel {
 		viewer.setVisible(true);
 	}
 
-	public void scanForM6A() {
-		AskSamplesDialog askP = new AskSamplesDialog(false, Highlander.getCurrentAnalysis());
-		Tools.centerWindow(askP, false);
-		askP.setVisible(true);
-		if (askP.getSelection() != null){
-			Set<String> samples = askP.getSelection();
-			M6AScanner scanner = new M6AScanner(samples);
-			Tools.centerWindow(scanner, false);
-			scanner.setVisible(true);
-		}
-	}
-	
 	public void importHGMD() {
 		FileDialog chooser = new FileDialog(new JFrame(), "Choose an HTML file saved from HGMD", FileDialog.LOAD);
 		chooser.setVisible(true);

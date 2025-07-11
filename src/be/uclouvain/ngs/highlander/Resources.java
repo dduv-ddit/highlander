@@ -669,7 +669,6 @@ public class Resources {
   public final static ImageIcon iExomiser = new ImageIcon(Highlander.class.getResource("resources/exomiser.png"));
   public final static ImageIcon iKraken = new ImageIcon(Highlander.class.getResource("resources/krona.png"));
   public final static ImageIcon iAlignmentPinned = new ImageIcon(Highlander.class.getResource("resources/alignment_pinned.png"));
-  public final static ImageIcon iM6A = new ImageIcon(Highlander.class.getResource("resources/M6A.png"));
 
   //Burden Test
   public final static ImageIcon iZoomIn = new ImageIcon(Highlander.class.getResource("resources/zoom_in.png"));
