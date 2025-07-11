@@ -5,7 +5,7 @@ We have developed Highlander, a Java software coupled to a local database, in or
 
 Installers of the client and administration tools can be downloaded from the official [webpage](https://sites.uclouvain.be/highlander/)
 
-To use those, you **need a working local Highlander database** which is not provided. Please contact [Miikka Vikkula](https://www.deduveinstitute.be/human-genetics) if you are interested.
+To use those, you **need a working local Highlander database** which is not provided. Please contact [Miikka Vikkula](https://www.deduveinstitute.be/research-group/miikka-vikkula) if you are interested.
 
 ## Client features
 ![screenshot](https://sites.uclouvain.be/highlander/images/screenshot_2.png)
