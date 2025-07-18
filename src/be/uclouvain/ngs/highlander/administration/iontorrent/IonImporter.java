@@ -55,7 +55,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -92,7 +91,6 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import javax.swing.ProgressMonitor;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -105,14 +103,6 @@ import javax.swing.table.AbstractTableModel;
 import org.apache.commons.io.FileUtils;
 
 import com.install4j.api.launcher.ApplicationLauncher;
-import com.jcraft.jsch.ChannelExec;
-import com.jcraft.jsch.ChannelSftp;
-import com.jcraft.jsch.ChannelSftp.LsEntry;
-import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.JSchException;
-import com.jcraft.jsch.Session;
-import com.jcraft.jsch.SftpException;
-import com.jcraft.jsch.SftpProgressMonitor;
 
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Parameters;
@@ -168,17 +158,9 @@ public class IonImporter extends JFrame {
 	private static User user;
 	private static HighlanderDatabase DB;
 
-	//TODO JSch cannot connect on new cluster - protocol too old
-	private JSch hlJsch;
-	private Map<Platform, JSch> sequencerJsch = new HashMap<Platform, JSch>();
-	private Session hlSession;
-	private Map<Platform, Session> sequencerSession = new HashMap<Platform, Session>();
-	private ChannelSftp hlChannel;
-	private Map<Platform, ChannelSftp> sequencerChannels = new HashMap<Platform, ChannelSftp>();
-
 	private Map<Platform, String> sequencerResults = new HashMap<Platform, String>();
 	private Map<Platform, String> sequencerReferences = new HashMap<Platform, String>();
-	private final String hlWorking = "/storage/ngs/highlander/iontorrent";
+	//private final String hlWorking = "/storage/ngs/highlander/iontorrent";
 	private final String hlScript = "/storage/ngs/highlander";
 	private final String hlReferences = "/storage/ngs/highlander/reference";
 
@@ -905,10 +887,12 @@ public class IonImporter extends JFrame {
 	}
 
 	private boolean getPlatformData(Platform platform) {
+		//Jsch removed from project, not useful anymore
+		/*
 		if (connectToSequencer(platform)) {
 			try {
 				projects.put(platform, listProjects(platform));
-			}catch(SftpException ex) {
+			}catch(Exception ex) {
 				JOptionPane.showMessageDialog(IonImporter.this, "Problem when trying to list project directories on "+platform+".", "Retrieving projects from " + platform, JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				return false;
 			}
@@ -918,17 +902,16 @@ public class IonImporter extends JFrame {
 				JOptionPane.showMessageDialog(IonImporter.this, "Problem when trying to list Highlander analyses for "+platform+".", "Retrieving analyses from " + platform, JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				return false;
 			}
-			/*
-			try {			
-				references = listReferences(platform);
-			}catch(Exception ex) {
-				JOptionPane.showMessageDialog(IonImporter.this, "Problem when trying to list references for "+platform+".", "Retrieving references from " + platform, JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
-				return false;
-			}
-			*/
+			//try {			
+			//	references = listReferences(platform);
+			//}catch(Exception ex) {
+			//	JOptionPane.showMessageDialog(IonImporter.this, "Problem when trying to list references for "+platform+".", "Retrieving references from " + platform, JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
+			//	return false;
+			//}
 			disconnectFromSequencer(platform);
 			return true;
 		}
+		*/
 		return false;
 	}
 	
@@ -1294,7 +1277,7 @@ public class IonImporter extends JFrame {
 					String panel = table.getValueAt(selection[0], table.convertColumnIndexToView(model.getColumn(PANEL_NAME))).toString();
 					project += "_" + panel.substring(1);
 					Platform platform = platformBox.getItemAt(platformBox.getSelectedIndex());
-					Reference reference = ((AnalysisFull)analysisBox.getSelectedItem()).getReference();
+					//Reference reference = ((AnalysisFull)analysisBox.getSelectedItem()).getReference();
 					String sequencerPath = projectBox.getSelectedItem().toString();
 					//sequencerChannels.get(platform).cd(sequencerResults.get(platform)+"/"+projectBox.getSelectedItem().toString());
 					ExecutorService executor = Executors.newFixedThreadPool(10);
@@ -1327,6 +1310,8 @@ public class IonImporter extends JFrame {
 					}
 					executor.shutdown();
 					executor.awaitTermination(5, TimeUnit.HOURS);
+					//Jsch removed from project, not useful anymore
+					/*
 					if (connectToHighlander()) {
 						SftpProgressMonitor monitor = new MyProgressMonitor();
 						int mode=ChannelSftp.OVERWRITE;
@@ -1412,14 +1397,11 @@ public class IonImporter extends JFrame {
 							hlChannel.cd(project);
 						}
 						for (int row : selection){
-							/*
-							 * Now using rsync
-							 * 
-						File targetBam = new File(project+"/"+table.getValueAt(row, table.convertColumnIndexToView(model.getColumn(SAMPLE))).toString().replace('_', '-').trim().replace(' ', '-')+"."+panel+".bam");
-						hlChannel.put(targetBam.toString(), ".", monitor, mode);
-						File targetBai = new File(project+"/"+table.getValueAt(row, table.convertColumnIndexToView(model.getColumn(SAMPLE))).toString().replace('_', '-').trim().replace(' ', '-')+"."+panel+".bam.bai");
-						hlChannel.put(targetBai.toString(), ".", monitor, mode);
-							 */
+						//Now using rsync
+						//File targetBam = new File(project+"/"+table.getValueAt(row, table.convertColumnIndexToView(model.getColumn(SAMPLE))).toString().replace('_', '-').trim().replace(' ', '-')+"."+panel+".bam");
+						//hlChannel.put(targetBam.toString(), ".", monitor, mode);
+						//File targetBai = new File(project+"/"+table.getValueAt(row, table.convertColumnIndexToView(model.getColumn(SAMPLE))).toString().replace('_', '-').trim().replace(' ', '-')+"."+panel+".bam.bai");
+						//hlChannel.put(targetBai.toString(), ".", monitor, mode);
 							File targetJson = new File(project+"/"+table.getValueAt(row, table.convertColumnIndexToView(model.getColumn(SAMPLE))).toString().replace('_', '-').trim().replace(' ', '-')+"."+panel+".json");
 							hlChannel.put(targetJson.toString(), ".", monitor, mode);
 						}
@@ -1450,6 +1432,7 @@ public class IonImporter extends JFrame {
 							}
 						});
 						hlChannel.put(project+"/"+project+".genes", ".", monitor, mode);
+						*/
 						/*
 						 * Now that Highlander analyses are linked to a unique reference, it doesn't make sense to download the reference to the cluster
 						 * Analysis should first be created "by hand"
@@ -1483,6 +1466,7 @@ public class IonImporter extends JFrame {
 						}
 					}
 						 */
+					/*
 						System.out.println("Launching importation pipeline");
 						SwingUtilities.invokeLater(new Runnable() {
 							@Override
@@ -1522,6 +1506,7 @@ public class IonImporter extends JFrame {
 						JOptionPane.showMessageDialog(IonImporter.this, "Your samples are being imported in Highlander, you'll receive an email when they are ready.", "Ion Importer",
 								JOptionPane.PLAIN_MESSAGE, Img.DbAdd.getScaledIcon(64));		 
 					}
+					*/
 				}catch(Exception ex){
 					Tools.exception(ex);
 					JOptionPane.showMessageDialog(IonImporter.this, Tools.getMessage("Importation", ex), "Ion Importer",
@@ -1538,6 +1523,8 @@ public class IonImporter extends JFrame {
 		});
 	}
 
+	//Jsch removed from project, not useful anymore
+	/*
 	public static class MyProgressMonitor implements SftpProgressMonitor {
 		ProgressMonitor monitor;
 		long count=0;
@@ -1572,7 +1559,10 @@ public class IonImporter extends JFrame {
 			monitor.close();
 		}
 	}
+	 */
 
+	//Jsch removed from project, not useful anymore
+	/*
 	private boolean connectToSequencer(Platform platform) {
 		boolean connected = false;
 		SwingUtilities.invokeLater(new Runnable() {
@@ -1606,7 +1596,10 @@ public class IonImporter extends JFrame {
 		});
 		return connected;
 	}
+	 */
 
+	//Jsch removed from project, not useful anymore
+	/*
 	private void disconnectFromSequencer(Platform platform) {
 		try {
 			if (sequencerChannels.get(platform) != null) sequencerChannels.get(platform).quit();
@@ -1616,7 +1609,10 @@ public class IonImporter extends JFrame {
 			ex.printStackTrace();
 		}
 	}
+	 */
 
+	//Jsch removed from project, not useful anymore
+	/*
 	private boolean connectToHighlander() throws JSchException {
 		boolean connected = false;
 		SwingUtilities.invokeLater(new Runnable() {
@@ -1650,7 +1646,10 @@ public class IonImporter extends JFrame {
 		});
 		return connected;
 	}
+	 */
 
+	//Jsch removed from project, not useful anymore
+	/*
 	private void disconnectFromHighlander() {
 		try {
 			if (hlChannel != null) hlChannel.quit();
@@ -1660,7 +1659,10 @@ public class IonImporter extends JFrame {
 			ex.printStackTrace();
 		}
 	}
+	 */
 
+	//Jsch removed from project, not useful anymore
+	/*
 	public boolean upload(File file, String destination, Platform platform) throws Exception {		
 		if (!file.exists()) throw new Exception("The file '"+file+"' does not exist.");
 		if (connectToSequencer(platform)) {
@@ -1669,7 +1671,10 @@ public class IonImporter extends JFrame {
 		}
 		return false;
 	}
+	 */
 
+	//Jsch removed from project, not useful anymore
+	/*
 	public void download(File file, String source, Platform platform) throws Exception {
 		FileDialog fd = new FileDialog(IonImporter.this, "Download file from repository", FileDialog.SAVE);
 		fd.setFile(file.getName());
@@ -1685,6 +1690,7 @@ public class IonImporter extends JFrame {
 			}
 		}
 	}
+	 */
 
 	public class RSync implements Runnable {
 		private Platform platform;
@@ -1737,6 +1743,8 @@ public class IonImporter extends JFrame {
 		}
 	}
 	
+	//Jsch removed from project, not useful anymore
+	/*
 	public String[] listProjects(Platform platform) throws SftpException {
 		Set<String> projects = new TreeSet<String>();
 		for (Object dir : sequencerChannels.get(platform).ls(sequencerResults.get(platform))){
@@ -1746,7 +1754,8 @@ public class IonImporter extends JFrame {
 		}
 		return projects.toArray(new String[0]);
 	}
-
+	*/
+	
 	public AnalysisFull[] listAnalyses(Platform platform) throws Exception {
 		Set<AnalysisFull> analyses = new TreeSet<AnalysisFull>();
 		for (AnalysisFull analysis : AnalysisFull.getAvailableAnalyses()) {
@@ -1765,6 +1774,8 @@ public class IonImporter extends JFrame {
 		return analyses.toArray(new AnalysisFull[0]);
 	}
 	
+	//Jsch removed from project, not useful anymore
+  /*
 	public String[] listReferences(Platform platform) throws SftpException {
 		Set<String> references = new TreeSet<String>();
 		references.add("default");
@@ -1775,9 +1786,15 @@ public class IonImporter extends JFrame {
 		}		
 		return references.toArray(new String[0]);
 	}
-
-	public String[] listBam(Platform platform) throws SftpException {
+	*/
+	
+	/**
+	 * @param platform  
+	 */
+	public String[] listBam(Platform platform) throws Exception {
 		Set<String> bams = new TreeSet<String>();
+		//Jsch removed from project, not useful anymore
+		/*
 		if (connectToSequencer(platform)) {
 			for (Object dir : sequencerChannels.get(platform).ls(sequencerResults.get(platform)+"/"+projectBox.getSelectedItem().toString())){
 				LsEntry entry = (LsEntry)dir;
@@ -1786,6 +1803,7 @@ public class IonImporter extends JFrame {
 			}
 			disconnectFromSequencer(platform);
 		}
+		 */
 		return bams.toArray(new String[0]);
 	}
 
@@ -2029,7 +2047,8 @@ public class IonImporter extends JFrame {
 																}
 															}
 														}
-														if (connectToHighlander()) {
+														//Jsch removed from project, not useful anymore
+														/*
 															SftpProgressMonitor monitor = new MyProgressMonitor();
 															int mode=ChannelSftp.OVERWRITE;
 															hlChannel.cd(hlReferences+"/"+reference.getName()+"/panels");
@@ -2067,15 +2086,14 @@ public class IonImporter extends JFrame {
 															panelReferenceList.setSelectedValue(reference, true);
 															panelPanelList.setSelectedValue(code, true);
 															if (analysisBox.getSelectedItem() != null && ((AnalysisFull)analysisBox.getSelectedItem()).getReference().equals(reference)) panelBox1.addItem(code);
-														}else{
-															FileUtils.copyFile(tmp, new File(Tools.getHomeDirectory().toString()+"/Downloads/"+code+".bed"));
-															FileUtils.copyFile(tmpfull, new File(Tools.getHomeDirectory().toString()+"/Downloads/"+code+".fullgenes.bed"));
-															FileUtils.copyFile(tmpgenes, new File(Tools.getHomeDirectory().toString()+"/Downloads/"+code+".genes"));
-															System.err.println("No connexion to Highlander server");
-															System.err.println("Files in " + Tools.getHomeDirectory().toString()+"/Downloads/" + " must be copied to '"+hlReferences+"/"+reference.getName()+"/panels'");
-															System.err.println("You must launching Convader create panel script: ");
-															System.err.println(hlScript+"/software/convader/scripts/create_panel.sh " + reference.getName() + " " + code);
-														}
+														 */															
+														FileUtils.copyFile(tmp, new File(Tools.getHomeDirectory().toString()+"/Downloads/"+code+".bed"));
+														FileUtils.copyFile(tmpfull, new File(Tools.getHomeDirectory().toString()+"/Downloads/"+code+".fullgenes.bed"));
+														FileUtils.copyFile(tmpgenes, new File(Tools.getHomeDirectory().toString()+"/Downloads/"+code+".genes"));
+														System.err.println("No connexion to Highlander server");
+														System.err.println("Files in " + Tools.getHomeDirectory().toString()+"/Downloads/" + " must be copied to '"+hlReferences+"/"+reference.getName()+"/panels'");
+														System.err.println("You must launching Convader create panel script: ");
+														System.err.println(hlScript+"/software/convader/scripts/create_panel.sh " + reference.getName() + " " + code);
 													}
 													//}
 												}
@@ -2169,6 +2187,8 @@ public class IonImporter extends JFrame {
 	}
 
 	public void exit(){
+		//Jsch removed from project, not useful anymore
+		/*
 		try{
 			for (Platform platform : availablePlatforms){
 				disconnectFromSequencer(platform);
@@ -2177,6 +2197,7 @@ public class IonImporter extends JFrame {
 		}catch(Exception ex){
 			Tools.exception(ex);
 		}
+		*/
 		System.exit(0);
 	}
 

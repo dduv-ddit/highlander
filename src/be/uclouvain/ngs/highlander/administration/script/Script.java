@@ -35,7 +35,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -49,9 +48,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.jcraft.jsch.ChannelExec;
-
-import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.administration.UI.Project;
 import be.uclouvain.ngs.highlander.administration.UI.ProjectManager;
 
@@ -125,6 +121,9 @@ public abstract class Script {
 	public void launch(String baseCommandLine){
 		ProjectManager.toConsole("-----------------------------------------------------");
 		ProjectManager.toConsole("Relaunching selected samples");
+		ProjectManager.toConsole("WARNING -- Script launch deprecated -- No more SFTP connection to server");
+		//Jsch removed from project
+		/*
 		try{
 			manager.connectToHighlander();
 			for (int e=0 ; e < manager.getRelauncherPanel().getRelaunchListSize() ; e++){
@@ -171,6 +170,7 @@ public abstract class Script {
 		}catch(Exception ex){
 			Tools.exception(ex);
 		}
+		*/
 	}
 	
 }

@@ -24,7 +24,6 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/Highlander/lib/hsqldb-2.3.5/hsqldb-2.3.5-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/jsch-0.1.54/jsch-0.1.54.jar" sourcepath="lib/jsch-0.1.54/src"/>
 	<classpathentry kind="lib" path="lib/glazedlists-1.11.0/glazedlists-1.11.0.jar" sourcepath="lib/glazedlists-1.11.0/glazedlists-1.11.0-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:platform:/resource/Highlander/lib/glazedlists-1.11.0/glazedlists-1.11.0-javadoc.jar!/"/>

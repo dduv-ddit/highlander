@@ -64,10 +64,6 @@ import javax.swing.WindowConstants;
 import javax.swing.text.DefaultEditorKit;
 
 import com.install4j.api.launcher.ApplicationLauncher;
-import com.jcraft.jsch.ChannelSftp;
-import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.JSchException;
-import com.jcraft.jsch.Session;
 
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Parameters;
@@ -122,10 +118,6 @@ public class ProjectManager extends JFrame {
 	private static DbPatcher dbPatcher;
 	private static DbUpdater dbUpdater;
 	private static DbBuilder dbBuilder;
-
-	private JSch hlJsch;
-	private Session hlSession;
-	private ChannelSftp hlChannel;
 
 	private User[] users;	
 	private EventList<User> usersList;
@@ -368,26 +360,6 @@ public class ProjectManager extends JFrame {
 		}catch(Exception ex){
 			toConsole(ex);
 		}
-	}
-
-	public void connectToHighlander() throws JSchException {
-		hlJsch = new JSch();
-		hlJsch.addIdentity("config/"+parameters.getServerPipelinePrivateKey());
-		hlSession = hlJsch.getSession(parameters.getServerPipelineUsername(), parameters.getServerPipelineHost(), 22);
-		hlSession.setConfig("StrictHostKeyChecking", "no");
-		hlSession.connect();
-		hlChannel = (ChannelSftp) hlSession.openChannel("sftp");
-		hlChannel.connect();
-	}
-
-	public void disconnectFromHighlander() throws JSchException {
-		hlChannel.quit();
-		hlSession.disconnect();
-		hlJsch.removeAllIdentity();
-	}
-
-	public Session getHighlanderSftpSession() {
-		return hlSession;
 	}
 	
 	public AnalysisFull[] getAvailableAnalysesAsArray() {

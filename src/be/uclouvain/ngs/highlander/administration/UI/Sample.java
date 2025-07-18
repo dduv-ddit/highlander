@@ -23,17 +23,14 @@
 
 package be.uclouvain.ngs.highlander.administration.UI;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.jcraft.jsch.ChannelExec;
-
 import be.uclouvain.ngs.highlander.Tools;
-import be.uclouvain.ngs.highlander.database.HighlanderDatabase;
-import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.Field.SampleType;
+import be.uclouvain.ngs.highlander.database.HighlanderDatabase;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
 
 /**
 * @author Raphael Helaers
@@ -285,6 +282,7 @@ public class Sample {
 	}
 
 	public static void renameOnServer(ProjectManager manager, int projectId, String oldName, String[] analyses) {
+		
 		ProjectManager.toConsole("Updating file names on the server");
 		for (String analysis : analyses){
 			try{
@@ -298,10 +296,13 @@ public class Sample {
 				}
 				if (run_path != null && run_path.length() > 0){
 					//Rename files on server
-					manager.connectToHighlander();
 					int pos = run_path.lastIndexOf('/');
 					String commandLine = "rename_sample.sh "+ run_path.substring(0, pos) + " " + oldName + " " + newName + " " + analysis;
+					ProjectManager.toConsole("TODO -- Run the following command on the server: ");
 					ProjectManager.toConsole(commandLine);
+					//TODO PHP - Avoid using SFTP, use a PHP script instead
+					/* Jsch removed from project, not useful anymore
+					manager.connectToHighlander();
 					ChannelExec channelExec = (ChannelExec)manager.getHighlanderSftpSession().openChannel("exec");
 					commandLine = ProjectManager.getParameters().getServerPipelineScriptsPath()+"/"+commandLine;
 					channelExec.setCommand(commandLine);
@@ -327,6 +328,7 @@ public class Sample {
 					}
 					channelExec.disconnect();
 					manager.disconnectFromHighlander();
+					*/
 					//Rename path in database
 					DB.update(Schema.HIGHLANDER, "UPDATE projects_analyses SET run_path = '"+run_path.replace(oldName, newName)+"' WHERE `analysis` = '"+analysis+"' AND project_id = "+projectId);
 				}
