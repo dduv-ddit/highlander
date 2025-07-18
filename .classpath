@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="lib/AnimatingCardLayout/AnimatingCardLayout.jar"/>
-	<classpathentry kind="lib" path="lib/picard-tools-1.107/ViewSam.jar"/>
 	<classpathentry kind="lib" path="lib/IGV_2.3.32/batik-codec__V1.7.jar"/>
 	<classpathentry kind="lib" path="lib/IGV_2.3.32/goby-io-igv__V1.0.jar"/>
 	<classpathentry kind="lib" path="lib/colt/lib/colt.jar" sourcepath="lib/colt/src">
@@ -53,5 +52,6 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/Highlander/lib/hikaricp-6.3.0/HikariCP-6.3.0-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/picard-tools-1.123/ViewSam.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
