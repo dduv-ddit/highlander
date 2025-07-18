@@ -31,6 +31,7 @@ package be.uclouvain.ngs.highlander.UI.misc;
 
 import java.util.Observable;
 
+@SuppressWarnings("deprecation")
 public class HighlanderObserver extends Observable {
 	private String controlName = "";
 

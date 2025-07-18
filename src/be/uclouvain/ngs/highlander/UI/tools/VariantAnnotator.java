@@ -73,6 +73,7 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.Resources.Palette;
 import be.uclouvain.ngs.highlander.UI.misc.JTabbedPaneCloseButton;
@@ -113,7 +114,7 @@ public class VariantAnnotator extends JFrame {
 
 	private void initUI(){
 		setTitle("Variant Annotator");
-		setIconImage(Resources.getScaledIcon(Resources.iDbSearch, 64).getImage());
+		setIconImage(Img.DbSearch.getScaledIcon(64).getImage());
 
 		getContentPane().setLayout(new BorderLayout());
 		
@@ -166,7 +167,7 @@ public class VariantAnnotator extends JFrame {
 					pos = Integer.parseInt(field_pos.getText().trim());
 				}catch(NumberFormatException nfe) {
 					JOptionPane.showMessageDialog(new JFrame(), "Position is not valid", "Annotate variant",
-							JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+							JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}
 				if (pos != -1) {
 					annotateVariant((AnalysisFull)box_analysis.getSelectedItem(), box_chr.getSelectedItem().toString(), pos, box_alt.getSelectedItem().toString());
@@ -178,7 +179,7 @@ public class VariantAnnotator extends JFrame {
 		JPanel panel_south = new JPanel();	
 		getContentPane().add(panel_south, BorderLayout.SOUTH);
 
-		JButton btnClose = new JButton(Resources.getScaledIcon(Resources.iCross, 24));
+		JButton btnClose = new JButton(Img.Cross.getScaledIcon(24));
 		btnClose.setToolTipText("Close tool");
 		btnClose.addActionListener(new ActionListener() {
 			@Override
@@ -188,7 +189,7 @@ public class VariantAnnotator extends JFrame {
 		});
 		panel_south.add(btnClose);
 
-		JButton export = new JButton(Resources.getScaledIcon(Resources.iExcel, 24));
+		JButton export = new JButton(Img.Excel.getScaledIcon(24));
 		btnClose.setToolTipText("Export tabs to Excel sheets");
 		export.addActionListener(new ActionListener() {
 			@Override
@@ -431,11 +432,11 @@ public class VariantAnnotator extends JFrame {
 			}catch (IOException ex){
 				Tools.exception(ex);
 				JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("I/O error when creating file", ex), "Exporting to Excel",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}catch (Exception ex){
 				Tools.exception(ex);
 				JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error during export", ex), "Exporting to Excel",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}
 		}
 	}

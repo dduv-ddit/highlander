@@ -42,13 +42,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.Map.Entry;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
@@ -73,13 +72,13 @@ import javax.swing.table.TableColumn;
 import javax.swing.text.JTextComponent;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.dialog.ProfileTree.Action;
 import be.uclouvain.ngs.highlander.administration.users.User;
 import be.uclouvain.ngs.highlander.administration.users.User.UserData;
-import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.datatype.FiltersTemplate;
 import be.uclouvain.ngs.highlander.datatype.filter.ComboFilter;
 import be.uclouvain.ngs.highlander.datatype.filter.Filter;
@@ -107,7 +106,7 @@ public class UseTemplate extends JDialog {
 	private void initUI(){
 		setModal(true);
 		setTitle("Generate filters using a template");
-		setIconImage(Resources.getScaledIcon(Resources.iTemplate, 64).getImage());
+		setIconImage(Img.Template.getScaledIcon(64).getImage());
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setSize(new Dimension((int)(screenSize.width/1.3),(int)(screenSize.height/1.3)));
 
@@ -120,7 +119,7 @@ public class UseTemplate extends JDialog {
 		}catch(Exception ex){
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(this, Tools.getMessage("Can't retreive sample list", ex), "Fetching sample list",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 
 		JPanel panel = new JPanel(new BorderLayout(5,5));
@@ -131,7 +130,7 @@ public class UseTemplate extends JDialog {
 
 		JPanel buttons = new JPanel(new FlowLayout());
 
-		JButton btnOk = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 24));
+		JButton btnOk = new JButton(Img.ButtonApply.getScaledIcon(24));
 		btnOk.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -141,7 +140,7 @@ public class UseTemplate extends JDialog {
 		});
 		buttons.add(btnOk);
 
-		JButton btnCancel = new JButton(Resources.getScaledIcon(Resources.iCross, 24));
+		JButton btnCancel = new JButton(Img.Cross.getScaledIcon(24));
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -281,11 +280,11 @@ public class UseTemplate extends JDialog {
 		for (int i=0 ; i < tmodel.getRowCount() ; i++) {
 			if (tmodel.getValueAt(i, 1) == null || tmodel.getValueAt(i, 1).toString().length() == 0) {
 				JOptionPane.showMessageDialog(UseTemplate.this, "You must select a sample for each placeholder", "Create filter using template",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				return;
 			}
 			if (Filter.containsForbiddenCharacters(tmodel.getValueAt(i, 1).toString())){
-				JOptionPane.showMessageDialog(this, "Samples cannot contains the following characters: "+Filter.getForbiddenCharacters(), "Create filter using template", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				JOptionPane.showMessageDialog(this, "Samples cannot contains the following characters: "+Filter.getForbiddenCharacters(), "Create filter using template", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				return;				
 			}
 			String placeholder = "@" + tmodel.getValueAt(i, 0).toString() + "@";
@@ -297,7 +296,7 @@ public class UseTemplate extends JDialog {
 			if (Highlander.getLoggedUser().doesPersonalDataExists(UserData.FOLDER, template.getAnalysis().toString(), folder)){
 				int yesno = JOptionPane.showConfirmDialog(new JFrame(), 
 						"You already have a "+UserData.FOLDER.getName()+" named '"+folder.replace("~", " -> ")+"', do you want to overwrite it ?", 
-						"Overwriting "+UserData.FOLDER.getName()+" in your profile", JOptionPane.YES_NO_OPTION , JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iDbSave,64));
+						"Overwriting "+UserData.FOLDER.getName()+" in your profile", JOptionPane.YES_NO_OPTION , JOptionPane.QUESTION_MESSAGE, Img.DbSave.getScaledIcon(64));
 				if (yesno == JOptionPane.NO_OPTION)	return;
 			}else {
 				Highlander.getLoggedUser().saveFolder(folder, UserData.FILTER, template.getAnalysis().toString());
@@ -331,7 +330,7 @@ public class UseTemplate extends JDialog {
 			}
 		} catch (Exception ex) {
 			Tools.exception(ex);
-			JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Error", ex), "Create filter using template", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Error", ex), "Create filter using template", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 		saved = true;
 	}

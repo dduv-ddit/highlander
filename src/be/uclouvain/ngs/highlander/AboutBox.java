@@ -53,6 +53,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
 
+import be.uclouvain.ngs.highlander.Resources.Img;
+
 
 public class AboutBox extends JDialog implements ActionListener {
 
@@ -79,7 +81,7 @@ public class AboutBox extends JDialog implements ActionListener {
 
 	public AboutBox(Frame parent) {
 		super(parent);
-		setIconImage(Resources.getScaledIcon(Resources.iAbout, 16).getImage());
+		setIconImage(Img.About.getScaledIcon(16).getImage());
 		enableEvents(AWTEvent.WINDOW_EVENT_MASK);
 		try {
 			jbInit();
@@ -145,7 +147,7 @@ public class AboutBox extends JDialog implements ActionListener {
 		gridBagConstraints11.weightx = 0.0;
 		gridBagConstraints11.anchor = GridBagConstraints.NORTHWEST;
 		gridBagConstraints11.gridheight = 1;
-		imageLabel.setIcon(Resources.getScaledIcon(Resources.iHighlander, 128));
+		imageLabel.setIcon(Img.Highlander.getScaledIcon(128));
 		this.setTitle("About");
 		label1.setText(product);
 		label4.setText(comments1);
@@ -212,7 +214,7 @@ public class AboutBox extends JDialog implements ActionListener {
 
 	void showFileAndClose(String file) {
 		JFrame dlg = new JFrame();
-		dlg.setIconImage(Resources.getScaledIcon(Resources.iAbout, 64).getImage());
+		dlg.setIconImage(Img.About.getScaledIcon(64).getImage());
 		dlg.setTitle(file);
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);	

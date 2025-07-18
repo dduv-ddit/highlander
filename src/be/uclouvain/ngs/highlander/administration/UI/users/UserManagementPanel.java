@@ -43,18 +43,18 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.table.JTableHeader;
 
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.misc.WrapLayout;
 import be.uclouvain.ngs.highlander.administration.UI.AdministrationTableModel;
 import be.uclouvain.ngs.highlander.administration.UI.ManagerPanel;
 import be.uclouvain.ngs.highlander.administration.UI.ProjectManager;
 import be.uclouvain.ngs.highlander.administration.users.User;
-import be.uclouvain.ngs.highlander.administration.users.UserDataDialog;
 import be.uclouvain.ngs.highlander.administration.users.User.Rights;
+import be.uclouvain.ngs.highlander.administration.users.UserDataDialog;
 import be.uclouvain.ngs.highlander.administration.users.UserDataDialog.UserDataDialogType;
-import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
 
 /**
 * @author Raphael Helaers
@@ -96,7 +96,7 @@ public class UserManagementPanel extends ManagerPanel {
 
 		JPanel users = new JPanel(new WrapLayout(FlowLayout.LEADING));
 
-		JButton userCreateUser = new JButton("Create new user", Resources.getScaledIcon(Resources.iUserAdd, 24));
+		JButton userCreateUser = new JButton("Create new user", Img.UserAdd.getScaledIcon(24));
 		userCreateUser.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -113,7 +113,7 @@ public class UserManagementPanel extends ManagerPanel {
 			}
 		});
 
-		JButton userDeleteUser = new JButton("Delete selected user", Resources.getScaledIcon(Resources.iUserDelete, 24));
+		JButton userDeleteUser = new JButton("Delete selected user", Img.UserDelete.getScaledIcon(24));
 		userDeleteUser.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -123,7 +123,7 @@ public class UserManagementPanel extends ManagerPanel {
 						User user = getSelectedUser();
 						if (user != null) {
 							if (user.isAnotherUserAdmin()){
-								int answer = JOptionPane.showOptionDialog(manager, "Are you SURE you want to delete this user:\n"+user+" ("+user.getUsername()+")", "Delete user", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iUserDelete, 64), null, null);
+								int answer = JOptionPane.showOptionDialog(manager, "Are you SURE you want to delete this user:\n"+user+" ("+user.getUsername()+")", "Delete user", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, Img.UserDelete.getScaledIcon(64), null, null);
 								if (answer == JOptionPane.YES_OPTION){
 									try {
 										user.delete();
@@ -131,11 +131,11 @@ public class UserManagementPanel extends ManagerPanel {
 										fill();
 									} catch (Exception ex) {
 										Tools.exception(ex);
-										JOptionPane.showMessageDialog(manager, "Cannot delete '"+user+"': " + ex.getMessage(), "Delete user", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+										JOptionPane.showMessageDialog(manager, "Cannot delete '"+user+"': " + ex.getMessage(), "Delete user", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 									}
 								}
 							}else{
-								JOptionPane.showMessageDialog(manager, "Error: at least one user must have the administrative rights.", "Delete user",	JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.showMessageDialog(manager, "Error: at least one user must have the administrative rights.", "Delete user",	JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 							}
 						}
 					}
@@ -143,7 +143,7 @@ public class UserManagementPanel extends ManagerPanel {
 			}
 		});
 
-		JButton userPromoteUser = new JButton("Change rights of selected user", Resources.getScaledIcon(Resources.iUserPromote, 24));
+		JButton userPromoteUser = new JButton("Change rights of selected user", Img.UserPromote.getScaledIcon(24));
 		userPromoteUser.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -152,7 +152,7 @@ public class UserManagementPanel extends ManagerPanel {
 					public void run(){
 						User user = getSelectedUser();
 						if (user != null) {
-							Object res = JOptionPane.showInputDialog(manager, "Select the new rights for "+user+" ("+user.getUsername()+")", "Change rights of user", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iUserPromote,64), Rights.values(), user.getRights());
+							Object res = JOptionPane.showInputDialog(manager, "Select the new rights for "+user+" ("+user.getUsername()+")", "Change rights of user", JOptionPane.QUESTION_MESSAGE, Img.UserPromote.getScaledIcon(64), Rights.values(), user.getRights());
 							if (res != null) {
 								if (!user.isAdmin() || user.isAnotherUserAdmin()) {
 									try {
@@ -161,10 +161,10 @@ public class UserManagementPanel extends ManagerPanel {
 										fill();
 									} catch (Exception ex) {
 										Tools.exception(ex);
-										JOptionPane.showMessageDialog(manager, "Cannot change rights for '"+user+"': " + ex.getMessage(), "Change rights of user", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+										JOptionPane.showMessageDialog(manager, "Cannot change rights for '"+user+"': " + ex.getMessage(), "Change rights of user", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 									}
 								}else {
-									JOptionPane.showMessageDialog(manager, "Error: at least one user must have the administrative rights.", "Change rights of user",	JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+									JOptionPane.showMessageDialog(manager, "Error: at least one user must have the administrative rights.", "Change rights of user",	JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 								}
 							}
 						}
@@ -173,7 +173,7 @@ public class UserManagementPanel extends ManagerPanel {
 			}
 		});
 
-		JButton userResetPassword = new JButton("Reset password of selected user", Resources.getScaledIcon(Resources.iUserLock, 24));
+		JButton userResetPassword = new JButton("Reset password of selected user", Img.UserLock.getScaledIcon(24));
 		userResetPassword.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -189,7 +189,7 @@ public class UserManagementPanel extends ManagerPanel {
 			}
 		});
 
-		JButton userModify = new JButton("Modify selected user", Resources.getScaledIcon(Resources.iUserEdit, 24));
+		JButton userModify = new JButton("Modify selected user", Img.UserEdit.getScaledIcon(24));
 		userModify.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

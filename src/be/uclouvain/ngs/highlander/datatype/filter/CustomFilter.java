@@ -38,7 +38,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,16 +54,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.dialog.CreateCustomFilter;
 import be.uclouvain.ngs.highlander.UI.misc.WaitingPanel.CancelException;
 import be.uclouvain.ngs.highlander.UI.toolbar.FilteringPanel;
 import be.uclouvain.ngs.highlander.database.Field;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase;
+import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
 import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.VariantResults;
-import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
 import be.uclouvain.ngs.highlander.datatype.Analysis;
 
 public class CustomFilter extends Filter {
@@ -566,14 +565,14 @@ public class CustomFilter extends Filter {
 			case AND:
 				criteria.get(i).setBorder(BorderFactory.createLineBorder(new Color(96,74,123),2));
 				if (i < criteria.size()-1){
-					JLabel labAnd = new JLabel(Resources.getScaledIcon(Resources.iFilterAnd, 16));
+					JLabel labAnd = new JLabel(Img.FilterAnd.getScaledIcon(16));
 					center.add(labAnd);
 				}
 				break;
 			case OR:
 				criteria.get(i).setBorder(BorderFactory.createLineBorder(new Color(244,116,20),2));
 				if (i < criteria.size()-1){
-					JLabel labOr = new JLabel(Resources.getScaledIcon(Resources.iFilterOr, 16));
+					JLabel labOr = new JLabel(Img.FilterOr.getScaledIcon(16));
 					center.add(labOr);
 				}
 				break;
@@ -591,7 +590,7 @@ public class CustomFilter extends Filter {
 			buttonsPanel.setLayout(new BorderLayout());
 			add(buttonsPanel,BorderLayout.EAST);
 
-			JButton removeButton = new JButton(Resources.getScaledIcon(Resources.iCross, 16));
+			JButton removeButton = new JButton(Img.Cross.getScaledIcon(16));
 			removeButton.setToolTipText("Delete criterion");	
 			removeButton.addActionListener(new ActionListener() {
 				@Override
@@ -613,7 +612,7 @@ public class CustomFilter extends Filter {
 			JButton addButton = null;
 			switch(logicop){
 			case OR:
-				addButton = new JButton(Resources.getScaledIcon(Resources.iFilterAddOr, 16));
+				addButton = new JButton(Img.FilterAddOr.getScaledIcon(16));
 				addButton.setToolTipText("Add a new sub-criterion to the filter, using the logical operator OR (i.e. filter will be the UNION of sub-criteria)");
 				addButton.addActionListener(new ActionListener() {
 					@Override
@@ -628,7 +627,7 @@ public class CustomFilter extends Filter {
 				});
 				break;
 			case AND:
-				addButton = new JButton(Resources.getScaledIcon(Resources.iFilterAddAnd, 16));
+				addButton = new JButton(Img.FilterAddAnd.getScaledIcon(16));
 				addButton.setToolTipText("Add a new sub-criterion to the filter, using the logical operator AND (i.e. filter will be the INTERSECTION of sub-criteria)");
 				addButton.addActionListener(new ActionListener() {
 					@Override
@@ -784,7 +783,7 @@ public class CustomFilter extends Filter {
 			JButton addButton = null;
 			switch(logicop){
 			case AND:
-				addButton = new JButton(Resources.getScaledIcon(Resources.iFilterAddOr, 16));
+				addButton = new JButton(Img.FilterAddOr.getScaledIcon(16));
 				addButton.setToolTipText("Add a new sub-criterion to the filter, using the logical operator OR (i.e. filter will be the UNION of sub-criteria)");
 				addButton.addActionListener(new ActionListener() {
 					@Override
@@ -799,7 +798,7 @@ public class CustomFilter extends Filter {
 				});
 				break;
 			case OR:
-				addButton = new JButton(Resources.getScaledIcon(Resources.iFilterAddAnd, 16));
+				addButton = new JButton(Img.FilterAddAnd.getScaledIcon(16));
 				addButton.setToolTipText("Add a new sub-criterion to the filter, using the logical operator AND (i.e. filter will be the INTERSECTION of sub-criteria)");
 				addButton.addActionListener(new ActionListener() {
 					@Override
@@ -819,7 +818,7 @@ public class CustomFilter extends Filter {
 			addButton.setContentAreaFilled(false);
 			addButton.setMargin(new Insets(0, 0, 0, 0));
 			criterion.buttonsPanel.add(addButton,BorderLayout.NORTH);
-			JButton removeButton = new JButton(Resources.getScaledIcon(Resources.iCross, 16));
+			JButton removeButton = new JButton(Img.Cross.getScaledIcon(16));
 			removeButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent arg0) {

@@ -29,33 +29,30 @@
 
 package be.uclouvain.ngs.highlander.administration.users;
 
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.JDialog;
-import java.awt.BorderLayout;
-import javax.swing.JPanel;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.administration.users.User.Rights;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
-import javax.swing.JRadioButton;
-import java.awt.FlowLayout;
-import javax.swing.ButtonGroup;
 
 public class UserDataDialog extends JDialog {
 	public enum UserDataDialogType {EDIT_USER, EDIT_OTHER_USER, CREATE_USER}
@@ -64,7 +61,7 @@ public class UserDataDialog extends JDialog {
 	private User user;
 	private final String title;
 	private final String validateButton;
-	private final ImageIcon icon;
+	private final Img icon;
 	private final String firstName;
 	private final String lastName;
 	private final String email;
@@ -96,7 +93,7 @@ public class UserDataDialog extends JDialog {
 			user = null; 
 			title = "Create new user";
 			validateButton = "Create user";
-			icon = Resources.iUserAdd;
+			icon = Img.UserAdd;
 			firstName = "";
 			lastName = "";
 			email = "";
@@ -108,7 +105,7 @@ public class UserDataDialog extends JDialog {
 			user = userToEdit;
 			title = "Modify user";
 			validateButton = "Save changes";
-			icon = Resources.iUserEdit;
+			icon = Img.UserEdit;
 			firstName = userToEdit.getFirstName();
 			lastName = userToEdit.getLastName();
 			email = userToEdit.getEmail();
@@ -121,7 +118,7 @@ public class UserDataDialog extends JDialog {
 			user = Highlander.getLoggedUser();
 			title = "User profile";
 			validateButton = "Save changes";
-			icon = Resources.iUserEdit;
+			icon = Img.UserEdit;
 			firstName = Highlander.getLoggedUser().getFirstName();
 			lastName = Highlander.getLoggedUser().getLastName();
 			email = Highlander.getLoggedUser().getEmail();
@@ -131,13 +128,13 @@ public class UserDataDialog extends JDialog {
 			break;
 		}
 		setTitle(title);
-		frame.setIconImage(Resources.getScaledIcon(icon, 32).getImage());
+		frame.setIconImage(icon.getScaledIcon(32).getImage());
 		getContentPane().setLayout(new BorderLayout(0, 0));
 
 		JPanel panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.SOUTH);
 
-		JButton btnNewButton = new JButton(validateButton, Resources.getScaledIcon(Resources.iButtonApply, 16));
+		JButton btnNewButton = new JButton(validateButton, Img.ButtonApply.getScaledIcon(16));
 		btnNewButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -200,7 +197,7 @@ public class UserDataDialog extends JDialog {
 		});
 		panel.add(btnNewButton);
 
-		JButton btnCancel = new JButton("Cancel", Resources.getScaledIcon(Resources.iCross, 16));
+		JButton btnCancel = new JButton("Cancel", Img.Cross.getScaledIcon(16));
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -214,7 +211,7 @@ public class UserDataDialog extends JDialog {
 		getContentPane().add(panel_1, BorderLayout.CENTER);
 		panel_1.setLayout(new GridBagLayout());
 
-		JLabel lblBla = new JLabel(Resources.getScaledIcon(icon, 80));
+		JLabel lblBla = new JLabel(icon.getScaledIcon(80));
 		panel_1.add(lblBla, 
 				new GridBagConstraints(0, 0, 1, (type == UserDataDialogType.EDIT_USER)?8:5, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(25, 15, 25, 5), 0, 0));
 
@@ -258,7 +255,7 @@ public class UserDataDialog extends JDialog {
 		boxGroup.setSelectedItem(group);
 		panel_5.add(boxGroup);
 		
-		JButton buttonAddGroup = new JButton(Resources.getScaledIcon(Resources.i3dPlus, 18));
+		JButton buttonAddGroup = new JButton(Img.AddMain.getScaledIcon(18));
 		buttonAddGroup.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

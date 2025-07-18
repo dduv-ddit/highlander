@@ -32,7 +32,6 @@ package be.uclouvain.ngs.highlander.UI.details;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -43,13 +42,14 @@ import javax.swing.JPanel;
 
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Resources;
-import be.uclouvain.ngs.highlander.Tools;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Resources.Palette;
+import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.misc.WrapLayout;
 import be.uclouvain.ngs.highlander.database.Field;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase;
-import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.datatype.AnalysisFull;
 import be.uclouvain.ngs.highlander.datatype.ExternalLink;
 
@@ -152,7 +152,7 @@ public class DetailsBoxExternalLinks extends DetailsBox {
 					if (res.getString(Field.gene_symbol.toString()) != null && res.getString(Field.gene_symbol.toString()).length() > 0) geneSymbols.add(res.getString(Field.gene_symbol.toString()));
 				}
 				if (geneSymbols.contains("BRCA1")){
-					JButton button = new JButton(Resources.getHeightScaledIcon(Resources.iExtNhgriBic, HEIGHT));
+					JButton button = new JButton(Img.ExtNhgriBic.getHeightScaledIcon(HEIGHT));
 					button.setToolTipText("Gene BRCA1 in NHGRI Breast Cancer Information Core");
 					button.addActionListener(new ActionListener() {
 						@Override
@@ -169,7 +169,7 @@ public class DetailsBoxExternalLinks extends DetailsBox {
 					panel.add(button);
 				}
 				if (geneSymbols.contains("BRCA2")){
-					JButton button = new JButton(Resources.getHeightScaledIcon(Resources.iExtNhgriBic, HEIGHT));
+					JButton button = new JButton(Img.ExtNhgriBic.getHeightScaledIcon(HEIGHT));
 					button.setToolTipText("Gene BRCA2 in NHGRI Breast Cancer Information Core");
 					button.addActionListener(new ActionListener() {
 						@Override

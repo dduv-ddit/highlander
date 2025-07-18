@@ -35,11 +35,11 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.database.Field;
-import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.datatype.Analysis;
 
 
@@ -290,7 +290,7 @@ public class ConverterHGMD {
 								}catch(Exception ex) {
 									Tools.exception(ex);
 									JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Cannot import the following HGMD result:\n" + sb.toString(), ex), "Importing HGMD",
-											JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+											JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 								}
 							}
 						}
@@ -307,7 +307,7 @@ public class ConverterHGMD {
 		}catch (Exception ex){
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error during importation", ex), "Importing HGMD",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 		Highlander.waitingPanel.stop();
 		return records;

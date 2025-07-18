@@ -35,10 +35,11 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
-
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -47,7 +48,9 @@ import java.util.TreeSet;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -56,20 +59,13 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.misc.SearchField;
-import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.Field.SampleType;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.datatype.RunNGS;
-
-import javax.swing.JComboBox;
-
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
-
-import javax.swing.JLabel;
 
 public class CreateRunSelection extends JDialog {
 
@@ -114,7 +110,7 @@ public class CreateRunSelection extends JDialog {
 		}catch (Exception ex){
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(this,  Tools.getMessage("Cannot retreive runs", ex), "Create a selection of NGS runs",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 		sourceValues = new TreeSet<RunNGS>(availableValues.values());		
 		initUI();		
@@ -128,12 +124,12 @@ public class CreateRunSelection extends JDialog {
 	private void initUI(){
 		setModal(true);
 		setTitle("Create a selection of NGS runs");
-		setIconImage(Resources.getScaledIcon(Resources.iRunReport, 64).getImage());
+		setIconImage(Img.RunReport.getScaledIcon(64).getImage());
 
 		JPanel panel = new JPanel();	
 		getContentPane().add(panel, BorderLayout.SOUTH);
 
-		JButton btnOk = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 24));
+		JButton btnOk = new JButton(Img.ButtonApply.getScaledIcon(24));
 		btnOk.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {		
@@ -142,7 +138,7 @@ public class CreateRunSelection extends JDialog {
 		});
 		panel.add(btnOk);
 
-		JButton btnCancel = new JButton(Resources.getScaledIcon(Resources.iCross, 24));
+		JButton btnCancel = new JButton(Img.Cross.getScaledIcon(24));
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -363,7 +359,7 @@ public class CreateRunSelection extends JDialog {
 		gbc_box_pair_end.gridy = 7;
 		panel_filter.add(box_pair_end, gbc_box_pair_end);
 
-		JButton btnClearFilters = new JButton("Clear filters",Resources.getScaledIcon(Resources.iCross, 18));
+		JButton btnClearFilters = new JButton("Clear filters",Img.Cross.getScaledIcon(18));
 		btnClearFilters.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -461,7 +457,7 @@ public class CreateRunSelection extends JDialog {
 		gbl_panel_2.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		panel_middle.setLayout(gbl_panel_2);
 
-		JButton button = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleRight, 24));
+		JButton button = new JButton(Img.ArrowDoubleRight.getScaledIcon(24));
 		button.setToolTipText("Add selected run(s)");
 		button.addActionListener(new ActionListener() {
 			@Override
@@ -475,7 +471,7 @@ public class CreateRunSelection extends JDialog {
 		gbc_button.gridy = 0;
 		panel_middle.add(button, gbc_button);
 
-		JButton button_1 = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleLeft, 24));
+		JButton button_1 = new JButton(Img.ArrowDoubleLeft.getScaledIcon(24));
 		button_1.setToolTipText("Remove selected run(s)");
 		button_1.addActionListener(new ActionListener() {
 			@Override

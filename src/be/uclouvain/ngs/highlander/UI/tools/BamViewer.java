@@ -40,6 +40,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -49,6 +50,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URI;
 import java.net.URL;
+import java.net.URLConnection;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -83,13 +85,6 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-import org.apache.commons.httpclient.Credentials;
-import org.apache.commons.httpclient.HostConfiguration;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.NTCredentials;
-import org.apache.commons.httpclient.NameValuePair;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -103,8 +98,10 @@ import org.broad.igv.util.HttpUtils;
 
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Resources.Palette;
 import be.uclouvain.ngs.highlander.Tools;
+import be.uclouvain.ngs.highlander.Tools.HttpUtility;
 import be.uclouvain.ngs.highlander.UI.misc.AlignmentPanel;
 import be.uclouvain.ngs.highlander.UI.misc.AlignmentPanel.ColorBy;
 import be.uclouvain.ngs.highlander.UI.misc.WaitingPanel;
@@ -183,14 +180,14 @@ public class BamViewer extends JFrame {
 
 	private void initUI(){
 		setTitle("BAM Viewer");
-		setIconImage(Resources.getScaledIcon(Resources.iBamViewer, 64).getImage());
+		setIconImage(Img.BamViewer.getScaledIcon(64).getImage());
 
 		setLayout(new BorderLayout());
 
 		JPanel panel = new JPanel();	
 		getContentPane().add(panel, BorderLayout.SOUTH);
 
-		JButton checkBam = new JButton(Resources.getScaledIcon(Resources.iBamChecker, 40));
+		JButton checkBam = new JButton(Img.BamChecker.getScaledIcon(40));
 		checkBam.setPreferredSize(new Dimension(54,54));
 		checkBam.setToolTipText("Check ALL selected variants in ALL selected BAM files");
 		checkBam.addActionListener(new ActionListener() {
@@ -206,7 +203,7 @@ public class BamViewer extends JFrame {
 		});
 		panel.add(checkBam);
 
-		JButton showInIGV = new JButton(Resources.getScaledIcon(Resources.iIGV, 40));
+		JButton showInIGV = new JButton(Img.IGV.getScaledIcon(40));
 		showInIGV.setPreferredSize(new Dimension(54,54));
 		showInIGV.setToolTipText("View selected variant in IGV");
 		showInIGV.addActionListener(new ActionListener() {
@@ -224,7 +221,7 @@ public class BamViewer extends JFrame {
 		/*
 		 * Only work with IGV in new Frame
 		 * 
-	  JButton posInIGV = new JButton(Resources.getScaledIcon(Resources.iIGVpos, 40));
+	  JButton posInIGV = new JButton(Img.IGVpos.getScaledIcon(40));
 	  posInIGV.setPreferredSize(new Dimension(54,54));
 	  posInIGV.setToolTipText("View selected position in IGV");
 	  posInIGV.addActionListener(new ActionListener() {
@@ -240,7 +237,7 @@ public class BamViewer extends JFrame {
 	  					} catch (Exception ex) {
 	  						Tools.exception(ex);
 	  						JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Cannot retreive position for selected variant", ex), "View selected position in IGV",
-	  								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+	  								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 	  					}
 	  				}
 	  			}
@@ -249,7 +246,7 @@ public class BamViewer extends JFrame {
 	  });
 	  panel.add(posInIGV);
 		 */
-		JButton export = new JButton(Resources.getScaledIcon(Resources.iExcel, 40));
+		JButton export = new JButton(Img.Excel.getScaledIcon(40));
 		export.setPreferredSize(new Dimension(54,54));
 		export.setToolTipText("Export all tabs in one Excel file (1 sheet per tab)");
 		export.addActionListener(new ActionListener() {
@@ -534,12 +531,12 @@ public class BamViewer extends JFrame {
 			if (!errors.isEmpty()) {
 				System.err.println("Cannot retreive reference for positions:\n"+errors+"\nThose positions have been removed from the tables.\nCheck if positions really exists on the chromosome.");
 				JOptionPane.showMessageDialog(new JFrame(),  "Cannot retreive reference for positions:\n"+errors+"\nThose positions have been removed from the tables.\nCheck if positions really exists on the chromosome.", "BamViewer",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}
 		} catch (Exception ex) {
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Cannot retreive position for selected variant", ex), "BamViewer",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -717,103 +714,88 @@ public class BamViewer extends JFrame {
 					System.err.println("Distant BamView impossible: you should configure 'server > php' parameter in settings.xml");
 					return false;
 				}
-				int max = sampleString.toString().split(";").length;
-				int count = 0;
 				//launch script server side
-				HttpClient httpClient = new HttpClient();
-				boolean bypass = false;
-				if (System.getProperty("http.nonProxyHosts") != null) {
-					for (String host : System.getProperty("http.nonProxyHosts").split("\\|")) {
-						if ((Highlander.getParameters().getUrlForPhpScripts()+"/bamcheck.php").toLowerCase().contains(host.toLowerCase())) bypass = true;
-					}
-				}
-				if (!bypass && System.getProperty("http.proxyHost") != null) {
-					try {
-						HostConfiguration hostConfiguration = httpClient.getHostConfiguration();
-						hostConfiguration.setProxy(System.getProperty("http.proxyHost"), Integer.parseInt(System.getProperty("http.proxyPort")));
-						httpClient.setHostConfiguration(hostConfiguration);
-						if (System.getProperty("http.proxyUser") != null && System.getProperty("http.proxyPassword") != null) {
-							// Credentials credentials = new UsernamePasswordCredentials(System.getProperty("http.proxyUser"), System.getProperty("http.proxyPassword"));
-							// Windows proxy needs specific credentials with domain ... if proxy user is in the form of domain\\user, consider it's windows
-							String user = System.getProperty("http.proxyUser");
-							Credentials credentials;
-							if (user.contains("\\")) {
-								credentials = new NTCredentials(user.split("\\\\")[1], System.getProperty("http.proxyPassword"), System.getProperty("http.proxyHost"), user.split("\\\\")[0]);
-							}else {
-								credentials = new UsernamePasswordCredentials(user, System.getProperty("http.proxyPassword"));
-							}
-							httpClient.getState().setProxyCredentials(null, System.getProperty("http.proxyHost"), credentials);
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-				PostMethod post = new PostMethod(Highlander.getParameters().getUrlForPhpScripts()+"/bamcheck.php");
-				NameValuePair[] data = {
-						new NameValuePair("filename", filename),
-						new NameValuePair("patients", "\""+sampleString.toString()+"\""),
-						new NameValuePair("positions", "\""+posString.toString()+"\"")
-				};
-				post.addParameters(data);
-				if (httpClient.executeMethod(post) == 200) {			
-					//try (BufferedReader br = new BufferedReader(new InputStreamReader(post.getResponseBodyAsStream()))){
-					InputStreamReader isr = new InputStreamReader(post.getResponseBodyAsStream());
-					boolean firstPoint = true;
-					boolean firstPlus = true;
-					int value = 0;
-					StringBuilder sb = new StringBuilder();
-					while(((value = isr.read()) != -1)) {
-						char c = (char)value;
-						if (c != '#') { //workaround for PHP buffer filling
-							//System.out.print(c);
-							if (c == '.') {
-								if (firstPoint) {
-									waitingPanel.setProgressMaximum(max);
-									waitingPanel.setProgressValue(0);
-									waitingPanel.setProgressString("Accessing "+max+" BAM files", false);
-									count = 0;
-									firstPoint = false;
-								}
-								waitingPanel.setProgressValue(++count);
-							}else if (c == '!') {
-								waitingPanel.setProgressString("BAM available, sending positions", true);
-							}else if (c == '+') {
-								if (firstPlus) {
-									waitingPanel.setProgressMaximum(max);
-									waitingPanel.setProgressValue(0);
-									waitingPanel.setProgressString("Reading "+positions.size()+" positions in "+max+" BAM", false);
-									count = 0;
-									firstPlus = false;
-								}
-								waitingPanel.setProgressValue(++count);
-							}else if (c == '\n') {
-								waitingPanel.setProgressString(sb.toString(), true);
-								sb.setLength(0);
-							}else if (c == '*') {
-								sb.setLength(0);
-								while(((value = isr.read()) != -1)) {
-									c = (char)value;
-									if (c == '*') {
-										String[] output = sb.toString().split("\\^");
-										if (output[0].equals("cmd")) {
-											System.out.println(output[1]);
-										}else if (output[0].equals("exitcode")) {
-											int exitStatus = Integer.parseInt(output[1]);
-											System.out.println("exit-status: "+exitStatus);
-											if (exitStatus != 0) return false;
+				Map<String, String> params = new HashMap<String, String>();
+				params.put("filename", filename);
+				params.put("patients", "\""+sampleString.toString()+"\"");
+				params.put("positions", "\""+posString.toString()+"\"");
+				boolean httpBamCheckOK = HttpUtility.post(Highlander.getParameters().getUrlForPhpScripts()+"/bamcheck.php", params, new HttpUtility.Callback() {
+					@Override
+					public void OnSuccess(URLConnection connection) {
+						int max = sampleString.toString().split(";").length;
+						int count = 0;
+						try {
+							InputStreamReader isr = new InputStreamReader(connection.getInputStream());
+							boolean firstPoint = true;
+							boolean firstPlus = true;
+							int value = 0;
+							StringBuilder sb = new StringBuilder();
+							while(((value = isr.read()) != -1)) {
+								char c = (char)value;
+								if (c != '#') { //workaround for PHP buffer filling
+									//System.out.print(c);
+									if (c == '.') {
+										if (firstPoint) {
+											waitingPanel.setProgressMaximum(max);
+											waitingPanel.setProgressValue(0);
+											waitingPanel.setProgressString("Accessing "+max+" BAM files", false);
+											count = 0;
+											firstPoint = false;
 										}
+										waitingPanel.setProgressValue(++count);
+									}else if (c == '!') {
+										waitingPanel.setProgressString("BAM available, sending positions", true);
+									}else if (c == '+') {
+										if (firstPlus) {
+											waitingPanel.setProgressMaximum(max);
+											waitingPanel.setProgressValue(0);
+											waitingPanel.setProgressString("Reading "+positions.size()+" positions in "+max+" BAM", false);
+											count = 0;
+											firstPlus = false;
+										}
+										waitingPanel.setProgressValue(++count);
+									}else if (c == '\n') {
+										waitingPanel.setProgressString(sb.toString(), true);
 										sb.setLength(0);
-										break;
-									}else {
-										sb.append(c);									
+									}else if (c == '*') {
+										sb.setLength(0);
+										while(((value = isr.read()) != -1)) {
+											c = (char)value;
+											if (c == '*') {
+												String[] output = sb.toString().split("\\^");
+												if (output[0].equals("cmd")) {
+													System.out.println(output[1]);
+												}else if (output[0].equals("exitcode")) {
+													int exitStatus = Integer.parseInt(output[1]);
+													System.out.println("exit-status: "+exitStatus);
+													if (exitStatus != 0) {
+														//TODO exist code 126 instead of normal output ... but I still get results ????
+														Tools.HttpUtility.setReturnValue(false);
+														return;
+													}
+												}
+												sb.setLength(0);
+												break;
+											}else {
+												sb.append(c);									
+											}
+										}
+									}else{
+										sb.append(c);
 									}
 								}
-							}else{
-								sb.append(c);
 							}
+						} catch (IOException e) {
+							e.printStackTrace();
 						}
 					}
-				}else {
+					@Override
+					public void OnError(int responseCode, String message) {
+						System.err.println("BamViewer: error while accessing "
+								+ url.toString() + ": " + responseCode + " - " + message);
+					}
+				});
+				if (!httpBamCheckOK) {
 					return false;
 				}
 			}
@@ -824,25 +806,45 @@ public class BamViewer extends JFrame {
 					Tools.exception(ex);
 				}
 			}
-			String results = Tools.httpGet(url.toString());
-			String[] parsePositions = results.trim().split("####");
-			for (String position : parsePositions) {
-				String[] parse = position.split("##");
-				Interval pos = new Interval(reference, parse[0].trim());
-				List<String> headers = Arrays.asList(parse[1].trim().split("\t"));
-				String[] rows = parse[2].trim().split("\n");
-				Object[][] data = new Object[rows.length][headers.size()];
-				for (int i=0 ; i < rows.length ; i++) {
-					String[] cols = rows[i].split("\t");
-					for (int j=0 ; j < cols.length ; j++) {
-						if (j < 3) data[i][j] = cols[j];
-						else data[i][j] = Integer.parseInt(cols[j]);
+			return HttpUtility.get(url.toString(), new HttpUtility.Callback() {
+				@Override
+				public void OnSuccess(URLConnection connection) {
+					StringBuilder results = new StringBuilder();
+					try (InputStreamReader isr = new InputStreamReader(connection.getInputStream())){
+						try (BufferedReader br = new BufferedReader(isr)){
+							String line;
+							while ((line = br.readLine()) != null) {
+								results.append(line + "\n");
+							}
+						}
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					String[] parsePositions = results.toString().trim().split("####");
+					for (String position : parsePositions) {
+						String[] parse = position.split("##");
+						Interval pos = new Interval(reference, parse[0].trim());
+						List<String> headers = Arrays.asList(parse[1].trim().split("\t"));
+						String[] rows = parse[2].trim().split("\n");
+						Object[][] data = new Object[rows.length][headers.size()];
+						for (int i=0 ; i < rows.length ; i++) {
+							String[] cols = rows[i].split("\t");
+							for (int j=0 ; j < cols.length ; j++) {
+								if (j < 3) data[i][j] = cols[j];
+								else data[i][j] = Integer.parseInt(cols[j]);
+							}
+						}
+						allHeaders.put(pos, headers);
+						allData.put(pos, data);
 					}
 				}
-				allHeaders.put(pos, headers);
-				allData.put(pos, data);
-			}
-			return true;
+
+				@Override
+				public void OnError(int responseCode, String message) {
+					System.err.println("BamViewer: error while accessing "
+							+ url.toString() + ": " + responseCode + " - " + message);
+				}
+			});
 		}catch(Exception ex) {
 			ex.printStackTrace();
 			return false;			
@@ -949,11 +951,11 @@ public class BamViewer extends JFrame {
 
 	public void bamCheck(){
 		Object res = JOptionPane.showInputDialog(new JFrame(),  "Minimum number of reads under the position", "BAM Checker",
-				JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iBamViewer,64), null, null);
+				JOptionPane.QUESTION_MESSAGE, Img.BamViewer.getScaledIcon(64), null, null);
 		if (res != null){
 			int minReads = Integer.parseInt(res.toString());
 			res = JOptionPane.showInputDialog(new JFrame(),  "Minimum number of pattern (nucleotides) of interest", "BAM Checker",
-					JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iBamViewer,64), null, null);
+					JOptionPane.QUESTION_MESSAGE, Img.BamViewer.getScaledIcon(64), null, null);
 			if (res != null){
 				int minAlt = Integer.parseInt(res.toString());
 				int nrows = 0;
@@ -1020,7 +1022,7 @@ public class BamViewer extends JFrame {
 				}
 				 */
 				JScrollPane scroll = new JScrollPane(table);
-				JButton export = new JButton(Resources.getScaledIcon(Resources.iExcel, 40));
+				JButton export = new JButton(Img.Excel.getScaledIcon(40));
 				export.setPreferredSize(new Dimension(54,54));
 				export.setToolTipText("Export this BamCheck and all BamViewer tabs in one Excel file (1 sheet per tab)");
 				export.addActionListener(new ActionListener() {
@@ -1035,7 +1037,7 @@ public class BamViewer extends JFrame {
 					}
 				});
 				JFrame frame = new JFrame(title);
-				frame.setIconImage(Resources.getScaledIcon(Resources.iBamChecker, 16).getImage());
+				frame.setIconImage(Img.BamChecker.getScaledIcon(16).getImage());
 				frame.getContentPane().add(scroll, BorderLayout.CENTER);				
 				frame.getContentPane().add(export, BorderLayout.SOUTH);				
 				frame.pack();
@@ -1196,11 +1198,11 @@ public class BamViewer extends JFrame {
 			}catch (IOException ex){
 				Tools.exception(ex);
 				JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("I/O error when creating file", ex), "Exporting to Excel",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}catch (Exception ex){
 				Tools.exception(ex);
 				JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error during export", ex), "Exporting to Excel",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}
 		}
 	}

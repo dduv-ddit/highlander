@@ -54,7 +54,7 @@ import javax.swing.JToggleButton;
 import javax.swing.border.EtchedBorder;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.dialog.AskSamplesDialog;
 import be.uclouvain.ngs.highlander.UI.dialog.CreateColumnSelection;
@@ -101,7 +101,7 @@ public class NavigationPanel extends JPanel {
 		
 		ButtonGroup selgroup = new ButtonGroup();
 		
-		button_cell_selection = new JToggleButton(Resources.getScaledIcon(Resources.iSelectionCell, 40));
+		button_cell_selection = new JToggleButton(Img.SelectionCell.getScaledIcon(40));
 		button_cell_selection.setSelected(false);
 		button_cell_selection.setToolTipText("Select cells in the table");
 		button_cell_selection.setPreferredSize(new Dimension(54,54));
@@ -115,7 +115,7 @@ public class NavigationPanel extends JPanel {
 		selgroup.add(button_cell_selection);		
 		panel.add(button_cell_selection);
 		
-		button_row_selection = new JToggleButton(Resources.getScaledIcon(Resources.iSelectionRow, 40));
+		button_row_selection = new JToggleButton(Img.SelectionRow.getScaledIcon(40));
 		button_row_selection.setSelected(true);
 		button_row_selection.setToolTipText("Select full rows in the table");
 		button_row_selection.setPreferredSize(new Dimension(54,54));
@@ -134,7 +134,7 @@ public class NavigationPanel extends JPanel {
 		sepPanel1.setPreferredSize(new Dimension(2, 50));
 		panel.add(sepPanel1);
 
-		button_sample_mask = new JToggleButton(Resources.getScaledIcon(Resources.iPatients, 40));
+		button_sample_mask = new JToggleButton(Img.Patients.getScaledIcon(40));
 		button_sample_mask.setSelected(false);
 		button_sample_mask.setToolTipText("Show/Hide variants based on a selection of samples");
 		button_sample_mask.setPreferredSize(new Dimension(54,54));
@@ -151,7 +151,7 @@ public class NavigationPanel extends JPanel {
 		sepPanel4.setPreferredSize(new Dimension(2, 50));
 		panel.add(sepPanel4);
 		
-		button_interest_yes = new JToggleButton(Resources.getScaledIcon(Resources.iButtonApply, 40));
+		button_interest_yes = new JToggleButton(Img.ButtonApply.getScaledIcon(40));
 		button_interest_yes.setSelected(true);
 		button_interest_yes.setToolTipText("Show/Hide variants marked as 'of interest' (if column " + Field.variant_of_interest.getName() + " is present)");
 		button_interest_yes.setPreferredSize(new Dimension(54,54));
@@ -163,7 +163,7 @@ public class NavigationPanel extends JPanel {
 		});	
 		panel.add(button_interest_yes);
 		
-		button_interest_maybe = new JToggleButton(Resources.getScaledIcon(Resources.iQuestion, 40));
+		button_interest_maybe = new JToggleButton(Img.Question.getScaledIcon(40));
 		button_interest_maybe.setSelected(true);
 		button_interest_maybe.setToolTipText("Show/Hide variants not marked as 'of interest'/'no interesting' (if column " + Field.variant_of_interest.getName() + " is present)");
 		button_interest_maybe.setPreferredSize(new Dimension(54,54));
@@ -175,7 +175,7 @@ public class NavigationPanel extends JPanel {
 		});	
 		panel.add(button_interest_maybe);
 		
-		button_interest_no = new JToggleButton(Resources.getScaledIcon(Resources.iCross, 40));
+		button_interest_no = new JToggleButton(Img.Cross.getScaledIcon(40));
 		button_interest_no.setSelected(true);
 		button_interest_no.setToolTipText("Show/Hide variants marked as 'not interesting' (if column " + Field.variant_of_interest.getName() + " is present)");
 		button_interest_no.setPreferredSize(new Dimension(54,54));
@@ -192,7 +192,7 @@ public class NavigationPanel extends JPanel {
 		sepPanel3.setPreferredSize(new Dimension(2, 50));
 		panel.add(sepPanel3);
 
-		button_evaluation_unclassified = new JToggleButton(Resources.getScaledIcon(Resources.iQuestion, 40));
+		button_evaluation_unclassified = new JToggleButton(Img.Question.getScaledIcon(40));
 		button_evaluation_unclassified.setSelected(true);
 		button_evaluation_unclassified.setToolTipText("Show/Hide variants not evaluated (if column " + Field.evaluation.getName() + " is present)");
 		button_evaluation_unclassified.setPreferredSize(new Dimension(54,54));
@@ -204,7 +204,7 @@ public class NavigationPanel extends JPanel {
 		});	
 		panel.add(button_evaluation_unclassified);
 			
-		button_evaluation_1 = new JToggleButton(Resources.getScaledIcon(Resources.iRoman1, 40));
+		button_evaluation_1 = new JToggleButton(Img.Roman1.getScaledIcon(40));
 		button_evaluation_1.setSelected(true);
 		button_evaluation_1.setToolTipText("Show/Hide variants evaluated as Type I - Polymorphism (if column " + Field.evaluation.getName() + " is present)");
 		button_evaluation_1.setPreferredSize(new Dimension(54,54));
@@ -216,7 +216,7 @@ public class NavigationPanel extends JPanel {
 		});	
 		panel.add(button_evaluation_1);
 		
-		button_evaluation_2 = new JToggleButton(Resources.getScaledIcon(Resources.iRoman2, 40));
+		button_evaluation_2 = new JToggleButton(Img.Roman2.getScaledIcon(40));
 		button_evaluation_2.setSelected(true);
 		button_evaluation_2.setToolTipText("Show/Hide variants evaluated as Type II - Variant Likely Benign (if column " + Field.evaluation.getName() + " is present)");
 		button_evaluation_2.setPreferredSize(new Dimension(54,54));
@@ -228,7 +228,7 @@ public class NavigationPanel extends JPanel {
 		});	
 		panel.add(button_evaluation_2);
 		
-		button_evaluation_3 = new JToggleButton(Resources.getScaledIcon(Resources.iRoman3, 40));
+		button_evaluation_3 = new JToggleButton(Img.Roman3.getScaledIcon(40));
 		button_evaluation_3.setSelected(true);
 		button_evaluation_3.setToolTipText("Show/Hide variants evaluated as Type III - Variant of Unknown Significance (if column " + Field.evaluation.getName() + " is present)");
 		button_evaluation_3.setPreferredSize(new Dimension(54,54));
@@ -240,7 +240,7 @@ public class NavigationPanel extends JPanel {
 		});	
 		panel.add(button_evaluation_3);
 		
-		button_evaluation_4 = new JToggleButton(Resources.getScaledIcon(Resources.iRoman4, 40));
+		button_evaluation_4 = new JToggleButton(Img.Roman4.getScaledIcon(40));
 		button_evaluation_4.setSelected(true);
 		button_evaluation_4.setToolTipText("Show/Hide variants evaluated as Type IV - Variant Likely Pathogenic (if column " + Field.evaluation.getName() + " is present)");
 		button_evaluation_4.setPreferredSize(new Dimension(54,54));
@@ -252,7 +252,7 @@ public class NavigationPanel extends JPanel {
 		});	
 		panel.add(button_evaluation_4);
 		
-		button_evaluation_5 = new JToggleButton(Resources.getScaledIcon(Resources.iRoman5, 40));
+		button_evaluation_5 = new JToggleButton(Img.Roman5.getScaledIcon(40));
 		button_evaluation_5.setSelected(true);
 		button_evaluation_5.setToolTipText("Show/Hide variants evaluated as Type V - Pathogenic Mutation (if column " + Field.evaluation.getName() + " is present)");
 		button_evaluation_5.setPreferredSize(new Dimension(54,54));
@@ -269,7 +269,7 @@ public class NavigationPanel extends JPanel {
 		sepPanel2.setPreferredSize(new Dimension(2, 50));
 		panel.add(sepPanel2);
 		
-		JButton button_add = new JButton(Resources.getScaledIcon(Resources.iColumnMaskNew, 40));
+		JButton button_add = new JButton(Img.ColumnMaskNew.getScaledIcon(40));
 		button_add.setToolTipText("Create a new columns mask for this analysis");
 		button_add.setPreferredSize(new Dimension(54,54));
 		button_add.addActionListener(new ActionListener() {
@@ -414,9 +414,9 @@ public class NavigationPanel extends JPanel {
 				!button_evaluation_3.isSelected() ||
 				!button_evaluation_4.isSelected() ||
 				!button_evaluation_5.isSelected() ){
-			mainFrame.tabbedPane.setIconAt(2, Resources.getScaledIcon(Resources.iNavigationGlow, 32));
+			mainFrame.tabbedPane.setIconAt(2, Img.NavigationGlow.getScaledIcon(32));
 		}else{
-			mainFrame.tabbedPane.setIconAt(2, Resources.getScaledIcon(Resources.iNavigation, 32));
+			mainFrame.tabbedPane.setIconAt(2, Img.Navigation.getScaledIcon(32));
 		}
 	}
 	
@@ -456,7 +456,7 @@ public class NavigationPanel extends JPanel {
 			}catch(Exception ex){
 				Tools.exception(ex);
 				JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Can't retreive columns mask from your profile", ex), "Retreive user columns mask",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}
 		}
 	}
@@ -484,7 +484,7 @@ public class NavigationPanel extends JPanel {
 				if (Highlander.getLoggedUser().doesPersonalDataExists(UserData.COLUMN_MASK, null, maskName)){
 					int yesno = JOptionPane.showConfirmDialog(new JFrame(), 
 							"You already have a "+UserData.COLUMN_MASK.getName()+" named '"+maskName.replace("~", " -> ")+"', do you want to overwrite it ?", 
-							"Overwriting element in your profile", JOptionPane.YES_NO_OPTION , JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iDbSave,64));
+							"Overwriting element in your profile", JOptionPane.YES_NO_OPTION , JOptionPane.QUESTION_MESSAGE, Img.DbSave.getScaledIcon(64));
 					if (yesno == JOptionPane.NO_OPTION)	return;
 				}
 				List<Field> mask = ccs.getSelection();
@@ -493,7 +493,7 @@ public class NavigationPanel extends JPanel {
 			}catch(Exception ex){
 				Tools.exception(ex);
 				JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Can't save column mask to your profile", ex), "Saving column mask to your profile",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}
 		}
 	}

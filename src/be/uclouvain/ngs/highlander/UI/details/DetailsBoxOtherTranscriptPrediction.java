@@ -35,7 +35,6 @@ import java.awt.Component;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -52,18 +51,18 @@ import javax.swing.table.TableColumn;
 
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Resources;
-import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.Resources.Palette;
+import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.table.MultiLineTableCellRenderer;
 import be.uclouvain.ngs.highlander.database.DBUtils;
 import be.uclouvain.ngs.highlander.database.Field;
-import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.Field.Aloft;
 import be.uclouvain.ngs.highlander.database.Field.Annotation;
 import be.uclouvain.ngs.highlander.database.Field.FitCons;
 import be.uclouvain.ngs.highlander.database.Field.ImpactPrediction;
 import be.uclouvain.ngs.highlander.database.Field.SplicingPrediction;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.datatype.AnalysisFull;
 import be.uclouvain.ngs.highlander.datatype.SNPEffect.VariantType;
 

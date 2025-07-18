@@ -50,7 +50,6 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 //import java.net.URL;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -79,17 +78,18 @@ import javax.swing.ScrollPaneConstants;
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Parameters;
 import be.uclouvain.ngs.highlander.Resources;
-import be.uclouvain.ngs.highlander.Tools;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Resources.Palette;
+import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.tools.BamViewer;
 import be.uclouvain.ngs.highlander.database.DBUtils;
-import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.datatype.AnalysisFull;
 import be.uclouvain.ngs.highlander.datatype.Gene;
 import be.uclouvain.ngs.highlander.datatype.Interval;
-import be.uclouvain.ngs.highlander.datatype.Variant;
 import be.uclouvain.ngs.highlander.datatype.SNPEffect.VariantType;
+import be.uclouvain.ngs.highlander.datatype.Variant;
 import be.uclouvain.ngs.highlander.tools.ViewBam;
 import net.sf.samtools.SAMRecord;
 import net.sf.samtools.SAMRecordIterator;
@@ -965,7 +965,7 @@ public class AlignmentPanel extends JPanel {
 	}
 
 	public void export(){
-		Object format = JOptionPane.showInputDialog(new JFrame(), "Choose an image format: ", "Export alignment to image file", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iExportJpeg, 64), ImageIO.getWriterFileSuffixes(), "png");
+		Object format = JOptionPane.showInputDialog(new JFrame(), "Choose an image format: ", "Export alignment to image file", JOptionPane.QUESTION_MESSAGE, Img.ExportJpeg.getScaledIcon(64), ImageIO.getWriterFileSuffixes(), "png");
 		if (format != null){
 			FileDialog chooser = new FileDialog(new JFrame(), "Export alignment to image", FileDialog.SAVE) ;
 			chooser.setFile(Tools.formatFilename(interval.getChromosome() + "-" + ((highlightedVariant != null)?highlightedVariant.getAlternativePosition():interval.getStart()) + "." + format));
@@ -981,7 +981,7 @@ public class AlignmentPanel extends JPanel {
 					ImageIO.write(image, format.toString(), new File(filename));
 				} catch (Exception ex) {
 					Tools.exception(ex);
-					JOptionPane.showMessageDialog(this, Tools.getMessage("Error when exporting alignment", ex), "Export alignment to image file", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));  			
+					JOptionPane.showMessageDialog(this, Tools.getMessage("Error when exporting alignment", ex), "Export alignment to image file", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));  			
 				}
 			} 
 		}

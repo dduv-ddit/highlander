@@ -53,7 +53,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.administration.UI.ManagerPanel;
 import be.uclouvain.ngs.highlander.administration.UI.ProjectManager;
@@ -80,7 +80,7 @@ public class MailUsers extends ManagerPanel {
 		txtf_subject = new JTextField();
 		JLabel label_attachments = new JLabel("Attachments");
 		final JPanel panel_attachments = new JPanel(new FlowLayout(FlowLayout.LEADING));
-		JButton button_attachments = new JButton(Resources.getScaledIcon(Resources.i3dPlus, 16));
+		JButton button_attachments = new JButton(Img.AddMain.getScaledIcon(16));
 		button_attachments.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -91,7 +91,7 @@ public class MailUsers extends ManagerPanel {
 					String filename = d.getDirectory() + d.getFile();
 					File file = new File(filename);
 					attachments.add(file);
-					JButton newAttachment = new JButton(d.getFile(), Resources.getScaledIcon(Resources.i3dMinus, 16));
+					JButton newAttachment = new JButton(d.getFile(), Img.RemoveMain.getScaledIcon(16));
 					newAttachment.addActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
@@ -125,7 +125,7 @@ public class MailUsers extends ManagerPanel {
 		JPanel panel_south = new JPanel();
 		add(panel_south, BorderLayout.SOUTH);
 		
-		JButton createNewButton = new JButton("Send mail to ALL active Highlander users", Resources.getScaledIcon(Resources.iAlignmentFrameShiftOff, 16));
+		JButton createNewButton = new JButton("Send mail to ALL active Highlander users", Img.AlignmentFrameShiftOff.getScaledIcon(16));
 		createNewButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -141,7 +141,7 @@ public class MailUsers extends ManagerPanel {
 						});
 						try {
 							sendMail();
-							JOptionPane.showMessageDialog(manager, "Mail has been sent to all active users", "Mail users", JOptionPane.INFORMATION_MESSAGE, Resources.getScaledIcon(Resources.iButtonApply, 128));
+							JOptionPane.showMessageDialog(manager, "Mail has been sent to all active users", "Mail users", JOptionPane.INFORMATION_MESSAGE, Img.ButtonApply.getScaledIcon(128));
 							txtf_subject.setText("");
 							txta_message.setText("");
 							panel_attachments.removeAll();
@@ -149,7 +149,7 @@ public class MailUsers extends ManagerPanel {
 							attachments.clear();
 						}catch(Exception ex) {
 							ProjectManager.toConsole(ex);
-							JOptionPane.showMessageDialog(manager, "Problem when sending email", "Mail users", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross, 64));
+							JOptionPane.showMessageDialog(manager, "Problem when sending email", "Mail users", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 						}
 						SwingUtilities.invokeLater(new Runnable() {
 							@Override
@@ -192,45 +192,33 @@ public class MailUsers extends ManagerPanel {
 		 */
 
 		Session mailSession = Session.getDefaultInstance(props, null);
-		Transport transport = mailSession.getTransport();
-
-		MimeMessage message = new MimeMessage(mailSession);
-		message.setFrom(new InternetAddress(Highlander.getParameters().getAdminMail(), "Highlander"));
-		message.setSubject(subject);
-		try (Results res = DB.select(Schema.HIGHLANDER, "SELECT `email` FROM `users` WHERE `rights` != 'inactive'")) {
-			if (res.next()){
-				String recipient = res.getString("email");
-				message.addRecipient(Message.RecipientType.BCC,	new InternetAddress(recipient));
+		try(Transport transport = mailSession.getTransport()){
+			MimeMessage message = new MimeMessage(mailSession);
+			message.setFrom(new InternetAddress(Highlander.getParameters().getAdminMail(), "Highlander"));
+			message.setSubject(subject);
+			try (Results res = DB.select(Schema.HIGHLANDER, "SELECT `email` FROM `users` WHERE `rights` != 'inactive'")) {
+				if (res.next()){
+					String recipient = res.getString("email");
+					message.addRecipient(Message.RecipientType.BCC,	new InternetAddress(recipient));
+				}
 			}
-		}
 
-		MimeBodyPart messageBodyPart = new MimeBodyPart();
-		messageBodyPart.setText(text);
+			MimeBodyPart messageBodyPart = new MimeBodyPart();
+			messageBodyPart.setText(text);
 
-		MimeMultipart multipart = new MimeMultipart();
-		multipart.addBodyPart(messageBodyPart);
-
-		/* Old JavaMail library
-		for (File file : attachments){
-			messageBodyPart = new MimeBodyPart();
-			DataSource source = new FileDataSource(file);
-			messageBodyPart.setDataHandler(new DataHandler(source));
-			messageBodyPart.setFileName(file.getName());
+			MimeMultipart multipart = new MimeMultipart();
 			multipart.addBodyPart(messageBodyPart);
-		}
-		*/
 
-		for (File file : attachments){
-			MimeBodyPart attachPart = new MimeBodyPart();
-			attachPart.attachFile(file);
-			multipart.addBodyPart(attachPart);
-		}
-		
-		message.setContent(multipart); 
+			for (File file : attachments){
+				MimeBodyPart attachPart = new MimeBodyPart();
+				attachPart.attachFile(file);
+				multipart.addBodyPart(attachPart);
+			}
+			
+			message.setContent(multipart); 
 
-		transport.connect();
-		transport.sendMessage(message,
-				message.getRecipients(Message.RecipientType.BCC));
-		transport.close();
+			transport.connect();
+			transport.sendMessage(message,	message.getRecipients(Message.RecipientType.BCC));
+		}
 	}
 }

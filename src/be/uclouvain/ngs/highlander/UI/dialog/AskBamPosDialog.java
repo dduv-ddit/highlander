@@ -36,42 +36,39 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Toolkit;
-
-import javax.swing.BorderFactory;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.ScrollPaneConstants;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowEvent;
-
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.Border;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.dialog.ProfileTree.Action;
 import be.uclouvain.ngs.highlander.administration.users.User.UserData;
 import be.uclouvain.ngs.highlander.database.Field;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase;
-import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.datatype.AnalysisFull;
 import be.uclouvain.ngs.highlander.datatype.Interval;
 import be.uclouvain.ngs.highlander.datatype.Reference;
@@ -104,7 +101,7 @@ public class AskBamPosDialog extends JDialog {
 		} catch (Exception ex) {
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Cannot retreive position for selected variant", ex), "BAM and positions selection",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 		pack();
 	}
@@ -112,7 +109,7 @@ public class AskBamPosDialog extends JDialog {
 	private void initUI(){
 		setModal(true);
 		setTitle("BAM and positions selection");
-		setIconImage(Resources.getScaledIcon(Resources.iBamViewer, 64).getImage());
+		setIconImage(Img.BamViewer.getScaledIcon(64).getImage());
 
 		getContentPane().setLayout(new BorderLayout());
 
@@ -187,7 +184,7 @@ public class AskBamPosDialog extends JDialog {
 		JPanel panel_add = new JPanel(new GridBagLayout());
 		panelIntervals.add(panel_add, BorderLayout.SOUTH);
 
-		JButton button_import_INDEL = new JButton("Import intervals from profile or file", Resources.getScaledIcon(Resources.i3dPlus, 24));
+		JButton button_import_INDEL = new JButton("Import intervals from profile or file", Img.AddMain.getScaledIcon(24));
 		button_import_INDEL.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -210,7 +207,7 @@ public class AskBamPosDialog extends JDialog {
 		gbc_button_import_INDEL.anchor = GridBagConstraints.NORTHWEST;
 		panel_add.add(button_import_INDEL, gbc_button_import_INDEL);
 
-		JButton button_import_SNP = new JButton("Import intervals from profile or file as single positions", Resources.getScaledIcon(Resources.i3dPlus, 24));
+		JButton button_import_SNP = new JButton("Import intervals from profile or file as single positions", Img.AddMain.getScaledIcon(24));
 		button_import_SNP.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -238,7 +235,7 @@ public class AskBamPosDialog extends JDialog {
 		getContentPane().add(panelIntervals, BorderLayout.CENTER);
 
 		JPanel buttonPanel = new JPanel();
-		JButton btnOk = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 24));
+		JButton btnOk = new JButton(Img.ButtonApply.getScaledIcon(24));
 		btnOk.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {				
@@ -247,7 +244,7 @@ public class AskBamPosDialog extends JDialog {
 		});
 		buttonPanel.add(btnOk);
 
-		JButton btnCancel = new JButton(Resources.getScaledIcon(Resources.iCross, 24));
+		JButton btnCancel = new JButton(Img.Cross.getScaledIcon(24));
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -289,7 +286,7 @@ public class AskBamPosDialog extends JDialog {
 				}catch(Exception ex){
 					Tools.exception(ex);
 					JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Cannot retreive all BAM from your list", ex), "BAM selection",
-							JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+							JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}
 			}
 		}else{

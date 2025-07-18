@@ -64,6 +64,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.misc.WrapLayout;
 import be.uclouvain.ngs.highlander.administration.UI.ManagerPanel;
@@ -71,9 +72,9 @@ import be.uclouvain.ngs.highlander.administration.UI.ProjectManager;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
 import be.uclouvain.ngs.highlander.datatype.Analysis;
 import be.uclouvain.ngs.highlander.datatype.AnalysisFull;
+import be.uclouvain.ngs.highlander.datatype.AnalysisFull.VariantCaller;
 import be.uclouvain.ngs.highlander.datatype.Gene;
 import be.uclouvain.ngs.highlander.datatype.Reference;
-import be.uclouvain.ngs.highlander.datatype.AnalysisFull.VariantCaller;
 import be.uclouvain.ngs.highlander.tools.ExomeBed;
 
 /**
@@ -129,7 +130,7 @@ public class AnalysesPanel extends ManagerPanel {
 		gbl_panel_2.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		panel_middle.setLayout(gbl_panel_2);
 
-		JButton button_up = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleUp, 24));
+		JButton button_up = new JButton(Img.ArrowDoubleUp.getScaledIcon(24));
 		button_up.setToolTipText("Put selected analysis before in order of appearance in Highlander toolbar");
 		button_up.addActionListener(new ActionListener() {
 			@Override
@@ -143,7 +144,7 @@ public class AnalysesPanel extends ManagerPanel {
 		gbc_button.gridy = 0;
 		panel_middle.add(button_up, gbc_button);
 
-		JButton button_down = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleDown, 24));
+		JButton button_down = new JButton(Img.ArrowDoubleDown.getScaledIcon(24));
 		button_down.setToolTipText("Put selected analysis after in order of appearance in Highlander toolbar");
 		button_down.addActionListener(new ActionListener() {
 			@Override
@@ -165,7 +166,7 @@ public class AnalysesPanel extends ManagerPanel {
 		JPanel southPanel = new JPanel(new WrapLayout(FlowLayout.CENTER));
 		add(southPanel, BorderLayout.SOUTH);
 
-		JButton createNewButton = new JButton("Create new analysis", Resources.getScaledIcon(Resources.i3dPlus, 16));
+		JButton createNewButton = new JButton("Create new analysis", Img.AddMain.getScaledIcon(16));
 		createNewButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -180,7 +181,7 @@ public class AnalysesPanel extends ManagerPanel {
 		});
 		southPanel.add(createNewButton);
 
-		JButton setCoverageRegionsButton = new JButton("Set coverage regions", Resources.getScaledIcon(Resources.iCoverage, 16));
+		JButton setCoverageRegionsButton = new JButton("Set coverage regions", Img.Coverage.getScaledIcon(16));
 		setCoverageRegionsButton.setToolTipText("Coverage regions must match the bed file you use with MosDepth when importing coverage into Highlander");
 		setCoverageRegionsButton.addActionListener(new ActionListener() {
 			@Override
@@ -196,7 +197,7 @@ public class AnalysesPanel extends ManagerPanel {
 		});
 		southPanel.add(setCoverageRegionsButton);
 		
-		JButton deleteButton = new JButton("Delete analysis", Resources.getScaledIcon(Resources.i3dMinus, 16));
+		JButton deleteButton = new JButton("Delete analysis", Img.RemoveMain.getScaledIcon(16));
 		deleteButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -225,7 +226,7 @@ public class AnalysesPanel extends ManagerPanel {
 
 			int row = 0;
 			
-			JButton buttonIcon = new JButton(Resources.getScaledIcon(analysis.getIcon(), 40));
+			JButton buttonIcon = new JButton(Resources.getScaledIcon(analysis.getIcon().getImage(), 40));
 			buttonIcon.setToolTipText("<html>The image representing this analysis, shown on buttons in Highlander.<br>"
 					+ "Click to select a new image from a file. Image size doesn't matter, it will be rescaled.</html>");
 			buttonIcon.setPreferredSize(new Dimension(54,54));
@@ -252,7 +253,7 @@ public class AnalysesPanel extends ManagerPanel {
 								});
 								try{
 									analysis.updateIcon(file);
-									buttonIcon.setIcon(Resources.getScaledIcon(analysis.getIcon(), 40));
+									buttonIcon.setIcon(Resources.getScaledIcon(analysis.getIcon().getImage(), 40));
 								}catch(Exception ex){
 									ProjectManager.toConsole(ex);			
 								}
@@ -333,7 +334,7 @@ public class AnalysesPanel extends ManagerPanel {
 									if (!target.equals(analysis.getSequencingTarget())) {
 										if (target.equals("Add new sequencing_target")) {
 											Object res = JOptionPane.showInputDialog(manager,  "Set a name for this new sequencing target", "New sequencing target",
-													JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), null, null);
+													JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), null, null);
 											if (res != null) {
 												target = res.toString().trim();
 												boxTarget.addItem(target);
@@ -614,15 +615,15 @@ public class AnalysesPanel extends ManagerPanel {
 	}
 
 	public void createAnalysis(){
-		Object resu = JOptionPane.showInputDialog(this, "Analysis name (alphanumeric caracters only and '_').\nNote that analysis name CANNOT be changed afterwards.", "Creating analysis", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.i3dPlus, 64), null, null);
+		Object resu = JOptionPane.showInputDialog(this, "Analysis name (alphanumeric caracters only and '_').\nNote that analysis name CANNOT be changed afterwards.", "Creating analysis", JOptionPane.QUESTION_MESSAGE, Img.AddMain.getScaledIcon(64), null, null);
 		if (resu != null){
 			String analysisStr = resu.toString();
 			analysisStr = analysisStr.trim().replace(' ', '_').toLowerCase();
 			Pattern pat = Pattern.compile("[^a-zA-Z0-9_]");
 			if (pat.matcher(analysisStr).find()){
-				JOptionPane.showMessageDialog(this, "Analysis name can only contain alphanumeric caracters and '_'", "Error", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross, 64));
+				JOptionPane.showMessageDialog(this, "Analysis name can only contain alphanumeric caracters and '_'", "Error", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}else if (manager.getAvailableAnalysesAsList().contains(new Analysis(analysisStr))){
-				JOptionPane.showMessageDialog(this, "Analysis '"+analysisStr+"' already exists", "Error", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross, 64));
+				JOptionPane.showMessageDialog(this, "Analysis '"+analysisStr+"' already exists", "Error", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}else{
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
@@ -632,13 +633,13 @@ public class AnalysesPanel extends ManagerPanel {
 					}
 				});
 				try{
-					Reference reference = (Reference)JOptionPane.showInputDialog(this, "Reference genome", "Creating analysis", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.i3dPlus, 64), Reference.getAvailableReferences().toArray(new Reference[0]), null);
+					Reference reference = (Reference)JOptionPane.showInputDialog(this, "Reference genome", "Creating analysis", JOptionPane.QUESTION_MESSAGE, Img.AddMain.getScaledIcon(64), Reference.getAvailableReferences().toArray(new Reference[0]), null);
 					if (reference != null){
-						Object target = JOptionPane.showInputDialog(this, "Sequencing target", "Creating analysis", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.i3dPlus, 64), manager.listSequencingTargets(), null);
+						Object target = JOptionPane.showInputDialog(this, "Sequencing target", "Creating analysis", JOptionPane.QUESTION_MESSAGE, Img.AddMain.getScaledIcon(64), manager.listSequencingTargets(), null);
 						if (target != null){
 							if (target.equals("Add new sequencing_target")){
 								Object res = JOptionPane.showInputDialog(manager,  "Set a name for this new sequencing target", "New sequencing target",
-										JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), null, null);
+										JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), null, null);
 								if (res != null) {
 									target = res.toString().trim();
 								}else {
@@ -646,7 +647,7 @@ public class AnalysesPanel extends ManagerPanel {
 								}
 							}
 							if (target != null){
-								Object caller = JOptionPane.showInputDialog(this, "Variant caller type", "Creating analysis", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.i3dPlus, 64), VariantCaller.values(), VariantCaller.GATK);
+								Object caller = JOptionPane.showInputDialog(this, "Variant caller type", "Creating analysis", JOptionPane.QUESTION_MESSAGE, Img.AddMain.getScaledIcon(64), VariantCaller.values(), VariantCaller.GATK);
 								if (caller != null){
 									FileDialog d = new FileDialog(manager, "Select an image file", FileDialog.LOAD);
 									Tools.centerWindow(d, false);
@@ -741,7 +742,7 @@ public class AnalysesPanel extends ManagerPanel {
 	
 	public void deleteAnalysis(AnalysisFull analysis){
 		ProjectManager.setHardUpdate(true);
-		int res = JOptionPane.showConfirmDialog(new JFrame(), "Are you SURE you want to DEFINITIVELY delete analysis:\n"+analysis+" and ALL samples in it ?", "Delete analysis from Highlander", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.i3dMinus,64));
+		int res = JOptionPane.showConfirmDialog(new JFrame(), "Are you SURE you want to DEFINITIVELY delete analysis:\n"+analysis+" and ALL samples in it ?", "Delete analysis from Highlander", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Img.RemoveMain.getScaledIcon(64));
 		if (res == JOptionPane.CANCEL_OPTION){
 			return;
 		}else if (res == JOptionPane.YES_OPTION){
@@ -823,7 +824,7 @@ public class AnalysesPanel extends ManagerPanel {
 			setSize(new Dimension(width,height));
 			setModal(true);
 			setTitle("Set coverage regions for " + listAnalyses.getSelectedValue());
-			setIconImage(Resources.getScaledIcon(Resources.iCoverage, 64).getImage());
+			setIconImage(Img.Coverage.getScaledIcon(64).getImage());
 			pack();
 		}
 

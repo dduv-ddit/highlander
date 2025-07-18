@@ -65,7 +65,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.text.JTextComponent;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.dialog.ProfileTree.Action;
 import be.uclouvain.ngs.highlander.UI.misc.HighlanderObserver;
@@ -133,7 +133,7 @@ public class CreateTemplate extends JDialog {
 	private void initUI(){
 		setModal(true);
 		setTitle("Create a filters template");
-		setIconImage(Resources.getScaledIcon(Resources.iTemplate, 64).getImage());
+		setIconImage(Img.Template.getScaledIcon(64).getImage());
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setSize(new Dimension((int)(screenSize.width/1.3),(int)(screenSize.height/1.3)));
 
@@ -145,7 +145,7 @@ public class CreateTemplate extends JDialog {
 		
 		JPanel buttons = new JPanel(new FlowLayout());
 
-		JButton btnOk = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 24));
+		JButton btnOk = new JButton(Img.ButtonApply.getScaledIcon(24));
 		btnOk.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -155,7 +155,7 @@ public class CreateTemplate extends JDialog {
 		});
 		buttons.add(btnOk);
 		
-		JButton btnCancel = new JButton(Resources.getScaledIcon(Resources.iCross, 24));
+		JButton btnCancel = new JButton(Img.Cross.getScaledIcon(24));
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -173,7 +173,7 @@ public class CreateTemplate extends JDialog {
 		
 		filterPanel = new JPanel(new GridBagLayout());
 		panel.add(filterPanel, BorderLayout.NORTH);
-		JButton addFilter = new JButton("Add filter", Resources.getScaledIcon(Resources.iFaintPlus, 24));
+		JButton addFilter = new JButton("Add filter", Img.AddSecondary.getScaledIcon(24));
 		addFilter.setToolTipText("<html><b>Create a filter that will be included in the template.</b><br>"
 				+ "Samples ids are irrelevant, select them as placeholder, and define a name in the table below.<br>"
 				+ "For example, you can select SAMPLE-1 and SAMPLE-2, then in the table below name them 'Normal sample' and 'Tumor sample'.<br>"
@@ -286,7 +286,7 @@ public class CreateTemplate extends JDialog {
 			
 		
 		JPanel buttons = new JPanel(new FlowLayout());
-		JButton btnRename = new JButton(Resources.getScaledIcon(Resources.iEditPen, 40));
+		JButton btnRename = new JButton(Img.EditPen.getScaledIcon(40));
 		btnRename.setToolTipText("Rename filter");
 		btnRename.addActionListener(new ActionListener() {
 			@Override
@@ -294,10 +294,10 @@ public class CreateTemplate extends JDialog {
 				final String oldName = innerBorder.getTitle();
 				Object newName = null;
 				do {
-					newName = JOptionPane.showInputDialog(CreateTemplate.this, "Set a new name for '" + oldName + "':", "Rename filter", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iTemplate, 64), null, null);
+					newName = JOptionPane.showInputDialog(CreateTemplate.this, "Set a new name for '" + oldName + "':", "Rename filter", JOptionPane.QUESTION_MESSAGE, Img.Template.getScaledIcon(64), null, null);
 					if (newName != null && filters.containsKey(newName.toString())) {
 						JOptionPane.showMessageDialog(CreateTemplate.this, "You cannot have two filters with the same name", "Rename filter",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}while(newName != null && filters.containsKey(newName.toString()));
 				if (newName != null) {
@@ -367,11 +367,11 @@ public class CreateTemplate extends JDialog {
 		for (int i=0 ; i < tmodel.getRowCount() ; i++) {
 			if (tmodel.getValueAt(i, 1) == null || tmodel.getValueAt(i, 1).toString().length() == 0) {
 				JOptionPane.showMessageDialog(CreateTemplate.this, "You must define a placeholder for each sample", "Save template",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				return;
 			}
 			if (Filter.containsForbiddenCharacters(tmodel.getValueAt(i, 1).toString())){
-				JOptionPane.showMessageDialog(this, "Placeholders cannot contains the following characters: "+Filter.getForbiddenCharacters(), "Save template", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				JOptionPane.showMessageDialog(this, "Placeholders cannot contains the following characters: "+Filter.getForbiddenCharacters(), "Save template", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				return;				
 			}
 			String sample = tmodel.getValueAt(i, 0).toString();
@@ -380,7 +380,7 @@ public class CreateTemplate extends JDialog {
 		}
 		for (String filterName : filters.keySet()) {
 			if (Filter.containsForbiddenCharacters(filterName.toString())){
-				JOptionPane.showMessageDialog(this, "Filter names cannot contains the following characters: "+Filter.getForbiddenCharacters(), "Save template", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				JOptionPane.showMessageDialog(this, "Filter names cannot contains the following characters: "+Filter.getForbiddenCharacters(), "Save template", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				return;				
 			}
 		}
@@ -399,14 +399,14 @@ public class CreateTemplate extends JDialog {
 			if (Highlander.getLoggedUser().doesPersonalDataExists(UserData.FILTERS_TEMPLATE, analysis.toString(), templateName)){
 				int yesno = JOptionPane.showConfirmDialog(new JFrame(), 
 						"You already have a "+UserData.FILTERS_TEMPLATE.getName()+" named '"+templateName.replace("~", " -> ")+"', do you want to overwrite it ?", 
-						"Overwriting "+UserData.FILTERS_TEMPLATE.getName()+" in your profile", JOptionPane.YES_NO_OPTION , JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iDbSave,64));
+						"Overwriting "+UserData.FILTERS_TEMPLATE.getName()+" in your profile", JOptionPane.YES_NO_OPTION , JOptionPane.QUESTION_MESSAGE, Img.DbSave.getScaledIcon(64));
 				if (yesno == JOptionPane.NO_OPTION)	return;
 			}
 			FiltersTemplate template = new FiltersTemplate(analysis, filtersSaveStrings, templateName);
 			Highlander.getLoggedUser().saveFiltersTemplate(template, templateName);
 		} catch (Exception ex) {
 			Tools.exception(ex);
-			JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Error", ex), "Save template in your profile", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Error", ex), "Save template in your profile", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 	}
 }

@@ -31,8 +31,12 @@ package be.uclouvain.ngs.highlander;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BaseMultiResolutionImage;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 public class Resources {
@@ -421,349 +425,419 @@ public class Resources {
 		return getColor(color, 50, false);
 	}
 	
-  public final static ImageIcon iHighlander= new ImageIcon(Highlander.class.getResource("resources/highlander.png"));
-  public final static ImageIcon iAdminstrationTools= new ImageIcon(Highlander.class.getResource("resources/administration_tools.png"));
-  public final static ImageIcon iIonImporter= new ImageIcon(Highlander.class.getResource("resources/analysis_iontorrent.png"));
-  public final static ImageIcon iProjectManager= new ImageIcon(Highlander.class.getResource("resources/project_manager.png"));
-  public final static ImageIcon iDbPatcher= new ImageIcon(Highlander.class.getResource("resources/db_patcher.png"));
+	
+	/*
+	 * Expression régulière pour remplacer l'ancienne version
+	 * 
+	 * (Resources\.getScaledIcon\(Resources.i)([A-Za-z0-9]+)(, *)([0-9]+)(\))
+	 * ->
+	 * Img.\2.getScaledIcon(\4)
+	 * 
+	 */
+	public enum Img {
+	  Highlander("highlander.png"),
+	  AdminstrationTools("administration_tools.png"),
+	  IonImporter("analysis_iontorrent.png"),
+	  ProjectManager("project_manager.png"),
+	  DbPatcher("db_patcher.png"),
 
-  //Waiting animation
-  public final static ImageIcon iWait0 = new ImageIcon(Highlander.class.getResource("resources/waiting_0.png"));
-  public final static ImageIcon iWait1 = new ImageIcon(Highlander.class.getResource("resources/waiting_1.png"));
-  public final static ImageIcon iWait2 = new ImageIcon(Highlander.class.getResource("resources/waiting_2.png"));
-  public final static ImageIcon iWait3 = new ImageIcon(Highlander.class.getResource("resources/waiting_3.png"));
-  public final static ImageIcon iWait4 = new ImageIcon(Highlander.class.getResource("resources/waiting_4.png"));
-  public final static ImageIcon iWait5 = new ImageIcon(Highlander.class.getResource("resources/waiting_5.png"));
-  public final static ImageIcon iWait6 = new ImageIcon(Highlander.class.getResource("resources/waiting_6.png"));
-  public final static ImageIcon iWait7 = new ImageIcon(Highlander.class.getResource("resources/waiting_7.png"));
-  public final static ImageIcon iWait8 = new ImageIcon(Highlander.class.getResource("resources/waiting_8.png"));
-  public final static ImageIcon iLoading = new ImageIcon(Highlander.class.getResource("resources/loading.png"));
-  
-  //General buttons
-  public final static ImageIcon iButtonApply = new ImageIcon(Highlander.class.getResource("resources/checked.png"));
-  public final static ImageIcon iCross = new ImageIcon(Highlander.class.getResource("resources/cross.png"));
-  public final static ImageIcon iAttention = new ImageIcon(Highlander.class.getResource("resources/attention.png"));
-  public final static ImageIcon iQuestion = new ImageIcon(Highlander.class.getResource("resources/question.png"));
-  public final static ImageIcon iRoman1 = new ImageIcon(Highlander.class.getResource("resources/roman_1.png"));
-  public final static ImageIcon iRoman2 = new ImageIcon(Highlander.class.getResource("resources/roman_2.png"));
-  public final static ImageIcon iRoman3 = new ImageIcon(Highlander.class.getResource("resources/roman_3.png"));
-  public final static ImageIcon iRoman4 = new ImageIcon(Highlander.class.getResource("resources/roman_4.png"));
-  public final static ImageIcon iRoman5 = new ImageIcon(Highlander.class.getResource("resources/roman_5.png"));
-  public final static ImageIcon iExit = new ImageIcon(Highlander.class.getResource("resources/exit.png"));
-  public final static ImageIcon iSave = new ImageIcon(Highlander.class.getResource("resources/save.png"));
-  public final static ImageIcon iLoad = new ImageIcon(Highlander.class.getResource("resources/load.png"));
-  public final static ImageIcon iExportFile = new ImageIcon(Highlander.class.getResource("resources/export_file.png"));
-  public final static ImageIcon iImportFile = new ImageIcon(Highlander.class.getResource("resources/folder-green.png"));
-  public final static ImageIcon iExportJpeg = new ImageIcon(Highlander.class.getResource("resources/export_jpeg.png"));
-  public final static ImageIcon iSortAZ = new ImageIcon(Highlander.class.getResource("resources/sort_AZ.png"));
-  public final static ImageIcon iEditWrench = new ImageIcon(Highlander.class.getResource("resources/edit_wrench.png"));
-  public final static ImageIcon iEditPen = new ImageIcon(Highlander.class.getResource("resources/edit_pen.png"));
-  public final static ImageIcon iPrinter = new ImageIcon(Highlander.class.getResource("resources/printer.png"));
-  public final static ImageIcon iCopy = new ImageIcon(Highlander.class.getResource("resources/edit-copy.png"));
-  public final static ImageIcon iPin = new ImageIcon(Highlander.class.getResource("resources/pin.png"));
-  public final static ImageIcon iUnpin = new ImageIcon(Highlander.class.getResource("resources/unpin.png"));
-  public final static ImageIcon iReset = new ImageIcon(Highlander.class.getResource("resources/reset.png"));
-  public final static ImageIcon iRun = new ImageIcon(Highlander.class.getResource("resources/run.png"));
+	  //Waiting animation
+	  Wait0 ("waiting_0.png"),
+	  Wait1 ("waiting_1.png"),
+	  Wait2 ("waiting_2.png"),
+	  Wait3 ("waiting_3.png"),
+	  Wait4 ("waiting_4.png"),
+	  Wait5 ("waiting_5.png"),
+	  Wait6 ("waiting_6.png"),
+	  Wait7 ("waiting_7.png"),
+	  Wait8 ("waiting_8.png"),
+	  Loading ("loading.png"),
+	  
+	  //General buttons
+	  ButtonApply ("checked.png"),
+	  Cross ("cross.png"),
+	  Attention ("attention.png"),
+	  Question ("question.png"),
+	  Roman1 ("roman_1.png"),
+	  Roman2 ("roman_2.png"),
+	  Roman3 ("roman_3.png"),
+	  Roman4 ("roman_4.png"),
+	  Roman5 ("roman_5.png"),
+	  Exit ("exit.png"),
+	  Save ("save.png"),
+	  Load ("load.png"),
+	  ExportFile ("export_file.png"),
+	  ImportFile ("folder-green.png"),
+	  ExportJpeg ("export_jpeg.png"),
+	  SortAZ ("sort_AZ.png"),
+	  EditWrench ("edit_wrench.png"),
+	  EditPen ("edit_pen.png"),
+	  Printer ("printer.png"),
+	  Copy ("edit-copy.png"),
+	  Pin ("pin.png"),
+	  Unpin ("unpin.png"),
+	  Reset ("reset.png"),
+	  Run ("run.png"),
 
-  //Main add/remove button
-  public final static ImageIcon i3dPlus = new ImageIcon(Highlander.class.getResource("resources/pm_3d_plus.png"));
-  public final static ImageIcon i3dMinus = new ImageIcon(Highlander.class.getResource("resources/pm_3d_minus.png"));
-  //Secondary add/remove button (when the main one is already in use in the frame, like magic filters)
-  public final static ImageIcon iFaintPlus = new ImageIcon(Highlander.class.getResource("resources/pm_faint_plus.png"));
-  public final static ImageIcon iFaintMinus = new ImageIcon(Highlander.class.getResource("resources/pm_faint_minus.png"));
-  //Expand/collapse button (e.g. details boxes)
-  public final static ImageIcon i2dPlus = new ImageIcon(Highlander.class.getResource("resources/pm_2d_plus.png"));
-  public final static ImageIcon i2dMinus = new ImageIcon(Highlander.class.getResource("resources/pm_2d_minus.png"));
-  //Unused plus/minus
-  public final static ImageIcon iIsometricPlus = new ImageIcon(Highlander.class.getResource("resources/pm_isometric_plus.png"));
-  public final static ImageIcon iIsometricMinus = new ImageIcon(Highlander.class.getResource("resources/pm_isometric_minus.png"));
+	  //Main add/remove button
+	  AddMain ("pm_3d_plus.png"),
+	  RemoveMain ("pm_3d_minus.png"),
+	  //Secondary add/remove button (when the main one is already in use in the frame, like magic filters)
+	  AddSecondary ("pm_faint_plus.png"),
+	  RemoveSecondary ("pm_faint_minus.png"),
+	  //Expand/collapse button (e.g. details boxes)
+	  Expand ("pm_2d_plus.png"),
+	  Collapse ("pm_2d_minus.png"),
+	  //Unused plus/minus
+	  IsometricPlus ("pm_isometric_plus.png"),
+	  IsometricMinus ("pm_isometric_minus.png"),
 
-  //Arrows icons
-  public final static ImageIcon iArrowRight = new ImageIcon(Highlander.class.getResource("resources/arrow-right.png"));
-  public final static ImageIcon iArrowLeft = new ImageIcon(Highlander.class.getResource("resources/arrow-left.png"));
-  public final static ImageIcon iArrowDoubleRight = new ImageIcon(Highlander.class.getResource("resources/arrow-right-double.png"));
-  public final static ImageIcon iArrowDoubleLeft = new ImageIcon(Highlander.class.getResource("resources/arrow-left-double.png"));
-  public final static ImageIcon iArrowDoubleUp = new ImageIcon(Highlander.class.getResource("resources/arrow-up-double.png"));
-  public final static ImageIcon iArrowDoubleDown = new ImageIcon(Highlander.class.getResource("resources/arrow-down-double.png"));
+	  //Arrows icons
+	  ArrowRight ("arrow-right.png"),
+	  ArrowLeft ("arrow-left.png"),
+	  ArrowDoubleRight ("arrow-right-double.png"),
+	  ArrowDoubleLeft ("arrow-left-double.png"),
+	  ArrowDoubleUp ("arrow-up-double.png"),
+	  ArrowDoubleDown ("arrow-down-double.png"),
 
-  //Tree icons
-  public final static ImageIcon iTreeExpand = new ImageIcon(Highlander.class.getResource("resources/tree_expand.png"));
-  
-  //Database icons
-  public final static ImageIcon iDb = new ImageIcon(Highlander.class.getResource("resources/db.png"));
-  public final static ImageIcon iDbSave = new ImageIcon(Highlander.class.getResource("resources/save.png"));
-  public final static ImageIcon iDbLoad = new ImageIcon(Highlander.class.getResource("resources/load.png"));
-  public final static ImageIcon iDbAdd = new ImageIcon(Highlander.class.getResource("resources/db_add.png"));
-  public final static ImageIcon iDbRemove = new ImageIcon(Highlander.class.getResource("resources/db_remove.png"));
-  public final static ImageIcon iDbStatus = new ImageIcon(Highlander.class.getResource("resources/db_status.png"));
-  public final static ImageIcon iDbError = new ImageIcon(Highlander.class.getResource("resources/db_error.png"));
+	  //Tree icons
+	  TreeExpand ("tree_expand.png"),
+	  
+	  //Database icons
+	  Db ("db.png"),
+	  DbSave ("save.png"),
+	  DbLoad ("load.png"),
+	  DbAdd ("db_add.png"),
+	  DbRemove ("db_remove.png"),
+	  DbStatus ("db_status.png"),
+	  DbError ("db_error.png"),
 
-  //Lock and permissions icons
-  public final static ImageIcon iLock = new ImageIcon(Highlander.class.getResource("resources/lock.png"));
-  public final static ImageIcon iUnlock = new ImageIcon(Highlander.class.getResource("resources/unlock.png"));
-  public final static ImageIcon iPermissionRefused = new ImageIcon(Highlander.class.getResource("resources/lock_cross.png"));
+	  //Lock and permissions icons
+	  Lock ("lock.png"),
+	  Unlock ("unlock.png"),
+	  PermissionRefused ("lock_cross.png"),
 
-  //Color status icons
-  public final static ImageIcon iShinyBallOrange = new ImageIcon(Highlander.class.getResource("resources/shiny_ball_orange.png"));
-  public final static ImageIcon iShinyBallRed = new ImageIcon(Highlander.class.getResource("resources/shiny_ball_red.png"));
-  public final static ImageIcon iShinyBallGreen = new ImageIcon(Highlander.class.getResource("resources/shiny_ball_green.png"));
-  public final static ImageIcon iShinyBallPink = new ImageIcon(Highlander.class.getResource("resources/shiny_ball_pink.png"));
-  
-  //Variant lists icons
-  public final static ImageIcon iVariantList = new ImageIcon(Highlander.class.getResource("resources/variant_list.png"));
-  public final static ImageIcon iVariantListSave = new ImageIcon(Highlander.class.getResource("resources/variant_list_save.png"));
-  public final static ImageIcon iVariantListLoad = new ImageIcon(Highlander.class.getResource("resources/variant_list_load.png"));
-  
-  //Database toolbar
-  public final static ImageIcon iColumnSelection = new ImageIcon(Highlander.class.getResource("resources/column_selection.png")); 
-  public final static ImageIcon iColumnSelectionNew = new ImageIcon(Highlander.class.getResource("resources/column_selection_new.png")); 
+	  //Color status icons
+	  ShinyBallOrange ("shiny_ball_orange.png"),
+	  ShinyBallRed ("shiny_ball_red.png"),
+	  ShinyBallGreen ("shiny_ball_green.png"),
+	  ShinyBallPink ("shiny_ball_pink.png"),
+	  
+	  //Variant lists icons
+	  VariantList ("variant_list.png"),
+	  VariantListSave ("variant_list_save.png"),
+	  VariantListLoad ("variant_list_load.png"),
+	  
+	  //Database toolbar
+	  ColumnSelection ("column_selection.png"), 
+	  ColumnSelectionNew ("column_selection_new.png"), 
 
-  //Filtering toolbar
-  public final static ImageIcon iFilter = new ImageIcon(Highlander.class.getResource("resources/filter.png")); 
-  public final static ImageIcon iFilterEdit = new ImageIcon(Highlander.class.getResource("resources/filter_edit.png")); 
-  public final static ImageIcon iFilterTree = new ImageIcon(Highlander.class.getResource("resources/tree_view.png")); 
-  public final static ImageIcon iFilterAnd = new ImageIcon(Highlander.class.getResource("resources/symbol_and.png")); 
-  public final static ImageIcon iFilterOr = new ImageIcon(Highlander.class.getResource("resources/symbol_or.png")); 
-  public final static ImageIcon iFilterAddAnd = new ImageIcon(Highlander.class.getResource("resources/filter_add_and.png")); 
-  public final static ImageIcon iFilterAddOr = new ImageIcon(Highlander.class.getResource("resources/filter_add_or.png")); 
-  public final static ImageIcon iFilterCustom = new ImageIcon(Highlander.class.getResource("resources/filter_custom.png")); 
-  public final static ImageIcon iFilterAddCustom = new ImageIcon(Highlander.class.getResource("resources/filter_add_custom.png")); 
-  public final static ImageIcon iFilterAddCustomAnd = new ImageIcon(Highlander.class.getResource("resources/filter_add_custom_and.png")); 
-  public final static ImageIcon iFilterAddCustomOr = new ImageIcon(Highlander.class.getResource("resources/filter_add_custom_or.png")); 
-  public final static ImageIcon iFilterMagic = new ImageIcon(Highlander.class.getResource("resources/filter_magic.png")); 
-  public final static ImageIcon iFilterAddMagic = new ImageIcon(Highlander.class.getResource("resources/filter_add_magic.png")); 
-  public final static ImageIcon iFilterAddMagicAnd = new ImageIcon(Highlander.class.getResource("resources/filter_add_magic_and.png")); 
-  public final static ImageIcon iFilterAddMagicOr = new ImageIcon(Highlander.class.getResource("resources/filter_add_magic_or.png")); 
-  public final static ImageIcon iFilterLoadAnd = new ImageIcon(Highlander.class.getResource("resources/load_and.png"));
-  public final static ImageIcon iFilterLoadOr = new ImageIcon(Highlander.class.getResource("resources/load_or.png"));
+	  //Filtering toolbar
+	  Filter ("filter.png"), 
+	  FilterEdit ("filter_edit.png"), 
+	  FilterTree ("tree_view.png"), 
+	  FilterAnd ("symbol_and.png"), 
+	  FilterOr ("symbol_or.png"), 
+	  FilterAddAnd ("filter_add_and.png"), 
+	  FilterAddOr ("filter_add_or.png"), 
+	  FilterCustom ("filter_custom.png"), 
+	  FilterAddCustom ("filter_add_custom.png"), 
+	  FilterAddCustomAnd ("filter_add_custom_and.png"), 
+	  FilterAddCustomOr ("filter_add_custom_or.png"), 
+	  FilterMagic ("filter_magic.png"), 
+	  FilterAddMagic ("filter_add_magic.png"), 
+	  FilterAddMagicAnd ("filter_add_magic_and.png"), 
+	  FilterAddMagicOr ("filter_add_magic_or.png"), 
+	  FilterLoadAnd ("load_and.png"),
+	  FilterLoadOr ("load_or.png"),
 
-  public final static ImageIcon iCount = new ImageIcon(Highlander.class.getResource("resources/counter.png"));
-  public final static ImageIcon iButtonAutoApply = new ImageIcon(Highlander.class.getResource("resources/auto_apply.png"));
-  public final static ImageIcon iButtonAutoApplyGrey = new ImageIcon(Highlander.class.getResource("resources/auto_apply_grey.png"));
-  
-  //Navigation toolbar
-  public final static ImageIcon iNavigation = new ImageIcon(Highlander.class.getResource("resources/navigation.png")); 
-  public final static ImageIcon iNavigationGlow = new ImageIcon(Highlander.class.getResource("resources/navigation_glow.png")); 
-  public final static ImageIcon iSelectionRow = new ImageIcon(Highlander.class.getResource("resources/selection_row.png"));
-  public final static ImageIcon iSelectionCell = new ImageIcon(Highlander.class.getResource("resources/selection_cell.png"));
-  public final static ImageIcon iColumnMask = new ImageIcon(Highlander.class.getResource("resources/column_mask.png")); 
-  public final static ImageIcon iColumnMaskNew = new ImageIcon(Highlander.class.getResource("resources/column_mask_new.png")); 
+	  Count ("counter.png"),
+	  ButtonAutoApply ("auto_apply.png"),
+	  ButtonAutoApplyGrey ("auto_apply_grey.png"),
+	  
+	  //Navigation toolbar
+	  Navigation ("navigation.png"), 
+	  NavigationGlow ("navigation_glow.png"), 
+	  SelectionRow ("selection_row.png"),
+	  SelectionCell ("selection_cell.png"),
+	  ColumnMask ("column_mask.png"), 
+	  ColumnMaskNew ("column_mask_new.png"), 
 
-  //Sorting toolbar
-  public final static ImageIcon iSort = new ImageIcon(Highlander.class.getResource("resources/sort.png")); 
-  public final static ImageIcon iSortAsc = new ImageIcon(Highlander.class.getResource("resources/sort_asc.png"));
-  public final static ImageIcon iSortDesc = new ImageIcon(Highlander.class.getResource("resources/sort_desc.png"));
-  public final static ImageIcon iSortAdd = new ImageIcon(Highlander.class.getResource("resources/sort_add.png"));
+	  //Sorting toolbar
+	  Sort ("sort.png"), 
+	  SortAsc ("sort_asc.png"),
+	  SortDesc ("sort_desc.png"),
+	  SortAdd ("sort_add.png"),
 
-  //Highlighting toolbar
-  public final static ImageIcon iHighlighting = new ImageIcon(Highlander.class.getResource("resources/highlighting.png"));
-  public final static ImageIcon iHeatMap = new ImageIcon(Highlander.class.getResource("resources/gradient_rgb_rg.png"));
-  public final static ImageIcon iHighlightingAdd = new ImageIcon(Highlander.class.getResource("resources/highlighting_add.png"));
-  public final static ImageIcon iHeatMapAdd = new ImageIcon(Highlander.class.getResource("resources/gradient_add.png"));
-  public final static ImageIcon iHeatMapRgbRG = new ImageIcon(Highlander.class.getResource("resources/gradient_rgb_rg.png"));
-  public final static ImageIcon iHeatMapRgbGR = new ImageIcon(Highlander.class.getResource("resources/gradient_rgb_gr.png"));
-  public final static ImageIcon iHeatMapHsvBR = new ImageIcon(Highlander.class.getResource("resources/gradient_hsv_br.png"));
-  public final static ImageIcon iHeatMapHsvRB = new ImageIcon(Highlander.class.getResource("resources/gradient_hsv_rb.png"));
-  
-  //Search toolbar
-  public final static ImageIcon iSearch = new ImageIcon(Highlander.class.getResource("resources/search.png")); 
-  public final static ImageIcon iSearchGlow = new ImageIcon(Highlander.class.getResource("resources/search_glow.png")); 
-  public final static ImageIcon iPressEnter = new ImageIcon(Highlander.class.getResource("resources/key_enter.png"));
-  public final static ImageIcon iPressKey = new ImageIcon(Highlander.class.getResource("resources/key_uiojkl.png"));
-  public final static ImageIcon iRegExp = new ImageIcon(Highlander.class.getResource("resources/regexp.png"));
+	  //Highlighting toolbar
+	  Highlighting ("highlighting.png"),
+	  HeatMap ("gradient_rgb_rg.png"),
+	  HighlightingAdd ("highlighting_add.png"),
+	  HeatMapAdd ("gradient_add.png"),
+	  HeatMapRgbRG ("gradient_rgb_rg.png"),
+	  HeatMapRgbGR ("gradient_rgb_gr.png"),
+	  HeatMapHsvBR ("gradient_hsv_br.png"),
+	  HeatMapHsvRB ("gradient_hsv_rb.png"),
+	  
+	  //Search toolbar
+	  Search ("search.png"), 
+	  SearchGlow ("search_glow.png"), 
+	  PressEnter ("key_enter.png"),
+	  PressKey ("key_uiojkl.png"),
+	  RegExp ("regexp.png"),
 
-  //User profile toolbar
-  public final static ImageIcon iUser = new ImageIcon(Highlander.class.getResource("resources/user.png"));
-  public final static ImageIcon iUserAdd = new ImageIcon(Highlander.class.getResource("resources/user_add.png"));
-  public final static ImageIcon iUserDelete = new ImageIcon(Highlander.class.getResource("resources/user_delete.png"));
-  public final static ImageIcon iUserEdit = new ImageIcon(Highlander.class.getResource("resources/user_edit.png"));
-  public final static ImageIcon iUserLock = new ImageIcon(Highlander.class.getResource("resources/user_lock.png"));
-  public final static ImageIcon iUserPromote = new ImageIcon(Highlander.class.getResource("resources/user_promote.png"));
-  public final static ImageIcon iUsers = new ImageIcon(Highlander.class.getResource("resources/users.png"));
-  public final static ImageIcon iUsersLock = new ImageIcon(Highlander.class.getResource("resources/users_lock.png")); 
+	  //User profile toolbar
+	  User ("user.png"),
+	  UserAdd ("user_add.png"),
+	  UserDelete ("user_delete.png"),
+	  UserEdit ("user_edit.png"),
+	  UserLock ("user_lock.png"),
+	  UserPromote ("user_promote.png"),
+	  Users ("users.png"),
+	  UsersLock ("users_lock.png"), 
 
-  public final static ImageIcon iUserTree = new ImageIcon(Highlander.class.getResource("resources/user_tree.png")); 
-  public final static ImageIcon iFolder = new ImageIcon(Highlander.class.getResource("resources/folder-violet.png"));
-  public final static ImageIcon iFolderNew = new ImageIcon(Highlander.class.getResource("resources/folder_new.png")); 
-  public final static ImageIcon iField = new ImageIcon(Highlander.class.getResource("resources/selection_column.png"));
-  public final static ImageIcon iComments = new ImageIcon(Highlander.class.getResource("resources/comments.png"));
+	  UserTree ("user_tree.png"), 
+	  Folder ("folder-violet.png"),
+	  FolderNew ("folder_new.png"), 
+	  Field ("selection_column.png"),
+	  Comments ("comments.png"),
 
-  public final static ImageIcon iList = new ImageIcon(Highlander.class.getResource("resources/list symbol.png"));
-  public final static ImageIcon iInterval = new ImageIcon(Highlander.class.getResource("resources/interval.png"));
-  public final static ImageIcon iHPO = new ImageIcon(Highlander.class.getResource("resources/hpo.png"));
-  public final static ImageIcon iHPOToGenes = new ImageIcon(Highlander.class.getResource("resources/hpo_to_genes.png"));
-  public final static ImageIcon iTemplate = new ImageIcon(Highlander.class.getResource("resources/template_filter.png"));
-  public final static ImageIcon iUserList = new ImageIcon(Highlander.class.getResource("resources/user_list.png"));
-  public final static ImageIcon iUserListEdit = new ImageIcon(Highlander.class.getResource("resources/user_list_edit.png"));
-  public final static ImageIcon iUserListEditField = new ImageIcon(Highlander.class.getResource("resources/user_list_edit_fromdb.png"));
-  public final static ImageIcon iUserListNew = new ImageIcon(Highlander.class.getResource("resources/user_list_new.png"));
-  public final static ImageIcon iUserListNewField = new ImageIcon(Highlander.class.getResource("resources/user_list_new_fromdb.png"));
-  public final static ImageIcon iUserListValidate = new ImageIcon(Highlander.class.getResource("resources/user_list_validate.png"));
-  public final static ImageIcon iUserListDelete = new ImageIcon(Highlander.class.getResource("resources/user_list_delete.png"));
-  public final static ImageIcon iUserListShare = new ImageIcon(Highlander.class.getResource("resources/user_list_share.png"));
-  public final static ImageIcon iUserFilter = new ImageIcon(Highlander.class.getResource("resources/user_filter.png"));
-  public final static ImageIcon iUserFilterDelete = new ImageIcon(Highlander.class.getResource("resources/user_filter_delete.png"));
-  public final static ImageIcon iUserFilterShare = new ImageIcon(Highlander.class.getResource("resources/user_filter_share.png"));
-  public final static ImageIcon iUserSorting = new ImageIcon(Highlander.class.getResource("resources/user_sorting.png"));
-  public final static ImageIcon iUserSortingDelete = new ImageIcon(Highlander.class.getResource("resources/user_sorting_delete.png"));
-  public final static ImageIcon iUserSortingShare = new ImageIcon(Highlander.class.getResource("resources/user_sorting_share.png"));
-  public final static ImageIcon iUserHighlightingDelete = new ImageIcon(Highlander.class.getResource("resources/user_highlighting_delete.png"));
-  public final static ImageIcon iUserHighlightingShare = new ImageIcon(Highlander.class.getResource("resources/user_highlighting_share.png"));
-  public final static ImageIcon iUserColumnSelectionDelete = new ImageIcon(Highlander.class.getResource("resources/user_column_selection_delete.png"));
-  public final static ImageIcon iUserColumnSelectionEdit = new ImageIcon(Highlander.class.getResource("resources/user_column_selection_edit.png"));
-  public final static ImageIcon iUserColumnSelectionShare = new ImageIcon(Highlander.class.getResource("resources/user_column_selection_share.png"));
-  public final static ImageIcon iUserColumnMaskDelete = new ImageIcon(Highlander.class.getResource("resources/user_column_mask_delete.png"));
-  public final static ImageIcon iUserColumnMaskEdit = new ImageIcon(Highlander.class.getResource("resources/user_column_mask_edit.png"));
-  public final static ImageIcon iUserColumnMaskShare = new ImageIcon(Highlander.class.getResource("resources/user_column_mask_share.png"));
-  public final static ImageIcon iUserIntervals = new ImageIcon(Highlander.class.getResource("resources/user_intervals.png"));
-  public final static ImageIcon iUserIntervalsNew = new ImageIcon(Highlander.class.getResource("resources/user_intervals_new.png"));
-  public final static ImageIcon iUserIntervalsEdit = new ImageIcon(Highlander.class.getResource("resources/user_intervals_edit.png"));
-  public final static ImageIcon iUserIntervalsDelete = new ImageIcon(Highlander.class.getResource("resources/user_intervals_delete.png"));
-  public final static ImageIcon iUserIntervalsShare = new ImageIcon(Highlander.class.getResource("resources/user_intervals_share.png"));
-  public final static ImageIcon iUserHPO = new ImageIcon(Highlander.class.getResource("resources/user_hpo.png"));
-  public final static ImageIcon iUserHPONew = new ImageIcon(Highlander.class.getResource("resources/user_hpo_new.png"));
-  public final static ImageIcon iUserHPOEdit = new ImageIcon(Highlander.class.getResource("resources/user_hpo_edit.png"));
-  public final static ImageIcon iUserHPODelete = new ImageIcon(Highlander.class.getResource("resources/user_hpo_delete.png"));
-  public final static ImageIcon iUserHPOShare = new ImageIcon(Highlander.class.getResource("resources/user_hpo_share.png"));
-  public final static ImageIcon iUserTemplate = new ImageIcon(Highlander.class.getResource("resources/user_template.png"));
-  public final static ImageIcon iUserTemplateNew = new ImageIcon(Highlander.class.getResource("resources/user_template_new.png"));
-  public final static ImageIcon iUserTemplateEdit = new ImageIcon(Highlander.class.getResource("resources/user_template_edit.png"));
-  public final static ImageIcon iUserTemplateDelete = new ImageIcon(Highlander.class.getResource("resources/user_template_delete.png"));
-  public final static ImageIcon iUserTemplateShare = new ImageIcon(Highlander.class.getResource("resources/user_template_share.png"));
-  public final static ImageIcon iUserVariantListDelete = new ImageIcon(Highlander.class.getResource("resources/user_variant_list_delete.png"));
-  public final static ImageIcon iUserVariantListShare = new ImageIcon(Highlander.class.getResource("resources/user_variant_list_share.png"));
-  public final static ImageIcon iUserFolderShare = new ImageIcon(Highlander.class.getResource("resources/user_folder_share.png"));
-  public final static ImageIcon iUserCheckShare = new ImageIcon(Highlander.class.getResource("resources/user_check_share.png"));
-  
-  //Tools toolbar
-  public final static ImageIcon iTools = new ImageIcon(Highlander.class.getResource("resources/tools.png")); 
-  public final static ImageIcon iPavian = new ImageIcon(Highlander.class.getResource("resources/pavian.png"));
-  public final static ImageIcon iIGV = new ImageIcon(Highlander.class.getResource("resources/igv.png"));
-  public final static ImageIcon iIGVpos = new ImageIcon(Highlander.class.getResource("resources/igv_position.png"));
-  public final static ImageIcon iExportSequence = new ImageIcon(Highlander.class.getResource("resources/export_mutated_sequence.png"));
-  public final static ImageIcon iExcel = new ImageIcon(Highlander.class.getResource("resources/excel.png"));
-  public final static ImageIcon iExcelTN = new ImageIcon(Highlander.class.getResource("resources/excel_TN.png"));
-  public final static ImageIcon iTSV = new ImageIcon(Highlander.class.getResource("resources/tsv_export.png"));
-  public final static ImageIcon iVCF = new ImageIcon(Highlander.class.getResource("resources/vcf_export.png"));
-  public final static ImageIcon iBurdenTest = new ImageIcon(Highlander.class.getResource("resources/burden_test.png"));
-  public final static ImageIcon iBamViewer = new ImageIcon(Highlander.class.getResource("resources/bam_viewer.png"));
-  public final static ImageIcon iBamChecker = new ImageIcon(Highlander.class.getResource("resources/bam_checker.png"));
-  public final static ImageIcon iStatAssociator = new ImageIcon(Highlander.class.getResource("resources/stat_associator.png"));
-  public final static ImageIcon iPedigreeChecker = new ImageIcon(Highlander.class.getResource("resources/pedigree_checker.png"));
-  public final static ImageIcon iPedigreeCheckerCommon = new ImageIcon(Highlander.class.getResource("resources/pedcheck_common.png"));
-  public final static ImageIcon iPedigreeCheckerAdjusted = new ImageIcon(Highlander.class.getResource("resources/pedcheck_adjusted.png"));
-  public final static ImageIcon iPedigreeMale = new ImageIcon(Highlander.class.getResource("resources/gender_male.png"));
-  public final static ImageIcon iPedigreeFemale = new ImageIcon(Highlander.class.getResource("resources/gender_female.png"));
-  public final static ImageIcon iCoverage = new ImageIcon(Highlander.class.getResource("resources/coverage.png"));
-  public final static ImageIcon iDownload = new ImageIcon(Highlander.class.getResource("resources/folder-download.png"));
-  public final static ImageIcon iRunStatisticsCharts = new ImageIcon(Highlander.class.getResource("resources/run_statistics_charts.png"));
-  public final static ImageIcon iRunStatisticsDetails = new ImageIcon(Highlander.class.getResource("resources/run_statistics_details.png"));
-  public final static ImageIcon iFastQC = new ImageIcon(Highlander.class.getResource("resources/fastqc.png"));
-  public final static ImageIcon iChartDouble = new ImageIcon(Highlander.class.getResource("resources/chart_double.png"));
-  public final static ImageIcon iChartBar = new ImageIcon(Highlander.class.getResource("resources/chart_bar.png"));
-  public final static ImageIcon iChartPie = new ImageIcon(Highlander.class.getResource("resources/chart_pie.png"));
-  public final static ImageIcon iRunSummary = new ImageIcon(Highlander.class.getResource("resources/run_summary.png"));
-  public final static ImageIcon iRunReport = new ImageIcon(Highlander.class.getResource("resources/run_report.png"));
-  public final static ImageIcon iCTDNA = new ImageIcon(Highlander.class.getResource("resources/ctDNA.png"));
-  public final static ImageIcon iHGMD = new ImageIcon(Highlander.class.getResource("resources/HGMD.png"));
-  public final static ImageIcon iExomiser = new ImageIcon(Highlander.class.getResource("resources/exomiser.png"));
-  public final static ImageIcon iKraken = new ImageIcon(Highlander.class.getResource("resources/krona.png"));
-  public final static ImageIcon iAlignmentPinned = new ImageIcon(Highlander.class.getResource("resources/alignment_pinned.png"));
-  public final static ImageIcon iM6A = new ImageIcon(Highlander.class.getResource("resources/M6A.png"));
+	  List ("list symbol.png"),
+	  Interval ("interval.png"),
+	  HPO ("hpo.png"),
+	  HPOToGenes ("hpo_to_genes.png"),
+	  Template ("template_filter.png"),
+	  UserList ("user_list.png"),
+	  UserListEdit ("user_list_edit.png"),
+	  UserListEditField ("user_list_edit_fromdb.png"),
+	  UserListNew ("user_list_new.png"),
+	  UserListNewField ("user_list_new_fromdb.png"),
+	  UserListValidate ("user_list_validate.png"),
+	  UserListDelete ("user_list_delete.png"),
+	  UserListShare ("user_list_share.png"),
+	  UserFilter ("user_filter.png"),
+	  UserFilterDelete ("user_filter_delete.png"),
+	  UserFilterShare ("user_filter_share.png"),
+	  UserSorting ("user_sorting.png"),
+	  UserSortingDelete ("user_sorting_delete.png"),
+	  UserSortingShare ("user_sorting_share.png"),
+	  UserHighlightingDelete ("user_highlighting_delete.png"),
+	  UserHighlightingShare ("user_highlighting_share.png"),
+	  UserColumnSelectionDelete ("user_column_selection_delete.png"),
+	  UserColumnSelectionEdit ("user_column_selection_edit.png"),
+	  UserColumnSelectionShare ("user_column_selection_share.png"),
+	  UserColumnMaskDelete ("user_column_mask_delete.png"),
+	  UserColumnMaskEdit ("user_column_mask_edit.png"),
+	  UserColumnMaskShare ("user_column_mask_share.png"),
+	  UserIntervals ("user_intervals.png"),
+	  UserIntervalsNew ("user_intervals_new.png"),
+	  UserIntervalsEdit ("user_intervals_edit.png"),
+	  UserIntervalsDelete ("user_intervals_delete.png"),
+	  UserIntervalsShare ("user_intervals_share.png"),
+	  UserHPO ("user_hpo.png"),
+	  UserHPONew ("user_hpo_new.png"),
+	  UserHPOEdit ("user_hpo_edit.png"),
+	  UserHPODelete ("user_hpo_delete.png"),
+	  UserHPOShare ("user_hpo_share.png"),
+	  UserTemplate ("user_template.png"),
+	  UserTemplateNew ("user_template_new.png"),
+	  UserTemplateEdit ("user_template_edit.png"),
+	  UserTemplateDelete ("user_template_delete.png"),
+	  UserTemplateShare ("user_template_share.png"),
+	  UserVariantListDelete ("user_variant_list_delete.png"),
+	  UserVariantListShare ("user_variant_list_share.png"),
+	  UserFolderShare ("user_folder_share.png"),
+	  UserCheckShare ("user_check_share.png"),
+	  
+	  //Tools toolbar
+	  Tools ("tools.png"), 
+	  Pavian ("pavian.png"),
+	  IGV ("igv.png"),
+	  IGVpos ("igv_position.png"),
+	  ExportSequence ("export_mutated_sequence.png"),
+	  Excel ("excel.png"),
+	  ExcelTN ("excel_TN.png"),
+	  TSV ("tsv_export.png"),
+	  VCF ("vcf_export.png"),
+	  BurdenTest ("burden_test.png"),
+	  BamViewer ("bam_viewer.png"),
+	  BamChecker ("bam_checker.png"),
+	  StatAssociator ("stat_associator.png"),
+	  PedigreeChecker ("pedigree_checker.png"),
+	  PedigreeCheckerCommon ("pedcheck_common.png"),
+	  PedigreeCheckerAdjusted ("pedcheck_adjusted.png"),
+	  PedigreeMale ("gender_male.png"),
+	  PedigreeFemale ("gender_female.png"),
+	  Coverage ("coverage.png"),
+	  Download ("folder-download.png"),
+	  RunStatisticsCharts ("run_statistics_charts.png"),
+	  RunStatisticsDetails ("run_statistics_details.png"),
+	  FastQC ("fastqc.png"),
+	  ChartDouble ("chart_double.png"),
+	  ChartBar ("chart_bar.png"),
+	  ChartPie ("chart_pie.png"),
+	  RunSummary ("run_summary.png"),
+	  RunReport ("run_report.png"),
+	  CTDNA ("ctDNA.png"),
+	  HGMD ("HGMD.png"),
+	  Exomiser ("exomiser.png"),
+	  Kraken ("krona.png"),
+	  AlignmentPinned ("alignment_pinned.png"),
+	  M6A ("M6A.png"),
 
-  //Burden Test
-  public final static ImageIcon iZoomIn = new ImageIcon(Highlander.class.getResource("resources/zoom_in.png"));
-  public final static ImageIcon iZoomOut = new ImageIcon(Highlander.class.getResource("resources/zoom_out.png"));
-  public final static ImageIcon iZoomOriginal = new ImageIcon(Highlander.class.getResource("resources/zoom_original.png"));
-  public final static ImageIcon iZoomBestFit = new ImageIcon(Highlander.class.getResource("resources/zoom_fit_best.png"));
-  public final static ImageIcon iChiSquare = new ImageIcon(Highlander.class.getResource("resources/chi_square.png"));
+	  //Burden Test
+	  ZoomIn ("zoom_in.png"),
+	  ZoomOut ("zoom_out.png"),
+	  ZoomOriginal ("zoom_original.png"),
+	  ZoomBestFit ("zoom_fit_best.png"),
+	  ChiSquare ("chi_square.png"),
 
-  //Alignment detail box
-  public final static ImageIcon iAlignmentCenterMutation = new ImageIcon(Highlander.class.getResource("resources/center_mutation.png"));
-  public final static ImageIcon iAlignmentSoftclipOn = new ImageIcon(Highlander.class.getResource("resources/alignment_softclip_on.png"));
-  public final static ImageIcon iAlignmentSoftclipOff = new ImageIcon(Highlander.class.getResource("resources/alignment_softclip_off.png"));
-  public final static ImageIcon iAlignmentSquishedOn = new ImageIcon(Highlander.class.getResource("resources/alignment_squished_on.png"));
-  public final static ImageIcon iAlignmentSquishedOff = new ImageIcon(Highlander.class.getResource("resources/alignment_squished_off.png"));
-  public final static ImageIcon iAlignmentFrameShiftOn = new ImageIcon(Highlander.class.getResource("resources/alignment_frameshift_on.png"));
-  public final static ImageIcon iAlignmentFrameShiftOff = new ImageIcon(Highlander.class.getResource("resources/alignment_frameshift_off.png"));
-  
-  //Help toolbar
-  public final static ImageIcon iHelp = new ImageIcon(Highlander.class.getResource("resources/help.png")); 
-  public final static ImageIcon iMemory = new ImageIcon(Highlander.class.getResource("resources/memory.png"));
-  public final static ImageIcon iLucky = new ImageIcon(Highlander.class.getResource("resources/lucky.png"));
-  public final static ImageIcon iBadLuck = new ImageIcon(Highlander.class.getResource("resources/bad_luck.jpg"));
-  public final static ImageIcon iAbout = new ImageIcon(Highlander.class.getResource("resources/about.png"));
-  
-  //Miscellaneous
-  public final static ImageIcon iUpdater = new ImageIcon(Highlander.class.getResource("resources/updater_32.png"));
-  public final static ImageIcon iLastDbAdditions = new ImageIcon(Highlander.class.getResource("resources/last_db_additions.png"));
-  public final static ImageIcon iPatients = new ImageIcon(Highlander.class.getResource("resources/patients.png"));
-  public final static ImageIcon iDbSearch = new ImageIcon(Highlander.class.getResource("resources/db_load.png"));
-  public final static ImageIcon iReference = new ImageIcon(Highlander.class.getResource("resources/reference.png"));
-  
-  //Logos
-  public final static ImageIcon iLogoHighlander = new ImageIcon(Highlander.class.getResource("resources/logo_highlander.png"));
-  public final static ImageIcon iLogoGEHU = new ImageIcon(Highlander.class.getResource("resources/logo_gehu.png"));
-  public final static ImageIcon iLogoDeDuveUCLouvain = new ImageIcon(Highlander.class.getResource("resources/logo_dduv_ucl.png"));
-  public final static ImageIcon iLogoDeDuveHorizontal = new ImageIcon(Highlander.class.getResource("resources/logo_deduve_hori.png"));
-  public final static ImageIcon iLogoDeDuveVertival = new ImageIcon(Highlander.class.getResource("resources/logo_deduve_vert.png"));
-  public final static ImageIcon iLogoFCE = new ImageIcon(Highlander.class.getResource("resources/logo_fondation_contre_le_cancer.png"));
-  public final static ImageIcon iLogoInnoviris = new ImageIcon(Highlander.class.getResource("resources/logo_innoviris.png"));
-  public final static ImageIcon iLogoUCLouvainHorizontal = new ImageIcon(Highlander.class.getResource("resources/logo_uclouvain_hori.png"));
-  public final static ImageIcon iLogoUCLouvainVertical = new ImageIcon(Highlander.class.getResource("resources/logo_uclouvain_vert.png"));
-  public final static ImageIcon iLogoWelbio = new ImageIcon(Highlander.class.getResource("resources/logo_welbio.png"));
+	  //Alignment detail box
+	  AlignmentCenterMutation ("center_mutation.png"),
+	  AlignmentSoftclipOn ("alignment_softclip_on.png"),
+	  AlignmentSoftclipOff ("alignment_softclip_off.png"),
+	  AlignmentSquishedOn ("alignment_squished_on.png"),
+	  AlignmentSquishedOff ("alignment_squished_off.png"),
+	  AlignmentFrameShiftOn ("alignment_frameshift_on.png"),
+	  AlignmentFrameShiftOff ("alignment_frameshift_off.png"),
+	  
+	  //Help toolbar
+	  Help ("help.png"), 
+	  Memory ("memory.png"),
+	  Lucky ("lucky.png"),
+	  BadLuck ("bad_luck.jpg"),
+	  About ("about.png"),
+	  
+	  //Miscellaneous
+	  Updater ("updater_32.png"),
+	  LastDbAdditions ("last_db_additions.png"),
+	  Patients ("patients.png"),
+	  DbSearch ("db_load.png"),
+	  Reference ("reference.png"),
+	  
+	  //Logos
+	  LogoHighlander ("logo_highlander.png"),
+	  LogoGEHU ("logo_gehu.png"),
+	  LogoDeDuveUCLouvain ("logo_dduv_ucl.png"),
+	  LogoDeDuveHorizontal ("logo_deduve_hori.png"),
+	  LogoDeDuveVertival ("logo_deduve_vert.png"),
+	  LogoFCE ("logo_fondation_contre_le_cancer.png"),
+	  LogoInnoviris ("logo_innoviris.png"),
+	  LogoUCLouvainHorizontal ("logo_uclouvain_hori.png"),
+	  LogoUCLouvainVertical ("logo_uclouvain_vert.png"),
+	  LogoWelbio ("logo_welbio.png"),
 
-  //External web resources
-  public final static ImageIcon iExtBeacon = new ImageIcon(Highlander.class.getResource("resources/ext_beacon.png"));
-  public final static ImageIcon iExtCliniphenome = new ImageIcon(Highlander.class.getResource("resources/ext_cliniphenome.png"));
-  public final static ImageIcon iExtCosmic = new ImageIcon(Highlander.class.getResource("resources/ext_cosmic.png"));
-  public final static ImageIcon iExtDbnsp = new ImageIcon(Highlander.class.getResource("resources/ext_dbsnp.png"));
-  public final static ImageIcon iExtDecipher = new ImageIcon(Highlander.class.getResource("resources/ext_decipher.png"));
-  public final static ImageIcon iExtDida = new ImageIcon(Highlander.class.getResource("resources/ext_dida.png"));
-  public final static ImageIcon iExtEnsembl = new ImageIcon(Highlander.class.getResource("resources/ext_ensembl.png"));
-  public final static ImageIcon iExtEntrez = new ImageIcon(Highlander.class.getResource("resources/ext_entrez.png"));
-  public final static ImageIcon iExtExac = new ImageIcon(Highlander.class.getResource("resources/ext_exac.png"));
-  public final static ImageIcon iExtGnomad = new ImageIcon(Highlander.class.getResource("resources/ext_gnomad.png"));
-  public final static ImageIcon iExtHgnc = new ImageIcon(Highlander.class.getResource("resources/ext_hgnc.png"));
-  public final static ImageIcon iExtLovd = new ImageIcon(Highlander.class.getResource("resources/ext_lovd.png"));
-  public final static ImageIcon iExtMarrvel = new ImageIcon(Highlander.class.getResource("resources/ext_marrvel.png"));
-  public final static ImageIcon iExtMutaframe = new ImageIcon(Highlander.class.getResource("resources/ext_mutaframe.png"));
-  public final static ImageIcon iExtMutalyzer = new ImageIcon(Highlander.class.getResource("resources/ext_mutalyzer.png"));
-  public final static ImageIcon iExtMutationTaster = new ImageIcon(Highlander.class.getResource("resources/ext_mutation_taster.png"));
-  public final static ImageIcon iExtNcbi = new ImageIcon(Highlander.class.getResource("resources/ext_ncbi.png"));
-  public final static ImageIcon iExtNhgriBic = new ImageIcon(Highlander.class.getResource("resources/ext_NHGRI_BIC.png"));
-  public final static ImageIcon iExtOmim = new ImageIcon(Highlander.class.getResource("resources/ext_omim.png"));
-  public final static ImageIcon iExtPubmed = new ImageIcon(Highlander.class.getResource("resources/ext_pubmed.png"));
-  public final static ImageIcon iExtUcsc = new ImageIcon(Highlander.class.getResource("resources/ext_ucsc.png"));
-  public final static ImageIcon iExtClinVar = new ImageIcon(Highlander.class.getResource("resources/ext_clinvar.png"));
-  public final static ImageIcon iExtClinVarMiner = new ImageIcon(Highlander.class.getResource("resources/ext_clinvarminer.png"));
-  public final static ImageIcon iExtFranklin = new ImageIcon(Highlander.class.getResource("resources/ext_franklin.png"));
-  public final static ImageIcon iExtGtex = new ImageIcon(Highlander.class.getResource("resources/ext_gtex.png"));
-  public final static ImageIcon iExtUniprot = new ImageIcon(Highlander.class.getResource("resources/ext_uniprot.png"));
-  public final static ImageIcon iExtVarsome = new ImageIcon(Highlander.class.getResource("resources/ext_varsome.png"));
+	  //External web resources
+	  ExtBeacon ("ext_beacon.png"),
+	  ExtCliniphenome ("ext_cliniphenome.png"),
+	  ExtCosmic ("ext_cosmic.png"),
+	  ExtDbnsp ("ext_dbsnp.png"),
+	  ExtDecipher ("ext_decipher.png"),
+	  ExtDida ("ext_dida.png"),
+	  ExtEnsembl ("ext_ensembl.png"),
+	  ExtEntrez ("ext_entrez.png"),
+	  ExtExac ("ext_exac.png"),
+	  ExtGnomad ("ext_gnomad.png"),
+	  ExtHgnc ("ext_hgnc.png"),
+	  ExtLovd ("ext_lovd.png"),
+	  ExtMarrvel ("ext_marrvel.png"),
+	  ExtMutaframe ("ext_mutaframe.png"),
+	  ExtMutalyzer ("ext_mutalyzer.png"),
+	  ExtMutationTaster ("ext_mutation_taster.png"),
+	  ExtNcbi ("ext_ncbi.png"),
+	  ExtNhgriBic ("ext_NHGRI_BIC.png"),
+	  ExtOmim ("ext_omim.png"),
+	  ExtPubmed ("ext_pubmed.png"),
+	  ExtUcsc ("ext_ucsc.png"),
+	  ExtClinVar ("ext_clinvar.png"),
+	  ExtClinVarMiner ("ext_clinvarminer.png"),
+	  ExtFranklin ("ext_franklin.png"),
+	  ExtGtex ("ext_gtex.png"),
+	  ExtUniprot ("ext_uniprot.png"),
+	  ExtVarsome ("ext_varsome.png"),
+		;
+		private final String filename;
+		private BufferedImage image;
+		
+		Img(String filename) {
+			this.filename = filename;
+		}
+		
+		public String getResourcePath() {
+			return "resources/"+filename;
+		}
+		
+		public String getFullResourcePath() {
+			return new ImageIcon(Highlander.class.getResource(getResourcePath())).toString();
+		}
+		
+		public Image getImage() {
+			if (image == null) {
+				try {
+					image = ImageIO.read(Highlander.class.getResource(getResourcePath()));					
+				}catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+			return image;
+		}
+		
+	  public ImageIcon getNonScalableIcon(){
+	  	return new ImageIcon(getImage());
+	  }
+	  
+	  public ImageIcon getScaledIcon(int size){
+	  	return Resources.getScaledIcon(getImage(), size);
+	  }
 
-  public static ImageIcon getScaledIcon(ImageIcon icon, int size){
-  	return new ImageIcon(icon.getImage().getScaledInstance(size, size,  java.awt.Image.SCALE_SMOOTH));
+	  public ImageIcon getHeightScaledIcon(int height){
+	  	return Resources.getHeightScaledIcon(getImage(), height);
+	  }
+	  
+	  public ImageIcon getWidthScaledIcon(int width){
+	  	return Resources.getWidthScaledIcon(getImage(), width);
+	  }
+
+	}
+
+	//Zoom factors available in Windows 10 for HDPI screens
+	public final static double[] zoomFactors = {1.0, 1.25, 1.5, 1.75, 2.0, 2.25, 2.5, 2.75, 3.0};
+
+  public static ImageIcon getScaledIcon(Image image, int width, int height){
+  	var myImages = new ArrayList<Image>();
+  	for (double zoom : zoomFactors) {
+  		myImages.add(image.getScaledInstance((int)(width * zoom), (int)(height * zoom),  java.awt.Image.SCALE_SMOOTH));				
+  	}
+  	return new ImageIcon(new BaseMultiResolutionImage(myImages.toArray(new Image[0])));
   }
-   	
-  public static ImageIcon getHeightScaledIcon(ImageIcon icon, int height){
-  	return new ImageIcon(icon.getImage().getScaledInstance(-1, height,  java.awt.Image.SCALE_SMOOTH));
+
+  public static ImageIcon getScaledIcon(Image image, int size){
+  	return getScaledIcon(image, size, size);
   }
   
-  public static ImageIcon getWidthScaledIcon(ImageIcon icon, int width){
-  	return new ImageIcon(icon.getImage().getScaledInstance(width, -1, java.awt.Image.SCALE_SMOOTH));
+  public static ImageIcon getHeightScaledIcon(Image image, int height){
+  	return getScaledIcon(image, -1, height);
+  }
+  
+  public static ImageIcon getWidthScaledIcon(Image image, int width){
+  	return getScaledIcon(image, width, -1);
   }
   
   public static ImageIcon getColoredSquare(int size, Color color){
-  	BufferedImage image = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);  	
-  	Graphics g = image.getGraphics();
-  	g.setColor(new Color(0, 0, 0, 0));
-  	g.fillRect(0, 0, size, size);
-  	g.setColor(color);
-		g.fillRect(1, 1, size, size);
-  	g.setColor(Color.BLACK);
-		g.drawRect(1, 1, size, size);
-		return new ImageIcon(image);
+  	var myImages = new ArrayList<Image>();
+  	for (double zoom : zoomFactors) {
+  		int scale = (int)(size * zoom);
+    	BufferedImage image = new BufferedImage(scale, scale, BufferedImage.TYPE_INT_ARGB);  	
+    	Graphics g = image.getGraphics();
+    	g.setColor(new Color(0, 0, 0, 0));
+    	g.fillRect(0, 0, scale, scale);
+    	g.setColor(color);
+  		g.fillRect(1, 1, scale, scale);
+    	g.setColor(Color.BLACK);
+  		g.drawRect(1, 1, scale, scale);
+  		myImages.add(image);				
+  	}
+  	return new ImageIcon(new BaseMultiResolutionImage(myImages.toArray(new Image[0])));
   }
   
 }

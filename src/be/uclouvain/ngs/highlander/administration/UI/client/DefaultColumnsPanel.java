@@ -46,7 +46,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.dialog.CreateColumnSelection;
 import be.uclouvain.ngs.highlander.UI.misc.WrapLayout;
@@ -107,7 +107,7 @@ public class DefaultColumnsPanel extends ManagerPanel {
 		JPanel southPanel = new JPanel(new WrapLayout(FlowLayout.CENTER));
 		add(southPanel, BorderLayout.SOUTH);
 
-		JButton createNewButton = new JButton("Set default columns", Resources.getScaledIcon(Resources.iColumnSelectionNew, 16));
+		JButton createNewButton = new JButton("Set default columns", Img.ColumnSelectionNew.getScaledIcon(16));
 		createNewButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -122,7 +122,7 @@ public class DefaultColumnsPanel extends ManagerPanel {
 		});
 		southPanel.add(createNewButton);
 
-		JButton duplicateButton = new JButton("Duplicate default column set", Resources.getScaledIcon(Resources.iCopy, 16));
+		JButton duplicateButton = new JButton("Duplicate default column set", Img.Copy.getScaledIcon(16));
 		duplicateButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -130,10 +130,10 @@ public class DefaultColumnsPanel extends ManagerPanel {
 					@Override
 					public void run() {
 						Object from = JOptionPane.showInputDialog(manager,  "Select the analysis FROM which the column set will be duplicated", "Duplicate default column set",
-								JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), manager.getAvailableAnalysesAsArray(), null);
+								JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), manager.getAvailableAnalysesAsArray(), null);
 						if (from != null){
 							Object to = JOptionPane.showInputDialog(manager,  "Select the analysis TO which the column set will be applyied", "Duplicate default column set",
-									JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), manager.getAvailableAnalysesAsArray(), null);
+									JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), manager.getAvailableAnalysesAsArray(), null);
 							if (to != null){
 								duplicateColumns((AnalysisFull)from, (AnalysisFull)to);
 							}
@@ -186,13 +186,13 @@ public class DefaultColumnsPanel extends ManagerPanel {
 			}catch(Exception ex){
 				Tools.exception(ex);
 				JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Can't save column selection list to your profile", ex), "Saving column selection list to your profile",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}
 		}
 	}
 
 	public void duplicateColumns(Analysis from, Analysis to) {
-		int res = JOptionPane.showConfirmDialog(new JFrame(), "Are you SURE you want to duplicate default columns from '"+from+"' to '"+to+"' ?", "Duplicate default column set", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iCopy,64));
+		int res = JOptionPane.showConfirmDialog(new JFrame(), "Are you SURE you want to duplicate default columns from '"+from+"' to '"+to+"' ?", "Duplicate default column set", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Img.Copy.getScaledIcon(64));
 		if (res == JOptionPane.CANCEL_OPTION){
 			return;
 		}else if (res == JOptionPane.YES_OPTION){

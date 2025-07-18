@@ -57,14 +57,14 @@ import com.install4j.api.launcher.ApplicationLauncher;
 
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Parameters;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.misc.WaitingPanel;
 import be.uclouvain.ngs.highlander.administration.users.LoginBox;
 import be.uclouvain.ngs.highlander.administration.users.User;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase;
-import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
 
 public class DbPatcher extends JFrame  {
 
@@ -111,7 +111,7 @@ public class DbPatcher extends JFrame  {
 			setCurrentVersion();
 		} catch (Exception ex) {
 			Tools.exception(ex);
-			JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Error", ex), "Launching db patcher", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Error", ex), "Launching db patcher", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 	}
 
@@ -126,14 +126,14 @@ public class DbPatcher extends JFrame  {
 		}else {
 			throw new Exception("Highlander database has not been initialize");
 		}
-		setIconImage(Resources.getScaledIcon(Resources.iDbPatcher, 32).getImage());
+		setIconImage(Img.DbPatcher.getScaledIcon(32).getImage());
 		setTitle("Highlander database patcher version " + version);
 		try {
 			setCurrentVersion();
 			initUI();		
 		} catch (Exception ex) {
 			Tools.exception(ex);
-			JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Error", ex), "Launching db patcher", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Error", ex), "Launching db patcher", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 	}
 
@@ -160,7 +160,7 @@ public class DbPatcher extends JFrame  {
 		add(centerPanel, BorderLayout.CENTER);
 
 		JPanel southPanel = new JPanel();
-		JButton updateButton = new JButton("Update", Resources.getScaledIcon(Resources.iUpdater, 16));
+		JButton updateButton = new JButton("Update", Img.Updater.getScaledIcon(16));
 		updateButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -246,7 +246,7 @@ public class DbPatcher extends JFrame  {
 			waitingPanel.setProgressDone();
 		}catch(Exception ex){
 			Tools.exception(ex);
-			JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Problem when updating from version " + currentVersion + " to version " + currentTry, ex), "Database update", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Problem when updating from version " + currentVersion + " to version " + currentTry, ex), "Database update", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -282,7 +282,7 @@ public class DbPatcher extends JFrame  {
 			try {
 				return new User(loginBox.getUsername(), loginBox.getEncryptedPassword()) ;
 			} catch (Exception ex) {
-				JOptionPane.showMessageDialog(new JFrame(), ex.getMessage(), "Can't login", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				JOptionPane.showMessageDialog(new JFrame(), ex.getMessage(), "Can't login", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				return null;
 			}
 		} else {
@@ -426,7 +426,7 @@ public class DbPatcher extends JFrame  {
 			}catch (Exception ex){
 				Tools.exception(ex);
 				JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Problem when reading configuration file", ex), "Reading Highlander parameters",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				System.exit(-1);
 			}
 			while(user == null){
@@ -436,13 +436,13 @@ public class DbPatcher extends JFrame  {
 					try {
 						user = new User(argUser, Tools.md5Encryption(argPass));
 					} catch (Exception ex) {
-						JOptionPane.showMessageDialog(new JFrame(), ex.getMessage(), "Can't login", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.showMessageDialog(new JFrame(), ex.getMessage(), "Can't login", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 						user = login();
 					}
 				}
 			}
 			if (!user.isAdmin()){
-				JOptionPane.showMessageDialog(new JFrame(), "Sorry, you must be administrator of the Highlander database", "Can't login", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				JOptionPane.showMessageDialog(new JFrame(), "Sorry, you must be administrator of the Highlander database", "Can't login", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				System.exit(0);
 			}else{
 				try {

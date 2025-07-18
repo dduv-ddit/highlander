@@ -29,30 +29,36 @@
 
 package be.uclouvain.ngs.highlander.UI.dialog;
 
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.WindowEvent;
+import java.util.List;
 
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.ButtonGroup;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.UI.table.HeatMap.ColorRange;
 import be.uclouvain.ngs.highlander.UI.table.HeatMap.ConversionMethod;
 import be.uclouvain.ngs.highlander.UI.toolbar.HighlightingPanel;
@@ -60,15 +66,6 @@ import be.uclouvain.ngs.highlander.database.Category;
 import be.uclouvain.ngs.highlander.database.Field;
 import be.uclouvain.ngs.highlander.datatype.Analysis;
 import be.uclouvain.ngs.highlander.datatype.HeatMapCriterion;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.WindowEvent;
-import java.util.List;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
-import javax.swing.SwingConstants;
-
 import ca.odell.glazedlists.EventList;
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
@@ -115,13 +112,13 @@ public class CreateHeatMapCriterion extends JDialog {
 	
 	private void initUI(){
 		setTitle("Create heat map");
-		setIconImage(Resources.getScaledIcon(Resources.iHeatMap, 64).getImage());
+		setIconImage(Img.HeatMap.getScaledIcon(64).getImage());
 		setModal(true);
 		
 		JPanel panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.SOUTH);
 		
-		JButton btnCreate = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 32));
+		JButton btnCreate = new JButton(Img.ButtonApply.getScaledIcon(32));
 		btnCreate.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -132,7 +129,7 @@ public class CreateHeatMapCriterion extends JDialog {
 		});
 		panel.add(btnCreate);
 		
-		JButton btnCancel = new JButton(Resources.getScaledIcon(Resources.iCross, 32));
+		JButton btnCancel = new JButton(Img.Cross.getScaledIcon(32));
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -453,7 +450,7 @@ public class CreateHeatMapCriterion extends JDialog {
 	
 	private boolean generateCriterion(){		
 		if (comboBox_field.getSelectedItem() == null){
-			JOptionPane.showMessageDialog(this, "You must select a valid field", "Error in heat map", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(this, "You must select a valid field", "Error in heat map", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			return false;
 		}
 		Field field = Field.getField(comboBox_field.getSelectedItem().toString());

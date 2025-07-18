@@ -39,7 +39,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +50,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.misc.ToolbarScrollablePanel;
 import be.uclouvain.ngs.highlander.UI.table.WelcomePage;
@@ -65,7 +64,7 @@ public class HelpPanel extends JPanel {
 	private void initUI(){
 		setLayout(new BorderLayout(0,0));
 
-		JButton setMemory = new JButton(Resources.getScaledIcon(Resources.iMemory, 40));
+		JButton setMemory = new JButton(Img.Memory.getScaledIcon(40));
 		setMemory.setPreferredSize(new Dimension(54,54));
 		setMemory.setToolTipText("Memory settings");
 		setMemory.addActionListener(new ActionListener() {
@@ -80,7 +79,7 @@ public class HelpPanel extends JPanel {
 			}
 		});
 
-		JButton helpLastChanges = new JButton(Resources.getScaledIcon(Resources.iUpdater, 40));
+		JButton helpLastChanges = new JButton(Img.Updater.getScaledIcon(40));
 		helpLastChanges.setPreferredSize(new Dimension(54,54));
 		helpLastChanges.setToolTipText("Last changes");
 		helpLastChanges.addActionListener(new ActionListener() {
@@ -160,7 +159,7 @@ public class HelpPanel extends JPanel {
 			}
 			String[] memoryOptions = availableAmounts.toArray(new String[0]);
 			Object newXmxValue = JOptionPane.showInputDialog(this, "Set maximum memory allowed to Highlander : ", "Memory settings", 
-					JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iMemory, 128), memoryOptions, currentSettingXmx);
+					JOptionPane.QUESTION_MESSAGE, Img.Memory.getScaledIcon(128), memoryOptions, currentSettingXmx);
 			if (newXmxValue != null){
 				int newXmsValue = Math.min((Integer.parseInt(newXmxValue.toString()))-256,2304);
 				for (int i=0 ; i < vmoptions.size() ; i++){
@@ -202,7 +201,7 @@ public class HelpPanel extends JPanel {
 					tempOutput.renameTo(vmoptions.get(i));
 				}
 				String text = "Memory settings changed, you must restart Highlander before it can take effect.";
-				JOptionPane.showMessageDialog(this, text, "Memory settings", JOptionPane.INFORMATION_MESSAGE, Resources.getScaledIcon(Resources.iMemory, 128));
+				JOptionPane.showMessageDialog(this, text, "Memory settings", JOptionPane.INFORMATION_MESSAGE, Img.Memory.getScaledIcon(128));
 			}
 		}catch (Exception ex){
 			Tools.exception(ex);
@@ -211,7 +210,7 @@ public class HelpPanel extends JPanel {
 
 	public void last(){
 		JFrame dlg = new JFrame();
-		dlg.setIconImage(Resources.getScaledIcon(Resources.iUpdater, 64).getImage());
+		dlg.setIconImage(Img.Updater.getScaledIcon(64).getImage());
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);	
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);	

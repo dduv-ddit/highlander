@@ -33,15 +33,19 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-
-import java.time.OffsetDateTime;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -68,20 +72,13 @@ import javax.swing.RowSorter.SortKey;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
-
-import java.awt.FlowLayout;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
@@ -101,25 +98,26 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Resources;
-import be.uclouvain.ngs.highlander.Tools;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Resources.Palette;
+import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.dialog.FilteringTree;
 import be.uclouvain.ngs.highlander.UI.misc.ToolbarScrollablePanel;
 import be.uclouvain.ngs.highlander.UI.tools.BamViewer;
 import be.uclouvain.ngs.highlander.administration.users.User.Settings;
 import be.uclouvain.ngs.highlander.administration.users.User.TargetColor;
 import be.uclouvain.ngs.highlander.database.Field;
-import be.uclouvain.ngs.highlander.database.HighlanderDatabase;
-import be.uclouvain.ngs.highlander.database.Results;
-import be.uclouvain.ngs.highlander.database.VariantResults;
 import be.uclouvain.ngs.highlander.database.Field.Annotation;
 import be.uclouvain.ngs.highlander.database.Field.JSon;
 import be.uclouvain.ngs.highlander.database.Field.SampleType;
+import be.uclouvain.ngs.highlander.database.HighlanderDatabase;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
+import be.uclouvain.ngs.highlander.database.VariantResults;
 import be.uclouvain.ngs.highlander.datatype.AnalysisFull;
 import be.uclouvain.ngs.highlander.datatype.Interval;
-import be.uclouvain.ngs.highlander.datatype.SortingCriterion;
 import be.uclouvain.ngs.highlander.datatype.SNPEffect.Zygosity;
+import be.uclouvain.ngs.highlander.datatype.SortingCriterion;
 
 
 public class VariantsTable extends JPanel {
@@ -250,7 +248,7 @@ public class VariantsTable extends JPanel {
 		panel.add(databaseLoadLabel);
 		checkDatabaseLoad();
 
-		JLabel memoryIcon = new JLabel(Resources.getScaledIcon(Resources.iMemory, 32));
+		JLabel memoryIcon = new JLabel(Img.Memory.getScaledIcon(32));
 		panel.add(memoryIcon);
 
 		memoryBar.setPreferredSize(new Dimension(150, 24));
@@ -279,7 +277,7 @@ public class VariantsTable extends JPanel {
 		((FlowLayout)panel.getLayout()).setAlignment(FlowLayout.TRAILING);
 		southPanel.add(variantListPanel, BorderLayout.EAST);
 
-		JButton btnSave = new JButton(Resources.getScaledIcon(Resources.iVariantListSave, 30));
+		JButton btnSave = new JButton(Img.VariantListSave.getScaledIcon(30));
 		btnSave.setToolTipText("Save current variant list in your profile");
 		btnSave.setPreferredSize(new Dimension(32,32));
 		btnSave.addActionListener(new ActionListener() {
@@ -295,7 +293,7 @@ public class VariantsTable extends JPanel {
 		});
 		variantListPanel.add(btnSave);
 
-		JButton btnLoad = new JButton(Resources.getScaledIcon(Resources.iVariantListLoad, 30));
+		JButton btnLoad = new JButton(Img.VariantListLoad.getScaledIcon(30));
 		btnLoad.setToolTipText("Load a variant list from your profile");
 		btnLoad.setPreferredSize(new Dimension(32,32));
 		btnLoad.addActionListener(new ActionListener() {
@@ -343,13 +341,13 @@ public class VariantsTable extends JPanel {
 							}
 						}
 						if (hard){
-							databaseLoadLabel.setIcon(Resources.getScaledIcon(Resources.iShinyBallRed, 24));
+							databaseLoadLabel.setIcon(Img.ShinyBallRed.getScaledIcon(24));
 							databaseLoadLabel.setText("Database is being updated, launching queries is strongly discouraged !");
 						}else if (soft){
-							databaseLoadLabel.setIcon(Resources.getScaledIcon(Resources.iShinyBallOrange, 24));
+							databaseLoadLabel.setIcon(Img.ShinyBallOrange.getScaledIcon(24));
 							databaseLoadLabel.setText("New samples are being processed by the pipeline");
 						}else{
-							databaseLoadLabel.setIcon(Resources.getScaledIcon(Resources.iShinyBallGreen, 24));
+							databaseLoadLabel.setIcon(Img.ShinyBallGreen.getScaledIcon(24));
 							databaseLoadLabel.setText("Database is ready");
 						}
 						Thread.sleep(60_000);
@@ -362,7 +360,7 @@ public class VariantsTable extends JPanel {
 	}
 
 	public void setMessageToCurrentAnalysis(){
-		messageLabel.setIcon(Resources.getScaledIcon(Highlander.getCurrentAnalysis().getIcon(), 32));
+		messageLabel.setIcon(Resources.getScaledIcon(Highlander.getCurrentAnalysis().getIcon().getImage(), 32));
 		String numSample = "";
 		try{
 			Map<SampleType, Integer> map = new TreeMap<>();

@@ -36,7 +36,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 
 /**
 * @author Raphael Helaers
@@ -90,7 +90,7 @@ public class JTabbedPaneCloseButton extends JTabbedPane {
             JLabel jLabel = new JLabel(title);
             jLabel.setIcon(icon);
             add(jLabel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-            JButton button = new JButton(Resources.getScaledIcon(Resources.iCross, 16));
+            JButton button = new JButton(Img.Cross.getScaledIcon(16));
             button.setMargin(new Insets(0, 0, 0, 0));
             button.addMouseListener(new CloseListener(tab));
             button.setBorder(null);

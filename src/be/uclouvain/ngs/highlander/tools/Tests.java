@@ -36,8 +36,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -161,27 +159,6 @@ public class Tests {
 				}
 			}
 		}
-	}
-	
-	public static void testPHPWithApacheHttpClient() throws Exception {
-		HttpClient httpClient = new HttpClient();
-		PostMethod post = new PostMethod(Highlander.getParameters().getUrlForPhpScripts()+"/test.php");
-		
-		System.out.println("Executing post method");
-		httpClient.executeMethod(post);
-		
-		System.out.println("Opening input stream");
-		//try (BufferedReader br = new BufferedReader(new InputStreamReader(post.getResponseBodyAsStream()))){
-		InputStreamReader isr = new InputStreamReader(post.getResponseBodyAsStream());
-
-    System.out.println("Stream ready");
-    
-		int value = 0;
-		while(((value = isr.read()) != -1)) {
-			char c = (char)value;
-			System.out.print(c);
-		}
-		System.out.println("++++ DONE ++++");
 	}
 	
 	public static void testPHPWithHttpURLConnection() throws Exception {

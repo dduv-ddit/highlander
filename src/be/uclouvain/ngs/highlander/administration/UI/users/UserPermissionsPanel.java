@@ -53,14 +53,14 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.UI.misc.SearchField;
 import be.uclouvain.ngs.highlander.administration.UI.ManagerPanel;
 import be.uclouvain.ngs.highlander.administration.UI.ProjectManager;
 import be.uclouvain.ngs.highlander.administration.users.User;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase;
-import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 
@@ -210,7 +210,7 @@ public class UserPermissionsPanel extends ManagerPanel {
 		gbl_panel_2.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		panel_middle.setLayout(gbl_panel_2);
 
-		JButton button = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleRight, 24));
+		JButton button = new JButton(Img.ArrowDoubleRight.getScaledIcon(24));
 		button.setToolTipText("Remove permission for selected sample(s)");
 		button.addActionListener(new ActionListener() {
 			@Override
@@ -224,7 +224,7 @@ public class UserPermissionsPanel extends ManagerPanel {
 		gbc_button.gridy = 0;
 		panel_middle.add(button, gbc_button);
 
-		JButton button_1 = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleLeft, 24));
+		JButton button_1 = new JButton(Img.ArrowDoubleLeft.getScaledIcon(24));
 		button_1.setToolTipText("Grant permission for selected sample(s)");
 		button_1.addActionListener(new ActionListener() {
 			@Override

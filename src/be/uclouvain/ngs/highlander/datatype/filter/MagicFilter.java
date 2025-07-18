@@ -150,7 +150,7 @@ public abstract class MagicFilter extends Filter {
 		});
 		/* Not needed anymore, a Magic Filter is now always in a ComboFilter
 		critPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK,2));
-		JButton removeButton = new JButton(Resources.getScaledIcon(Resources.iCross, 16));
+		JButton removeButton = new JButton(Img.Cross.getScaledIcon(16));
 		removeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){

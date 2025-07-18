@@ -54,7 +54,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.misc.WrapLayout;
 import be.uclouvain.ngs.highlander.administration.UI.ManagerPanel;
@@ -166,7 +166,7 @@ public class LinksPanel extends ManagerPanel {
 		gbl_panel_2.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		panel_middle.setLayout(gbl_panel_2);
 
-		JButton button_up = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleUp, 24));
+		JButton button_up = new JButton(Img.ArrowDoubleUp.getScaledIcon(24));
 		button_up.setToolTipText("Put selected analysis before in order of appearance in Highlander toolbar");
 		button_up.addActionListener(new ActionListener() {
 			@Override
@@ -180,7 +180,7 @@ public class LinksPanel extends ManagerPanel {
 		gbc_button.gridy = 0;
 		panel_middle.add(button_up, gbc_button);
 
-		JButton button_down = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleDown, 24));
+		JButton button_down = new JButton(Img.ArrowDoubleDown.getScaledIcon(24));
 		button_down.setToolTipText("Put selected analysis after in order of appearance in Highlander toolbar");
 		button_down.addActionListener(new ActionListener() {
 			@Override
@@ -203,7 +203,7 @@ public class LinksPanel extends ManagerPanel {
 		JPanel panel_south = new JPanel();
 		add(panel_south, BorderLayout.SOUTH);
 		
-		JButton createNewButton = new JButton("Add new link", Resources.getScaledIcon(Resources.i3dPlus, 16));
+		JButton createNewButton = new JButton("Add new link", Img.AddMain.getScaledIcon(16));
 		createNewButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -218,7 +218,7 @@ public class LinksPanel extends ManagerPanel {
 		});
 		panel_south.add(createNewButton);
 
-		JButton deleteButton = new JButton("Delete link", Resources.getScaledIcon(Resources.iCross, 16));
+		JButton deleteButton = new JButton("Delete link", Img.Cross.getScaledIcon(16));
 		deleteButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -267,7 +267,7 @@ public class LinksPanel extends ManagerPanel {
 			if (link.getIcon() != null) {
 				buttonIcon.setIcon(link.getScaledIcon());
 			}else {
-				buttonIcon.setIcon(Resources.getScaledIcon(Resources.i2dPlus, 40));				
+				buttonIcon.setIcon(Img.Expand.getScaledIcon(40));				
 			}
 			buttonIcon.setToolTipText(tooltipImage);
 			panel.add(buttonIcon, new GridBagConstraints(0, row, 2, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
@@ -327,7 +327,7 @@ public class LinksPanel extends ManagerPanel {
 							});
 							try{
 								link.removeIcon();
-								buttonIcon.setIcon(Resources.getScaledIcon(Resources.i2dPlus, 40));
+								buttonIcon.setIcon(Img.Expand.getScaledIcon(40));
 								fillButtons();
 							}catch(Exception ex){
 								ProjectManager.toConsole(ex);			
@@ -540,26 +540,26 @@ public class LinksPanel extends ManagerPanel {
 				waitingPanel.start();
 			}
 		});
-		Object resu = JOptionPane.showInputDialog(this, tooltipName, "Add external link", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.i3dPlus, 64), null, null);
+		Object resu = JOptionPane.showInputDialog(this, tooltipName, "Add external link", JOptionPane.QUESTION_MESSAGE, Img.AddMain.getScaledIcon(64), null, null);
 		if (resu != null){
 			String name = resu.toString();
 			if (name.length() > 255){
-				JOptionPane.showMessageDialog(this, "Link name is limited to 255 characters'", "Error", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross, 64));
+				JOptionPane.showMessageDialog(this, "Link name is limited to 255 characters'", "Error", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}else{
-				resu = JOptionPane.showInputDialog(this, tooltipDescription, "Add external link", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.i3dPlus, 64), null, null);
+				resu = JOptionPane.showInputDialog(this, tooltipDescription, "Add external link", JOptionPane.QUESTION_MESSAGE, Img.AddMain.getScaledIcon(64), null, null);
 				if (resu != null){
 					String description = resu.toString();
-					resu = JOptionPane.showInputDialog(this, tooltipURL, "Add external link", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.i3dPlus, 64), null, null);
+					resu = JOptionPane.showInputDialog(this, tooltipURL, "Add external link", JOptionPane.QUESTION_MESSAGE, Img.AddMain.getScaledIcon(64), null, null);
 					if (resu != null){
 						String url = resu.toString();
 						if (url.length() > 1500){
-							JOptionPane.showMessageDialog(this, "Link URL is limited to 1500 characters'", "Error", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross, 64));
+							JOptionPane.showMessageDialog(this, "Link URL is limited to 1500 characters'", "Error", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 						}else{
-							resu = JOptionPane.showInputDialog(this, tooltipURLParameters, "Add external link", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.i3dPlus, 64), null, null);
+							resu = JOptionPane.showInputDialog(this, tooltipURLParameters, "Add external link", JOptionPane.QUESTION_MESSAGE, Img.AddMain.getScaledIcon(64), null, null);
 							if (resu != null){
 								String url_parameters = resu.toString();
 								if (url_parameters.length() > 1500){
-									JOptionPane.showMessageDialog(this, "Link URL parameter is limited to 1500 characters'", "Error", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross, 64));
+									JOptionPane.showMessageDialog(this, "Link URL parameter is limited to 1500 characters'", "Error", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 								}else{
 									try{
 										ProjectManager.toConsole("-----------------------------------------------------");
@@ -596,7 +596,7 @@ public class LinksPanel extends ManagerPanel {
 	public void deleteExternalLink(ExternalLink link){
 		if (link != null) {
 			try{
-				int res = JOptionPane.showConfirmDialog(new JFrame(), "Are you SURE you want to delete the link to '"+link.getName()+"' ?", "Delete software links", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				int res = JOptionPane.showConfirmDialog(new JFrame(), "Are you SURE you want to delete the link to '"+link.getName()+"' ?", "Delete software links", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Img.Cross.getScaledIcon(64));
 				if (res == JOptionPane.YES_OPTION){
 					ProjectManager.toConsole("-----------------------------------------------------");
 					ProjectManager.toConsole("Deleting external link of " + link.getName());

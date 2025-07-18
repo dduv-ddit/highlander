@@ -62,7 +62,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SortOrder;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.dialog.ProfileTree;
 import be.uclouvain.ngs.highlander.UI.dialog.ProfileTree.Action;
@@ -75,19 +75,19 @@ import be.uclouvain.ngs.highlander.UI.toolbar.SortingPanel;
 import be.uclouvain.ngs.highlander.administration.users.UserDataDialog.UserDataDialogType;
 import be.uclouvain.ngs.highlander.database.Field;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase;
-import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.datatype.Analysis;
 import be.uclouvain.ngs.highlander.datatype.FiltersTemplate;
 import be.uclouvain.ngs.highlander.datatype.HPOTerm;
 import be.uclouvain.ngs.highlander.datatype.HeatMapCriterion;
 import be.uclouvain.ngs.highlander.datatype.HighlightCriterion;
 import be.uclouvain.ngs.highlander.datatype.HighlightingRule;
+import be.uclouvain.ngs.highlander.datatype.HighlightingRule.RuleType;
 import be.uclouvain.ngs.highlander.datatype.Interval;
 import be.uclouvain.ngs.highlander.datatype.Reference;
 import be.uclouvain.ngs.highlander.datatype.SortingCriterion;
 import be.uclouvain.ngs.highlander.datatype.VariantsList;
-import be.uclouvain.ngs.highlander.datatype.HighlightingRule.RuleType;
 import be.uclouvain.ngs.highlander.datatype.filter.ComboFilter;
 
 public class User implements Comparable<User> {
@@ -98,29 +98,29 @@ public class User implements Comparable<User> {
 	public enum TargetLastSelection {COLUMN_SELECTION}
 	
 	public enum UserData {
-		FOLDER("folder",UserDataLink.NONE,Resources.iFolder,Resources.iUserFolderShare), 
-		SETTINGS("settings",UserDataLink.NONE,Resources.iEditWrench,Resources.iUsers), 
-		HISTORY("history",UserDataLink.NONE,Resources.iEditWrench,Resources.iUsers),
-		VALUES("list of values",UserDataLink.FIELD,Resources.iList,Resources.iUserListShare), 
-		INTERVALS("list of intervals",UserDataLink.REFERENCE,Resources.iInterval,Resources.iUserIntervalsShare), 
-		PHENOTYPES("list of HPO terms",UserDataLink.REFERENCE,Resources.iHPO,Resources.iUserHPOShare), 
-		COLUMN_SELECTION("columns selection",UserDataLink.ANALYSIS,Resources.iColumnSelection,Resources.iUserColumnSelectionShare), 
-		FILTER("filter",UserDataLink.ANALYSIS,Resources.iFilter,Resources.iUserFilterShare), 
-		COLUMN_MASK("columns mask",UserDataLink.ANALYSIS,Resources.iColumnMask,Resources.iUserColumnMaskShare), 
-		SORTING("sorting criteria",UserDataLink.ANALYSIS,Resources.iSort,Resources.iUserSortingShare), 
-		HIGHLIGHTING("highlighting rules",UserDataLink.ANALYSIS,Resources.iHighlighting,Resources.iUserHighlightingShare), 
-		VARIANT_LIST("variants list",UserDataLink.ANALYSIS,Resources.iVariantList,Resources.iUserVariantListShare),
-		FILTERS_TEMPLATE("filters template",UserDataLink.ANALYSIS,Resources.iUserTemplate,Resources.iUserTemplateShare),
+		FOLDER("folder",UserDataLink.NONE,Img.Folder,Img.UserFolderShare), 
+		SETTINGS("settings",UserDataLink.NONE,Img.EditWrench,Img.Users), 
+		HISTORY("history",UserDataLink.NONE,Img.EditWrench,Img.Users),
+		VALUES("list of values",UserDataLink.FIELD,Img.List,Img.UserListShare), 
+		INTERVALS("list of intervals",UserDataLink.REFERENCE,Img.Interval,Img.UserIntervalsShare), 
+		PHENOTYPES("list of HPO terms",UserDataLink.REFERENCE,Img.HPO,Img.UserHPOShare), 
+		COLUMN_SELECTION("columns selection",UserDataLink.ANALYSIS,Img.ColumnSelection,Img.UserColumnSelectionShare), 
+		FILTER("filter",UserDataLink.ANALYSIS,Img.Filter,Img.UserFilterShare), 
+		COLUMN_MASK("columns mask",UserDataLink.ANALYSIS,Img.ColumnMask,Img.UserColumnMaskShare), 
+		SORTING("sorting criteria",UserDataLink.ANALYSIS,Img.Sort,Img.UserSortingShare), 
+		HIGHLIGHTING("highlighting rules",UserDataLink.ANALYSIS,Img.Highlighting,Img.UserHighlightingShare), 
+		VARIANT_LIST("variants list",UserDataLink.ANALYSIS,Img.VariantList,Img.UserVariantListShare),
+		FILTERS_TEMPLATE("filters template",UserDataLink.ANALYSIS,Img.UserTemplate,Img.UserTemplateShare),
 		;
 		private final String name;
 		private final UserDataLink link;
 		private final ImageIcon icon;
 		private final ImageIcon sharingIcon;
-		UserData(String name, UserDataLink link, ImageIcon icon, ImageIcon sharingIcon){
+		UserData(String name, UserDataLink link, Img icon, Img sharingIcon){
 			this.name = name;
 			this.link = link;
-			this.icon = Resources.getScaledIcon(icon, 24);
-			this.sharingIcon = Resources.getScaledIcon(sharingIcon, 64);
+			this.icon = icon.getScaledIcon(24);
+			this.sharingIcon = sharingIcon.getScaledIcon(64);
 		}
 		public String getName(){return name;}
 		public UserDataLink getLink(){return link;}
@@ -1191,7 +1191,7 @@ public class User implements Comparable<User> {
 									if (type != UserData.FOLDER && Highlander.getLoggedUser().doesPersonalDataExists(type, category, savePath)){
 										int yesno = JOptionPane.showConfirmDialog(new JFrame(), 
 												"You already have a "+type.getName()+" named '"+savePath.replace("~", " -> ")+"', do you want to overwrite it ?\nIf no, shared element will be deleted.", 
-												"Overwriting "+type.getName()+" in your profile", JOptionPane.YES_NO_OPTION , JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iDbSave,64));
+												"Overwriting "+type.getName()+" in your profile", JOptionPane.YES_NO_OPTION , JOptionPane.QUESTION_MESSAGE, Img.DbSave.getScaledIcon(64));
 										if (yesno == JOptionPane.YES_OPTION){
 											if (category == null){
 												deleteData(type, savePath);
@@ -1220,7 +1220,7 @@ public class User implements Comparable<User> {
 						}						
 					}catch (Exception ex){
 						Tools.exception(ex);
-						JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Error : ", ex), "Shared element received", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Error : ", ex), "Shared element received", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}			
 				}
 			}
@@ -1345,29 +1345,29 @@ public class User implements Comparable<User> {
 	public static Optional<User> deleteUser(Component parentComponent){
 		try{
 			User[] users = User.fetchList().toArray((new User[0]));
-			User user = (User)JOptionPane.showInputDialog(parentComponent, "Select the user you want to permanently delete: ", "Delete user", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iUserDelete, 64), users, null);
+			User user = (User)JOptionPane.showInputDialog(parentComponent, "Select the user you want to permanently delete: ", "Delete user", JOptionPane.QUESTION_MESSAGE, Img.UserDelete.getScaledIcon(64), users, null);
 			if (user != null){
 				if (user.isAnotherUserAdmin()){
-					int answer = JOptionPane.showOptionDialog(parentComponent, "Are you SURE you want to delete this user:\n"+user+" ("+user.getUsername()+")", "Delete user", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iUserDelete, 64), null, null);
+					int answer = JOptionPane.showOptionDialog(parentComponent, "Are you SURE you want to delete this user:\n"+user+" ("+user.getUsername()+")", "Delete user", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, Img.UserDelete.getScaledIcon(64), null, null);
 					if (answer == JOptionPane.YES_OPTION){
 						try {
 							user.delete();
 							return Optional.of(user);
 						} catch (Exception ex) {
 							Tools.exception(ex);
-							JOptionPane.showMessageDialog(parentComponent, "Cannot delete '"+user+"': " + ex.getMessage(), "Delete user", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+							JOptionPane.showMessageDialog(parentComponent, "Cannot delete '"+user+"': " + ex.getMessage(), "Delete user", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 							return Optional.empty();
 						}
 					}
 				}else{
-					JOptionPane.showMessageDialog(parentComponent, "Error: at least one user must have the administrative rights.", "Delete user",	JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.showMessageDialog(parentComponent, "Error: at least one user must have the administrative rights.", "Delete user",	JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					return Optional.empty();
 				}
 			}
 			return Optional.empty();
 		}catch (Exception ex){
 			Tools.exception(ex);
-			JOptionPane.showMessageDialog(parentComponent, "Cannot fetch the user list: " + ex.getMessage(), "Delete user", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(parentComponent, "Cannot fetch the user list: " + ex.getMessage(), "Delete user", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			return Optional.empty();
 		}
 	}
@@ -1375,21 +1375,21 @@ public class User implements Comparable<User> {
 	public static void promoteUser(Component parentComponent){
 		try{
 			User[] users = User.fetchList().toArray((new User[0]));
-			User user = (User)JOptionPane.showInputDialog(parentComponent, "Select the user you want to promote to administrator: ", "Promote user", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iUserPromote, 64), users, null);
+			User user = (User)JOptionPane.showInputDialog(parentComponent, "Select the user you want to promote to administrator: ", "Promote user", JOptionPane.QUESTION_MESSAGE, Img.UserPromote.getScaledIcon(64), users, null);
 			if (user != null){
-				int answer = JOptionPane.showOptionDialog(parentComponent, "Are you SURE you want to promote this user:\n"+user+" ("+user.getUsername()+")", "Promote user", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iUserPromote, 64), null, null);
+				int answer = JOptionPane.showOptionDialog(parentComponent, "Are you SURE you want to promote this user:\n"+user+" ("+user.getUsername()+")", "Promote user", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, Img.UserPromote.getScaledIcon(64), null, null);
 				if (answer == JOptionPane.YES_OPTION){
 					try {
 						user.promote();
 					} catch (Exception ex) {
 						Tools.exception(ex);
-						JOptionPane.showMessageDialog(parentComponent, "Cannot promote '"+user+"': " + ex.getMessage(), "Promote user", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.showMessageDialog(parentComponent, "Cannot promote '"+user+"': " + ex.getMessage(), "Promote user", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			}
 		}catch (Exception ex){
 			Tools.exception(ex);
-			JOptionPane.showMessageDialog(parentComponent, "Cannot fetch the user list: " + ex.getMessage(), "Promote user", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(parentComponent, "Cannot fetch the user list: " + ex.getMessage(), "Promote user", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 	}
 
@@ -1424,18 +1424,18 @@ public class User implements Comparable<User> {
 	public static void resetPassword(Component parentComponent){
 		try{
 			User[] users = User.fetchList().toArray((new User[0]));
-			User user = (User)JOptionPane.showInputDialog(parentComponent, "Select the user for whom you want to reset password: ", "Reset password", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iUserLock, 64), users, null);
+			User user = (User)JOptionPane.showInputDialog(parentComponent, "Select the user for whom you want to reset password: ", "Reset password", JOptionPane.QUESTION_MESSAGE, Img.UserLock.getScaledIcon(64), users, null);
 			resetPassword(parentComponent, user);
 		}catch (Exception ex){
 			Tools.exception(ex);
-			JOptionPane.showMessageDialog(new JFrame(), "Cannot fetch the user list: " + ex.getMessage(), "Reset password", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(new JFrame(), "Cannot fetch the user list: " + ex.getMessage(), "Reset password", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 	}
 	
 	public static void resetPassword(Component parentComponent, User user){
 		try{
 			if (user != null){
-				int answer = JOptionPane.showOptionDialog(parentComponent, "Are you SURE you want to reset password for this user:\n"+user+" ("+user.getUsername()+")", "Reset password", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iUserLock, 64), null, null);
+				int answer = JOptionPane.showOptionDialog(parentComponent, "Are you SURE you want to reset password for this user:\n"+user+" ("+user.getUsername()+")", "Reset password", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, Img.UserLock.getScaledIcon(64), null, null);
 				if (answer == JOptionPane.YES_OPTION){
 					try {
 						String password = user.resetPassword();
@@ -1449,13 +1449,13 @@ public class User implements Comparable<User> {
 						Tools.sendMail(user.getEmail(), "Password reset for Highlander", sb.toString());
 					} catch (Exception ex) {
 						Tools.exception(ex);
-						JOptionPane.showMessageDialog(parentComponent, "Cannot reset password for '"+user+"': " + ex.getMessage(), "Reset password", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.showMessageDialog(parentComponent, "Cannot reset password for '"+user+"': " + ex.getMessage(), "Reset password", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			}
 		}catch (Exception ex){
 			Tools.exception(ex);
-			JOptionPane.showMessageDialog(parentComponent, "Cannot fetch the user list: " + ex.getMessage(), "Promote user", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(parentComponent, "Cannot fetch the user list: " + ex.getMessage(), "Promote user", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 	}
 

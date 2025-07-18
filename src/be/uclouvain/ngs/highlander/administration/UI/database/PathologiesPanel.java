@@ -42,14 +42,14 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.table.JTableHeader;
 
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.misc.WrapLayout;
 import be.uclouvain.ngs.highlander.administration.UI.AdministrationTableModel;
 import be.uclouvain.ngs.highlander.administration.UI.ManagerPanel;
 import be.uclouvain.ngs.highlander.administration.UI.ProjectManager;
-import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
 
 /**
 * @author Raphael Helaers
@@ -93,7 +93,7 @@ public class PathologiesPanel extends ManagerPanel {
 		JPanel southPanel = new JPanel(new WrapLayout(FlowLayout.CENTER));
 		add(southPanel, BorderLayout.SOUTH);
 
-		JButton createNewButton = new JButton("Create new pathology", Resources.getScaledIcon(Resources.i3dPlus, 16));
+		JButton createNewButton = new JButton("Create new pathology", Img.AddMain.getScaledIcon(16));
 		createNewButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -108,7 +108,7 @@ public class PathologiesPanel extends ManagerPanel {
 		});
 		southPanel.add(createNewButton);
 
-		JButton renameButton = new JButton("Rename pathology", Resources.getScaledIcon(Resources.iUpdater, 16));
+		JButton renameButton = new JButton("Rename pathology", Img.Updater.getScaledIcon(16));
 		renameButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -124,7 +124,7 @@ public class PathologiesPanel extends ManagerPanel {
 		});
 		southPanel.add(renameButton);
 
-		JButton descriptionButton = new JButton("Set description", Resources.getScaledIcon(Resources.iUpdater, 16));
+		JButton descriptionButton = new JButton("Set description", Img.Updater.getScaledIcon(16));
 		descriptionButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -141,7 +141,7 @@ public class PathologiesPanel extends ManagerPanel {
 		});
 		southPanel.add(descriptionButton);
 		
-		JButton deleteButton = new JButton("Delete pathology", Resources.getScaledIcon(Resources.iCross, 16));
+		JButton deleteButton = new JButton("Delete pathology", Img.Cross.getScaledIcon(16));
 		deleteButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -218,13 +218,13 @@ public class PathologiesPanel extends ManagerPanel {
 	}
 
 	public void createPathology(){
-		Object resu = JOptionPane.showInputDialog(this, "Pathology new name (alphanumeric caracters only and '_')", "Creating pathology", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.i3dPlus, 64), null, null);
+		Object resu = JOptionPane.showInputDialog(this, "Pathology new name (alphanumeric caracters only and '_')", "Creating pathology", JOptionPane.QUESTION_MESSAGE, Img.AddMain.getScaledIcon(64), null, null);
 		if (resu != null){
 			String name = resu.toString();
 			name = name.trim().replace(' ', '_').toUpperCase();
 			Pattern pat = Pattern.compile("[^a-zA-Z0-9_]");
 			if (pat.matcher(name).find()){
-				JOptionPane.showMessageDialog(this, "Pathology name can only contain alphanumeric caracters and '_'", "Error", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross, 64));
+				JOptionPane.showMessageDialog(this, "Pathology name can only contain alphanumeric caracters and '_'", "Error", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}else{
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
@@ -241,11 +241,11 @@ public class PathologiesPanel extends ManagerPanel {
 						}
 					}
 					if (count > 0){
-						JOptionPane.showMessageDialog(this, "Pathology already exists'", "Error", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross, 64));
+						JOptionPane.showMessageDialog(this, "Pathology already exists'", "Error", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}else if (name.length() > 1000){
-						JOptionPane.showMessageDialog(this, "Pathology is limited to 1000 characters'", "Error", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross, 64));
+						JOptionPane.showMessageDialog(this, "Pathology is limited to 1000 characters'", "Error", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}else{
-						Object desc = JOptionPane.showInputDialog(this, "Pathology full description", "Creating pathology", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.i3dPlus, 64), null, null);
+						Object desc = JOptionPane.showInputDialog(this, "Pathology full description", "Creating pathology", JOptionPane.QUESTION_MESSAGE, Img.AddMain.getScaledIcon(64), null, null);
 						if (desc != null){
 							ProjectManager.toConsole("-----------------------------------------------------");
 							ProjectManager.toConsole("Creating pathology " + name);
@@ -273,13 +273,13 @@ public class PathologiesPanel extends ManagerPanel {
 	}
 	
 	public void renamePathology(int pathologyId, String pathology){
-		Object nameAsk = JOptionPane.showInputDialog(this, "Pathology new name (alphanumeric caracters only and '_')", "Renaming pathology", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iUpdater, 64), null, pathology);
+		Object nameAsk = JOptionPane.showInputDialog(this, "Pathology new name (alphanumeric caracters only and '_')", "Renaming pathology", JOptionPane.QUESTION_MESSAGE, Img.Updater.getScaledIcon(64), null, pathology);
 		if (nameAsk != null){
 			String name = nameAsk.toString();
 			name = name.trim().replace(' ', '_').toUpperCase();
 			Pattern p = Pattern.compile("[^a-zA-Z0-9_]");
 			if (p.matcher(name).find()){
-				JOptionPane.showMessageDialog(this, "Pathology name can only contain alphanumeric caracters and '_'", "Error", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross, 64));
+				JOptionPane.showMessageDialog(this, "Pathology name can only contain alphanumeric caracters and '_'", "Error", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}else if (!pathology.equals(name)){
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
@@ -296,9 +296,9 @@ public class PathologiesPanel extends ManagerPanel {
 						}
 					}
 					if (count > 0){
-						JOptionPane.showMessageDialog(this, "Pathology already exists'", "Error", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross, 64));
+						JOptionPane.showMessageDialog(this, "Pathology already exists'", "Error", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}else if (name.length() > 1000){
-						JOptionPane.showMessageDialog(this, "Pathology is limited to 1000 characters'", "Error", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross, 64));
+						JOptionPane.showMessageDialog(this, "Pathology is limited to 1000 characters'", "Error", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}else{
 						ProjectManager.toConsole("-----------------------------------------------------");
 						ProjectManager.toConsole("Renaming pathology " + pathology + " to "  + name);
@@ -325,7 +325,7 @@ public class PathologiesPanel extends ManagerPanel {
 	}
 	
 	public void setDescription(int pathologyId, String pathology, String currentDescription){
-		Object descriptionAsk = JOptionPane.showInputDialog(this, "Set description of " + pathology, "Set pathology description", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iUpdater, 64), null, currentDescription);
+		Object descriptionAsk = JOptionPane.showInputDialog(this, "Set description of " + pathology, "Set pathology description", JOptionPane.QUESTION_MESSAGE, Img.Updater.getScaledIcon(64), null, currentDescription);
 		if (descriptionAsk != null){
 			String description = descriptionAsk.toString().trim();
 			if (!currentDescription.equals(description)){
@@ -369,7 +369,7 @@ public class PathologiesPanel extends ManagerPanel {
 				}
 			}
 			if (count == 0){
-				int res = JOptionPane.showConfirmDialog(new JFrame(), "Are you SURE you want to delete pathology '"+pathology+"' ?", "Delete pathology", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				int res = JOptionPane.showConfirmDialog(new JFrame(), "Are you SURE you want to delete pathology '"+pathology+"' ?", "Delete pathology", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Img.Cross.getScaledIcon(64));
 				if (res == JOptionPane.YES_OPTION){
 					ProjectManager.toConsole("-----------------------------------------------------");
 					ProjectManager.toConsole("Deleting pathology " + pathology);
@@ -382,7 +382,7 @@ public class PathologiesPanel extends ManagerPanel {
 					});
 				}
 			}else{
-				JOptionPane.showMessageDialog(new JFrame(), count + " samples are still linked to this pathology.\nPlease first delete those samples or link them to another pathology.", "Delete pathology", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				JOptionPane.showMessageDialog(new JFrame(), count + " samples are still linked to this pathology.\nPlease first delete those samples or link them to another pathology.", "Delete pathology", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}
 		}catch(Exception ex){
 			ProjectManager.toConsole(ex);

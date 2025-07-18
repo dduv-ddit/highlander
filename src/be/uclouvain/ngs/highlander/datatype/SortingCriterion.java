@@ -29,19 +29,6 @@
 
 package be.uclouvain.ngs.highlander.datatype;
 
-import javax.swing.BorderFactory;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import javax.swing.JToggleButton;
-import javax.swing.SortOrder;
-import javax.swing.SwingConstants;
-import javax.swing.TransferHandler;
-
-import be.uclouvain.ngs.highlander.Resources;
-import be.uclouvain.ngs.highlander.UI.toolbar.SortingPanel;
-import be.uclouvain.ngs.highlander.database.Field;
-
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DnDConstants;
@@ -52,9 +39,22 @@ import java.awt.dnd.DragSourceDragEvent;
 import java.awt.dnd.DragSourceDropEvent;
 import java.awt.dnd.DragSourceEvent;
 import java.awt.dnd.DragSourceListener;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.Serializable;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JToggleButton;
+import javax.swing.SortOrder;
+import javax.swing.SwingConstants;
+import javax.swing.TransferHandler;
+
+import be.uclouvain.ngs.highlander.Resources.Img;
+import be.uclouvain.ngs.highlander.UI.toolbar.SortingPanel;
+import be.uclouvain.ngs.highlander.database.Field;
 
 public class SortingCriterion extends JPanel implements Transferable, DragSourceListener, DragGestureListener, Serializable {
 
@@ -75,14 +75,14 @@ public class SortingCriterion extends JPanel implements Transferable, DragSource
 
 		buttonColumn = new JToggleButton(field.getName());
 		buttonColumn.setHorizontalAlignment(SwingConstants.LEADING);
-		buttonColumn.setIcon(Resources.getScaledIcon(Resources.iSortAsc, 16));
-		buttonColumn.setSelectedIcon(Resources.getScaledIcon(Resources.iSortDesc, 16));
+		buttonColumn.setIcon(Img.SortAsc.getScaledIcon(16));
+		buttonColumn.setSelectedIcon(Img.SortDesc.getScaledIcon(16));
 		buttonColumn.setRolloverEnabled(false);
 		buttonColumn.setToolTipText(field.getHtmlTooltip());
 		add(buttonColumn);
 		buttonColumn.setSelected(sortOrder == SortOrder.DESCENDING);
 
-		buttonRemove = new JButton(Resources.getScaledIcon(Resources.iCross, 16));
+		buttonRemove = new JButton(Img.Cross.getScaledIcon(16));
 		add(buttonRemove);		
 
 		addListeners(sortingPanel);

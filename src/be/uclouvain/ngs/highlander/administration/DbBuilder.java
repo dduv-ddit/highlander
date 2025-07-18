@@ -2015,6 +2015,7 @@ public class DbBuilder {
 	//TODO 1000G - check analyses avec ce qu'on recoit maintenant
 	//TODO 1000G - remplacer pathologies par populations
 	//TODO 1000G - optimisations faites dans importSample pour gene/static
+	@SuppressWarnings("resource")
 	public void import1000G(String vcf, String chromosome, AnalysisFull analysis, String project, String ids, boolean verbose) throws Exception {
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd - HH_mm_ss");
 		DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd_HH_mm_ss");

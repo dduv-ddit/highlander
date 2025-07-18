@@ -29,48 +29,44 @@
 
 package be.uclouvain.ngs.highlander.UI.dialog;
 
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
 import java.awt.BorderLayout;
-
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.misc.WaitingPanel;
 import be.uclouvain.ngs.highlander.database.DBUtils;
 import be.uclouvain.ngs.highlander.database.Field;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase;
-import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.datatype.AnalysisFull;
-
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.Toolkit;
 
 
 
@@ -128,7 +124,7 @@ public class ValidateListOfPossibleValuesDialog extends JDialog {
 	private void initUI(){
 		setModal(true);
 		setTitle("Validate value list");
-		setIconImage(Resources.getScaledIcon(Resources.iList, 64).getImage());
+		setIconImage(Img.List.getScaledIcon(64).getImage());
 
 		JPanel panel_2 = new JPanel();
 		getContentPane().add(panel_2, BorderLayout.NORTH);
@@ -136,7 +132,7 @@ public class ValidateListOfPossibleValuesDialog extends JDialog {
 		JPanel panel = new JPanel();	
 		getContentPane().add(panel, BorderLayout.SOUTH);
 
-		btnOk = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 24));
+		btnOk = new JButton(Img.ButtonApply.getScaledIcon(24));
 		btnOk.setText("0 values");
 		btnOk.setToolTipText("Replace your input by the corrected list");
 		btnOk.addActionListener(new ActionListener() {
@@ -160,7 +156,7 @@ public class ValidateListOfPossibleValuesDialog extends JDialog {
 		});
 		panel.add(btnOk);
 
-		JButton btnCancel = new JButton(Resources.getScaledIcon(Resources.iCross, 24));
+		JButton btnCancel = new JButton(Img.Cross.getScaledIcon(24));
 		btnCancel.setToolTipText("Cancel");
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
@@ -209,9 +205,9 @@ public class ValidateListOfPossibleValuesDialog extends JDialog {
 		for (int y=0 ; y < input.length ; y++) {
 			JLabel labelValidation = new JLabel();
 			if (valid[y]) {
-				labelValidation.setIcon(Resources.getScaledIcon(Resources.iButtonApply, 24));
+				labelValidation.setIcon(Img.ButtonApply.getScaledIcon(24));
 			}else{
-				labelValidation.setIcon(Resources.getScaledIcon(Resources.iCross, 24));
+				labelValidation.setIcon(Img.Cross.getScaledIcon(24));
 				labelValidation.setToolTipText("'" + input[y] + "' was not found in the database as a value for the field '"+field+"'");
 			}
 
@@ -239,7 +235,7 @@ public class ValidateListOfPossibleValuesDialog extends JDialog {
 					}
 				});
 				panel.add(box, new GridBagConstraints(3, y+1, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(2, 10, 2, 15), 0, 0));
-				JButton buttonSearch = new JButton(Resources.getScaledIcon(Resources.iDbSearch, 18));
+				JButton buttonSearch = new JButton(Img.DbSearch.getScaledIcon(18));
 				buttonSearch.setToolTipText("Select the value in the database");
 				buttonSearch.addActionListener(new ActionListener() {
 					@Override
@@ -254,7 +250,7 @@ public class ValidateListOfPossibleValuesDialog extends JDialog {
 					}
 				});
 				panel.add(buttonSearch, new GridBagConstraints(4, y+1, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 10, 2, 5), 0, 0));
-				JButton buttonDelete = new JButton(Resources.getScaledIcon(Resources.i3dMinus, 18));
+				JButton buttonDelete = new JButton(Img.RemoveMain.getScaledIcon(18));
 				buttonDelete.setToolTipText("Remove this value from the list");
 				buttonDelete.addActionListener(new ActionListener() {
 					@Override
@@ -264,7 +260,7 @@ public class ValidateListOfPossibleValuesDialog extends JDialog {
 					}
 				});
 				panel.add(buttonDelete, new GridBagConstraints(5, y+1, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 10, 2, 5), 0, 0));
-				JButton buttonKeepOriginal = new JButton(Resources.getScaledIcon(Resources.iButtonAutoApply, 18));
+				JButton buttonKeepOriginal = new JButton(Img.ButtonAutoApply.getScaledIcon(18));
 				buttonKeepOriginal.setToolTipText("Keep the original value");
 				buttonKeepOriginal.addActionListener(new ActionListener() {
 					@Override

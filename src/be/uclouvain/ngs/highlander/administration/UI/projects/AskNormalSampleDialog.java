@@ -29,44 +29,38 @@
 
 package be.uclouvain.ngs.highlander.administration.UI.projects;
 
-import javax.swing.BorderFactory;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.ListSelectionModel;
-
 import java.awt.BorderLayout;
-
-import javax.swing.JButton;
-
-import java.awt.event.ActionListener;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.Toolkit;
-
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.UI.misc.SearchField;
 import be.uclouvain.ngs.highlander.UI.misc.WaitingPanel;
-import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
 
 public class AskNormalSampleDialog extends JDialog {
 
@@ -104,7 +98,7 @@ public class AskNormalSampleDialog extends JDialog {
 	private void initUI(){
 		setModal(true);
 		setTitle("Select a normal sample");
-		setIconImage(Resources.getScaledIcon(Resources.iPatients, 64).getImage());
+		setIconImage(Img.Patients.getScaledIcon(64).getImage());
 
 		StringBuilder sb = new StringBuilder();
 		sb.append("Only fill this column for somatic samples for which you have also sequenced a germline sample from the same individual.\n");
@@ -120,7 +114,7 @@ public class AskNormalSampleDialog extends JDialog {
 		JPanel panel = new JPanel();	
 		getContentPane().add(panel, BorderLayout.SOUTH);
 
-		JButton btnOk = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 24));
+		JButton btnOk = new JButton(Img.ButtonApply.getScaledIcon(24));
 		btnOk.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {				
@@ -129,7 +123,7 @@ public class AskNormalSampleDialog extends JDialog {
 		});
 		panel.add(btnOk);
 
-		JButton btnCancel = new JButton(Resources.getScaledIcon(Resources.iCross, 24));
+		JButton btnCancel = new JButton(Img.Cross.getScaledIcon(24));
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {

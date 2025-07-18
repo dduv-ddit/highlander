@@ -33,7 +33,6 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -41,10 +40,10 @@ import javax.swing.JTextPane;
 import javax.swing.text.html.HTMLEditorKit;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
-import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.datatype.AnalysisFull;
 import be.uclouvain.ngs.highlander.datatype.AnalysisFull.VariantCaller;
 
@@ -72,9 +71,9 @@ public class WelcomePage extends JTextPane {
 			 */
 					
 			"<tr><td height=200 colspan=\"2\"><table border=0 cellspacing=0 width=\"100%\" height=\"100%\"><tr>"+
-			"<td width=\"30%\" align=\"center\"><img src=\""+Resources.iLogoDeDuveVertival.toString()+"\" width=\"190\" height=\"190\" style=\"background: #C6D580; display:block;\" /></a></td>"+
-			"<td width=\"40%\" align=\"center\"><img src=\""+Resources.iLogoHighlander.toString()+"\" width=\"486\" height=\"191\" border=\"0\" /></a></td>"+
-			"<td width=\"30%\" align=\"center\"><img src=\""+Resources.iLogoUCLouvainVertical.toString()+"\" width=\"190\" height=\"190\" style=\"background: #C6D580; display:block;\" /></a></td>"+
+			"<td width=\"30%\" align=\"center\"><img src=\""+Img.LogoDeDuveVertival.getFullResourcePath()+"\" width=\"190\" height=\"190\" style=\"background: #C6D580; display:block;\" /></a></td>"+
+			"<td width=\"40%\" align=\"center\"><img src=\""+Img.LogoHighlander.getFullResourcePath()+"\" width=\"486\" height=\"191\" border=\"0\" /></a></td>"+
+			"<td width=\"30%\" align=\"center\"><img src=\""+Img.LogoUCLouvainVertical.getFullResourcePath()+"\" width=\"190\" height=\"190\" style=\"background: #C6D580; display:block;\" /></a></td>"+
 			"</tr></table></td></tr>"+
 			
 			"<tr><td colspan=\"2\" width=\"100%\" style=\"font-size:18px; text-align: center;\"><b>VIKKULA lab</b></td></tr>"+
@@ -85,14 +84,14 @@ public class WelcomePage extends JTextPane {
 			"<tr>" +
 			"<td>" +	
 			"<table border=0 cellspacing=0 width=\"100%\"><tr>" +
-			"<td style=\"width:60px; text-align: center;\"><img src=\""+Resources.iUpdater.toString()+"\" height=\"48\" width=\"48\"></td>" +
+			"<td style=\"width:60px; text-align: center;\"><img src=\""+Img.Updater.getFullResourcePath()+"\" height=\"48\" width=\"48\"></td>" +
 			"<td style=\"font-size:18px;\">Last changes to Highlander</td>" +
 			"</tr></table>" +
 			"</td>" +
 			(integrated?
 					"<td>"+
 					"<table border=0 cellspacing=0 width=\"100%\"><tr>" +
-					"<td style=\"width:60px; text-align: center;\"><img src=\""+Resources.iLastDbAdditions.toString()+"\" height=\"48\" width=\"48\"></td>" +
+					"<td style=\"width:60px; text-align: center;\"><img src=\""+Img.LastDbAdditions.getFullResourcePath()+"\" height=\"48\" width=\"48\"></td>" +
 					"<td style=\"font-size:18px;\">Imported samples associated with you</td>" +
 					"</tr></table>"
 					:"")+

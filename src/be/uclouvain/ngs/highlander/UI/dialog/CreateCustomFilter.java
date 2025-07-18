@@ -29,32 +29,40 @@
 
 package be.uclouvain.ngs.highlander.UI.dialog;
 
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.ButtonGroup;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.dialog.ProfileTree.Action;
 import be.uclouvain.ngs.highlander.UI.table.VariantsTable;
@@ -64,19 +72,8 @@ import be.uclouvain.ngs.highlander.database.Category;
 import be.uclouvain.ngs.highlander.database.Field;
 import be.uclouvain.ngs.highlander.datatype.Analysis;
 import be.uclouvain.ngs.highlander.datatype.filter.CustomFilter;
-import be.uclouvain.ngs.highlander.datatype.filter.Filter;
 import be.uclouvain.ngs.highlander.datatype.filter.CustomFilter.ComparisonOperator;
-
-import java.awt.FlowLayout;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
-
+import be.uclouvain.ngs.highlander.datatype.filter.Filter;
 import ca.odell.glazedlists.EventList;
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
@@ -110,7 +107,7 @@ public class CreateCustomFilter extends JDialog {
 	private JButton btnValueListFrom;
 	private JButton btnFreeValues;
 	private JButton btnPossibleValuesDatabase;
-	private JButton btnPossibleValuesTable = new JButton("Possible values from your table",Resources.getScaledIcon(Resources.i3dPlus, 16));;
+	private JButton btnPossibleValuesTable = new JButton("Possible values from your table",Img.AddMain.getScaledIcon(16));;
 
 	AutoCompleteSupport<Field> support;
 
@@ -130,13 +127,13 @@ public class CreateCustomFilter extends JDialog {
 
 	private void initUI(){
 		setTitle("Create filtering criterion");
-		setIconImage(Resources.getScaledIcon(Resources.iFilter, 64).getImage());
+		setIconImage(Img.Filter.getScaledIcon(64).getImage());
 		setModal(true);
 
 		JPanel panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.SOUTH);
 
-		JButton btnCreate = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 32));
+		JButton btnCreate = new JButton(Img.ButtonApply.getScaledIcon(32));
 		btnCreate.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -147,7 +144,7 @@ public class CreateCustomFilter extends JDialog {
 		});
 		panel.add(btnCreate);
 
-		JButton btnCancel = new JButton(Resources.getScaledIcon(Resources.iCross, 32));
+		JButton btnCancel = new JButton(Img.Cross.getScaledIcon(32));
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -356,14 +353,14 @@ public class CreateCustomFilter extends JDialog {
 		gbc_chkBox_null.gridy = 0;
 		panel_2.add(chkBox_null, gbc_chkBox_null);
 
-		btnPossibleValuesDatabase = new JButton("From database",Resources.getScaledIcon(Resources.i3dPlus, 16));
+		btnPossibleValuesDatabase = new JButton("From database",Img.AddMain.getScaledIcon(16));
 		btnPossibleValuesDatabase.setEnabled(false);
 		btnPossibleValuesDatabase.setToolTipText("Choose among possible values found in the whole database");
 		btnPossibleValuesDatabase.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (comboBox_field.getSelectedItem() == null){ 
-					JOptionPane.showMessageDialog(CreateCustomFilter.this, "You must first select a field !", "Ask for possible values", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.showMessageDialog(CreateCustomFilter.this, "You must first select a field !", "Ask for possible values", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}else{
 					List<String> existingValues = new ArrayList<String>();
 					if(txtArea_values.getText().length() > 0){
@@ -388,15 +385,15 @@ public class CreateCustomFilter extends JDialog {
 		panel_2.add(btnPossibleValuesDatabase, gbc_btnPossibleValues);
 
 		if (variantsTable != null){
-			btnPossibleValuesTable = new JButton("From your table",Resources.getScaledIcon(Resources.i3dPlus, 16));
+			btnPossibleValuesTable = new JButton("From your table",Img.AddMain.getScaledIcon(16));
 			btnPossibleValuesTable.setToolTipText("Choose among possible values found in the current table (i.e. applying your filters)");
 			btnPossibleValuesTable.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
 					if (comboBox_field.getSelectedItem() == null){ 
-						JOptionPane.showMessageDialog(CreateCustomFilter.this, "You must first select a field !", "Ask for possible values", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.showMessageDialog(CreateCustomFilter.this, "You must first select a field !", "Ask for possible values", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}else if (!variantsTable.hasColumn(Field.getField(comboBox_field.getSelectedItem().toString()))){
-						JOptionPane.showMessageDialog(CreateCustomFilter.this, "The field '"+comboBox_field.getSelectedItem().toString()+"' is not present in your table.", "Ask for possible values", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.showMessageDialog(CreateCustomFilter.this, "The field '"+comboBox_field.getSelectedItem().toString()+"' is not present in your table.", "Ask for possible values", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}else{
 						List<String> existingValues = new ArrayList<String>();
 						if(txtArea_values.getText().length() > 0){
@@ -422,7 +419,7 @@ public class CreateCustomFilter extends JDialog {
 			if (variantsTable != null && variantsTable.isEmpty()) btnPossibleValuesTable.setEnabled(false);
 		}
 
-		btnFreeValues = new JButton("Encode",Resources.getScaledIcon(Resources.i3dPlus, 16));
+		btnFreeValues = new JButton("Encode",Img.AddMain.getScaledIcon(16));
 		btnFreeValues.setToolTipText("Open a form to encode or import your values");
 		btnFreeValues.addActionListener(new ActionListener() {
 			@Override
@@ -470,7 +467,7 @@ public class CreateCustomFilter extends JDialog {
 		scrollPane_1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		scrollPane_1.setViewportView(txtArea_values);
 
-		btnValueListFrom = new JButton("Value list from profile",Resources.getScaledIcon(Resources.i3dPlus, 16));
+		btnValueListFrom = new JButton("Value list from profile",Img.AddMain.getScaledIcon(16));
 		btnValueListFrom.setEnabled(false);
 		btnValueListFrom.addActionListener(new ActionListener() {
 			@Override
@@ -716,7 +713,7 @@ public class CreateCustomFilter extends JDialog {
 			}
 		}catch(Exception ex){
 			Tools.exception(ex);
-			JOptionPane.showMessageDialog(CreateCustomFilter.this, Tools.getMessage("Error", ex), "Field selection", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(CreateCustomFilter.this, Tools.getMessage("Error", ex), "Field selection", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 	}
 
@@ -838,11 +835,11 @@ public class CreateCustomFilter extends JDialog {
 	private boolean generateCriterion(){		
 		try {
 			if (comboBox_field.getSelectedItem() == null){
-				JOptionPane.showMessageDialog(this, "You must select a valid field", "Error in filtering criterion", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				JOptionPane.showMessageDialog(this, "You must select a valid field", "Error in filtering criterion", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				return false;
 			}
 			if (Filter.containsForbiddenCharacters(txtArea_values.getText()) || Filter.containsForbiddenCharacters(txtArea_profile.getText())){
-				JOptionPane.showMessageDialog(this, "Your criteria list cannot contains the following characters: "+Filter.getForbiddenCharacters(), "Error in filtering criterion", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				JOptionPane.showMessageDialog(this, "Your criteria list cannot contains the following characters: "+Filter.getForbiddenCharacters(), "Error in filtering criterion", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				return false;				
 			}
 			Field field = Field.getField(comboBox_field.getSelectedItem().toString());
@@ -864,7 +861,7 @@ public class CreateCustomFilter extends JDialog {
 					}
 				}
 				if (hasSingleValue() && values.size() > 1){
-					JOptionPane.showMessageDialog(this, "The selected comparison operator ("+compop+") only allows a single value.", "Error in filtering criterion", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.showMessageDialog(this, "The selected comparison operator ("+compop+") only allows a single value.", "Error in filtering criterion", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					return false;
 				}
 				List<String> profileValues = new ArrayList<String>();
@@ -872,11 +869,11 @@ public class CreateCustomFilter extends JDialog {
 					if (val.trim().length() > 0) profileValues.add(val.replace("|*?", ";").trim());
 				}
 				if (hasSingleValue() && profileValues.size() > 0){
-					JOptionPane.showMessageDialog(this, "The selected comparison operator ("+compop+") don't allow profile value list.", "Error in filtering criterion", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.showMessageDialog(this, "The selected comparison operator ("+compop+") don't allow profile value list.", "Error in filtering criterion", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					return false;
 				}
 				if ((values.size() + profileValues.size()) == 0){
-					JOptionPane.showMessageDialog(this, "You must set at least one value.", "Error in filtering criterion", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.showMessageDialog(this, "You must set at least one value.", "Error in filtering criterion", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					return false;
 				}
 				boolean includeNulls = rdbtnIncludeInCriterion.isSelected();
@@ -885,7 +882,7 @@ public class CreateCustomFilter extends JDialog {
 			return true;
 		} catch (Exception ex) {
 			Tools.exception(ex);
-			JOptionPane.showMessageDialog(this, Tools.getMessage("Error when generating criterion", ex), "Create filtering criterion", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(this, Tools.getMessage("Error when generating criterion", ex), "Create filtering criterion", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			criterion = null;
 			return false;
 		}

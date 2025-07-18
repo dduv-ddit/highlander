@@ -69,7 +69,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.text.JTextComponent;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.dialog.ProfileTree.Action;
 import be.uclouvain.ngs.highlander.administration.users.User.UserData;
@@ -101,12 +101,12 @@ public class AskListOfIntervalsDialog extends JDialog {
 	private void initUI(){
 		setModal(true);
 		setTitle("Create list of genomic intervals");
-		setIconImage(Resources.getScaledIcon(Resources.iInterval, 64).getImage());
+		setIconImage(Img.Interval.getScaledIcon(64).getImage());
 
 		JPanel panel_2 = new JPanel();
 		getContentPane().add(panel_2, BorderLayout.NORTH);
 
-		JButton btnSort = new JButton(Resources.getScaledIcon(Resources.iSortAZ, 40));
+		JButton btnSort = new JButton(Img.SortAZ.getScaledIcon(40));
 		btnSort.setToolTipText("Sort current list by chromosome-positions and remove duplicates");
 		btnSort.setPreferredSize(new Dimension(54,54));
 		btnSort.addActionListener(new ActionListener() {
@@ -117,7 +117,7 @@ public class AskListOfIntervalsDialog extends JDialog {
 		});
 		panel_2.add(btnSort);
 
-		JButton btnFile = new JButton(Resources.getScaledIcon(Resources.iImportFile, 40));
+		JButton btnFile = new JButton(Img.ImportFile.getScaledIcon(40));
 		btnFile.setToolTipText("Import values from a bed file");
 		btnFile.setPreferredSize(new Dimension(54,54));
 		btnFile.addActionListener(new ActionListener() {
@@ -149,7 +149,7 @@ public class AskListOfIntervalsDialog extends JDialog {
 					} catch (Exception ex) {
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(AskListOfIntervalsDialog.this, Tools.getMessage("Error", ex), 
-								"Import values from a text file", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								"Import values from a text file", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 					btnOk.setText(getValuesCount()+" interval(s)");
 				}
@@ -157,7 +157,7 @@ public class AskListOfIntervalsDialog extends JDialog {
 		});
 		panel_2.add(btnFile);
 
-		JButton btnLoadList = new JButton(Resources.getScaledIcon(Resources.iDbLoad, 40));
+		JButton btnLoadList = new JButton(Img.DbLoad.getScaledIcon(40));
 		btnLoadList.setToolTipText("Load a list of intervals from your profile");
 		btnLoadList.setPreferredSize(new Dimension(54,54));
 		btnLoadList.addActionListener(new ActionListener() {
@@ -171,7 +171,7 @@ public class AskListOfIntervalsDialog extends JDialog {
 		});
 		panel_2.add(btnLoadList);
 
-		JButton btnSaveFile = new JButton(Resources.getScaledIcon(Resources.iExportFile, 40));
+		JButton btnSaveFile = new JButton(Img.ExportFile.getScaledIcon(40));
 		btnSaveFile.setToolTipText("Export current list of intervals in a bed file");
 		btnSaveFile.setPreferredSize(new Dimension(54,54));
 		btnSaveFile.addActionListener(new ActionListener() {
@@ -182,7 +182,7 @@ public class AskListOfIntervalsDialog extends JDialog {
 		});
 		panel_2.add(btnSaveFile);
 
-		JButton btnSaveList = new JButton(Resources.getScaledIcon(Resources.iDbSave, 40));
+		JButton btnSaveList = new JButton(Img.DbSave.getScaledIcon(40));
 		btnSaveList.setToolTipText("Save current list of intervals in your profile");
 		btnSaveList.setPreferredSize(new Dimension(54,54));
 		btnSaveList.addActionListener(new ActionListener() {
@@ -197,7 +197,7 @@ public class AskListOfIntervalsDialog extends JDialog {
 		JPanel panel = new JPanel();	
 		getContentPane().add(panel, BorderLayout.SOUTH);
 
-		btnOk = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 24));
+		btnOk = new JButton(Img.ButtonApply.getScaledIcon(24));
 		btnOk.setText("0 interval(s)");
 		btnOk.addActionListener(new ActionListener() {
 			@Override
@@ -209,7 +209,7 @@ public class AskListOfIntervalsDialog extends JDialog {
 		});
 		panel.add(btnOk);
 
-		JButton btnCancel = new JButton(Resources.getScaledIcon(Resources.iCross, 24));
+		JButton btnCancel = new JButton(Img.Cross.getScaledIcon(24));
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -272,7 +272,12 @@ public class AskListOfIntervalsDialog extends JDialog {
 				btnOk.setText(getValuesCount()+" interval(s)");
 			}
 		});
-		new ExcelAdapter(table);
+		ExcelAdapter excelAdapter = new ExcelAdapter();
+		KeyStroke paste = KeyStroke.getKeyStroke(KeyEvent.VK_V,Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(),false);
+		table.registerKeyboardAction(excelAdapter,"Paste",paste,JComponent.WHEN_FOCUSED);
+		KeyStroke delete = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,0,false);
+		table.registerKeyboardAction(excelAdapter,"Delete",delete,JComponent.WHEN_FOCUSED);
+
 		table.setCellSelectionEnabled(true);
 		table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		scrollPane.setViewportView(table);
@@ -338,28 +343,20 @@ public class AskListOfIntervalsDialog extends JDialog {
 
 	}
 
-	public class ExcelAdapter implements ActionListener {
+	private class ExcelAdapter implements ActionListener {
 		private String rowstring,value;
 		private Clipboard system;
-		private JTable table ;
 		/**
 		 * The Excel Adapter is constructed with a
 		 * JTable on which it enables Copy-Paste and acts
 		 * as a Clipboard listener.
 		 */
-		public ExcelAdapter(JTable myJTable){
-			table = myJTable;
-			KeyStroke paste = KeyStroke.getKeyStroke(KeyEvent.VK_V,Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(),false);
-			table.registerKeyboardAction(this,"Paste",paste,JComponent.WHEN_FOCUSED);
-			KeyStroke delete = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,0,false);
-			table.registerKeyboardAction(this,"Delete",delete,JComponent.WHEN_FOCUSED);
+		public ExcelAdapter(){
 			system = Toolkit.getDefaultToolkit().getSystemClipboard();
 		}
 		/**
 		 * Public Accessor methods for the Table on which this adapter acts.
 		 */
-		public JTable getJTable() {return table;}
-		public void setJTable(JTable jTable1) {this.table=jTable1;}
 		/**
 		 * This method is activated on the Keystrokes we are listening to
 		 * in this implementation. Here it listens for Copy and Paste ActionCommands.
@@ -422,14 +419,14 @@ public class AskListOfIntervalsDialog extends JDialog {
 							end = Integer.parseInt(tmodel.getValueAt(i, 2).toString().trim());
 						}catch(NumberFormatException ex){
 							JOptionPane.showMessageDialog(AskListOfIntervalsDialog.this, tmodel.getValueAt(i, 2).toString() + " is not a valid position", 
-									"Validate interval list", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+									"Validate interval list", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 							return false;
 						}
 					}
 					selection.add(new Interval(reference, chr, start, end));
 				}catch(NumberFormatException ex){
 					JOptionPane.showMessageDialog(AskListOfIntervalsDialog.this, tmodel.getValueAt(i, 1).toString() + " is not a valid position", 
-							"Validate interval list", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+							"Validate interval list", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					return false;
 				}
 			}
@@ -462,7 +459,7 @@ public class AskListOfIntervalsDialog extends JDialog {
 				} catch (Exception ex) {
 					Tools.exception(ex);
 					JOptionPane.showMessageDialog(AskListOfIntervalsDialog.this, Tools.getMessage("Error", ex), 
-							"Export intervals to a bed file", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+							"Export intervals to a bed file", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}
 			}
 		}
@@ -479,7 +476,7 @@ public class AskListOfIntervalsDialog extends JDialog {
 			if (Highlander.getLoggedUser().doesPersonalDataExists(UserData.INTERVALS, reference.getName(), name)){
 				int yesno = JOptionPane.showConfirmDialog(new JFrame(), 
 						"You already have a "+UserData.INTERVALS.getName()+" named '"+name.replace("~", " -> ")+"', do you want to overwrite it ?", 
-						"Overwriting element in your profile", JOptionPane.YES_NO_OPTION , JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iDbSave,64));
+						"Overwriting element in your profile", JOptionPane.YES_NO_OPTION , JOptionPane.QUESTION_MESSAGE, Img.DbSave.getScaledIcon(64));
 				if (yesno == JOptionPane.NO_OPTION)	return;
 			}
 
@@ -489,7 +486,7 @@ public class AskListOfIntervalsDialog extends JDialog {
 			}
 		} catch (Exception ex) {
 			Tools.exception(ex);
-			JOptionPane.showMessageDialog(AskListOfIntervalsDialog.this, Tools.getMessage("Error", ex), "Save current list of intervals in your profile", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(AskListOfIntervalsDialog.this, Tools.getMessage("Error", ex), "Save current list of intervals in your profile", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 	}
 
@@ -511,7 +508,7 @@ public class AskListOfIntervalsDialog extends JDialog {
 		} catch (Exception ex) {
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(AskListOfIntervalsDialog.this, Tools.getMessage("Error", ex), 
-					"Load list of intervals from your profile", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					"Load list of intervals from your profile", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 		btnOk.setText(getValuesCount()+" interval(s)");
 		table.revalidate();

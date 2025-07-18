@@ -89,6 +89,7 @@ import org.apache.poi.xssf.usermodel.XSSFColor;
 
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.Resources.Palette;
 import be.uclouvain.ngs.highlander.UI.dialog.AskListOfFreeValuesDialog;
@@ -180,7 +181,7 @@ public class CoverageInfo extends JFrame {
 		}catch(Exception ex){
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Cannot retreive coverage columns", ex), "Retreive coverage columns",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 		percent.clear();
 		hasHeatMap.clear();
@@ -198,14 +199,14 @@ public class CoverageInfo extends JFrame {
 
 	private void initUI(){
 		setTitle("Coverage information");
-		setIconImage(Resources.getScaledIcon(Resources.iCoverage, 64).getImage());
+		setIconImage(Img.Coverage.getScaledIcon(64).getImage());
 
 		getContentPane().setLayout(new BorderLayout());
 
 		JPanel panel_south = new JPanel();	
 		getContentPane().add(panel_south, BorderLayout.SOUTH);
 
-		JButton btnClose = new JButton(Resources.getScaledIcon(Resources.iCross, 24));
+		JButton btnClose = new JButton(Img.Cross.getScaledIcon(24));
 		btnClose.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -214,7 +215,7 @@ public class CoverageInfo extends JFrame {
 		});
 		panel_south.add(btnClose);
 
-		JButton export = new JButton(Resources.getScaledIcon(Resources.iExcel, 24));
+		JButton export = new JButton(Img.Excel.getScaledIcon(24));
 		export.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -296,7 +297,7 @@ public class CoverageInfo extends JFrame {
 		gbc_panel_2.gridy = 1;
 		targetPanel.add(panel_2, gbc_panel_2);
 
-		JButton btnNewButton_1 = new JButton("Load from profile",Resources.getScaledIcon(Resources.iUserList, 16));
+		JButton btnNewButton_1 = new JButton("Load from profile",Img.UserList.getScaledIcon(16));
 		btnNewButton_1.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -310,14 +311,14 @@ public class CoverageInfo extends JFrame {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Cannot retreive profile values", ex), "Retreive profile values",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			}
 		});
 		panel_2.add(btnNewButton_1);
 
-		JButton btnNewButton_2 = new JButton("Create gene list",Resources.getScaledIcon(Resources.iDbStatus, 16));
+		JButton btnNewButton_2 = new JButton("Create gene list",Img.DbStatus.getScaledIcon(16));
 		btnNewButton_2.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -428,7 +429,7 @@ public class CoverageInfo extends JFrame {
 		gbc_panel_4.gridy = 1;
 		samplesPanel.add(panel_4, gbc_panel_4);
 
-		btnLoad = new JButton("Load from profile",Resources.getScaledIcon(Resources.iUserList, 16));
+		btnLoad = new JButton("Load from profile",Img.UserList.getScaledIcon(16));
 		btnLoad.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -442,14 +443,14 @@ public class CoverageInfo extends JFrame {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Cannot retreive profile values", ex), "Retreive profile values",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			}
 		});
 		panel_4.add(btnLoad);
 
-		btnPossibleValues = new JButton("Create list",Resources.getScaledIcon(Resources.iDbStatus, 16));
+		btnPossibleValues = new JButton("Create list",Img.DbStatus.getScaledIcon(16));
 		btnPossibleValues.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -513,7 +514,7 @@ public class CoverageInfo extends JFrame {
 		gbl_validationPanel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		validationPanel.setLayout(gbl_validationPanel);
 
-		JButton btnNewButton = new JButton("Get coverage info", Resources.getScaledIcon(Resources.iCoverage, 24));
+		JButton btnNewButton = new JButton("Get coverage info", Img.Coverage.getScaledIcon(24));
 		btnNewButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -521,11 +522,11 @@ public class CoverageInfo extends JFrame {
 					@Override
 					public void run() {
 						if (textAreaTargets.getText().length() == 0){
-							JOptionPane.showMessageDialog(CoverageInfo.this, "You must give at least one gene !", "Cannot get coverage info", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCoverage, 64));
+							JOptionPane.showMessageDialog(CoverageInfo.this, "You must give at least one gene !", "Cannot get coverage info", JOptionPane.ERROR_MESSAGE, Img.Coverage.getScaledIcon(64));
 							return;
 						}
 						if (textAreaSamples.getText().length() == 0){
-							JOptionPane.showMessageDialog(CoverageInfo.this, "You must give at least one sample !", "Cannot get coverage info", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCoverage, 64));
+							JOptionPane.showMessageDialog(CoverageInfo.this, "You must give at least one sample !", "Cannot get coverage info", JOptionPane.ERROR_MESSAGE, Img.Coverage.getScaledIcon(64));
 							return;
 						}
 						for (Grouping grouping : Grouping.values())	fetchData(grouping);
@@ -861,7 +862,7 @@ public class CoverageInfo extends JFrame {
 		} catch (Exception ex) {
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error", ex), "Coverage information",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 		fillTable(grouping);
 		SwingUtilities.invokeLater(new Runnable() {
@@ -1229,7 +1230,7 @@ public class CoverageInfo extends JFrame {
 			} catch (Exception ex) {
 				Tools.exception(ex);
 				JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error", ex), "Coverage information",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}
 		}
 	}
@@ -1317,11 +1318,11 @@ public class CoverageInfo extends JFrame {
 			}catch (IOException ex){
 				Tools.exception(ex);
 				JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("I/O error when creating file", ex), "Exporting to Excel",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}catch (Exception ex){
 				Tools.exception(ex);
 				JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error during export", ex), "Exporting to Excel",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}
 		}
 	}

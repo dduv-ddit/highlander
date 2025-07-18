@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="lib/Install4j/i4jruntime.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="file:/D:/Dropbox/Projets/Highlander/lib/Install4j/javadoc/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/javamail-1.4.5/mail.jar"/>
 	<classpathentry kind="lib" path="lib/AnimatingCardLayout/AnimatingCardLayout.jar"/>
-	<classpathentry kind="lib" path="lib/HTTP Client/commons-httpclient-2.0-rc3.jar"/>
 	<classpathentry kind="lib" path="lib/picard-tools-1.107/ViewSam.jar"/>
 	<classpathentry kind="lib" path="lib/IGV_2.3.32/batik-codec__V1.7.jar"/>
 	<classpathentry kind="lib" path="lib/IGV_2.3.32/goby-io-igv__V1.0.jar"/>
@@ -53,5 +46,12 @@
 	<classpathentry kind="lib" path="lib/poi-5.0.0/ooxml-lib/xmlbeans-4.0.0.jar"/>
 	<classpathentry kind="lib" path="lib/mysql-connector-java-8.0.32/mysql-connector-j-8.0.32.jar" sourcepath="lib/mysql-connector-java-8.0.32/src"/>
 	<classpathentry kind="lib" path="lib/IGV_2.3.32/igv.jar" sourcepath="lib/IGV_2.3.32/src.zip"/>
+	<classpathentry kind="lib" path="lib/javamail-1.6.2/activation-1.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/javamail-1.6.2/javax.mail.jar"/>
+	<classpathentry kind="lib" path="lib/Install4j10/i4jruntime.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/D:/Dropbox/Projets/Highlander/highlander/lib/Install4j10/javadoc/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

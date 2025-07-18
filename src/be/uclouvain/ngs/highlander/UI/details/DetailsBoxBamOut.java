@@ -31,23 +31,20 @@ package be.uclouvain.ngs.highlander.UI.details;
 
 import java.awt.BorderLayout;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URL;
+import java.net.URLConnection;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 
-import org.apache.commons.httpclient.Credentials;
-import org.apache.commons.httpclient.HostConfiguration;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.NTCredentials;
-import org.apache.commons.httpclient.NameValuePair;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import org.apache.commons.httpclient.methods.PostMethod;
-
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Tools;
+import be.uclouvain.ngs.highlander.Tools.HttpUtility;
 import be.uclouvain.ngs.highlander.UI.tools.BamViewer;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
 import be.uclouvain.ngs.highlander.database.Results;
@@ -124,59 +121,33 @@ public class DetailsBoxBamOut extends DetailsBoxAlignment {
 						}else{
 							normal = "";
 						}
-
-						HttpClient httpClient = new HttpClient();
-						boolean bypass = false;
-						if (System.getProperty("http.nonProxyHosts") != null) {
-							for (String host : System.getProperty("http.nonProxyHosts").split("\\|")) {
-								if ((Highlander.getParameters().getUrlForPhpScripts()+"/bamcheck.php").toLowerCase().contains(host.toLowerCase())) bypass = true;
-							}
-						}
-						if (!bypass && System.getProperty("http.proxyHost") != null) {
-							try {
-								HostConfiguration hostConfiguration = httpClient.getHostConfiguration();
-								hostConfiguration.setProxy(System.getProperty("http.proxyHost"), Integer.parseInt(System.getProperty("http.proxyPort")));
-								httpClient.setHostConfiguration(hostConfiguration);
-								if (System.getProperty("http.proxyUser") != null && System.getProperty("http.proxyPassword") != null) {
-									// Credentials credentials = new UsernamePasswordCredentials(System.getProperty("http.proxyUser"), System.getProperty("http.proxyPassword"));
-									// Windows proxy needs specific credentials with domain ... if proxy user is in the form of domain\\user, consider it's windows
-									String user = System.getProperty("http.proxyUser");
-									Credentials credentials;
-									if (user.contains("\\")) {
-										credentials = new NTCredentials(user.split("\\\\")[1], System.getProperty("http.proxyPassword"), System.getProperty("http.proxyHost"), user.split("\\\\")[0]);
-									}else {
-										credentials = new UsernamePasswordCredentials(user, System.getProperty("http.proxyPassword"));
+						Map<String, String> params = new HashMap<String, String>();
+						params.put("analysis", analysis.toString());
+						params.put("reference", reference.getName());
+						params.put("sample", sample);
+						params.put("chr", variant.getChromosome());
+						params.put("pos", String.valueOf(variant.getPosition()));
+						params.put("normal", normal);
+						HttpUtility.post(Highlander.getParameters().getUrlForPhpScripts()+"/bamout.php", params, new HttpUtility.Callback() {
+							@Override
+							public void OnSuccess(URLConnection connection) {
+								try (InputStreamReader isr = new InputStreamReader(connection.getInputStream())){
+									try (BufferedReader br = new BufferedReader(isr)){
+										String line;
+										while ((line = br.readLine()) != null) {
+											System.out.println(line);
+										}
 									}
-									httpClient.getState().setProxyCredentials(null, System.getProperty("http.proxyHost"), credentials);
-								}
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-						}
-						PostMethod post = new PostMethod(Highlander.getParameters().getUrlForPhpScripts()+"/bamout.php");
-						NameValuePair[] data = {
-								new NameValuePair("analysis", analysis.toString()),
-								new NameValuePair("reference", reference.getName()),
-								new NameValuePair("sample", sample),
-								new NameValuePair("chr", variant.getChromosome()),
-								new NameValuePair("pos", ""+variant.getPosition()),
-								new NameValuePair("normal", normal)
-						};
-						post.addParameters(data);
-						int httpRes = httpClient.executeMethod(post); 
-						if (httpRes == 200) {			
-							try (InputStreamReader isr = new InputStreamReader(post.getResponseBodyAsStream())){
-								try (BufferedReader br = new BufferedReader(isr)){
-									String line = null;
-									while(((line = br.readLine()) != null)) {
-										System.out.println(line);
-									}
+								} catch (IOException e) {
+									e.printStackTrace();
 								}
 							}
-						}else {
-							detailsPanel.removeAll();
-							detailsPanel.add(new JLabel("Cannot launch bamout on the server, HTTP error " + httpRes), BorderLayout.CENTER);	
-						}
+							@Override
+							public void OnError(int responseCode, String message) {
+								detailsPanel.removeAll();
+								detailsPanel.add(new JLabel("Cannot launch bamout on the server, HTTP error " + responseCode), BorderLayout.CENTER);	
+							}
+						});					    
 					}
 					while (!Tools.exists(url.toString())){
 						try{

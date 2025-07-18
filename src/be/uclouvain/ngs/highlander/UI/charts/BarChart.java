@@ -41,8 +41,8 @@ import java.util.Random;
 import javax.swing.JPanel;
 
 import be.uclouvain.ngs.highlander.Resources;
-import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.Resources.Palette;
+import be.uclouvain.ngs.highlander.Tools;
 
 public class BarChart extends JPanel {
 

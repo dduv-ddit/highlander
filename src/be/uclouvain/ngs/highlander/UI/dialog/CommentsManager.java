@@ -72,6 +72,7 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.Resources.Palette;
 import be.uclouvain.ngs.highlander.UI.misc.WaitingPanel;
@@ -138,7 +139,7 @@ public class CommentsManager extends JFrame {
 
 	private void initUI(){
 		setTitle("Comments manager");
-		setIconImage(Resources.getScaledIcon(Resources.iComments, 64).getImage());
+		setIconImage(Img.Comments.getScaledIcon(64).getImage());
 
 		JPanel panel_north = new JPanel(new GridLayout(1, 2));
 		getContentPane().add(panel_north, BorderLayout.NORTH);
@@ -199,7 +200,7 @@ public class CommentsManager extends JFrame {
 		JPanel panel_south = new JPanel(new FlowLayout());
 		getContentPane().add(panel_south, BorderLayout.SOUTH);
 		
-		JButton btnAdd = new JButton("Add element", Resources.getScaledIcon(Resources.i3dPlus, 24));
+		JButton btnAdd = new JButton("Add element", Img.AddMain.getScaledIcon(24));
 		btnAdd.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {				
@@ -208,7 +209,7 @@ public class CommentsManager extends JFrame {
 		});
 		panel_south.add(btnAdd);
 
-		JButton btnModifyPrivate = new JButton("Modify private comment", Resources.getScaledIcon(Resources.iUpdater, 24));
+		JButton btnModifyPrivate = new JButton("Modify private comment", Img.Updater.getScaledIcon(24));
 		btnModifyPrivate.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {				
@@ -217,7 +218,7 @@ public class CommentsManager extends JFrame {
 		});
 		panel_south.add(btnModifyPrivate);
 		
-		JButton btnModifyPublic = new JButton("Modify public comment", Resources.getScaledIcon(Resources.iUpdater, 24));
+		JButton btnModifyPublic = new JButton("Modify public comment", Img.Updater.getScaledIcon(24));
 		btnModifyPublic.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {				
@@ -226,7 +227,7 @@ public class CommentsManager extends JFrame {
 		});
 		panel_south.add(btnModifyPublic);
 		
-		JButton btnExport = new JButton("Export", Resources.getScaledIcon(Resources.iExcel, 24));
+		JButton btnExport = new JButton("Export", Img.Excel.getScaledIcon(24));
 		btnExport.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {				
@@ -235,7 +236,7 @@ public class CommentsManager extends JFrame {
 		});
 		panel_south.add(btnExport);
 		
-		JButton btnOk = new JButton("close", Resources.getScaledIcon(Resources.iButtonApply, 24));
+		JButton btnOk = new JButton("close", Img.ButtonApply.getScaledIcon(24));
 		btnOk.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {				
@@ -385,7 +386,7 @@ public class CommentsManager extends JFrame {
 							addElement(gene);
 						} catch (Exception ex) {
 							Tools.exception(ex);
-							JOptionPane.showMessageDialog(this, Tools.getMessage("Cannot add element" + gene, ex), "Add elements", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+							JOptionPane.showMessageDialog(this, Tools.getMessage("Cannot add element" + gene, ex), "Add elements", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 						}
 					}
 				}
@@ -401,19 +402,19 @@ public class CommentsManager extends JFrame {
 							addElement(sample);
 						} catch (Exception ex) {
 							Tools.exception(ex);
-							JOptionPane.showMessageDialog(this, Tools.getMessage("Cannot add element" + sample, ex), "Add elements", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+							JOptionPane.showMessageDialog(this, Tools.getMessage("Cannot add element" + sample, ex), "Add elements", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 						}
 					}
 				}
 				fill();
 				break;
 			case Variants:
-				JOptionPane.showMessageDialog(this, "Variants cannot be added with this tool.", "Add elements", JOptionPane.INFORMATION_MESSAGE, Resources.getScaledIcon(Resources.iComments,64));				
+				JOptionPane.showMessageDialog(this, "Variants cannot be added with this tool.", "Add elements", JOptionPane.INFORMATION_MESSAGE, Img.Comments.getScaledIcon(64));				
 				break;
 			}
 		} catch (Exception ex) {
 			Tools.exception(ex);
-			JOptionPane.showMessageDialog(this, Tools.getMessage("Error retrieving selected database field", ex), "Add elements", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(this, Tools.getMessage("Error retrieving selected database field", ex), "Add elements", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 	}
 
@@ -542,7 +543,7 @@ public class CommentsManager extends JFrame {
 		textArea.setRows(3);
 		textArea.setText(comment);
 		switch (JOptionPane.showConfirmDialog(this, new JScrollPane(textArea), "Modify private comment for " + target, 
-				JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iComments, 64))) {
+				JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Img.Comments.getScaledIcon(64))) {
 		    case JOptionPane.OK_OPTION:
 					try{
 						String newTxt = textArea.getText();
@@ -575,7 +576,7 @@ public class CommentsManager extends JFrame {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 		      break;
 		}
@@ -593,7 +594,7 @@ public class CommentsManager extends JFrame {
 		textArea.setRows(3);
 		textArea.setText(comment);
 		switch (JOptionPane.showConfirmDialog(this, new JScrollPane(textArea), "Modify public comment for " + target, 
-				JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iComments, 64))) {
+				JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Img.Comments.getScaledIcon(64))) {
 		    case JOptionPane.OK_OPTION:
 					try{
 						String newTxt = textArea.getText();
@@ -628,7 +629,7 @@ public class CommentsManager extends JFrame {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 		      break;
 		}
@@ -696,11 +697,11 @@ public class CommentsManager extends JFrame {
 			}catch (IOException ex){
 				Tools.exception(ex);
 				JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("I/O error when creating file", ex), "Exporting to Excel",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}catch (Exception ex){
 				Tools.exception(ex);
 				JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error during export", ex), "Exporting to Excel",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}
 		}
 	}

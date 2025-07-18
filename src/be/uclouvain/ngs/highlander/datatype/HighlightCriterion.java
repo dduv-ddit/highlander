@@ -53,7 +53,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.dialog.CreateHighlightCriterion;
 import be.uclouvain.ngs.highlander.UI.toolbar.HighlightingPanel;
@@ -101,7 +101,7 @@ public class HighlightCriterion extends HighlightingRule {
 		if (!checkProfileValues()){
 			JOptionPane.showMessageDialog(this, "Cannot retreive '"+getFirstInexistantProfileList()+"' value list from your profile." +
 					"\nVerify that this list has not been deleted, renamed or is empty.", "Creating highlighting criterion",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iUserListDelete,64));
+					JOptionPane.ERROR_MESSAGE, Img.UserListDelete.getScaledIcon(64));
 		}
 		allValues = new HashSet<String>();
 		allValues.addAll(values);
@@ -215,7 +215,7 @@ public class HighlightCriterion extends HighlightingRule {
 		if (!p.isEmpty()) list += p.toString();
 		list +=")";
 		boolean nval = (parts.length == 6) ? (parts[5].equals("1")) : false;
-		JLabel label = new JLabel(f + " " + c.getUnicode() + " " + (nval?"NULL":list), Resources.getScaledIcon(Resources.iHighlighting, 16), SwingConstants.CENTER);
+		JLabel label = new JLabel(f + " " + c.getUnicode() + " " + (nval?"NULL":list), Img.Highlighting.getScaledIcon(16), SwingConstants.CENTER);
 		if (!parts[4].equals("-")) label.setBackground(new Color(Integer.parseInt(parts[4])));
 		if (!parts[5].equals("-")) label.setForeground(new Color(Integer.parseInt(parts[5])));
 		if (parts[6].equals("1")) label.setFont(label.getFont().deriveFont(Font.BOLD));
@@ -292,13 +292,13 @@ public class HighlightCriterion extends HighlightingRule {
 		if (bold && italic) label.setFont(label.getFont().deriveFont(Font.ITALIC | Font.BOLD));
 		add(label,BorderLayout.CENTER);
 		JPanel west = new JPanel(new GridBagLayout());
-		JLabel iconLab = new JLabel(Resources.getScaledIcon(Resources.iHighlighting, 16));
+		JLabel iconLab = new JLabel(Img.Highlighting.getScaledIcon(16));
 		iconLab.setOpaque(true);
 		west.add(iconLab, new GridBagConstraints(0, 0, 0, 1, 1.0, 1.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(4, 4, 4, 4), 0, 0));
 		add(west,BorderLayout.WEST);
 		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.setLayout(new GridBagLayout());
-		JButton removeButton = new JButton(Resources.getScaledIcon(Resources.iCross, 16));
+		JButton removeButton = new JButton(Img.Cross.getScaledIcon(16));
 		removeButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {

@@ -41,9 +41,12 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.math.BigInteger;
 import java.net.HttpURLConnection;
@@ -51,7 +54,9 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.net.UnknownHostException;
 import java.nio.channels.Channels;
@@ -69,8 +74,10 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.mail.Message;
 import javax.mail.Session;
@@ -89,17 +96,13 @@ import javax.swing.JTextArea;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.apache.commons.httpclient.Credentials;
-import org.apache.commons.httpclient.HostConfiguration;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.NTCredentials;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.io.FileUtils;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import be.uclouvain.ngs.highlander.Resources.Img;
 import net.sf.samtools.util.ftp.FTPUtils;
 
 public class Tools {
@@ -181,7 +184,7 @@ public class Tools {
 				JPanel p = new JPanel(new BorderLayout());
 				p.add(new JLabel("Please describe how this error happened"), BorderLayout.NORTH);
 				p.add(new JScrollPane(commentArea), BorderLayout.CENTER);
-				int res = JOptionPane.showConfirmDialog(null, p, "Send this error to Highlander administrator", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey, 64));
+				int res = JOptionPane.showConfirmDialog(null, p, "Send this error to Highlander administrator", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64));
 				if (res == JOptionPane.OK_OPTION){
 					final StringBuilder header = new StringBuilder();
 					DateFormat df = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss");
@@ -219,7 +222,7 @@ public class Tools {
 						}else{
 							sendMail(Highlander.getParameters().getAdminMail(), "Error in Highlander", header.toString()+sb.toString(), attachments);
 						}
-						JOptionPane.showMessageDialog(new JFrame(), "An email has been sent, thank you.", "Sending error to Highlander administrator",	JOptionPane.INFORMATION_MESSAGE, Resources.getScaledIcon(Resources.iHighlander,64));
+						JOptionPane.showMessageDialog(new JFrame(), "An email has been sent, thank you.", "Sending error to Highlander administrator",	JOptionPane.INFORMATION_MESSAGE, Img.Highlander.getScaledIcon(64));
 					}catch(Exception ex){
 						Tools.exception(ex);
 					}					
@@ -241,7 +244,7 @@ public class Tools {
 		JPanel p = new JPanel(new BorderLayout());
 		p.add(new JLabel("Please add as much context as possible to your query.\nYou don't need to describe the filter you used (it's automatically sent),\nbut you can describe how long your are waiting, if it's 'stuck' or still running, if it's the first time you used that filter, etc."), BorderLayout.NORTH);
 		p.add(new JScrollPane(commentArea), BorderLayout.CENTER);
-		int res = JOptionPane.showConfirmDialog(null, p, "Send this query to Highlander administrator", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey, 64));
+		int res = JOptionPane.showConfirmDialog(null, p, "Send this query to Highlander administrator", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64));
 		if (res == JOptionPane.OK_OPTION){
 			final StringBuilder header = new StringBuilder();
 			DateFormat df = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss");
@@ -279,7 +282,7 @@ public class Tools {
 				}else{
 					sendMail(Highlander.getParameters().getAdminMail(), "Slow query report from Highlander", header.toString()+sb.toString(), attachments);
 				}
-				JOptionPane.showMessageDialog(new JFrame(), "Your query has been sent to the administrator, thank you.", "Report slow query",	JOptionPane.INFORMATION_MESSAGE, Resources.getScaledIcon(Resources.iHighlander,64));
+				JOptionPane.showMessageDialog(new JFrame(), "Your query has been sent to the administrator, thank you.", "Report slow query",	JOptionPane.INFORMATION_MESSAGE, Img.Highlander.getScaledIcon(64));
 			}catch(Exception ex){
 				Tools.exception(ex);
 			}					
@@ -292,7 +295,7 @@ public class Tools {
 		}catch (Exception ex) {
 			exception(ex);
 			JOptionPane.showMessageDialog(null, "Cannot open web browser" + ":\n" + ex.getLocalizedMessage(), "Opening web browser",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 	}
 
@@ -303,7 +306,7 @@ public class Tools {
 		}catch (Exception ex) {
 			exception(ex);
 			JOptionPane.showMessageDialog(null, "Cannot open web browser" + ":\n" + ex.getLocalizedMessage(), "Opening web browser",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 	}
 
@@ -314,7 +317,7 @@ public class Tools {
 		catch (Exception ex) {
 			exception(ex);
 			JOptionPane.showMessageDialog(null, "Cannot open web browser" + ":\n" + ex.getLocalizedMessage(), "Opening web browser",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 	}
 
@@ -326,102 +329,116 @@ public class Tools {
 	}
 
 	public static void sendMail(String recipient, String subject, String text) throws Exception {
-		Properties props = new Properties();
-		props.setProperty("mail.transport.protocol", "smtp");
-		props.setProperty("mail.host", Highlander.getParameters().getSmtp());
-		/* 
-		 * Not sure when to use proxy with emails
-		 * It's cleary not necessary on the cluster, preventing mails to be sent
-		 * But I think it was necessary before, when ddgw just transfer mail to the UCL proxy
-		 * 
-    if (System.getProperty("http.proxyHost") != null) {
-    	props.setProperty("http.proxySet","true");
-    	props.setProperty("http.proxyHost",System.getProperty("http.proxyHost"));
-    	props.setProperty("http.proxyPort",System.getProperty("http.proxyPort"));
-    	props.setProperty("mail.smtp.socks.host",System.getProperty("http.proxyHost"));
-    	props.setProperty("mail.smtp.socks.port",System.getProperty("http.proxyPort"));
-    	//What to do with proxy authentication ?
-    	//props.setProperty("http.proxyUser",System.getProperty("http.proxyUser"));
-    	//props.setProperty("http.proxyPassword",System.getProperty("http.proxyPassword"));
-  	}
-		 */
+  	sendMail(recipient, subject, text, new InternetAddress(Highlander.getParameters().getAdminMail(), "Highlander"));
+  }
+  
+  public static void sendMail(String recipient, String subject, String text, List<File> attachments) throws Exception {
+  	sendMail(recipient, subject, text, attachments, new InternetAddress(Highlander.getParameters().getAdminMail(), "Highlander"));
+  }
+  
+  public static void sendMail(String recipient, String subject, String text, InternetAddress from) {
+  	sendMail(recipient, null, subject, text, from);
+  }
+  
+  public static void sendMail(String recipient, String cc, String subject, String text, InternetAddress from) {
+  	new Thread(new Runnable() {
+  		@Override
+  		public void run() {
+  			try {
+  			 	Properties props = new Properties();
+  		    props.setProperty("mail.transport.protocol", "smtp");
+  		    props.setProperty("mail.host", Highlander.getParameters().getSmtp());
+  				/* 
+  				 * Not sure when to use proxy with emails
+  				 * It's cleary not necessary on the cluster, preventing mails to be sent
+  				 * But I think it was necessary before, when ddgw just transfer mail to the UCL proxy
+  				 * 
+  		    if (System.getProperty("http.proxyHost") != null) {
+  		    	props.setProperty("http.proxySet","true");
+  		    	props.setProperty("http.proxyHost",System.getProperty("http.proxyHost"));
+  		    	props.setProperty("http.proxyPort",System.getProperty("http.proxyPort"));
+  		    	props.setProperty("mail.smtp.socks.host",System.getProperty("http.proxyHost"));
+  		    	props.setProperty("mail.smtp.socks.port",System.getProperty("http.proxyPort"));
+  		    	//What to do with proxy authentication ?
+  		    	//props.setProperty("http.proxyUser",System.getProperty("http.proxyUser"));
+  		    	//props.setProperty("http.proxyPassword",System.getProperty("http.proxyPassword"));
+  		  	}
+  				 */
+  		    Session mailSession = Session.getDefaultInstance(props, null);
+  		    try(Transport transport = mailSession.getTransport()){
+    		    MimeMessage message = new MimeMessage(mailSession);
+    		    message.setFrom(from);
+    		    message.setSubject(subject);
+    		    message.setContent(text, "text/plain; charset=\"UTF-8\"");
+    		    message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
+    		    if (cc != null) message.addRecipient(Message.RecipientType.CC, new InternetAddress(cc));
+    		    transport.connect();
+    		    transport.sendMessage(message, message.getAllRecipients());
+  		    }
+  			}catch(Exception ex) {
+  				ex.printStackTrace();
+  			}
+  		}
+  	}).start();
+  }
+  
+  public static void sendMail(String recipient, String subject, String text, List<File> attachments, InternetAddress from) {
+  	new Thread(new Runnable() {
+  		@Override
+  		public void run() {
+  			try {
+  				Properties props = new Properties();
+  				props.setProperty("mail.transport.protocol", "smtp");
+  				props.setProperty("mail.host", Highlander.getParameters().getSmtp());
+  				/* 
+  				 * Not sure when to use proxy with emails
+  				 * It's cleary not necessary on the cluster, preventing mails to be sent
+  				 * But I think it was necessary before, when ddgw just transfer mail to the UCL proxy
+  				 * 
+  		    if (System.getProperty("http.proxyHost") != null) {
+  		    	props.setProperty("http.proxySet","true");
+  		    	props.setProperty("http.proxyHost",System.getProperty("http.proxyHost"));
+  		    	props.setProperty("http.proxyPort",System.getProperty("http.proxyPort"));
+  		    	props.setProperty("mail.smtp.socks.host",System.getProperty("http.proxyHost"));
+  		    	props.setProperty("mail.smtp.socks.port",System.getProperty("http.proxyPort"));
+  		    	//What to do with proxy authentication ?
+  		    	//props.setProperty("http.proxyUser",System.getProperty("http.proxyUser"));
+  		    	//props.setProperty("http.proxyPassword",System.getProperty("http.proxyPassword"));
+  		  	}
+  				 */
+  				Session mailSession = Session.getDefaultInstance(props, null);
+  				try(Transport transport = mailSession.getTransport()){
+    				MimeMessage message = new MimeMessage(mailSession);
+    				message.setFrom(from);
+    				message.setSubject(subject);
+    				message.setContent(text, "text/plain; charset=\"UTF-8\"");
+    				message.addRecipient(Message.RecipientType.TO,
+    						new InternetAddress(recipient));
 
-		Session mailSession = Session.getDefaultInstance(props, null);
-		Transport transport = mailSession.getTransport();
+    				MimeBodyPart messageBodyPart = new MimeBodyPart();
+    				messageBodyPart.setText(text);
 
-		MimeMessage message = new MimeMessage(mailSession);
-		message.setFrom(new InternetAddress(Highlander.getParameters().getAdminMail(), "Highlander"));
-		message.setSubject(subject);
-		message.addRecipient(Message.RecipientType.TO,
-				new InternetAddress(recipient));
-		message.setContent(text, "text/plain");
+    				MimeMultipart multipart = new MimeMultipart();
+    				multipart.addBodyPart(messageBodyPart);
 
-		transport.connect();
-		transport.sendMessage(message,
-				message.getRecipients(Message.RecipientType.TO));
-		transport.close();
-	}
+    				for (File file : attachments){
+    					MimeBodyPart attachPart = new MimeBodyPart();
+    					attachPart.attachFile(file);
+    					multipart.addBodyPart(attachPart);
+    				}
 
-	public static void sendMail(String recipient, String subject, String text, List<File> attachments) throws Exception {
-		Properties props = new Properties();
-		props.setProperty("mail.transport.protocol", "smtp");
-		props.setProperty("mail.host", Highlander.getParameters().getSmtp());
-		/* 
-		 * Not sure when to use proxy with emails
-		 * It's cleary not necessary on the cluster, preventing mails to be sent
-		 * But I think it was necessary before, when ddgw just transfer mail to the UCL proxy
-		 * 
-    if (System.getProperty("http.proxyHost") != null) {
-    	props.setProperty("http.proxySet","true");
-    	props.setProperty("http.proxyHost",System.getProperty("http.proxyHost"));
-    	props.setProperty("http.proxyPort",System.getProperty("http.proxyPort"));
-    	props.setProperty("mail.smtp.socks.host",System.getProperty("http.proxyHost"));
-    	props.setProperty("mail.smtp.socks.port",System.getProperty("http.proxyPort"));
-    	//What to do with proxy authentication ?
-    	//props.setProperty("http.proxyUser",System.getProperty("http.proxyUser"));
-    	//props.setProperty("http.proxyPassword",System.getProperty("http.proxyPassword"));
-  	}
-		 */
+    				message.setContent(multipart); 
 
-		Session mailSession = Session.getDefaultInstance(props, null);
-		Transport transport = mailSession.getTransport();
-
-		MimeMessage message = new MimeMessage(mailSession);
-		message.setFrom(new InternetAddress(Highlander.getParameters().getAdminMail(), "Highlander"));
-		message.setSubject(subject);
-		message.addRecipient(Message.RecipientType.TO,
-				new InternetAddress(recipient));
-
-		MimeBodyPart messageBodyPart = new MimeBodyPart();
-		messageBodyPart.setText(text);
-
-		MimeMultipart multipart = new MimeMultipart();
-		multipart.addBodyPart(messageBodyPart);
-
-		/* Old JavaMail library
-		for (File file : attachments){
-			messageBodyPart = new MimeBodyPart();
-			DataSource source = new FileDataSource(file);
-			messageBodyPart.setDataHandler(new DataHandler(source));
-			messageBodyPart.setFileName(file.getName());
-			multipart.addBodyPart(messageBodyPart);
-		}
-		*/
-
-		for (File file : attachments){
-			MimeBodyPart attachPart = new MimeBodyPart();
-			attachPart.attachFile(file);
-			multipart.addBodyPart(attachPart);
-		}
-
-		message.setContent(multipart); 
-
-		transport.connect();
-		transport.sendMessage(message,
-				message.getRecipients(Message.RecipientType.TO));
-		transport.close();
-	}
-
+    				transport.connect();
+    				transport.sendMessage(message,	message.getRecipients(Message.RecipientType.TO));
+  				}
+  			}catch(Exception ex) {
+  				ex.printStackTrace();
+  			}
+  		}
+  	}).start();
+  }
+  
 	public static File getHomeDirectory(){
 		return new File(System.getProperty("user.home"));
 		//return new JFileChooser().getFileSystemView().getDefaultDirectory();
@@ -609,56 +626,172 @@ public class Tools {
 		return builder.parse(is);
 	}
 
+	public class HttpUtility {
+
+		public enum HTTPMethod {GET, POST}
+		private static boolean returnValue;
+
+		public interface Callback {
+			// abstract methods
+			public void OnSuccess(URLConnection connection);
+			public void OnError(int responseCode, String message);
+		}
+
+		public static void setReturnValue(boolean value) {
+			returnValue = value;
+		}
+		
+		public static boolean get(String url, Callback callback) {
+			return newRequest(url, HTTPMethod.GET, null, null, callback);
+		}
+		
+		public static boolean post(String url, Map<String, String> params, Callback callback) {
+			return newRequest(url, HTTPMethod.POST, params, null, callback);
+		}
+		
+		public static boolean post(String url, Map<String, String> params, Map<String, File> files, Callback callback) {
+			return newRequest(url, HTTPMethod.POST, params, files, callback);
+		}
+		
+		public static boolean newRequest(String url, HTTPMethod method, Callback callback) {
+			return newRequest(url, method, null, null, callback);
+		}
+		
+		public static boolean newRequest(String url, HTTPMethod method, Map<String, String> params, Callback callback) {
+			return newRequest(url, method, params, null, callback);
+		}
+		
+		public static boolean newRequest(String url, HTTPMethod method, Map<String, String> params, Map<String, File> files, Callback callback) {
+			returnValue = true;
+			String boundary = UUID.randomUUID().toString();
+			try {
+				String fullUrl = url;
+				// write GET params,append with url
+				if (method == HTTPMethod.GET && params != null) {
+					for (Map.Entry<String, String> item: params.entrySet()) {
+						String key = URLEncoder.encode(item.getKey(), "UTF-8");
+						String value = URLEncoder.encode(item.getValue(), "UTF-8");
+						if (!fullUrl.contains("?")) {
+							fullUrl += "?" + key + "=" + value;
+						} else {
+							fullUrl += "&" + key + "=" + value;
+						}
+					}
+				}
+				 
+				Proxy proxy = Highlander.getParameters().getProxy(fullUrl);
+				URLConnection connection = new URI(fullUrl).toURL().openConnection(proxy);
+				HttpURLConnection urlConnection = (HttpURLConnection)connection;
+				urlConnection.setUseCaches(false);
+				if (files != null && !files.isEmpty()) {
+					urlConnection.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
+				}else {
+					urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");					
+				}
+				urlConnection.setRequestProperty("charset", "utf-8");
+				if (method == HTTPMethod.GET) {
+					urlConnection.setRequestMethod("GET");
+				} else if (method == HTTPMethod.POST) {
+					urlConnection.setDoOutput(true); // write POST params
+					urlConnection.setRequestMethod("POST");
+				}
+
+				//write POST data 
+				if (method == HTTPMethod.POST && (params != null || files != null)) {
+					if (files != null && !files.isEmpty()) {
+						DataOutputStream request = new DataOutputStream(urlConnection.getOutputStream());
+						for (Map.Entry<String, String > item: params.entrySet()) {
+							request.writeBytes("--" + boundary + "\r\n");
+							request.writeBytes("Content-Disposition: form-data; name=\""+item.getKey()+"\"\r\n\r\n");
+							request.writeBytes(item.getValue() + "\r\n");							
+						}
+						for (Map.Entry<String, File > item: files.entrySet()) {
+							request.writeBytes("--" + boundary + "\r\n");
+							request.writeBytes("Content-Disposition: form-data; name=\""+item.getKey()+"\"; filename=\"" + item.getValue().getName() + "\"\r\n\r\n");
+							request.write(FileUtils.readFileToByteArray(item.getValue()));
+							request.writeBytes("\r\n");
+							request.writeBytes("--" + boundary + "--\r\n");							
+						}
+						request.flush();
+					}else {
+						StringBuilder postData = new StringBuilder();
+						for (Map.Entry<String, String > item: params.entrySet()) {
+							if (postData.length() != 0) postData.append('&');
+							postData.append(URLEncoder.encode(item.getKey(), "UTF-8"));
+							postData.append('=');
+							postData.append(URLEncoder.encode(String.valueOf(item.getValue()), "UTF-8"));
+						}
+						byte[] postDataBytes = postData.toString().getBytes("UTF-8");
+						urlConnection.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
+						urlConnection.getOutputStream().write(postDataBytes);
+					}
+				}
+				// server response code
+				int responseCode = urlConnection.getResponseCode();
+				if (responseCode == HttpURLConnection.HTTP_OK) {
+					if (callback != null) callback.OnSuccess(connection);
+				}else{
+					if (callback != null) callback.OnError(responseCode, urlConnection.getResponseMessage());
+					returnValue = false;
+				}
+				urlConnection.disconnect(); // disconnect connection						
+			} catch (IOException e) {
+				returnValue = false;
+				e.printStackTrace();
+				if (callback != null) {
+					callback.OnError(HttpURLConnection.HTTP_INTERNAL_ERROR, e.getLocalizedMessage());
+				}
+			} catch (URISyntaxException e) {
+				returnValue = false;
+				e.printStackTrace();
+				if (callback != null) {
+					callback.OnError(HttpURLConnection.HTTP_INTERNAL_ERROR, e.getLocalizedMessage());
+				}
+			}
+			return returnValue;
+		}
+	}
+
 	public static String httpGet(String url) {
 		String response = "";
 		int res = 0;
 		int attempts = 0;
-		while (res != 200 && attempts < 20) {
+		while (res != HttpURLConnection.HTTP_OK && attempts < 20) {
 			try {
-				GetMethod getMethod = new GetMethod(url);
-				HttpClient httpClient = new HttpClient();
-				boolean bypass = false;
-				if (System.getProperty("http.nonProxyHosts") != null) {
-					for (String host : System.getProperty("http.nonProxyHosts").split("\\|")) {
-						if (url.toLowerCase().contains(host.toLowerCase())) bypass = true;
-					}
-				}
-				if (!bypass && System.getProperty("http.proxyHost") != null) {
-					try {
-						HostConfiguration hostConfiguration = httpClient.getHostConfiguration();
-						hostConfiguration.setProxy(System.getProperty("http.proxyHost"), Integer.parseInt(System.getProperty("http.proxyPort")));
-						httpClient.setHostConfiguration(hostConfiguration);
-						if (System.getProperty("http.proxyUser") != null && System.getProperty("http.proxyPassword") != null) {
-							// Credentials credentials = new UsernamePasswordCredentials(System.getProperty("http.proxyUser"), System.getProperty("http.proxyPassword"));
-							// Windows proxy needs specific credentials with domain ... if proxy user is in the form of domain\\user, consider it's windows
-							String user = System.getProperty("http.proxyUser");
-							Credentials credentials;
-							if (user.contains("\\")) {
-								credentials = new NTCredentials(user.split("\\\\")[1], System.getProperty("http.proxyPassword"), System.getProperty("http.proxyHost"), user.split("\\\\")[0]);
-							}else {
-								credentials = new UsernamePasswordCredentials(user, System.getProperty("http.proxyPassword"));
-							}
-							httpClient.getState().setProxyCredentials(null, System.getProperty("http.proxyHost"), credentials);
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-				res = httpClient.executeMethod(getMethod);
-				if(res != 200) {
-		      if(res == 429 && getMethod.getRequestHeader("Retry-After") != null) {
-		        double sleepFloatingPoint = Double.valueOf(getMethod.getRequestHeader("Retry-After").getValue());
+				Proxy proxy = Highlander.getParameters().getProxy(url);
+				URLConnection connection = new URI(url).toURL().openConnection(proxy);
+				HttpURLConnection urlConnection = (HttpURLConnection)connection;
+				urlConnection.setUseCaches(false);
+				urlConnection.setRequestMethod("GET");
+				res = urlConnection.getResponseCode();
+				if(res != HttpURLConnection.HTTP_OK) {
+		      if(res == 429 && urlConnection.getHeaderField("Retry-After") != null) {
+		        double sleepFloatingPoint = Double.valueOf(urlConnection.getHeaderField("Retry-After"));
 		        double sleepMillis = 1000 * sleepFloatingPoint;
 		        try { System.err.println("Web service asking to wait for " + sleepFloatingPoint + " seconds ..."); Thread.sleep((long)sleepMillis); } catch (InterruptedException e) { e.printStackTrace(); }
 		      }
 		    }else {
-		    	response = getMethod.getResponseBodyAsString();
+		    	StringBuilder results = new StringBuilder();
+					try (InputStreamReader isr = new InputStreamReader(connection.getInputStream())){
+						try (BufferedReader br = new BufferedReader(isr)){
+							String line;
+							while ((line = br.readLine()) != null) {
+								results.append(line + "\n");
+							}
+						}
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					response = results.toString();
 		    }
-				getMethod.releaseConnection();
+				urlConnection.disconnect();
 			}
 			catch (IOException ex) {
 				System.err.println("Exception encountered with http GET of URL '"+url+"'");
 				if (attempts > 5) Tools.exception(ex);
+			} catch (URISyntaxException e1) {
+				System.err.println("Bad URI '"+url+"'");
+				Tools.exception(e1);
 			}
 			attempts++;
 			if (attempts > 1) { try {	System.err.println("Waiting 2 second before retry ..."); Thread.sleep(2000); } catch (InterruptedException e) { e.printStackTrace(); } }

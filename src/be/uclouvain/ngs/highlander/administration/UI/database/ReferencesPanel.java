@@ -61,12 +61,12 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.administration.UI.ManagerPanel;
 import be.uclouvain.ngs.highlander.administration.UI.ProjectManager;
 import be.uclouvain.ngs.highlander.database.DBUtils;
-import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.datatype.Reference;
 
 /**
@@ -170,7 +170,7 @@ public class ReferencesPanel extends ManagerPanel {
 		JPanel panel_south = new JPanel();
 		add(panel_south, BorderLayout.SOUTH);
 		
-		JButton createNewButton = new JButton("Create new reference", Resources.getScaledIcon(Resources.i3dPlus, 16));
+		JButton createNewButton = new JButton("Create new reference", Img.AddMain.getScaledIcon(16));
 		createNewButton.setToolTipText("You need at least a name, a description and the Ensembl schema");
 		createNewButton.addActionListener(new ActionListener() {
 			@Override
@@ -186,7 +186,7 @@ public class ReferencesPanel extends ManagerPanel {
 		});
 		panel_south.add(createNewButton);
 
-		JButton renameButton = new JButton("Rename selected reference", Resources.getScaledIcon(Resources.iUpdater, 16));
+		JButton renameButton = new JButton("Rename selected reference", Img.Updater.getScaledIcon(16));
 		renameButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -201,7 +201,7 @@ public class ReferencesPanel extends ManagerPanel {
 		});
 		panel_south.add(renameButton);
 
-		JButton deleteButton = new JButton("Delete reference", Resources.getScaledIcon(Resources.iCross, 16));
+		JButton deleteButton = new JButton("Delete reference", Img.Cross.getScaledIcon(16));
 		deleteButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -331,7 +331,7 @@ public class ReferencesPanel extends ManagerPanel {
 	
 
 	public void createReference(){
-		Object resu = JOptionPane.showInputDialog(this, "Reference name", "Creating reference", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.i3dPlus, 64), null, null);
+		Object resu = JOptionPane.showInputDialog(this, "Reference name", "Creating reference", JOptionPane.QUESTION_MESSAGE, Img.AddMain.getScaledIcon(64), null, null);
 		if (resu != null){
 			String name = resu.toString();
 			SwingUtilities.invokeLater(new Runnable() {
@@ -349,13 +349,13 @@ public class ReferencesPanel extends ManagerPanel {
 					}
 				}
 				if (count > 0){
-					JOptionPane.showMessageDialog(this, "Reference name already exists'", "Error", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross, 64));
+					JOptionPane.showMessageDialog(this, "Reference name already exists'", "Error", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}else if (name.length() > 255){
-					JOptionPane.showMessageDialog(this, "Reference is limited to 255 characters'", "Error", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross, 64));
+					JOptionPane.showMessageDialog(this, "Reference is limited to 255 characters'", "Error", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}else{
-					Object description = JOptionPane.showInputDialog(this, "Enter a full description of this reference genome", "Creating reference", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.i3dPlus, 64), null, null);
+					Object description = JOptionPane.showInputDialog(this, "Enter a full description of this reference genome", "Creating reference", JOptionPane.QUESTION_MESSAGE, Img.AddMain.getScaledIcon(64), null, null);
 					if (description != null){
-						Object ensembl = JOptionPane.showInputDialog(this, "Select the Ensembl database to used with this reference", "Creating reference", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.i3dPlus, 64), availableSchema, null);
+						Object ensembl = JOptionPane.showInputDialog(this, "Select the Ensembl database to used with this reference", "Creating reference", JOptionPane.QUESTION_MESSAGE, Img.AddMain.getScaledIcon(64), availableSchema, null);
 						if (ensembl != null){
 							ProjectManager.toConsole("-----------------------------------------------------");
 							ProjectManager.toConsole("Creating reference " + name);
@@ -400,7 +400,7 @@ public class ReferencesPanel extends ManagerPanel {
 	}
 
 	public void renameReference(Reference reference){
-		Object resu = JOptionPane.showInputDialog(this, "Reference name", "Renaming reference", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iUpdater, 64), null, reference);
+		Object resu = JOptionPane.showInputDialog(this, "Reference name", "Renaming reference", JOptionPane.QUESTION_MESSAGE, Img.Updater.getScaledIcon(64), null, reference);
 		if (resu != null){
 			String name = resu.toString();
 			SwingUtilities.invokeLater(new Runnable() {
@@ -418,9 +418,9 @@ public class ReferencesPanel extends ManagerPanel {
 					}
 				}
 				if (count > 0){
-					JOptionPane.showMessageDialog(this, "Reference name already exists", "Error", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross, 64));
+					JOptionPane.showMessageDialog(this, "Reference name already exists", "Error", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}else if (name.length() > 255){
-					JOptionPane.showMessageDialog(this, "Reference is limited to 255 characters'", "Error", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross, 64));
+					JOptionPane.showMessageDialog(this, "Reference is limited to 255 characters'", "Error", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}else{
 					ProjectManager.toConsole("-----------------------------------------------------");
 					ProjectManager.toConsole("Renaming reference " + reference + " to "  + name);
@@ -454,7 +454,7 @@ public class ReferencesPanel extends ManagerPanel {
 				}
 			}
 			if (count == 0){
-				int res = JOptionPane.showConfirmDialog(new JFrame(), "Are you SURE you want to delete reference '"+reference+"' ?", "Delete reference", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				int res = JOptionPane.showConfirmDialog(new JFrame(), "Are you SURE you want to delete reference '"+reference+"' ?", "Delete reference", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Img.Cross.getScaledIcon(64));
 				if (res == JOptionPane.YES_OPTION){
 					ProjectManager.toConsole("-----------------------------------------------------");
 					ProjectManager.toConsole("Deleting reference " + reference);
@@ -470,7 +470,7 @@ public class ReferencesPanel extends ManagerPanel {
 					});
 				}
 			}else{
-				JOptionPane.showMessageDialog(new JFrame(), count + " analyses are still linked to this reference.\nPlease first delete those analyses or link them to another reference.", "Delete reference", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				JOptionPane.showMessageDialog(new JFrame(), count + " analyses are still linked to this reference.\nPlease first delete those analyses or link them to another reference.", "Delete reference", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}
 		}catch(Exception ex){
 			ProjectManager.toConsole(ex);

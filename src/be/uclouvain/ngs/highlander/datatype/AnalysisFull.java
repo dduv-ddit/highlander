@@ -30,7 +30,7 @@
 package be.uclouvain.ngs.highlander.datatype;
 
 import java.awt.Image;
-import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.sql.Blob;
@@ -50,10 +50,10 @@ import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Resources;
 import be.uclouvain.ngs.highlander.administration.users.User;
 import be.uclouvain.ngs.highlander.administration.users.User.Settings;
-import be.uclouvain.ngs.highlander.database.Results;
-import be.uclouvain.ngs.highlander.database.SqlGenerator;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.DBMS;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
+import be.uclouvain.ngs.highlander.database.SqlGenerator;
 
 /**
  * 	Analysis only contains analysis name
@@ -131,9 +131,9 @@ public class AnalysisFull extends Analysis implements Comparable<Analysis> {
 			vcfExtension = res.getString("vcf_extension");
 			Blob imagedata = res.getBlob("icon") ;
 			//Won't work on a Unix without X11, put the try/catch for the dbBuilder to work on those
-			Image img = Toolkit.getDefaultToolkit().createImage(imagedata.getBytes(1, (int)imagedata.length()));
+			BufferedImage img = ImageIO.read(imagedata.getBinaryStream());
 			icon = new ImageIcon(img);	
-			smallIcon = Resources.getScaledIcon(icon, 24);
+			smallIcon = Resources.getScaledIcon(icon.getImage(), 24);
 		}catch(Exception ex){
 			//ex.printStackTrace();
 		}
@@ -232,7 +232,7 @@ public class AnalysisFull extends Analysis implements Comparable<Analysis> {
 			}
 			Image img = ImageIO.read(iconFile);
 			icon = new ImageIcon(img);	
-			smallIcon = Resources.getScaledIcon(icon, 24);
+			smallIcon = Resources.getScaledIcon(icon.getImage(), 24);
 			//Link all non custom annotation fields to this new analysis 
 			Highlander.getDB().insert(Schema.HIGHLANDER, "INSERT INTO `fields_analyses` (`field`,`analysis`) SELECT `field`, '"+name+"' FROM `fields` WHERE `table` != '_custom_annotations'");
 			//Set default columns
@@ -289,7 +289,7 @@ public class AnalysisFull extends Analysis implements Comparable<Analysis> {
 		}
 		Image img = ImageIO.read(file);
 		icon = new ImageIcon(img);	
-		smallIcon = Resources.getScaledIcon(icon, 24);
+		smallIcon = Resources.getScaledIcon(icon.getImage(), 24);
 	}
 	
 	public void setDefaultColumns() throws Exception {

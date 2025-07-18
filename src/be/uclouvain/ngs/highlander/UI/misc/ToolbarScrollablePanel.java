@@ -43,8 +43,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 
+@SuppressWarnings("deprecation")
 public class ToolbarScrollablePanel extends JPanel implements Observer {
 
 	private JButton buttonLeft;
@@ -72,10 +73,10 @@ public class ToolbarScrollablePanel extends JPanel implements Observer {
 	private void initComponents() {
 
 		int width = Math.min(40, height);
-		buttonLeft = new JButton(Resources.getScaledIcon(Resources.iArrowLeft, width));
+		buttonLeft = new JButton(Img.ArrowLeft.getScaledIcon(width));
 		buttonLeft.setPreferredSize(new Dimension(width,height));
 		buttonLeft.setToolTipText("Right click to direclty scroll to start");
-		buttonRight = new JButton(Resources.getScaledIcon(Resources.iArrowRight, width));
+		buttonRight = new JButton(Img.ArrowRight.getScaledIcon(width));
 		buttonRight.setPreferredSize(new Dimension(width,height));
 		buttonRight.setToolTipText("Right click to direclty scroll to end");
 		jScrollPane1 = new JScrollPane();

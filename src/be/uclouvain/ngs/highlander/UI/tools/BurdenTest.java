@@ -120,6 +120,7 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.Resources.Palette;
 import be.uclouvain.ngs.highlander.UI.misc.HighlanderObserver;
@@ -235,14 +236,14 @@ public class BurdenTest extends JFrame {
 
 	private void initUI(){
 		setTitle("Burden Test");
-		setIconImage(Resources.getScaledIcon(Resources.iBurdenTest, 64).getImage());
+		setIconImage(Img.BurdenTest.getScaledIcon(64).getImage());
 
 		setLayout(new BorderLayout());
 
 		JPanel buttonPanel = new JPanel();	
 		getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 
-		JButton exportTable = new JButton(Resources.getScaledIcon(Resources.iExcel, 40));
+		JButton exportTable = new JButton(Img.Excel.getScaledIcon(40));
 		exportTable.setPreferredSize(new Dimension(54,54));
 		exportTable.setToolTipText("Export all tabs in one Excel file (1 sheet per tab)");
 		exportTable.addActionListener(new ActionListener() {
@@ -258,7 +259,7 @@ public class BurdenTest extends JFrame {
 		});
 		buttonPanel.add(exportTable);
 
-		JButton exportChart = new JButton(Resources.getScaledIcon(Resources.iExportJpeg, 40));
+		JButton exportChart = new JButton(Img.ExportJpeg.getScaledIcon(40));
 		exportChart.setPreferredSize(new Dimension(54,54));
 		exportChart.setToolTipText("Export current chart to image file");
 		exportChart.addActionListener(new ActionListener() {
@@ -491,7 +492,7 @@ public class BurdenTest extends JFrame {
 		} catch (Exception ex) {
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Problem: ", ex), "Burden test",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -532,7 +533,7 @@ public class BurdenTest extends JFrame {
 		transcriptPanel.add(refseqTransLabel, BorderLayout.SOUTH);
 		topBar.add(transcriptPanel);
 
-		JButton zoomOriginal = new JButton(Resources.getScaledIcon(Resources.iZoomIn, 40));
+		JButton zoomOriginal = new JButton(Img.ZoomIn.getScaledIcon(40));
 		zoomOriginal.setPreferredSize(new Dimension(54,54));
 		zoomOriginal.setToolTipText("Zoom in");
 		zoomOriginal.addActionListener(new ActionListener() {
@@ -577,7 +578,7 @@ public class BurdenTest extends JFrame {
 		});
 		topBar.add(zoomSlider);
 
-		JButton zoomBestFit = new JButton(Resources.getScaledIcon(Resources.iZoomOut, 40));
+		JButton zoomBestFit = new JButton(Img.ZoomOut.getScaledIcon(40));
 		zoomBestFit.setPreferredSize(new Dimension(54,54));
 		zoomBestFit.setToolTipText("Zoom out");
 		zoomBestFit.addActionListener(new ActionListener() {
@@ -597,7 +598,7 @@ public class BurdenTest extends JFrame {
 		});
 		topBar.add(zoomBestFit);
 
-		JButton chiSquare = new JButton(Resources.getScaledIcon(Resources.iChiSquare, 40));
+		JButton chiSquare = new JButton(Img.ChiSquare.getScaledIcon(40));
 		chiSquare.setPreferredSize(new Dimension(54,54));
 		chiSquare.setToolTipText("Compute a Chi² p-value");
 		chiSquare.addActionListener(new ActionListener() {
@@ -628,7 +629,7 @@ public class BurdenTest extends JFrame {
 							y++;
 						}
 						panel.add(new JLabel("Do NOT remove types included in your filtering criteria !"), new GridBagConstraints(0, y, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-						int res = JOptionPane.showConfirmDialog(BurdenTest.this, panel, "Chi square", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iChiSquare,64));
+						int res = JOptionPane.showConfirmDialog(BurdenTest.this, panel, "Chi square", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, Img.ChiSquare.getScaledIcon(64));
 						if (res == JOptionPane.YES_OPTION) chiSquare(gene, variantTypes);
 					}
 				}, "BurdenTest.chiSquare").start();
@@ -1573,17 +1574,17 @@ public class BurdenTest extends JFrame {
 			output[6][1] = Tools.doubleToString(pval, 3, true);
 			JTable jtable = new JTable(output, new String[]{"","","",""});
 			jtable.setTableHeader(null);
-			JOptionPane.showMessageDialog(this, jtable, "Chi Square", JOptionPane.PLAIN_MESSAGE, Resources.getScaledIcon(Resources.iChiSquare,64));
+			JOptionPane.showMessageDialog(this, jtable, "Chi Square", JOptionPane.PLAIN_MESSAGE, Img.ChiSquare.getScaledIcon(64));
 		}catch(Exception ex){
 			Tools.exception(ex);
-			JOptionPane.showMessageDialog(this, Tools.getMessage("Error computing Chi²", ex), "Chi Square", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));			
+			JOptionPane.showMessageDialog(this, Tools.getMessage("Error computing Chi²", ex), "Chi Square", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));			
 		}
 	}
 
 	public void exportChart(){
 		String gene = tabbedPane.getTitleAt(tabbedPane.getSelectedIndex());
 		BurdenChart chart = charts.get(gene);
-		Object format = JOptionPane.showInputDialog(this, "Choose an image format: ", "Export chart to image file", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iExportJpeg, 64), ImageIO.getWriterFileSuffixes(), "png");
+		Object format = JOptionPane.showInputDialog(this, "Choose an image format: ", "Export chart to image file", JOptionPane.QUESTION_MESSAGE, Img.ExportJpeg.getScaledIcon(64), ImageIO.getWriterFileSuffixes(), "png");
 		if (format != null){
 			FileDialog chooser = new FileDialog(this, "Export chart to image", FileDialog.SAVE) ;
 			chooser.setFile(Tools.formatFilename(gene + "." + format));
@@ -1599,7 +1600,7 @@ public class BurdenTest extends JFrame {
 					ImageIO.write(image, format.toString(), new File(filename));
 				} catch (Exception ex) {
 					Tools.exception(ex);
-					JOptionPane.showMessageDialog(this, Tools.getMessage("Error when exporting chart", ex), "Export chart to image file", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));  			}
+					JOptionPane.showMessageDialog(this, Tools.getMessage("Error when exporting chart", ex), "Export chart to image file", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));  			}
 			}   		
 		}
 	}
@@ -1696,11 +1697,11 @@ public class BurdenTest extends JFrame {
 		}catch (IOException ex){
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("I/O error when creating file", ex), "Exporting to Excel",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}catch (Exception ex){
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error during export", ex), "Exporting to Excel",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 	}
 

@@ -97,6 +97,7 @@ import org.apache.poi.xssf.usermodel.XSSFColor;
 
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.Resources.Palette;
 import be.uclouvain.ngs.highlander.UI.dialog.CreateRunSelection;
@@ -183,7 +184,7 @@ public class RunStatistics extends JFrame {
 		@Override
 		protected void keyListener(KeyEvent key){
 			if (table == null) {
-				JOptionPane.showMessageDialog(RunStatistics.this, "Table is empty, you must first generate a filter.", "No table", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				JOptionPane.showMessageDialog(RunStatistics.this, "Table is empty, you must first generate a filter.", "No table", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}else{
 				applyFilter();
 			}
@@ -259,14 +260,14 @@ public class RunStatistics extends JFrame {
 
 	private void initUI(){
 		setTitle("Run statistics details");
-		setIconImage(Resources.getScaledIcon(Resources.iRunStatisticsDetails, 64).getImage());
+		setIconImage(Img.RunStatisticsDetails.getScaledIcon(64).getImage());
 
 		setLayout(new BorderLayout());
 
 		JPanel panel_north = new JPanel();
 		getContentPane().add(panel_north, BorderLayout.NORTH);
 
-		JButton btnSelect = new JButton("Select NGS runs to include in the chart",Resources.getScaledIcon(Resources.i3dPlus, 32));
+		JButton btnSelect = new JButton("Select NGS runs to include in the chart",Img.AddMain.getScaledIcon(32));
 		btnSelect.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -346,7 +347,7 @@ public class RunStatistics extends JFrame {
 		JPanel panel = new JPanel();	
 		getContentPane().add(panel, BorderLayout.SOUTH);
 
-		JButton btnClose = new JButton(Resources.getScaledIcon(Resources.iCross, 24));
+		JButton btnClose = new JButton(Img.Cross.getScaledIcon(24));
 		btnClose.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -355,7 +356,7 @@ public class RunStatistics extends JFrame {
 		});
 		panel.add(btnClose);
 
-		JButton export = new JButton(Resources.getScaledIcon(Resources.iExcel, 24));
+		JButton export = new JButton(Img.Excel.getScaledIcon(24));
 		export.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -528,7 +529,7 @@ public class RunStatistics extends JFrame {
 			}
 		}catch(Exception ex){
 			Tools.exception(ex);
-			JOptionPane.showMessageDialog(this, Tools.getMessage("Can't retrieve field values from the database", ex), "Fill available values", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(this, Tools.getMessage("Can't retrieve field values from the database", ex), "Fill available values", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 		String[] res = new String[values.size()+1];
 		res[0] = "All";
@@ -765,7 +766,7 @@ public class RunStatistics extends JFrame {
 		} catch (Exception ex) {
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error", ex), "Run statistics",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -874,11 +875,11 @@ public class RunStatistics extends JFrame {
 			}catch (IOException ex){
 				Tools.exception(ex);
 				JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("I/O error when creating file", ex), "Exporting to Excel",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}catch (Exception ex){
 				Tools.exception(ex);
 				JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error during export", ex), "Exporting to Excel",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}
 		}
 	}

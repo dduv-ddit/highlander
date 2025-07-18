@@ -76,7 +76,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.dialog.AskUsersDialog;
 import be.uclouvain.ngs.highlander.UI.misc.WrapLayout;
@@ -196,7 +196,7 @@ public class ProjectsPanel extends ManagerPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Object res = JOptionPane.showInputDialog(manager,  "Set the run id (mandatory): it must be a positive number", "Run id",
-						JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), null, null);
+						JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), null, null);
 				if (res != null){
 					try{
 						int item = Integer.parseInt(res.toString());
@@ -207,7 +207,7 @@ public class ProjectsPanel extends ManagerPanel {
 						refresh();
 					}catch(NumberFormatException ex){
 						Tools.exception(ex);
-						JOptionPane.showMessageDialog(new JFrame(), "You must enter a valid number", "Run id", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.showMessageDialog(new JFrame(), "You must enter a valid number", "Run id", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			}
@@ -219,7 +219,7 @@ public class ProjectsPanel extends ManagerPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Object res = JOptionPane.showInputDialog(manager,  "Set the run date in this format (mandatory): YYYY-MM-DD", "Run date",
-						JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), null, null);
+						JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), null, null);
 				if (res != null){
 					String item = res.toString();
 					if (item.length() != 10 || 
@@ -231,7 +231,7 @@ public class ProjectsPanel extends ManagerPanel {
 							Integer.parseInt(item.split("-")[2]) < 1 || 
 							Integer.parseInt(item.split("-")[2]) > 31 
 							){
-						JOptionPane.showMessageDialog(new JFrame(), "You must enter a valid date in the format YYYY-MM-DD", "Run date", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));						
+						JOptionPane.showMessageDialog(new JFrame(), "You must enter a valid date in the format YYYY-MM-DD", "Run date", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));						
 					}else{
 						for (int row=0 ; row < projectsTable.getRowCount() ; row++){
 							projectsTable.setValueAt(item, row, projectsTable.convertColumnIndexToView(projectTableModel.getColumn("run_date")));
@@ -248,7 +248,7 @@ public class ProjectsPanel extends ManagerPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Object res = JOptionPane.showInputDialog(manager,  "Set the run name (mandatory): it can be anything without space (they will be replaced by _ )", "Run name",
-						JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), null, null);
+						JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), null, null);
 				if (res != null){
 					for (int row=0 ; row < projectsTable.getRowCount() ; row++){
 						projectsTable.setValueAt(res.toString().trim().replace(' ', '_'), row, projectsTable.convertColumnIndexToView(projectTableModel.getColumn("run_name")));
@@ -264,12 +264,12 @@ public class ProjectsPanel extends ManagerPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Object res = JOptionPane.showInputDialog(manager,  "Set the platform (mandatory)", "Platform",
-						JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), manager.listPlatforms(), null);
+						JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), manager.listPlatforms(), null);
 				if (res != null){
 					String item = res.toString();
 					if (item.equals("Add new platform")){
 						res = JOptionPane.showInputDialog(manager,  "Set a name for the new platform", "Platform",
-								JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), null, null);
+								JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), null, null);
 						if (res == null) return;
 						item = res.toString().trim();
 					}
@@ -287,12 +287,12 @@ public class ProjectsPanel extends ManagerPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Object res = JOptionPane.showInputDialog(manager,  "Set the sequecing target of the run (optional)", "Sequencing target",
-						JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), manager.listSequencingTargets(), null);
+						JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), manager.listSequencingTargets(), null);
 				if (res != null){
 					String item = res.toString();
 					if (item.equals("Add new sequencing_target")){
 						res = JOptionPane.showInputDialog(manager,  "Set the name of the new target (no spaces)", "Sequencing target",
-								JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), null, null);
+								JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), null, null);
 						if (res == null) return;
 						item = res.toString().trim().replace(' ', '_');
 					}
@@ -310,12 +310,12 @@ public class ProjectsPanel extends ManagerPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Object res = JOptionPane.showInputDialog(manager,  "Set outsourcing (optional):\nif the run has been done outside the lab,\nplease give the name of the company which has done it", "Outsourcing",
-						JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), manager.listOursourcing(), "?");
+						JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), manager.listOursourcing(), "?");
 				if (res != null){
 					String item = res.toString();
 					if (item.equals("Add new outsourcing")){
 						res = JOptionPane.showInputDialog(manager,  "Set a name for the new outsourcing", "Outsourcing",
-								JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), null, null);
+								JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), null, null);
 						if (res == null) return;
 						item = res.toString().trim();
 					}
@@ -333,7 +333,7 @@ public class ProjectsPanel extends ManagerPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Object res = JOptionPane.showInputDialog(manager,  "Set if selected samples are from an index case ('false' by default)", "Index case",
-						JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), new String[]{"true","false"}, null);
+						JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), new String[]{"true","false"}, null);
 				if (res != null){
 					String item = res.toString();
 					for (int row : projectsTable.getSelectedRows()){
@@ -350,7 +350,7 @@ public class ProjectsPanel extends ManagerPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Object res = JOptionPane.showInputDialog(manager,  "Set the pathology of selected samples (mandatory)", "Pathology",
-						JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), manager.listPathologies(), null);
+						JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), manager.listPathologies(), null);
 				if (res != null){
 					String item = res.toString();
 					for (int row : projectsTable.getSelectedRows()){
@@ -367,7 +367,7 @@ public class ProjectsPanel extends ManagerPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Object res = JOptionPane.showInputDialog(manager,  "Set the population to which individuals of selected samples belong to", "Population",
-						JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), manager.listPopulations(), null);
+						JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), manager.listPopulations(), null);
 				if (res != null){
 					String item = res.toString();
 					for (int row : projectsTable.getSelectedRows()){
@@ -384,7 +384,7 @@ public class ProjectsPanel extends ManagerPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Object res = JOptionPane.showInputDialog(manager,  "Set the type of selected samples (mandatory)", "Sample type",
-						JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), SampleType.values(), null);
+						JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), SampleType.values(), null);
 				if (res != null){
 					String item = res.toString();
 					for (int row : projectsTable.getSelectedRows()){
@@ -401,12 +401,12 @@ public class ProjectsPanel extends ManagerPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Object res = JOptionPane.showInputDialog(manager,  "Set the capture kit of selected samples (optional)", "Capture kit",
-						JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), manager.listKits(), null);
+						JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), manager.listKits(), null);
 				if (res != null){
 					String item = res.toString();
 					if (item.equals("Add new kit")){
 						res = JOptionPane.showInputDialog(manager,  "Set the name of the new capture kit (no spaces)", "Capture kit",
-								JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), null, null);
+								JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), null, null);
 						if (res == null) return;
 						item = res.toString().trim().replace(' ', '_');
 					}
@@ -424,7 +424,7 @@ public class ProjectsPanel extends ManagerPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Object res = JOptionPane.showInputDialog(manager,  "Set the read length of selected samples, e.g. 2x150bp (optional)", "Read length",
-						JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), null, null);
+						JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), null, null);
 				if (res != null){
 					String item = res.toString();
 					for (int row=0 ; row < projectsTable.getRowCount() ; row++){
@@ -441,7 +441,7 @@ public class ProjectsPanel extends ManagerPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Object res = JOptionPane.showInputDialog(manager,  "Set if selected samples are pair-end ('true' by default)", "Pair-end",
-						JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), new String[]{"true","false"}, null);
+						JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), new String[]{"true","false"}, null);
 				if (res != null){
 					String item = res.toString();
 					for (int row : projectsTable.getSelectedRows()){
@@ -458,7 +458,7 @@ public class ProjectsPanel extends ManagerPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Object res = JOptionPane.showInputDialog(manager,  "Set if a trimming of the reads is necessary before alignment ('false' by default).\nIt's generally not necessary, except for low quality DNA (e.g. FFPE samples).", "Trimming",
-						JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), new String[]{"true","false"}, null);
+						JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), new String[]{"true","false"}, null);
 				if (res != null){
 					String item = res.toString();
 					for (int row : projectsTable.getSelectedRows()){
@@ -475,7 +475,7 @@ public class ProjectsPanel extends ManagerPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Object res = JOptionPane.showInputDialog(manager,  "Set if duplicated reads must be removed after alignment ('true' by default).\nIt's generally necessary to get rid of PCR duplicates that can skew the variant calling.\nSet it to 'false' for PCR-free sequencing or really high coverage (coverage > 2x read length).", "Remove duplicates",
-						JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), new String[]{"true","false"}, null);
+						JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), new String[]{"true","false"}, null);
 				if (res != null){
 					String item = res.toString();
 					for (int row : projectsTable.getSelectedRows()){
@@ -604,7 +604,12 @@ public class ProjectsPanel extends ManagerPanel {
 		projectsTable.getTableHeader().setResizingAllowed(true);
 		projectsTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-		new ExcelAdapter(projectsTable);		
+		ExcelAdapter excelAdapter = new ExcelAdapter();
+		KeyStroke paste = KeyStroke.getKeyStroke(KeyEvent.VK_V,Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(),false);
+		projectsTable.registerKeyboardAction(excelAdapter,"Paste",paste,JComponent.WHEN_FOCUSED);
+		KeyStroke delete = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,0,false);
+		projectsTable.registerKeyboardAction(excelAdapter,"Delete",delete,JComponent.WHEN_FOCUSED);
+;		
 		projectsTable.addKeyListener(new KeyListener() {
 
 			@Override
@@ -639,7 +644,7 @@ public class ProjectsPanel extends ManagerPanel {
 		projectPanel.setBorder(BorderFactory.createTitledBorder("Project"));
 		southPanel.add(projectPanel, new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
 
-		JButton createNewButton = new JButton("Create", Resources.getScaledIcon(Resources.iDbAdd, 16));
+		JButton createNewButton = new JButton("Create", Img.DbAdd.getScaledIcon(16));
 		createNewButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -654,7 +659,7 @@ public class ProjectsPanel extends ManagerPanel {
 		});
 		projectPanel.add(createNewButton);
 
-		JButton updateButton = new JButton("Validate (modifications)", Resources.getScaledIcon(Resources.iDbPatcher, 16));
+		JButton updateButton = new JButton("Validate (modifications)", Img.DbPatcher.getScaledIcon(16));
 		updateButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -669,7 +674,7 @@ public class ProjectsPanel extends ManagerPanel {
 		});
 		projectPanel.add(updateButton);
 
-		JButton excelButton = new JButton("Export table to Excel", Resources.getScaledIcon(Resources.iExcel, 16));
+		JButton excelButton = new JButton("Export table to Excel", Img.Excel.getScaledIcon(16));
 		excelButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -688,7 +693,7 @@ public class ProjectsPanel extends ManagerPanel {
 		samplePanel.setBorder(BorderFactory.createTitledBorder("Sample"));
 		southPanel.add(samplePanel, new GridBagConstraints(0, 2, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
 
-		JButton importSampleButton = new JButton("Import SELECTED sample(s) from VCF(s) to an analysis", Resources.getScaledIcon(Resources.iDbAdd, 16));
+		JButton importSampleButton = new JButton("Import SELECTED sample(s) from VCF(s) to an analysis", Img.DbAdd.getScaledIcon(16));
 		importSampleButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -703,7 +708,7 @@ public class ProjectsPanel extends ManagerPanel {
 		});
 		samplePanel.add(importSampleButton);
 
-		JButton importCoverageDetailsButton = new JButton("Import coverage details for SELECTED sample(s)", Resources.getScaledIcon(Resources.iDbAdd, 16));
+		JButton importCoverageDetailsButton = new JButton("Import coverage details for SELECTED sample(s)", Img.DbAdd.getScaledIcon(16));
 		importCoverageDetailsButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -722,7 +727,7 @@ public class ProjectsPanel extends ManagerPanel {
 		 * 
 		 * Old GATK coverage files, now using mosdepth and a single button with choice of coverage target
 		 * 
-		JButton importCoverageWithDupButton = new JButton("Import coverages with duplicates for SELECTED sample(s)", Resources.getScaledIcon(Resources.iDbAdd, 16));
+		JButton importCoverageWithDupButton = new JButton("Import coverages with duplicates for SELECTED sample(s)", Img.DbAdd.getScaledIcon(16));
 		importCoverageWithDupButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -737,7 +742,7 @@ public class ProjectsPanel extends ManagerPanel {
 		});
 		samplePanel.add(importCoverageWithDupButton);
 
-		JButton importCoverageWithoutDupButton = new JButton("Import coverages without duplicates for SELECTED sample(s)", Resources.getScaledIcon(Resources.iDbAdd, 16));
+		JButton importCoverageWithoutDupButton = new JButton("Import coverages without duplicates for SELECTED sample(s)", Img.DbAdd.getScaledIcon(16));
 		importCoverageWithoutDupButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -752,7 +757,7 @@ public class ProjectsPanel extends ManagerPanel {
 		});
 		samplePanel.add(importCoverageWithoutDupButton);
 
-		JButton importCoverageExomeButton = new JButton("Import exome coverages for SELECTED sample(s)", Resources.getScaledIcon(Resources.iDbAdd, 16));
+		JButton importCoverageExomeButton = new JButton("Import exome coverages for SELECTED sample(s)", Img.DbAdd.getScaledIcon(16));
 		importCoverageExomeButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -768,7 +773,7 @@ public class ProjectsPanel extends ManagerPanel {
 		samplePanel.add(importCoverageExomeButton);
 		 */
 		
-		JButton importFastQCButton = new JButton("Import FastQC report for SELECTED sample(s)", Resources.getScaledIcon(Resources.iDbAdd, 16));
+		JButton importFastQCButton = new JButton("Import FastQC report for SELECTED sample(s)", Img.DbAdd.getScaledIcon(16));
 		importFastQCButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -783,7 +788,7 @@ public class ProjectsPanel extends ManagerPanel {
 		});
 		samplePanel.add(importFastQCButton);
 
-		JButton copyAnalysisButton = new JButton("Duplicate SELECTION to another analysis", Resources.getScaledIcon(Resources.iDbPatcher, 16));
+		JButton copyAnalysisButton = new JButton("Duplicate SELECTION to another analysis", Img.DbPatcher.getScaledIcon(16));
 		copyAnalysisButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -791,10 +796,10 @@ public class ProjectsPanel extends ManagerPanel {
 					@Override
 					public void run() {
 						Object resFrom = JOptionPane.showInputDialog(manager,  "Select the analysis FROM which the samples will be duplicated", "Sample duplication",
-								JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), manager.getAvailableAnalysesAsArray(), null);
+								JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), manager.getAvailableAnalysesAsArray(), null);
 						if (resFrom != null){
 							Object resTo = JOptionPane.showInputDialog(manager,  "Select the analysis TO which the samples will be duplicated", "Sample duplication",
-									JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), manager.getAvailableAnalysesAsArray(), null);
+									JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), manager.getAvailableAnalysesAsArray(), null);
 							if (resTo != null){
 								duplicateSample((AnalysisFull)resFrom,(AnalysisFull)resTo);								
 							}
@@ -806,7 +811,7 @@ public class ProjectsPanel extends ManagerPanel {
 		});
 		samplePanel.add(copyAnalysisButton);
 
-		JButton deleteAnalysisButton = new JButton("Delete SELECTION from an analysis", Resources.getScaledIcon(Resources.iDbRemove, 16));
+		JButton deleteAnalysisButton = new JButton("Delete SELECTION from an analysis", Img.DbRemove.getScaledIcon(16));
 		deleteAnalysisButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -814,7 +819,7 @@ public class ProjectsPanel extends ManagerPanel {
 					@Override
 					public void run() {
 						Object res = JOptionPane.showInputDialog(manager,  "Select the analysis from which the samples will be deleted", "Analysis sample deletion",
-								JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), manager.getAvailableAnalysesAsArray(), null);
+								JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), manager.getAvailableAnalysesAsArray(), null);
 						if (res != null){
 							deleteSample(res.toString());
 						}
@@ -825,7 +830,7 @@ public class ProjectsPanel extends ManagerPanel {
 		});
 		samplePanel.add(deleteAnalysisButton);
 
-		JButton deleteButton = new JButton("Delete SELECTION from the WHOLE database", Resources.getScaledIcon(Resources.iDbRemove, 16));
+		JButton deleteButton = new JButton("Delete SELECTION from the WHOLE database", Img.DbRemove.getScaledIcon(16));
 		deleteButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -844,7 +849,7 @@ public class ProjectsPanel extends ManagerPanel {
 		annotationsPanel.setBorder(BorderFactory.createTitledBorder("User annotations (variant evaluations)"));
 		southPanel.add(annotationsPanel, new GridBagConstraints(0, 3, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
 
-		JButton transferAnnotationsButton = new JButton("Duplicate user evaluations of SELECTION to another analysis", Resources.getScaledIcon(Resources.iDbAdd, 16));
+		JButton transferAnnotationsButton = new JButton("Duplicate user evaluations of SELECTION to another analysis", Img.DbAdd.getScaledIcon(16));
 		transferAnnotationsButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -852,10 +857,10 @@ public class ProjectsPanel extends ManagerPanel {
 					@Override
 					public void run() {
 						Object from = JOptionPane.showInputDialog(manager,  "Select the analysis FROM which the evaluations will be duplicated", "User evaluations duplication",
-								JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), manager.getAvailableAnalysesAsArray(), null);
+								JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), manager.getAvailableAnalysesAsArray(), null);
 						if (from != null){
 							Object to = JOptionPane.showInputDialog(manager,  "Select the analysis TO which the evaluations will be duplicated", "User evaluations duplication",
-									JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), manager.getAvailableAnalysesAsArray(), null);
+									JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), manager.getAvailableAnalysesAsArray(), null);
 							if (to != null){
 								duplicateUserAnnotations((AnalysisFull)from, (AnalysisFull)to);
 							}
@@ -1019,25 +1024,14 @@ public class ProjectsPanel extends ManagerPanel {
 	public class ExcelAdapter implements ActionListener {
 		private String rowstring,value;
 		private Clipboard system;
-		private JTable table ;
 		/**
 		 * The Excel Adapter is constructed with a
 		 * JTable on which it enables Copy-Paste and acts
 		 * as a Clipboard listener.
 		 */
-		public ExcelAdapter(JTable myJTable){
-			table = myJTable;
-			KeyStroke paste = KeyStroke.getKeyStroke(KeyEvent.VK_V,Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(),false);
-			table.registerKeyboardAction(this,"Paste",paste,JComponent.WHEN_FOCUSED);
-			KeyStroke delete = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,0,false);
-			table.registerKeyboardAction(this,"Delete",delete,JComponent.WHEN_FOCUSED);
+		public ExcelAdapter(){
 			system = Toolkit.getDefaultToolkit().getSystemClipboard();
 		}
-		/**
-		 * Public Accessor methods for the Table on which this adapter acts.
-		 */
-		public JTable getJTable() {return table;}
-		public void setJTable(JTable jTable1) {this.table=jTable1;}
 		/**
 		 * This method is activated on the Keystrokes we are listening to
 		 * in this implementation. Here it listens for Copy and Paste ActionCommands.
@@ -1049,8 +1043,8 @@ public class ProjectsPanel extends ManagerPanel {
 		@Override
 		public void actionPerformed(ActionEvent e){
 			if (e.getActionCommand().compareTo("Paste")==0){
-				int startRow=(table.getSelectedRows())[0];
-				int startCol=(table.getSelectedColumns())[0];
+				int startRow=(projectsTable.getSelectedRows())[0];
+				int startCol=(projectsTable.getSelectedColumns())[0];
 				try	{
 					String trstring= ((String)(system.getContents(this).getTransferData(DataFlavor.stringFlavor))).replace("\r", "\n");
 					String[] st1= trstring.split("\n");
@@ -1059,9 +1053,9 @@ public class ProjectsPanel extends ManagerPanel {
 						String[] st2= rowstring.split("\t");
 						for(int j=0; j < st2.length ;j++)	{
 							value= st2[j];
-							if (startRow+i< table.getRowCount()  &&
-									startCol+j< table.getColumnCount())
-								if (table.isCellEditable(startRow+i,startCol+j)) table.setValueAt(value,startRow+i,startCol+j);
+							if (startRow+i< projectsTable.getRowCount()  &&
+									startCol+j< projectsTable.getColumnCount())
+								if (projectsTable.isCellEditable(startRow+i,startCol+j)) projectsTable.setValueAt(value,startRow+i,startCol+j);
 						}
 					}
 				}	catch(Exception ex){
@@ -1070,16 +1064,16 @@ public class ProjectsPanel extends ManagerPanel {
 				refresh();
 			}else if (e.getActionCommand().compareTo("Delete")==0){
 				try	{
-					for (int row : table.getSelectedRows()){
-						for (int col : table.getSelectedColumns()){
-							if (col != ((AdministrationTableModel)(table.getModel())).getColumn("project_id") &&
-									col != ((AdministrationTableModel)(table.getModel())).getColumn("cov_with_dups_available") &&
-									col != ((AdministrationTableModel)(table.getModel())).getColumn("cov_without_dups_available") &&
-									col != ((AdministrationTableModel)(table.getModel())).getColumn("fastqc_available") &&
-									col != ((AdministrationTableModel)(table.getModel())).getColumn("analyses") &&
-									col != ((AdministrationTableModel)(table.getModel())).getColumn("gene_coverage_available") &&
-									col != ((AdministrationTableModel)(table.getModel())).getColumn("analyses"))
-								table.setValueAt(null,row,col);
+					for (int row : projectsTable.getSelectedRows()){
+						for (int col : projectsTable.getSelectedColumns()){
+							if (col != ((AdministrationTableModel)(projectsTable.getModel())).getColumn("project_id") &&
+									col != ((AdministrationTableModel)(projectsTable.getModel())).getColumn("cov_with_dups_available") &&
+									col != ((AdministrationTableModel)(projectsTable.getModel())).getColumn("cov_without_dups_available") &&
+									col != ((AdministrationTableModel)(projectsTable.getModel())).getColumn("fastqc_available") &&
+									col != ((AdministrationTableModel)(projectsTable.getModel())).getColumn("analyses") &&
+									col != ((AdministrationTableModel)(projectsTable.getModel())).getColumn("gene_coverage_available") &&
+									col != ((AdministrationTableModel)(projectsTable.getModel())).getColumn("analyses"))
+								projectsTable.setValueAt(null,row,col);
 						}
 					}
 				}	catch(Exception ex){
@@ -1092,7 +1086,7 @@ public class ProjectsPanel extends ManagerPanel {
 
 	public void createProject(){
 		Object res = JOptionPane.showInputDialog(manager, "How many samples are there in the project ?", "Create new project",
-				JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iDbAdd,64), null, null);
+				JOptionPane.QUESTION_MESSAGE, Img.DbAdd.getScaledIcon(64), null, null);
 		if (res != null){
 			try{
 				int num = Integer.parseInt(res.toString());
@@ -1100,7 +1094,7 @@ public class ProjectsPanel extends ManagerPanel {
 				fill(num);
 			}catch(NumberFormatException ex){
 				Tools.exception(ex);
-				JOptionPane.showMessageDialog(new JFrame(), "You must enter a valid number", "Create new project", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				JOptionPane.showMessageDialog(new JFrame(), "You must enter a valid number", "Create new project", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}
 		}
 	}
@@ -1121,7 +1115,7 @@ public class ProjectsPanel extends ManagerPanel {
 		}
 		int res = JOptionPane.YES_OPTION;
 		if (finalCheck == 0){
-			JOptionPane.showMessageDialog(new JFrame(), "Some information is missing, please fill all information mandatory to the project", "Update project", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(new JFrame(), "Some information is missing, please fill all information mandatory to the project", "Update project", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}else{ 
 			if (finalCheck == 2){
 				StringBuilder sb = new StringBuilder();
@@ -1130,7 +1124,7 @@ public class ProjectsPanel extends ManagerPanel {
 					sb.append("  - " + sample + "\n");
 				}
 				sb.append("Are you sure you want duplicate sample names ?");
-				res = JOptionPane.showConfirmDialog(new JFrame(), sb.toString(), "Update project", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iQuestion,64));
+				res = JOptionPane.showConfirmDialog(new JFrame(), sb.toString(), "Update project", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Img.Question.getScaledIcon(64));
 			}
 			if (res == JOptionPane.YES_OPTION){
 				SwingUtilities.invokeLater(new Runnable() {
@@ -1158,7 +1152,7 @@ public class ProjectsPanel extends ManagerPanel {
 					projectsList.add(project);
 					projectBox.setSelectedItem(project);
 					JOptionPane.showMessageDialog(new JFrame(), "Project successfuly updated", "Update project",
-							JOptionPane.PLAIN_MESSAGE, Resources.getScaledIcon(Resources.iDbPatcher,64));					
+							JOptionPane.PLAIN_MESSAGE, Img.DbPatcher.getScaledIcon(64));					
 				}catch(Exception ex){
 					ProjectManager.toConsole(ex);
 				}
@@ -1236,11 +1230,11 @@ public class ProjectsPanel extends ManagerPanel {
 			}catch (IOException ex){
 				Tools.exception(ex);
 				JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("I/O error when creating file", ex), "Exporting to Excel",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}catch (Exception ex){
 				Tools.exception(ex);
 				JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error during export", ex), "Exporting to Excel",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}
 		}
 	}
@@ -1253,7 +1247,7 @@ public class ProjectsPanel extends ManagerPanel {
 			String id = projectsTable.getValueAt(row, projectTableModel.getColumn("project_id")).toString();
 			sb.append("sample "+sample+" (internal id "+id+")\n");
 		}
-		int res = JOptionPane.showConfirmDialog(new JFrame(), "Are you SURE you want to COMPLETELY delete:\n"+sb.toString()+"from the WHOLE Highlander database ?", "Delete sample from Highlander", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iDbRemove,64));
+		int res = JOptionPane.showConfirmDialog(new JFrame(), "Are you SURE you want to COMPLETELY delete:\n"+sb.toString()+"from the WHOLE Highlander database ?", "Delete sample from Highlander", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Img.DbRemove.getScaledIcon(64));
 		if (res == JOptionPane.CANCEL_OPTION){
 			return;
 		}else if (res == JOptionPane.YES_OPTION){
@@ -1385,7 +1379,7 @@ public class ProjectsPanel extends ManagerPanel {
 			setSize(new Dimension(width,height));
 			setModal(true);
 			setTitle("Sample importation parameters");
-			setIconImage(Resources.getScaledIcon(Resources.iDbAdd, 64).getImage());
+			setIconImage(Img.DbAdd.getScaledIcon(64).getImage());
 			pack();
 		}
 
@@ -1545,7 +1539,7 @@ public class ProjectsPanel extends ManagerPanel {
 			setSize(new Dimension(width,height));
 			setModal(true);
 			setTitle("Coverage details importation");
-			setIconImage(Resources.getScaledIcon(Resources.iDbAdd, 64).getImage());
+			setIconImage(Img.DbAdd.getScaledIcon(64).getImage());
 			pack();
 		}
 
@@ -1712,7 +1706,7 @@ public class ProjectsPanel extends ManagerPanel {
 			setSize(new Dimension(width,height));
 			setModal(true);
 			setTitle("Importation of global coverage (alignment with duplicates)");
-			setIconImage(Resources.getScaledIcon(Resources.iDbAdd, 64).getImage());
+			setIconImage(Img.DbAdd.getScaledIcon(64).getImage());
 			pack();
 		}
 
@@ -1856,7 +1850,7 @@ public class ProjectsPanel extends ManagerPanel {
 			setSize(new Dimension(width,height));
 			setModal(true);
 			setTitle("Importation of global coverage (alignment without duplicates)");
-			setIconImage(Resources.getScaledIcon(Resources.iDbAdd, 64).getImage());
+			setIconImage(Img.DbAdd.getScaledIcon(64).getImage());
 			pack();
 		}
 
@@ -2000,7 +1994,7 @@ public class ProjectsPanel extends ManagerPanel {
 			setSize(new Dimension(width,height));
 			setModal(true);
 			setTitle("Importation of exome coverage (alignment without duplicates)");
-			setIconImage(Resources.getScaledIcon(Resources.iDbAdd, 64).getImage());
+			setIconImage(Img.DbAdd.getScaledIcon(64).getImage());
 			pack();
 		}
 
@@ -2142,7 +2136,7 @@ public class ProjectsPanel extends ManagerPanel {
 			setSize(new Dimension(width,height));
 			setModal(true);
 			setTitle("Importation of FastQC report");
-			setIconImage(Resources.getScaledIcon(Resources.iDbAdd, 64).getImage());
+			setIconImage(Img.DbAdd.getScaledIcon(64).getImage());
 			pack();
 		}
 
@@ -2215,7 +2209,7 @@ public class ProjectsPanel extends ManagerPanel {
 			String id = projectsTable.getValueAt(row, projectTableModel.getColumn("project_id")).toString();
 			sb.append("sample "+sample+" (internal id "+id+")\n");
 		}
-		int res = JOptionPane.showConfirmDialog(new JFrame(), "Are you SURE you want to duplicate:\n"+sb.toString()+"from '"+from+"' to '"+to+"' ?", "Duplicate samples", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iDbRemove,64));
+		int res = JOptionPane.showConfirmDialog(new JFrame(), "Are you SURE you want to duplicate:\n"+sb.toString()+"from '"+from+"' to '"+to+"' ?", "Duplicate samples", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Img.DbRemove.getScaledIcon(64));
 		if (res == JOptionPane.CANCEL_OPTION){
 			return;
 		}else if (res == JOptionPane.YES_OPTION){
@@ -2331,7 +2325,7 @@ public class ProjectsPanel extends ManagerPanel {
 			String id = projectsTable.getValueAt(row, projectTableModel.getColumn("project_id")).toString();
 			sb.append("sample "+sample+" (internal id "+id+")\n");
 		}
-		int res = JOptionPane.showConfirmDialog(new JFrame(), "Are you SURE you want to COMPLETELY delete:\n"+sb.toString()+"from the '"+analysis+"' Highlander database ?", "Delete sample from Highlander", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iDbRemove,64));
+		int res = JOptionPane.showConfirmDialog(new JFrame(), "Are you SURE you want to COMPLETELY delete:\n"+sb.toString()+"from the '"+analysis+"' Highlander database ?", "Delete sample from Highlander", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Img.DbRemove.getScaledIcon(64));
 		if (res == JOptionPane.CANCEL_OPTION){
 			return;
 		}else if (res == JOptionPane.YES_OPTION){
@@ -2385,7 +2379,7 @@ public class ProjectsPanel extends ManagerPanel {
 			String id = projectsTable.getValueAt(row, projectTableModel.getColumn("project_id")).toString();
 			sb.append("sample "+sample+" (internal id "+id+")\n");
 		}
-		int res = JOptionPane.showConfirmDialog(new JFrame(), "Are you SURE you want to duplicate following user annotations:\n"+sb.toString()+"from '"+from+"' to '"+to+"' ?", "Duplicate user annotations", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iDbRemove,64));
+		int res = JOptionPane.showConfirmDialog(new JFrame(), "Are you SURE you want to duplicate following user annotations:\n"+sb.toString()+"from '"+from+"' to '"+to+"' ?", "Duplicate user annotations", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Img.DbRemove.getScaledIcon(64));
 		if (res == JOptionPane.CANCEL_OPTION){
 			return;
 		}else if (res == JOptionPane.YES_OPTION){

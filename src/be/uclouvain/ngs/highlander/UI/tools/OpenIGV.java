@@ -73,16 +73,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.apache.commons.httpclient.Credentials;
-import org.apache.commons.httpclient.HostConfiguration;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.NTCredentials;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import org.apache.commons.httpclient.methods.GetMethod;
-//import org.broad.igv.ui.IGVAccess;
-
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.dialog.AskSamplesDialog;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase;
@@ -173,18 +165,20 @@ public class OpenIGV extends JDialog {
 	}
 	
 	private void fetchAvailableDbsnpVersion() {
-		try {
-			String[] versions = get(Highlander.getParameters().getUrlForDbsnpVcfs()+"/versions").split("\n");
+		String response = Tools.httpGet(Highlander.getParameters().getUrlForDbsnpVcfs()+"/versions");
+		if (response != null && !response.isEmpty()) {
+			String[] versions = response.split("\n");
 			for (String line : versions){
 				String version = line.split("\t")[0];
 				String file = line.split("\t")[1];
 				if (version.compareTo(lastDbsnpVersion) > 0) lastDbsnpVersion = version;
 				dbsnpFiles.put(version, file);
 			}
-		}catch(HTTPException ex) {
-			System.err.println("Fetch DBSNP versions file from server sent HTTP error " + ex.getStatusCode() + ".\nCreate a 2 columns tab separated file named 'versions' with dbsnp version number and filename within URL (e.g. 138 dbsnp_138.vcf).\nNow Trying to browse directory struture for dbsnp vcf.");
-			try {
-				String[] lines = get(Highlander.getParameters().getUrlForDbsnpVcfs()).split("\n");
+		}else {
+			System.err.println("Fetch DBSNP versions file from server is empty.\nCreate a 2 columns tab separated file named 'versions' with dbsnp version number and filename within URL (e.g. 138 dbsnp_138.vcf).\nNow Trying to browse directory struture for dbsnp vcf.");
+			response = Tools.httpGet(Highlander.getParameters().getUrlForDbsnpVcfs());
+			if (response != null && !response.isEmpty()) {
+				String[] lines = response.split("\n");
 				for (String line : lines){
 					if (line.contains("dbsnp") && line.contains(".vcf")){
 						int start = line.indexOf("dbsnp");
@@ -202,72 +196,21 @@ public class OpenIGV extends JDialog {
 						dbsnpFiles.put(version, file);
 					}
 				}			
-			}catch(HTTPException e) {
-				System.err.println("Browse DBSNP directory from server sent HTTP error " + ex.getStatusCode() + ".\nThe URL '"+Highlander.getParameters().getUrlForDbsnpVcfs()+"' is not accessible or directory browsing is disabled on server (and no file named 'versions' has been found)");
+			}else {
+				System.err.println("Browse DBSNP directory from server sent empty response.\nThe URL '"+Highlander.getParameters().getUrlForDbsnpVcfs()+"' is not accessible or directory browsing is disabled on server (and no file named 'versions' has been found)");
 			}
 		}
-	}
-
-	private String get(String url) throws HTTPException {
-		String response = "";
-		int res = 0;
-		int attempts = 0;
-		while (res != 200) {
-			try {
-				GetMethod getMethod = new GetMethod(url);
-				HttpClient httpClient = new HttpClient();
-				boolean bypass = false;
-				if (System.getProperty("http.nonProxyHosts") != null) {
-					for (String host : System.getProperty("http.nonProxyHosts").split("\\|")) {
-						if (url.toLowerCase().contains(host.toLowerCase())) bypass = true;
-					}
-				}
-				if (!bypass && System.getProperty("http.proxyHost") != null) {
-					try {
-						HostConfiguration hostConfiguration = httpClient.getHostConfiguration();
-						hostConfiguration.setProxy(System.getProperty("http.proxyHost"), Integer.parseInt(System.getProperty("http.proxyPort")));
-						httpClient.setHostConfiguration(hostConfiguration);
-						if (System.getProperty("http.proxyUser") != null && System.getProperty("http.proxyPassword") != null) {
-							// Credentials credentials = new UsernamePasswordCredentials(System.getProperty("http.proxyUser"), System.getProperty("http.proxyPassword"));
-							// Windows proxy needs specific credentials with domain ... if proxy user is in the form of domain\\user, consider it's windows
-							String user = System.getProperty("http.proxyUser");
-							Credentials credentials;
-							if (user.contains("\\")) {
-								credentials = new NTCredentials(user.split("\\\\")[1], System.getProperty("http.proxyPassword"), System.getProperty("http.proxyHost"), user.split("\\\\")[0]);
-							}else {
-								credentials = new UsernamePasswordCredentials(user, System.getProperty("http.proxyPassword"));
-							}
-							httpClient.getState().setProxyCredentials(null, System.getProperty("http.proxyHost"), credentials);
-						}
-						System.out.println("USING PROXY: "+httpClient.getHostConfiguration().getProxyHost());
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-				res = httpClient.executeMethod(getMethod);
-				response = getMethod.getResponseBodyAsString();
-				getMethod.releaseConnection();
-				if (res >= 400 || attempts == 20) {
-					throw new HTTPException(res);
-				}
-			}
-			catch (IOException ex) {
-				Tools.exception(ex);
-			}
-			attempts++;
-		}
-		return response;
 	}
 
 	private void initUI(){
 		setModal(true);
 		setTitle("View variant in IGV");
-		setIconImage(Resources.getScaledIcon(Resources.iIGV, 64).getImage());
+		setIconImage(Img.IGV.getScaledIcon(64).getImage());
 
 		JPanel panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.SOUTH);
 
-		JButton btnApply = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 24));
+		JButton btnApply = new JButton(Img.ButtonApply.getScaledIcon(24));
 		btnApply.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {				
@@ -281,7 +224,7 @@ public class OpenIGV extends JDialog {
 		});
 		panel.add(btnApply);
 
-		JButton btnCancel = new JButton(Resources.getScaledIcon(Resources.iCross, 24));
+		JButton btnCancel = new JButton(Img.Cross.getScaledIcon(24));
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -461,7 +404,7 @@ public class OpenIGV extends JDialog {
 		gbc_lblvcf.gridy = 0;
 		vcfPanel.add(checkBoxAllVcfs, gbc_lblvcf);
 
-		JButton btnAddSample = new JButton("Add sample",Resources.getScaledIcon(Resources.i3dPlus, 24));
+		JButton btnAddSample = new JButton("Add sample",Img.AddMain.getScaledIcon(24));
 		btnAddSample.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -628,7 +571,7 @@ public class OpenIGV extends JDialog {
 		}
 		if (selectedBams.isEmpty()){
 			JOptionPane.showMessageDialog(new JFrame(), "You must select at least 1 sample", "Show variant in IGV",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iIGV,64));
+					JOptionPane.ERROR_MESSAGE, Img.IGV.getScaledIcon(64));
 			return;
 		}
 		Process p = null;
@@ -655,7 +598,7 @@ public class OpenIGV extends JDialog {
 					dbsnp += url+",";			
 				}else{
 					JOptionPane.showMessageDialog(new JFrame(),  url + " was not found on the server, you should warn the administrator", "Show variant in IGV",
-							JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+							JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}
 			}			
 			String vcfs = "";
@@ -665,7 +608,7 @@ public class OpenIGV extends JDialog {
 						vcfs += a.getVcfURL(sample)+",";
 					}else{
 						JOptionPane.showMessageDialog(new JFrame(),  a.getVcfURL(sample) + " was not found on the server, you should warn the administrator", "Show variant in IGV",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}			
 			}
@@ -677,7 +620,7 @@ public class OpenIGV extends JDialog {
 						bams += url + ",";
 					}else{
 						JOptionPane.showMessageDialog(new JFrame(),  url + " was not found on the server, you should warn the administrator", "Show variant in IGV",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			}
@@ -699,7 +642,7 @@ public class OpenIGV extends JDialog {
 			final String params = urls+" "+selectedVariant;
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
-					igvFrame.setIconImage(Resources.getScaledIcon(Resources.iIGV,64).getImage());
+					igvFrame.setIconImage(Img.IGV.getScaledIcon(64).getImage());
 					IGVAccess.openIGV(igvFrame, (params).split(" "), alreadyOpen);
 					alreadyOpen = true;
 				}});
@@ -707,7 +650,7 @@ public class OpenIGV extends JDialog {
 		}catch(Exception ex){
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Problem when retreiving variant data", ex), "Show variant in IGV",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 		dispose();
 		//New process
@@ -719,7 +662,7 @@ public class OpenIGV extends JDialog {
 				console.setLineWrap(true);
 				console.setWrapStyleWord(true);
 				igvFrame.add(new JScrollPane(console), BorderLayout.CENTER);
-				igvFrame.setIconImage(Resources.getScaledIcon(Resources.iIGV,64).getImage());
+				igvFrame.setIconImage(Img.IGV.getScaledIcon(64).getImage());
 				igvFrame.setTitle("IGV Console");
 				Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 				int width = screenSize.width - (screenSize.width/3);

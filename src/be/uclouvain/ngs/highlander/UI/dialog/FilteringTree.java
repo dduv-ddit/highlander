@@ -54,7 +54,7 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.UI.toolbar.FilteringPanel;
 import be.uclouvain.ngs.highlander.UI.toolbar.FilteringPanel.AddChoice;
 import be.uclouvain.ngs.highlander.datatype.filter.ComboFilter;
@@ -146,13 +146,13 @@ public class FilteringTree extends JDialog {
 	
 	private void initUI(){
 		setTitle("Filtering tree");
-		setIconImage(Resources.getScaledIcon(Resources.iFilter, 64).getImage());
+		setIconImage(Img.Filter.getScaledIcon(64).getImage());
 		setModal(true);
 
 		JPanel southPanel = new JPanel();
 		getContentPane().add(southPanel, BorderLayout.SOUTH);
 		
-		JButton btnClose = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 32));
+		JButton btnClose = new JButton(Img.ButtonApply.getScaledIcon(32));
 		btnClose.setToolTipText("Fetch variants from the database using current filters");
 		btnClose.addActionListener(new ActionListener() {
 			@Override
@@ -163,7 +163,7 @@ public class FilteringTree extends JDialog {
 		});
 		southPanel.add(btnClose);
 		
-		JButton btnCount = new JButton(Resources.getScaledIcon(Resources.iCount, 32));
+		JButton btnCount = new JButton(Img.Count.getScaledIcon(32));
 		btnCount.setToolTipText("Count variants from the database using current filters");
 		btnCount.addActionListener(new ActionListener() {
 			@Override
@@ -180,7 +180,7 @@ public class FilteringTree extends JDialog {
 		JPanel northPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
 		getContentPane().add(northPanel, BorderLayout.NORTH);
 		
-		JButton btnExpand = new JButton(Resources.getScaledIcon(Resources.iTreeExpand, 40));
+		JButton btnExpand = new JButton(Img.TreeExpand.getScaledIcon(40));
 		btnExpand.setToolTipText("Expand all below selected filter node");
 		btnExpand.setPreferredSize(new Dimension(54,54));
 		btnExpand.addActionListener(new ActionListener() {
@@ -196,7 +196,7 @@ public class FilteringTree extends JDialog {
 		});
 		northPanel.add(btnExpand);
 		
-		JButton btnSave = new JButton(Resources.getScaledIcon(Resources.iDbSave, 40));
+		JButton btnSave = new JButton(Img.DbSave.getScaledIcon(40));
 		btnSave.setToolTipText("Save current filter in your profile");
 		btnSave.setPreferredSize(new Dimension(54,54));
 		btnSave.addActionListener(new ActionListener() {
@@ -207,7 +207,7 @@ public class FilteringTree extends JDialog {
 		});
 		northPanel.add(btnSave);
 		
-		btnLoad = new JButton(Resources.getScaledIcon(Resources.iDbLoad, 40));
+		btnLoad = new JButton(Img.DbLoad.getScaledIcon(40));
 		btnLoad.setToolTipText("Load a filter from your profile");
 		btnLoad.setPreferredSize(new Dimension(54,54));
 		btnLoad.addActionListener(new ActionListener() {
@@ -219,7 +219,7 @@ public class FilteringTree extends JDialog {
 		});
 		northPanel.add(btnLoad);
 
-		btnLoadAnd = new JButton(Resources.getScaledIcon(Resources.iFilterLoadAnd, 40));
+		btnLoadAnd = new JButton(Img.FilterLoadAnd.getScaledIcon(40));
 		btnLoadAnd.setToolTipText("Add a filter from your profile to the selected one, using the logical operator AND (i.e. results will be the INTERSECTION of filters)");
 		btnLoadAnd.setPreferredSize(new Dimension(54,54));
 		btnLoadAnd.addActionListener(new ActionListener() {
@@ -237,7 +237,7 @@ public class FilteringTree extends JDialog {
 		btnLoadAnd.setVisible(false);
 		northPanel.add(btnLoadAnd);
 		
-		btnLoadOr = new JButton(Resources.getScaledIcon(Resources.iFilterLoadOr, 40));
+		btnLoadOr = new JButton(Img.FilterLoadOr.getScaledIcon(40));
 		btnLoadOr.setToolTipText("Add a filter from your profile to the selected one, using the logical operator OR (i.e. results will be the UNION of filters)");
 		btnLoadOr.setPreferredSize(new Dimension(54,54));
 		btnLoadOr.addActionListener(new ActionListener() {
@@ -255,7 +255,7 @@ public class FilteringTree extends JDialog {
 		btnLoadOr.setVisible(false);
 		northPanel.add(btnLoadOr);
 		
-		btnAddCustom = new JButton(Resources.getScaledIcon(Resources.iFilterAddCustom, 40));
+		btnAddCustom = new JButton(Img.FilterAddCustom.getScaledIcon(40));
 		btnAddCustom.setToolTipText("Add a new custom filter");
 		btnAddCustom.addActionListener(new ActionListener() {
 			@Override
@@ -272,7 +272,7 @@ public class FilteringTree extends JDialog {
 		btnAddCustom.setPreferredSize(new Dimension(54,54));
 		northPanel.add(btnAddCustom);
 		
-		btnAddCustomAnd = new JButton(Resources.getScaledIcon(Resources.iFilterAddCustomAnd, 40));
+		btnAddCustomAnd = new JButton(Img.FilterAddCustomAnd.getScaledIcon(40));
 		btnAddCustomAnd.setToolTipText("Add a custom filter to the selected one, using the logical operator AND (i.e. results will be the INTERSECTION of filters)");
 		btnAddCustomAnd.addActionListener(new ActionListener() {
 			@Override
@@ -297,7 +297,7 @@ public class FilteringTree extends JDialog {
 		btnAddCustomAnd.setVisible(false);
 		northPanel.add(btnAddCustomAnd);
 		
-		btnAddCustomOr = new JButton(Resources.getScaledIcon(Resources.iFilterAddCustomOr, 40));
+		btnAddCustomOr = new JButton(Img.FilterAddCustomOr.getScaledIcon(40));
 		btnAddCustomOr.setToolTipText("Add a custom filter to the selected one, using the logical operator OR (i.e. results will be the UNION of filters)");
 		btnAddCustomOr.addActionListener(new ActionListener() {
 			@Override
@@ -322,7 +322,7 @@ public class FilteringTree extends JDialog {
 		btnAddCustomOr.setVisible(false);
 		northPanel.add(btnAddCustomOr);
 
-		btnAddmagic = new JButton(Resources.getScaledIcon(Resources.iFilterAddMagic, 40));
+		btnAddmagic = new JButton(Img.FilterAddMagic.getScaledIcon(40));
 		btnAddmagic.setToolTipText("Add a new magic filter");
 		btnAddmagic.addActionListener(new ActionListener() {
 			@Override
@@ -339,7 +339,7 @@ public class FilteringTree extends JDialog {
 		btnAddmagic.setPreferredSize(new Dimension(54,54));
 		northPanel.add(btnAddmagic);
 		
-		btnAddmagicAnd = new JButton(Resources.getScaledIcon(Resources.iFilterAddMagicAnd, 40));
+		btnAddmagicAnd = new JButton(Img.FilterAddMagicAnd.getScaledIcon(40));
 		btnAddmagicAnd.setToolTipText("Add a magic filter to the selected one, using the logical operator AND (i.e. results will be the INTERSECTION of filters)");
 		btnAddmagicAnd.addActionListener(new ActionListener() {
 			@Override
@@ -362,7 +362,7 @@ public class FilteringTree extends JDialog {
 		btnAddmagicAnd.setVisible(false);
 		northPanel.add(btnAddmagicAnd);
 
-		btnAddmagicOr = new JButton(Resources.getScaledIcon(Resources.iFilterAddMagicOr, 40));
+		btnAddmagicOr = new JButton(Img.FilterAddMagicOr.getScaledIcon(40));
 		btnAddmagicOr.setToolTipText("Add a magic filter to the selected one, using the logical operator OR (i.e. results will be the UNION of filters)");
 		btnAddmagicOr.addActionListener(new ActionListener() {
 			@Override
@@ -385,7 +385,7 @@ public class FilteringTree extends JDialog {
 		btnAddmagicOr.setVisible(false);
 		northPanel.add(btnAddmagicOr);
 
-		btnFilterEdit = new JButton(Resources.getScaledIcon(Resources.iFilterEdit, 40));
+		btnFilterEdit = new JButton(Img.FilterEdit.getScaledIcon(40));
 		btnFilterEdit.setToolTipText("Edit selected filter");
 		btnFilterEdit.setPreferredSize(new Dimension(54,54));
 		btnFilterEdit.addActionListener(new ActionListener() {
@@ -401,7 +401,7 @@ public class FilteringTree extends JDialog {
 		});
 		northPanel.add(btnFilterEdit);
 		
-		JButton btnDelete = new JButton(Resources.getScaledIcon(Resources.iCross, 40));
+		JButton btnDelete = new JButton(Img.Cross.getScaledIcon(40));
 		btnDelete.setToolTipText("Remove selected filter");
 		btnDelete.setPreferredSize(new Dimension(54,54));
 		btnDelete.addActionListener(new ActionListener() {
@@ -614,13 +614,13 @@ public class FilteringTree extends JDialog {
 			Filter f = ((FilterNode)value).getFilter();
 			if (!f.isSimple() && !f.isComplex()){
 				//Empty tree
-				setIcon(Resources.getScaledIcon(Resources.iFilter, 24));
+				setIcon(Img.Filter.getScaledIcon(24));
 				setText("Empty filter");
 			}else{
 				switch(f.getFilterType()){
 				case COMBO:
 					if (f.isSimple()){
-						setIcon(Resources.getScaledIcon(Resources.iFilter, 24));
+						setIcon(Img.Filter.getScaledIcon(24));
 						if (expanded){
 							switch(((ComboFilter)f).getFilter().getFilterType()){
 							case CUSTOM:
@@ -634,13 +634,13 @@ public class FilteringTree extends JDialog {
 					}else{
 						switch(((ComboFilter)f).getLogicalOperator()){
 						case AND:
-							setIcon(Resources.getScaledIcon(Resources.iFilterAnd, 24));
+							setIcon(Img.FilterAnd.getScaledIcon(24));
 							if (expanded){
 								setText("Intersection of filters");
 							}
 							break;
 						case OR:
-							setIcon(Resources.getScaledIcon(Resources.iFilterOr, 24));
+							setIcon(Img.FilterOr.getScaledIcon(24));
 							if (expanded){
 								setText("Union of filters");
 							}
@@ -650,17 +650,17 @@ public class FilteringTree extends JDialog {
 					break;
 				case CUSTOM:
 					if (f.isSimple()){
-						setIcon(Resources.getScaledIcon(Resources.iFilterCustom, 24));					
+						setIcon(Img.FilterCustom.getScaledIcon(24));					
 					}else{
 						switch(((CustomFilter)f).getLogicalOperator()){
 						case AND:
-							setIcon(Resources.getScaledIcon(Resources.iFilterAnd, 24));
+							setIcon(Img.FilterAnd.getScaledIcon(24));
 							if (expanded){
 								setText("Intersection of custom filters");
 							}
 							break;
 						case OR:
-							setIcon(Resources.getScaledIcon(Resources.iFilterOr, 24));
+							setIcon(Img.FilterOr.getScaledIcon(24));
 							if (expanded){
 								setText("Union of custom filters");
 							}
@@ -669,7 +669,7 @@ public class FilteringTree extends JDialog {
 					}
 					break;
 				default:
-					setIcon(Resources.getScaledIcon(Resources.iFilterMagic, 24));
+					setIcon(Img.FilterMagic.getScaledIcon(24));
 					if (expanded){
 						String txt = getText();
 						String prefiltTxt = "with prefiltering:";

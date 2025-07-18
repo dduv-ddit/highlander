@@ -52,7 +52,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.text.html.HTMLEditorKit;
 
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 
 public class SearchField extends JPanel {
@@ -77,7 +77,7 @@ public class SearchField extends JPanel {
 		add(filterField, BorderLayout.CENTER);
 		filterField.setColumns(size);
 		
-		JButton btnClear = new JButton(Resources.getScaledIcon(Resources.iCross, 16));
+		JButton btnClear = new JButton(Img.Cross.getScaledIcon(16));
 		btnClear.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -101,14 +101,14 @@ public class SearchField extends JPanel {
 		});
 		regexpPanel.add(btnRegExp, BorderLayout.WEST);
 		
-		JButton btnHelp = new JButton(Resources.getScaledIcon(Resources.iHelp, 16));
+		JButton btnHelp = new JButton(Img.Help.getScaledIcon(16));
 		btnHelp.setPreferredSize(new Dimension(28, 28));
 		btnHelp.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 		    JFrame dlg = new JFrame();
 		    dlg.setTitle("Regular expressions");
-		    dlg.setIconImage(Resources.getScaledIcon(Resources.iRegExp, 64).getImage());
+		    dlg.setIconImage(Img.RegExp.getScaledIcon(64).getImage());
 		    JScrollPane scrollPane = new JScrollPane();
 		    scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);	
 				scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);	

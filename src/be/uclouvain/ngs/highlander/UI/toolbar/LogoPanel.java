@@ -41,7 +41,7 @@ import javax.swing.JPanel;
 
 import be.uclouvain.ngs.highlander.AboutBox;
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.misc.ToolbarScrollablePanel;
 
@@ -54,7 +54,7 @@ public class LogoPanel extends JPanel {
 	private void initUI(){
 		setLayout(new BorderLayout(0,0));
 
-		JButton helpAbout = new JButton(Resources.getScaledIcon(Resources.iAbout, 40));
+		JButton helpAbout = new JButton(Img.About.getScaledIcon(40));
 		helpAbout.setPreferredSize(new Dimension(54,54));
 		helpAbout.setToolTipText("About");
 		helpAbout.addActionListener(new ActionListener() {
@@ -69,7 +69,7 @@ public class LogoPanel extends JPanel {
 			}
 		});
 
-		JButton linkGEHU = new JButton(Resources.getHeightScaledIcon(Resources.iLogoGEHU, 40));
+		JButton linkGEHU = new JButton(Img.LogoGEHU.getHeightScaledIcon(40));
 		//linkGEHU.setPreferredSize(new Dimension(54,54));
 		linkGEHU.setToolTipText("Highlander has been developped at the Laboratory of Human Molecular Genetics from the de Duve Institute (UCLouvain)");
 		linkGEHU.addActionListener(new ActionListener() {
@@ -78,13 +78,13 @@ public class LogoPanel extends JPanel {
 				new Thread(new Runnable(){
 					@Override
 					public void run(){
-						Tools.openURL("http://www.deduveinstitute.be/human-genetics");
+						Tools.openURL("https://www.deduveinstitute.be/research-group/miikka-vikkula");
 					}
 				}, "LogoPanel.openURL").start();
 			}
 		});
 		
-		JButton linkDeDuve = new JButton(Resources.getHeightScaledIcon(Resources.iLogoDeDuveHorizontal, 40));
+		JButton linkDeDuve = new JButton(Img.LogoDeDuveHorizontal.getHeightScaledIcon(40));
 		//linkDeDuve.setPreferredSize(new Dimension(54,54));
 		linkDeDuve.setToolTipText("Highlander has been developped at the Laboratory of Human Molecular Genetics from the de Duve Institute (UCLouvain)");
 		linkDeDuve.addActionListener(new ActionListener() {
@@ -99,7 +99,7 @@ public class LogoPanel extends JPanel {
 			}
 		});
 		
-		JButton linkUCLouvain = new JButton(Resources.getHeightScaledIcon(Resources.iLogoUCLouvainHorizontal, 40));
+		JButton linkUCLouvain = new JButton(Img.LogoUCLouvainHorizontal.getHeightScaledIcon(40));
 		//linkUCLouvain.setPreferredSize(new Dimension(54,54));
 		linkUCLouvain.setToolTipText("Highlander has been developped at the Laboratory of Human Molecular Genetics from the de Duve Institute (UCLouvain)");
 		linkUCLouvain.addActionListener(new ActionListener() {
@@ -114,7 +114,7 @@ public class LogoPanel extends JPanel {
 			}
 		});
 		
-		JButton linkWelbio = new JButton(Resources.getHeightScaledIcon(Resources.iLogoWelbio, 40));
+		JButton linkWelbio = new JButton(Img.LogoWelbio.getHeightScaledIcon(40));
 		//linkWelbio.setPreferredSize(new Dimension(54,54));
 		linkWelbio.setToolTipText("Highlander has been funded thanks to Welbio");
 		linkWelbio.addActionListener(new ActionListener() {
@@ -129,7 +129,7 @@ public class LogoPanel extends JPanel {
 			}
 		});
 		
-		JButton linkInnoviris = new JButton(Resources.getHeightScaledIcon(Resources.iLogoInnoviris, 40));
+		JButton linkInnoviris = new JButton(Img.LogoInnoviris.getHeightScaledIcon(40));
 		//linkInnoviris.setPreferredSize(new Dimension(54,54));
 		linkInnoviris.setToolTipText("Highlander has been funded thanks to Innovris");
 		linkInnoviris.addActionListener(new ActionListener() {
@@ -144,7 +144,7 @@ public class LogoPanel extends JPanel {
 			}
 		});
 		
-		JButton linkFCE = new JButton(Resources.getHeightScaledIcon(Resources.iLogoFCE, 40));
+		JButton linkFCE = new JButton(Img.LogoFCE.getHeightScaledIcon(40));
 		//linkFCE.setPreferredSize(new Dimension(54,54));
 		linkFCE.setToolTipText("Highlander has been funded thanks to Fondation contre le Cancer");
 		linkFCE.addActionListener(new ActionListener() {

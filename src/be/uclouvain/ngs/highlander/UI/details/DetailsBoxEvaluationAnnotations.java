@@ -59,6 +59,7 @@ import javax.swing.SwingConstants;
 
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.Resources.Palette;
 import be.uclouvain.ngs.highlander.UI.table.VariantsTable;
@@ -141,7 +142,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 
 	private void set_Evaluation(String val, String user, String date, boolean newEvaluation){
 		if (val != null && val.equals("1")){
-			statusEvaluation.setIcon(Resources.getScaledIcon(Resources.iRoman1, 24));
+			statusEvaluation.setIcon(Img.Roman1.getScaledIcon(24));
 			statusEvaluation.setToolTipText("Type I: Benign - Polymorphism");
 			userEvaluation.setText("("+user+" - "+date+")");			
 			if (newEvaluation){
@@ -149,7 +150,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 				historyTextArea.append("\nEvaluation set to type I ("+Highlander.getLoggedUser().getUsername()+" - "+df.format(System.currentTimeMillis())+")");
 			}
 		}else if (val != null && val.equals("2")){
-			statusEvaluation.setIcon(Resources.getScaledIcon(Resources.iRoman2, 24));
+			statusEvaluation.setIcon(Img.Roman2.getScaledIcon(24));
 			statusEvaluation.setToolTipText("Type II: Variant Likely Benign");
 			userEvaluation.setText("("+user+" - "+date+")");
 			if (newEvaluation){		
@@ -157,7 +158,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 				historyTextArea.append("\nEvaluation set to type II ("+Highlander.getLoggedUser().getUsername()+" - "+df.format(System.currentTimeMillis())+")");
 			}
 		}else if (val != null && val.equals("3")){
-			statusEvaluation.setIcon(Resources.getScaledIcon(Resources.iRoman3, 24));
+			statusEvaluation.setIcon(Img.Roman3.getScaledIcon(24));
 			statusEvaluation.setToolTipText("Type III: Variant of Unknown Significance");
 			userEvaluation.setText("("+user+" - "+date+")");			
 			if (newEvaluation){
@@ -165,7 +166,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 				historyTextArea.append("\nEvaluation set to type III ("+Highlander.getLoggedUser().getUsername()+" - "+df.format(System.currentTimeMillis())+")");
 			}
 		}else if (val != null && val.equals("4")){
-			statusEvaluation.setIcon(Resources.getScaledIcon(Resources.iRoman4, 24));
+			statusEvaluation.setIcon(Img.Roman4.getScaledIcon(24));
 			statusEvaluation.setToolTipText("Type IV: Variant Likely Pathogenic");
 			userEvaluation.setText("("+user+" - "+date+")");			
 			if (newEvaluation){
@@ -173,7 +174,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 				historyTextArea.append("\nEvaluation set to type IV ("+Highlander.getLoggedUser().getUsername()+" - "+df.format(System.currentTimeMillis())+")");
 			}
 		}else if (val != null && val.equals("5")){
-			statusEvaluation.setIcon(Resources.getScaledIcon(Resources.iRoman5, 24));
+			statusEvaluation.setIcon(Img.Roman5.getScaledIcon(24));
 			statusEvaluation.setToolTipText("Type V: Pathogenic Mutation");
 			userEvaluation.setText("("+user+" - "+date+")");			
 			if (newEvaluation){
@@ -181,7 +182,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 				historyTextArea.append("\nEvaluation set to type V ("+Highlander.getLoggedUser().getUsername()+" - "+df.format(System.currentTimeMillis())+")");
 			}
 		}else{
-			statusEvaluation.setIcon(Resources.getScaledIcon(Resources.iQuestion, 24));
+			statusEvaluation.setIcon(Img.Question.getScaledIcon(24));
 			statusEvaluation.setToolTipText("The variant has not been evaluated");
 			userEvaluation.setText("");			
 			if (newEvaluation){
@@ -194,23 +195,23 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 	private void set_check_insilico(Insilico val, String user, String date, boolean newEvaluation){
 		switch(val){
 		case OK:
-			statusInsilico.setIcon(Resources.getScaledIcon(Resources.iButtonApply, 24));
+			statusInsilico.setIcon(Img.ButtonApply.getScaledIcon(24));
 			statusInsilico.setToolTipText("OK - Variant has been checked insilico (e.g. by looking at the alignment) and it's likely a real variant");
 			userInsilico.setText("("+user+" - "+date+")");			
 			break;
 		case NOT_OK:
-			statusInsilico.setIcon(Resources.getScaledIcon(Resources.iCross, 24));
+			statusInsilico.setIcon(Img.Cross.getScaledIcon(24));
 			statusInsilico.setToolTipText("NOT_OK - Variant has been checked insilico (e.g. by looking at the alignment) and it's likely a sequencing error (e.g. alternative allele not specific to pathology)");
 			userInsilico.setText("("+user+" - "+date+")");			
 			break;
 		case SUSPECT:
-			statusInsilico.setIcon(Resources.getScaledIcon(Resources.iAttention, 24));
+			statusInsilico.setIcon(Img.Attention.getScaledIcon(24));
 			statusInsilico.setToolTipText("SUSPECT - the variant has been checked insilico (e.g. by looking at the alignment) but not sure if it's real or not");
 			userInsilico.setText("("+user+" - "+date+")");			
 			break;
 		case NOT_CHECKED:
 		default:
-			statusInsilico.setIcon(Resources.getScaledIcon(Resources.iQuestion, 24));
+			statusInsilico.setIcon(Img.Question.getScaledIcon(24));
 			statusInsilico.setToolTipText("NOT_CHECKED - Variant has not been checked insilico (e.g. by looking at the alignment)");
 			userInsilico.setText("");			
 			break;		
@@ -223,18 +224,18 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 	private void set_reporting(Reporting val, String user, String date, boolean newEvaluation){
 		switch(val){
 		case YES:
-			statusReporting.setIcon(Resources.getScaledIcon(Resources.iButtonApply, 24));
+			statusReporting.setIcon(Img.ButtonApply.getScaledIcon(24));
 			statusReporting.setToolTipText("YES - Variant has been checked and needs to be reported to the patient");
 			userReporting.setText("("+user+" - "+date+")");			
 			break;
 		case NO:
-			statusReporting.setIcon(Resources.getScaledIcon(Resources.iCross, 24));
+			statusReporting.setIcon(Img.Cross.getScaledIcon(24));
 			statusReporting.setToolTipText("NO - Variant has been checked and doesn’t need to be reported to the patient");
 			userReporting.setText("("+user+" - "+date+")");			
 			break;
 		case NOT_CHECKED:
 		default:
-			statusReporting.setIcon(Resources.getScaledIcon(Resources.iQuestion, 24));
+			statusReporting.setIcon(Img.Question.getScaledIcon(24));
 			statusReporting.setToolTipText("NOT_CHECKED - Variant has not been checked");
 			userReporting.setText("");			
 			break;		
@@ -247,23 +248,23 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 	private void set_check_validated_variant(Validation val, String user, String date, boolean newEvaluation){
 		switch(val){
 		case VALIDATED:
-			statusValidated.setIcon(Resources.getScaledIcon(Resources.iButtonApply, 24));
+			statusValidated.setIcon(Img.ButtonApply.getScaledIcon(24));
 			statusValidated.setToolTipText("VALIDATED - Variant has been confirmed with another lab technique (e.g. by Sanger sequencing)");
 			userValidated.setText("("+user+" - "+date+")");			
 			break;
 		case INVALIDATED:
-			statusValidated.setIcon(Resources.getScaledIcon(Resources.iCross, 24));
+			statusValidated.setIcon(Img.Cross.getScaledIcon(24));
 			statusValidated.setToolTipText("INVALIDATED - Variant has been tested with another lab technique (e.g. by Sanger sequencing) and was NOT found");
 			userValidated.setText("("+user+" - "+date+")");			
 			break;
 		case SUSPECT:
-			statusValidated.setIcon(Resources.getScaledIcon(Resources.iAttention, 24));
+			statusValidated.setIcon(Img.Attention.getScaledIcon(24));
 			statusValidated.setToolTipText("SUSPECT - the variant has been checked with another technique, but cannot be confirmed or invalidate");
 			userValidated.setText("("+user+" - "+date+")");			
 			break;
 		case NOT_CHECKED:
 		default:
-			statusValidated.setIcon(Resources.getScaledIcon(Resources.iQuestion, 24));
+			statusValidated.setIcon(Img.Question.getScaledIcon(24));
 			statusValidated.setToolTipText("NOT_CHECKED - Variant has not been tested with another lab technique (e.g. by Sanger sequencing)");
 			userValidated.setText("");			
 			break;		
@@ -276,23 +277,23 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 	private void set_check_somatic_variant(Mosaicism val, String user, String date, boolean newEvaluation){
 		switch(val){
 		case SOMATIC:
-			statusSomatic.setIcon(Resources.getScaledIcon(Resources.iButtonApply, 24));
+			statusSomatic.setIcon(Img.ButtonApply.getScaledIcon(24));
 			statusSomatic.setToolTipText("SOMATIC - Variant has been checked for mosaicism and seems to be a somatic variant");
 			userSomatic.setText("("+user+" - "+date+")");			
 			break;
 		case GERMLINE:
-			statusSomatic.setIcon(Resources.getScaledIcon(Resources.iCross, 24));
+			statusSomatic.setIcon(Img.Cross.getScaledIcon(24));
 			statusSomatic.setToolTipText("GERMLINE - Variant has been checked for mosaicism and seems to be a germline variant");
 			userSomatic.setText("("+user+" - "+date+")");			
 			break;
 		case DUBIOUS:
-			statusSomatic.setIcon(Resources.getScaledIcon(Resources.iAttention, 24));
+			statusSomatic.setIcon(Img.Attention.getScaledIcon(24));
 			statusSomatic.setToolTipText("DUBIOUS - Variant has been checked for mosaicism but was impossible to differenciate between somatic or germline");
 			userSomatic.setText("("+user+" - "+date+")");			
 			break;
 		case NOT_CHECKED:
 		default:
-			statusSomatic.setIcon(Resources.getScaledIcon(Resources.iQuestion, 24));
+			statusSomatic.setIcon(Img.Question.getScaledIcon(24));
 			statusSomatic.setToolTipText("NOT_CHECKED - Not checked for mosaicism");
 			userSomatic.setText("");			
 			break;		
@@ -305,33 +306,33 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 	private void set_check_segregation(Segregation val, String user, String date, boolean newEvaluation){
 		switch(val){
 		case CARRIERS:
-			statusSegregation.setIcon(Resources.getScaledIcon(Resources.iButtonApply, 24));
+			statusSegregation.setIcon(Img.ButtonApply.getScaledIcon(24));
 			statusSegregation.setToolTipText("CARRIERS - Some unaffected carrier(s)");
 			userSegregation.setText("("+user+" - "+date+")");			
 			break;
 		case COSEG:
-			statusSegregation.setIcon(Resources.getScaledIcon(Resources.iButtonApply, 24));
+			statusSegregation.setIcon(Img.ButtonApply.getScaledIcon(24));
 			statusSegregation.setToolTipText("COSEG - Variant cosegregates");
 			userSegregation.setText("("+user+" - "+date+")");			
 			break;
 		case NO_COSEG:
-			statusSegregation.setIcon(Resources.getScaledIcon(Resources.iCross, 24));
+			statusSegregation.setIcon(Img.Cross.getScaledIcon(24));
 			statusSegregation.setToolTipText("NO_COSEG - Not in other affected(s)");
 			userSegregation.setText("("+user+" - "+date+")");			
 			break;
 		case NO_COSEG_OTHER:
-			statusSegregation.setIcon(Resources.getScaledIcon(Resources.i2dMinus, 24));
+			statusSegregation.setIcon(Img.Collapse.getScaledIcon(24));
 			statusSegregation.setToolTipText("NO_COSEG_OTHER - Does not cosegregate in other families");
 			userSegregation.setText("("+user+" - "+date+")");			
 			break;
 		case SINGLE:
-			statusSegregation.setIcon(Resources.getScaledIcon(Resources.iQuestion, 24));
+			statusSegregation.setIcon(Img.Question.getScaledIcon(24));
 			statusSegregation.setToolTipText("SINGLE - No other sample in family");
 			userSegregation.setText("("+user+" - "+date+")");			
 			break;
 		case NOT_CHECKED:
 		default:
-			statusSegregation.setIcon(Resources.getScaledIcon(Resources.iQuestion, 24));
+			statusSegregation.setIcon(Img.Question.getScaledIcon(24));
 			statusSegregation.setToolTipText("NOT_CHECKED - Not checked for segregation");
 			userSegregation.setText("");			
 			break;		
@@ -540,7 +541,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			statusEvaluation = new JButton();
 			statusEvaluation.setPreferredSize(new Dimension(28,28));
 			final JPopupMenu statusEvaluationPopupMenu = new JPopupMenu();
-			JMenuItem itemEvaluationNull = new JMenuItem("Variant has not been evaluated",Resources.getScaledIcon(Resources.iQuestion, 24));
+			JMenuItem itemEvaluationNull = new JMenuItem("Variant has not been evaluated",Img.Question.getScaledIcon(24));
 			itemEvaluationNull.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -550,12 +551,12 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
 			statusEvaluationPopupMenu.add(itemEvaluationNull);
-			JMenuItem itemEvaluation1 = new JMenuItem("Type I: Benign - Polymorphism ["+val_num_evaluated_as_type_1+"]",Resources.getScaledIcon(Resources.iRoman1, 24));
+			JMenuItem itemEvaluation1 = new JMenuItem("Type I: Benign - Polymorphism ["+val_num_evaluated_as_type_1+"]",Img.Roman1.getScaledIcon(24));
 			itemEvaluation1.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -565,12 +566,12 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
 			statusEvaluationPopupMenu.add(itemEvaluation1);
-			JMenuItem itemEvaluation2 = new JMenuItem("Type II: Variant Likely Benign ["+val_num_evaluated_as_type_2+"]",Resources.getScaledIcon(Resources.iRoman2, 24));
+			JMenuItem itemEvaluation2 = new JMenuItem("Type II: Variant Likely Benign ["+val_num_evaluated_as_type_2+"]",Img.Roman2.getScaledIcon(24));
 			itemEvaluation2.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -580,12 +581,12 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
 			statusEvaluationPopupMenu.add(itemEvaluation2);
-			JMenuItem itemEvaluation3 = new JMenuItem("Type III: Variant of Unknown Significance ["+val_num_evaluated_as_type_3+"]",Resources.getScaledIcon(Resources.iRoman3, 24));
+			JMenuItem itemEvaluation3 = new JMenuItem("Type III: Variant of Unknown Significance ["+val_num_evaluated_as_type_3+"]",Img.Roman3.getScaledIcon(24));
 			itemEvaluation3.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -595,12 +596,12 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
 			statusEvaluationPopupMenu.add(itemEvaluation3);
-			JMenuItem itemEvaluation4 = new JMenuItem("Type IV: Variant Likely Pathogenic ["+val_num_evaluated_as_type_4+"]",Resources.getScaledIcon(Resources.iRoman4, 24));
+			JMenuItem itemEvaluation4 = new JMenuItem("Type IV: Variant Likely Pathogenic ["+val_num_evaluated_as_type_4+"]",Img.Roman4.getScaledIcon(24));
 			itemEvaluation4.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -610,12 +611,12 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
 			statusEvaluationPopupMenu.add(itemEvaluation4);
-			JMenuItem itemEvaluation5 = new JMenuItem("Type V: Pathogenic Mutation ["+val_num_evaluated_as_type_5+"]",Resources.getScaledIcon(Resources.iRoman5, 24));
+			JMenuItem itemEvaluation5 = new JMenuItem("Type V: Pathogenic Mutation ["+val_num_evaluated_as_type_5+"]",Img.Roman5.getScaledIcon(24));
 			itemEvaluation5.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -625,7 +626,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
@@ -647,12 +648,12 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 						}else{
 							JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this, 
 									"You are not authorized to change this flag.", 
-									"Changing evaluation", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iUserLock,64));
+									"Changing evaluation", JOptionPane.ERROR_MESSAGE, Img.UserLock.getScaledIcon(64));
 						}
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this,  Tools.getMessage("Cannot verify user permission on this variant", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			};
@@ -668,7 +669,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			statusInsilico = new JButton();
 			statusInsilico.setPreferredSize(new Dimension(28,28));
 			final JPopupMenu statusInsilicoPopupMenu = new JPopupMenu();
-			JMenuItem itemInsilicoNotChecked = new JMenuItem("NOT_CHECKED - Variant has not been checked insilico",Resources.getScaledIcon(Resources.iQuestion, 24));
+			JMenuItem itemInsilicoNotChecked = new JMenuItem("NOT_CHECKED - Variant has not been checked insilico",Img.Question.getScaledIcon(24));
 			itemInsilicoNotChecked.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -678,12 +679,12 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
 			statusInsilicoPopupMenu.add(itemInsilicoNotChecked);
-			JMenuItem itemInsilicoOK = new JMenuItem("OK - Variant has been checked insilico and it's likely a real variant",Resources.getScaledIcon(Resources.iButtonApply, 24));
+			JMenuItem itemInsilicoOK = new JMenuItem("OK - Variant has been checked insilico and it's likely a real variant",Img.ButtonApply.getScaledIcon(24));
 			itemInsilicoOK.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -693,12 +694,12 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
 			statusInsilicoPopupMenu.add(itemInsilicoOK);
-			JMenuItem itemInsilicoNotOk = new JMenuItem("NOT_OK - Variant has been checked insilico and it's likely a sequencing error",Resources.getScaledIcon(Resources.iCross, 24));
+			JMenuItem itemInsilicoNotOk = new JMenuItem("NOT_OK - Variant has been checked insilico and it's likely a sequencing error",Img.Cross.getScaledIcon(24));
 			itemInsilicoNotOk.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -708,12 +709,12 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
 			statusInsilicoPopupMenu.add(itemInsilicoNotOk);
-			JMenuItem itemInsilicoSuspect = new JMenuItem("SUSPECT - Variant has been checked insilico but not sure if it's real or not",Resources.getScaledIcon(Resources.iAttention, 24));
+			JMenuItem itemInsilicoSuspect = new JMenuItem("SUSPECT - Variant has been checked insilico but not sure if it's real or not",Img.Attention.getScaledIcon(24));
 			itemInsilicoSuspect.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -723,7 +724,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
@@ -745,12 +746,12 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 						}else{
 							JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this, 
 									"You are not authorized to change this flag.", 
-									"Changing check_insilico", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iUserLock,64));
+									"Changing check_insilico", JOptionPane.ERROR_MESSAGE, Img.UserLock.getScaledIcon(64));
 						}
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this,  Tools.getMessage("Cannot verify user permission on this variant", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			};
@@ -766,7 +767,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			statusReporting = new JButton();
 			statusReporting.setPreferredSize(new Dimension(28,28));
 			final JPopupMenu statusReportingPopupMenu = new JPopupMenu();
-			JMenuItem itemReportingNotChecked = new JMenuItem("NOT_CHECKED - Variant has not been checked",Resources.getScaledIcon(Resources.iQuestion, 24));
+			JMenuItem itemReportingNotChecked = new JMenuItem("NOT_CHECKED - Variant has not been checked",Img.Question.getScaledIcon(24));
 			itemReportingNotChecked.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -776,12 +777,12 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
 			statusReportingPopupMenu.add(itemReportingNotChecked);
-			JMenuItem iteReportingYes = new JMenuItem("YES - Variant has been checked and needs to be reported to the patient",Resources.getScaledIcon(Resources.iButtonApply, 24));
+			JMenuItem iteReportingYes = new JMenuItem("YES - Variant has been checked and needs to be reported to the patient",Img.ButtonApply.getScaledIcon(24));
 			iteReportingYes.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -791,12 +792,12 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
 			statusReportingPopupMenu.add(iteReportingYes);
-			JMenuItem itemReportingNo = new JMenuItem("NO - Variant has been checked and doesn’t need to be reported to the patient",Resources.getScaledIcon(Resources.iCross, 24));
+			JMenuItem itemReportingNo = new JMenuItem("NO - Variant has been checked and doesn’t need to be reported to the patient",Img.Cross.getScaledIcon(24));
 			itemReportingNo.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -806,7 +807,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
@@ -828,12 +829,12 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 						}else{
 							JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this, 
 									"You are not authorized to change this flag.", 
-									"Changing reporting", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iUserLock,64));
+									"Changing reporting", JOptionPane.ERROR_MESSAGE, Img.UserLock.getScaledIcon(64));
 						}
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this,  Tools.getMessage("Cannot verify user permission on this variant", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			};
@@ -849,7 +850,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			statusValidated = new JButton();
 			statusValidated.setPreferredSize(new Dimension(28,28));
 			final JPopupMenu statusValidatedPopupMenu = new JPopupMenu();
-			JMenuItem itemValidatedNotChecked = new JMenuItem("NOT_CHECKED - Variant has not been checked in the lab",Resources.getScaledIcon(Resources.iQuestion, 24));
+			JMenuItem itemValidatedNotChecked = new JMenuItem("NOT_CHECKED - Variant has not been checked in the lab",Img.Question.getScaledIcon(24));
 			itemValidatedNotChecked.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -860,12 +861,12 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
 			statusValidatedPopupMenu.add(itemValidatedNotChecked);
-			JMenuItem itemValidatedValidated = new JMenuItem("VALIDATED - Variant has been tested in the lab and CONFIRMED to be true",Resources.getScaledIcon(Resources.iButtonApply, 24));
+			JMenuItem itemValidatedValidated = new JMenuItem("VALIDATED - Variant has been tested in the lab and CONFIRMED to be true",Img.ButtonApply.getScaledIcon(24));
 			itemValidatedValidated.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -876,12 +877,12 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
 			statusValidatedPopupMenu.add(itemValidatedValidated);
-			JMenuItem itemValidatedInvalidated = new JMenuItem("INVALIDATED - Variant has been tested in the lab and was NOT found",Resources.getScaledIcon(Resources.iCross, 24));
+			JMenuItem itemValidatedInvalidated = new JMenuItem("INVALIDATED - Variant has been tested in the lab and was NOT found",Img.Cross.getScaledIcon(24));
 			itemValidatedInvalidated.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -892,12 +893,12 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
 			statusValidatedPopupMenu.add(itemValidatedInvalidated);
-			JMenuItem itemValidatedSuspect = new JMenuItem("SUSPECT - Variant has been tested in the lab, but cannot be confirmed or invalidate",Resources.getScaledIcon(Resources.iAttention, 24));
+			JMenuItem itemValidatedSuspect = new JMenuItem("SUSPECT - Variant has been tested in the lab, but cannot be confirmed or invalidate",Img.Attention.getScaledIcon(24));
 			itemValidatedSuspect.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -908,7 +909,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
@@ -930,12 +931,12 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 						}else{
 							JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this, 
 									"You are not authorized to change this flag.", 
-									"Changing check_validated_variant", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iUserLock,64));
+									"Changing check_validated_variant", JOptionPane.ERROR_MESSAGE, Img.UserLock.getScaledIcon(64));
 						}
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this,  Tools.getMessage("Cannot verify user permission on this variant", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			};
@@ -951,7 +952,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			statusSomatic = new JButton();
 			statusSomatic.setPreferredSize(new Dimension(28,28));
 			final JPopupMenu statusSomaticPopupMenu = new JPopupMenu();
-			JMenuItem itemSomaticNotChecked = new JMenuItem("NOT_CHECKED - Variant has not been checked for mosaicism",Resources.getScaledIcon(Resources.iQuestion, 24));
+			JMenuItem itemSomaticNotChecked = new JMenuItem("NOT_CHECKED - Variant has not been checked for mosaicism",Img.Question.getScaledIcon(24));
 			itemSomaticNotChecked.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -962,12 +963,12 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
 			statusSomaticPopupMenu.add(itemSomaticNotChecked);
-			JMenuItem itemMosaicismSomatic = new JMenuItem("SOMATIC - Variant has been checked and seems to be a somatic variant",Resources.getScaledIcon(Resources.iButtonApply, 24));
+			JMenuItem itemMosaicismSomatic = new JMenuItem("SOMATIC - Variant has been checked and seems to be a somatic variant",Img.ButtonApply.getScaledIcon(24));
 			itemMosaicismSomatic.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -978,12 +979,12 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
 			statusSomaticPopupMenu.add(itemMosaicismSomatic);
-			JMenuItem itemMosaicismGermline = new JMenuItem("GERMLINE - Variant has been checked and seems to be a germline variant",Resources.getScaledIcon(Resources.iCross, 24));
+			JMenuItem itemMosaicismGermline = new JMenuItem("GERMLINE - Variant has been checked and seems to be a germline variant",Img.Cross.getScaledIcon(24));
 			itemMosaicismGermline.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -994,12 +995,12 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
 			statusSomaticPopupMenu.add(itemMosaicismGermline);
-			JMenuItem itemMosaicismDubious = new JMenuItem("DUBIOUS - Variant has been checked for mosaicism but was impossible to differenciate between somatic or germline",Resources.getScaledIcon(Resources.iAttention, 24));
+			JMenuItem itemMosaicismDubious = new JMenuItem("DUBIOUS - Variant has been checked for mosaicism but was impossible to differenciate between somatic or germline",Img.Attention.getScaledIcon(24));
 			itemMosaicismDubious.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -1010,7 +1011,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
@@ -1032,12 +1033,12 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 						}else{
 							JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this, 
 									"You are not authorized to change this flag.", 
-									"Changing check_somatic_variant", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iUserLock,64));
+									"Changing check_somatic_variant", JOptionPane.ERROR_MESSAGE, Img.UserLock.getScaledIcon(64));
 						}
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this,  Tools.getMessage("Cannot verify user permission on this variant", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			};
@@ -1053,7 +1054,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 			statusSegregation = new JButton();
 			statusSegregation.setPreferredSize(new Dimension(28,28));
 			final JPopupMenu statusSegregationPopupMenu = new JPopupMenu();
-			JMenuItem itemSegregationNotChecked = new JMenuItem("NOT_CHECKED - Not checked for segregation",Resources.getScaledIcon(Resources.iQuestion, 24));
+			JMenuItem itemSegregationNotChecked = new JMenuItem("NOT_CHECKED - Not checked for segregation",Img.Question.getScaledIcon(24));
 			itemSegregationNotChecked.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -1064,12 +1065,12 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
 			statusSegregationPopupMenu.add(itemSegregationNotChecked);			
-			JMenuItem itemSegregationSingle = new JMenuItem("SINGLE - No other sample in family",Resources.getScaledIcon(Resources.iQuestion, 24));
+			JMenuItem itemSegregationSingle = new JMenuItem("SINGLE - No other sample in family",Img.Question.getScaledIcon(24));
 			itemSegregationSingle.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -1080,12 +1081,12 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
 			statusSegregationPopupMenu.add(itemSegregationSingle);
-			JMenuItem itemSegregationCoseg = new JMenuItem("COSEG - Variant cosegregates",Resources.getScaledIcon(Resources.iButtonApply, 24));
+			JMenuItem itemSegregationCoseg = new JMenuItem("COSEG - Variant cosegregates",Img.ButtonApply.getScaledIcon(24));
 			itemSegregationCoseg.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -1096,12 +1097,12 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
 			statusSegregationPopupMenu.add(itemSegregationCoseg);
-			JMenuItem itemSegregationCarriers = new JMenuItem("CARRIERS - Some unaffected carrier(s)",Resources.getScaledIcon(Resources.iButtonApply, 24));
+			JMenuItem itemSegregationCarriers = new JMenuItem("CARRIERS - Some unaffected carrier(s)",Img.ButtonApply.getScaledIcon(24));
 			itemSegregationCarriers.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -1112,12 +1113,12 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
 			statusSegregationPopupMenu.add(itemSegregationCarriers);
-			JMenuItem itemSegregationNoCoseg = new JMenuItem("NO_COSEG - Not in other affected(s)",Resources.getScaledIcon(Resources.iCross, 24));
+			JMenuItem itemSegregationNoCoseg = new JMenuItem("NO_COSEG - Not in other affected(s)",Img.Cross.getScaledIcon(24));
 			itemSegregationNoCoseg.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -1128,12 +1129,12 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
 			statusSegregationPopupMenu.add(itemSegregationNoCoseg);
-			JMenuItem itemSegregationNoCosegOther = new JMenuItem("NO_COSEG_OTHER - Does not cosegregate in other families",Resources.getScaledIcon(Resources.i2dMinus, 24));
+			JMenuItem itemSegregationNoCosegOther = new JMenuItem("NO_COSEG_OTHER - Does not cosegregate in other families",Img.Collapse.getScaledIcon(24));
 			itemSegregationNoCosegOther.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -1144,7 +1145,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
@@ -1167,12 +1168,12 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 						}else{
 							JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this, 
 									"You are not authorized to change this flag.", 
-									"Changing check_segregation", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iUserLock,64));
+									"Changing check_segregation", JOptionPane.ERROR_MESSAGE, Img.UserLock.getScaledIcon(64));
 						}
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this,  Tools.getMessage("Cannot verify user permission on this variant", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			};
@@ -1197,7 +1198,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 				commentsPanel.setBorder(BorderFactory.createTitledBorder(Field.evaluation_comments.getName()));
 			}
 			commentsPanel.revalidate();
-			JButton submitCommentsButton = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 20));
+			JButton submitCommentsButton = new JButton(Img.ButtonApply.getScaledIcon(20));
 			submitCommentsButton.setToolTipText("Update evaluation comment in the database");
 			submitCommentsButton.setPreferredSize(new Dimension(28,28));
 			submitCommentsButton.addActionListener(new ActionListener() {
@@ -1217,7 +1218,7 @@ public class DetailsBoxEvaluationAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxEvaluationAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});

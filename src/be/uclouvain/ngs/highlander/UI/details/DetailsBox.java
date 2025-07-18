@@ -64,6 +64,7 @@ import javax.swing.border.BevelBorder;
 
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.Resources.Palette;
 import be.uclouvain.ngs.highlander.administration.users.User.Settings;
@@ -99,9 +100,9 @@ public abstract class DetailsBox extends JPanel implements Transferable, DragSou
 		JPanel north = new JPanel();
 		north.setBackground(Resources.getColor(getColor(), 200, false));
 		north.setLayout(new BorderLayout(0,0));
-		showButton = new JToggleButton(Resources.getScaledIcon(Resources.i2dPlus, 24));
+		showButton = new JToggleButton(Img.Expand.getScaledIcon(24));
 		showButton.setPreferredSize(new Dimension(30,30));
-		showButton.setSelectedIcon(Resources.getScaledIcon(Resources.i2dMinus, 24));
+		showButton.setSelectedIcon(Img.Collapse.getScaledIcon(24));
 		showButton.setToolTipText("Show/Hide section");
 		showButton.setRolloverEnabled(false);
 		showButton.setSelected(visible);		
@@ -121,7 +122,7 @@ public abstract class DetailsBox extends JPanel implements Transferable, DragSou
 		north.add(sectionName, BorderLayout.CENTER);
 		add(north, BorderLayout.NORTH);
 		detailsPanel.setLayout(new BorderLayout(0,0));
-		JLabel loadingLabel = new JLabel(Resources.getScaledIcon(Resources.iLoading, 200));
+		JLabel loadingLabel = new JLabel(Img.Loading.getScaledIcon(200));
 		detailsPanel.add(loadingLabel, BorderLayout.WEST);
 		add(detailsPanel, BorderLayout.CENTER);
 		setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));

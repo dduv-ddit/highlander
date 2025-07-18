@@ -63,6 +63,7 @@ import javax.swing.text.DefaultEditorKit;
 import com.install4j.api.launcher.ApplicationLauncher;
 
 import apple.dts.samplecode.osxadapter.OSXAdapter;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.UI.details.DetailsPanel;
 import be.uclouvain.ngs.highlander.UI.dialog.ProfileTree;
 import be.uclouvain.ngs.highlander.UI.dialog.ProfileTree.Action;
@@ -149,7 +150,7 @@ public class Highlander extends JFrame {
 	}
 	
 	public Highlander(){
-		setIconImage(Resources.getScaledIcon(Resources.iHighlander, 32).getImage());
+		setIconImage(Img.Highlander.getScaledIcon(32).getImage());
 		setTitle("Highlander - " + user.toString() + " is currently connected.");
 		Tools.centerWindow(this, true);
 		initUI();
@@ -170,7 +171,7 @@ public class Highlander extends JFrame {
 			});
 		}catch(Exception ex){
 			Tools.exception(ex);
-			JOptionPane.showMessageDialog(new JFrame(), ex.getMessage(), "Fetching variant statistics", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(new JFrame(), ex.getMessage(), "Fetching variant statistics", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 		refreshTable();
 	}
@@ -186,34 +187,34 @@ public class Highlander extends JFrame {
 		panel_commands.add(tabbedPane, BorderLayout.NORTH);
 
 		databasePanel = new DatabasePanel(this);
-		tabbedPane.addTab(null, Resources.getScaledIcon(Resources.iDbStatus, 32), databasePanel, "Database");
+		tabbedPane.addTab(null, Img.DbStatus.getScaledIcon(32), databasePanel, "Database");
 
 		filteringPanel = new FilteringPanel(this, obs);
-		tabbedPane.addTab(null, Resources.getScaledIcon(Resources.iFilter, 32), filteringPanel, "Filtering");
+		tabbedPane.addTab(null, Img.Filter.getScaledIcon(32), filteringPanel, "Filtering");
 
 		navigationPanel = new NavigationPanel(this);
-		tabbedPane.addTab(null, Resources.getScaledIcon(Resources.iNavigation, 32), navigationPanel, "Navigation");
+		tabbedPane.addTab(null, Img.Navigation.getScaledIcon(32), navigationPanel, "Navigation");
 
 		sortingPanel = new SortingPanel(this);
-		tabbedPane.addTab(null, Resources.getScaledIcon(Resources.iSort, 32), sortingPanel, "Sorting");
+		tabbedPane.addTab(null, Img.Sort.getScaledIcon(32), sortingPanel, "Sorting");
 
 		highlightPanel = new HighlightingPanel(this);
-		tabbedPane.addTab(null, Resources.getScaledIcon(Resources.iHighlighting, 32), highlightPanel, "Highlighting");
+		tabbedPane.addTab(null, Img.Highlighting.getScaledIcon(32), highlightPanel, "Highlighting");
 
 		searchPanel = new SearchPanel(this);
-		tabbedPane.addTab(null, Resources.getScaledIcon(Resources.iSearch, 32), searchPanel, "Search");
+		tabbedPane.addTab(null, Img.Search.getScaledIcon(32), searchPanel, "Search");
 
 		profilePanel = new ProfilePanel(this);
-		tabbedPane.addTab(null, Resources.getScaledIcon(Resources.iUser, 32), profilePanel, "Profile");
+		tabbedPane.addTab(null, Img.User.getScaledIcon(32), profilePanel, "Profile");
 
 		toolsPanel = new ToolsPanel(this);
-		tabbedPane.addTab(null, Resources.getScaledIcon(Resources.iTools, 32), toolsPanel, "Tools");
+		tabbedPane.addTab(null, Img.Tools.getScaledIcon(32), toolsPanel, "Tools");
 
 		helpPanel = new HelpPanel();
-		tabbedPane.addTab(null, Resources.getScaledIcon(Resources.iHelp, 32), helpPanel, "Help");
+		tabbedPane.addTab(null, Img.Help.getScaledIcon(32), helpPanel, "Help");
 
 		logoPanel = new LogoPanel();
-		tabbedPane.addTab(null, Resources.getHeightScaledIcon(Resources.iLogoDeDuveUCLouvain, 32), logoPanel, "About Highlander");
+		tabbedPane.addTab(null, Img.LogoDeDuveUCLouvain.getHeightScaledIcon(32), logoPanel, "About Highlander");
 		
 		final JSplitPane splitpanel_main = new JSplitPane();
 		splitpanel_main.setResizeWeight(0.7);
@@ -294,7 +295,7 @@ public class Highlander extends JFrame {
 				OSXAdapter.setQuitHandler(this, getClass().getDeclaredMethod("quit", (Class[])null));
 				OSXAdapter.setAboutHandler(this, getClass().getDeclaredMethod("about", (Class[])null));
 				OSXAdapter.setPreferencesHandler(this, getClass().getDeclaredMethod("preferences", (Class[])null));
-				OSXAdapter.setDockIconImage(Resources.getScaledIcon(Resources.iHighlander, 64).getImage());
+				OSXAdapter.setDockIconImage(Img.Highlander.getScaledIcon(64).getImage());
 			} catch (Exception ex) {
 				System.err.println("Error while loading the OSXAdapter:");
 				Tools.exception(ex);
@@ -309,7 +310,7 @@ public class Highlander extends JFrame {
 					"Some fields in your filter '" + f.getFilterType().getName() + "' are incompatible with the selected analysis. " +
 							"\nThis filter will be removed before switching to analysis '"+analysis+"', so make sure it has been saved to your profile if required. " +
 							"\nDo you still want to switch to analysis '"+analysis+"' now ?", 
-							"Switching analysis", JOptionPane.YES_NO_OPTION , JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+							"Switching analysis", JOptionPane.YES_NO_OPTION , JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			if (res == JOptionPane.NO_OPTION){
 				databasePanel.switchBack(currentAnalysis);
 				return;
@@ -321,7 +322,7 @@ public class Highlander extends JFrame {
 						"Some fields in your highlighting rules '" + h.getFieldName() + "' are incompatible with the selected analysis. " +
 								"\nThis highlighting criterion will be removed before switching to analysis '"+analysis+"', so make sure it has been saved to your profile if required. " +
 								"\nDo you still want to switch to analysis '"+analysis+"' now ?", 
-								"Switching analysis", JOptionPane.YES_NO_OPTION , JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								"Switching analysis", JOptionPane.YES_NO_OPTION , JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				if (res == JOptionPane.NO_OPTION){
 					databasePanel.switchBack(currentAnalysis);
 					return;
@@ -356,7 +357,7 @@ public class Highlander extends JFrame {
 				loginBox.setProxyPasswordIfNecessary();
 				return new User(loginBox.getUsername(), loginBox.getEncryptedPassword()) ;
 			} catch (Exception ex) {
-				JOptionPane.showMessageDialog(new JFrame(), ex.getMessage(), "Can't login", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				JOptionPane.showMessageDialog(new JFrame(), ex.getMessage(), "Can't login", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				return null;
 			}
 		} else {
@@ -458,7 +459,7 @@ public class Highlander extends JFrame {
 				}catch (Exception ex){
 					Tools.exception(ex);
 					JOptionPane.showMessageDialog(this, Tools.getMessage("Problem when executing query", ex), "Executing query",
-							JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+							JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}finally{
 					waitingPanel.forceStop();
 				}
@@ -476,7 +477,7 @@ public class Highlander extends JFrame {
 					sb.append("-" + cause + "\n");
 				}
 				JOptionPane.showMessageDialog(new JFrame(), sb.toString(), "Invalid filter",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iFilter,64));
+						JOptionPane.ERROR_MESSAGE, Img.Filter.getScaledIcon(64));
 			}
 		}else{
 			variantsTable.showWelcome();
@@ -496,7 +497,7 @@ public class Highlander extends JFrame {
 			if (Highlander.getLoggedUser().doesPersonalDataExists(UserData.VARIANT_LIST, getCurrentAnalysis().toString(), listName)){
 				int yesno = JOptionPane.showConfirmDialog(new JFrame(), 
 						"You already have a variants list named '"+listName.replace("~", " -> ")+"', do you want to overwrite it ?", 
-						"Overwriting variants list in your profile", JOptionPane.YES_NO_OPTION , JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iDbSave,64));
+						"Overwriting variants list in your profile", JOptionPane.YES_NO_OPTION , JOptionPane.QUESTION_MESSAGE, Img.DbSave.getScaledIcon(64));
 				if (yesno == JOptionPane.NO_OPTION)	return;
 			}
 			VariantsList list = new VariantsList(getCurrentAnalysis(), getColumnSelection(), getCurrentFilter(), 
@@ -504,7 +505,7 @@ public class Highlander extends JFrame {
 			Highlander.getLoggedUser().saveVariantList(list, listName);
 		} catch (Exception ex) {
 			Tools.exception(ex);
-			JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Error", ex), "Save current variants list in your profile", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Error", ex), "Save current variants list in your profile", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 	}
 
@@ -516,7 +517,7 @@ public class Highlander extends JFrame {
 				list.restore();
 			} catch (Exception ex) {
 				Tools.exception(ex);
-				JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Error", ex), "Load variants list from your profile", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Error", ex), "Load variants list from your profile", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}
 		}
 	}
@@ -594,16 +595,16 @@ public class Highlander extends JFrame {
 		}catch (ClassNotFoundException ex){
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Cannot connect to the database", ex), "Connecting to Highlander database",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}catch (SQLException ex){
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Cannot connect to the database", ex), "Connecting to Highlander database",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			System.exit(-1);
 		}catch (Exception ex){
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Problem when connecting the database", ex), "Connecting to Highlander database",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 		try{
 			if (!DB.checkDatabaseVersionCompatibility()){
@@ -618,13 +619,13 @@ public class Highlander extends JFrame {
 								+ "Database on "+parameters.getDbMainHost()+" is version "+dbVersion+".\n"
 								+ "Please update this application or the database to a compatible version.", 
 								"Checking database version compatibility",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				System.exit(-2);	
 			}
 		}catch (Exception ex){
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Cannot retrieve database version", ex), "Checking database version compatibility",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));			
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));			
 			System.exit(-2);
 		}
 		while(user == null){
@@ -634,7 +635,7 @@ public class Highlander extends JFrame {
 				try {
 					user = new User(argUser, Tools.md5Encryption(argPass));
 				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(new JFrame(), ex.getMessage(), "Can't login", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.showMessageDialog(new JFrame(), ex.getMessage(), "Can't login", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					user = login();
 				}
 			}
@@ -645,7 +646,7 @@ public class Highlander extends JFrame {
 		} catch (Exception ex) {
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Cannot retreive Highlander field user widths", ex), "Retreiving Highlander field user widths",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 
 		}
 		final Highlander highlander = new Highlander();

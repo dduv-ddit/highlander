@@ -29,16 +29,14 @@
 
 package be.uclouvain.ngs.highlander.UI.dialog;
 
-import javax.swing.BorderFactory;
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.ListSelectionModel;
-
 import java.awt.BorderLayout;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseAdapter;
@@ -49,19 +47,18 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
-import java.awt.Dimension;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.Toolkit;
-
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.misc.SearchField;
 import be.uclouvain.ngs.highlander.UI.misc.WaitingPanel;
@@ -122,12 +119,12 @@ public class AskUsersDialog extends JDialog {
 	private void initUI(){
 		setModal(true);
 		setTitle("Create a selection of users");
-		setIconImage(Resources.getScaledIcon(Resources.iUser, 64).getImage());
+		setIconImage(Img.User.getScaledIcon(64).getImage());
 
 		JPanel panel = new JPanel();	
 		getContentPane().add(panel, BorderLayout.SOUTH);
 
-		JButton btnOk = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 24));
+		JButton btnOk = new JButton(Img.ButtonApply.getScaledIcon(24));
 		btnOk.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {				
@@ -136,7 +133,7 @@ public class AskUsersDialog extends JDialog {
 		});
 		panel.add(btnOk);
 
-		JButton btnCancel = new JButton(Resources.getScaledIcon(Resources.iCross, 24));
+		JButton btnCancel = new JButton(Img.Cross.getScaledIcon(24));
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -199,7 +196,7 @@ public class AskUsersDialog extends JDialog {
 		gbl_panel_2.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		panel_middle.setLayout(gbl_panel_2);
 
-		JButton button = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleRight, 24));
+		JButton button = new JButton(Img.ArrowDoubleRight.getScaledIcon(24));
 		button.setToolTipText("Add selected user(s) to your selection");
 		button.addActionListener(new ActionListener() {
 			@Override
@@ -213,7 +210,7 @@ public class AskUsersDialog extends JDialog {
 		gbc_button.gridy = 0;
 		panel_middle.add(button, gbc_button);
 
-		JButton button_1 = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleLeft, 24));
+		JButton button_1 = new JButton(Img.ArrowDoubleLeft.getScaledIcon(24));
 		button_1.setToolTipText("Remove selected user(s) from your selection");
 		button_1.addActionListener(new ActionListener() {
 			@Override
@@ -288,7 +285,7 @@ public class AskUsersDialog extends JDialog {
 
 	private void addValues(){		
 		if (singleValue && !selection.isEmpty()){
-			JOptionPane.showMessageDialog(this, "You can only choose one user.", "Too many values", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(this, "You can only choose one user.", "Too many values", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}else{
 			for (int row : tableSource.getSelectedRows()){
 				selection.add((User)tableSource.getValueAt(row, 0));

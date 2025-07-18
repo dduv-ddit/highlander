@@ -47,13 +47,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.dialog.CreateCustomFilter;
 import be.uclouvain.ngs.highlander.UI.dialog.CreateMagicFilter;
 import be.uclouvain.ngs.highlander.UI.dialog.FilteringTree;
-import be.uclouvain.ngs.highlander.UI.dialog.ProfileTree;
 import be.uclouvain.ngs.highlander.UI.dialog.FilteringTree.Result;
+import be.uclouvain.ngs.highlander.UI.dialog.ProfileTree;
 import be.uclouvain.ngs.highlander.UI.dialog.ProfileTree.Action;
 import be.uclouvain.ngs.highlander.UI.misc.HighlanderObserver;
 import be.uclouvain.ngs.highlander.UI.misc.ToolbarScrollablePanel;
@@ -81,7 +81,7 @@ public class FilteringPanel extends JPanel {
 	private JButton btnLoad;
 	private JButton btnLoadAnd;
 	private JButton btnLoadOr;
-	//private JToggleButton btnAutoApply = new JToggleButton(Resources.getScaledIcon(Resources.iButtonAutoApplyGrey, 40));
+	//private JToggleButton btnAutoApply = new JToggleButton(Img.ButtonAutoApplyGrey.getScaledIcon(40));
 
 	private ComboFilter filter = null;
 	private String currentFilterName = null;
@@ -115,7 +115,7 @@ public class FilteringPanel extends JPanel {
 	}
 
 	protected void initWestPanel(JPanel panel_w){
-		JButton btnTreeView = new JButton(Resources.getScaledIcon(Resources.iFilterTree, 40));
+		JButton btnTreeView = new JButton(Img.FilterTree.getScaledIcon(40));
 		btnTreeView.setToolTipText("View/Build filter in a tree interface");
 		btnTreeView.setPreferredSize(new Dimension(54,54));
 		btnTreeView.addActionListener(new ActionListener() {
@@ -126,7 +126,7 @@ public class FilteringPanel extends JPanel {
 		});
 		panel_w.add(btnTreeView);
 
-		JButton btnSave = new JButton(Resources.getScaledIcon(Resources.iDbSave, 40));
+		JButton btnSave = new JButton(Img.DbSave.getScaledIcon(40));
 		btnSave.setToolTipText("Save current filters in your profile");
 		btnSave.setPreferredSize(new Dimension(54,54));
 		btnSave.addActionListener(new ActionListener() {
@@ -137,7 +137,7 @@ public class FilteringPanel extends JPanel {
 		});
 		panel_w.add(btnSave);
 
-		btnLoad = new JButton(Resources.getScaledIcon(Resources.iDbLoad, 40));
+		btnLoad = new JButton(Img.DbLoad.getScaledIcon(40));
 		btnLoad.setToolTipText("Load a filter from your profile");
 		btnLoad.setPreferredSize(new Dimension(54,54));
 		btnLoad.addActionListener(new ActionListener() {
@@ -148,7 +148,7 @@ public class FilteringPanel extends JPanel {
 		});
 		panel_w.add(btnLoad);
 
-		btnLoadAnd = new JButton(Resources.getScaledIcon(Resources.iFilterLoadAnd, 40));
+		btnLoadAnd = new JButton(Img.FilterLoadAnd.getScaledIcon(40));
 		btnLoadAnd.setToolTipText("Add a filter from your profile to the existing ones, using the logical operator AND (i.e. results will be the INTERSECTION of filters)");
 		btnLoadAnd.setPreferredSize(new Dimension(54,54));
 		btnLoadAnd.addActionListener(new ActionListener() {
@@ -160,7 +160,7 @@ public class FilteringPanel extends JPanel {
 		btnLoadAnd.setVisible(false);
 		panel_w.add(btnLoadAnd);
 
-		btnLoadOr = new JButton(Resources.getScaledIcon(Resources.iFilterLoadOr, 40));
+		btnLoadOr = new JButton(Img.FilterLoadOr.getScaledIcon(40));
 		btnLoadOr.setToolTipText("Add a filter from your profile to the existing ones, using the logical operator OR (i.e. results will be the UNION of filters)");
 		btnLoadOr.setPreferredSize(new Dimension(54,54));
 		btnLoadOr.addActionListener(new ActionListener() {
@@ -172,7 +172,7 @@ public class FilteringPanel extends JPanel {
 		btnLoadOr.setVisible(false);
 		panel_w.add(btnLoadOr);
 
-		btnAddCustom = new JButton(Resources.getScaledIcon(Resources.iFilterAddCustom, 40));
+		btnAddCustom = new JButton(Img.FilterAddCustom.getScaledIcon(40));
 		btnAddCustom.setToolTipText("Add a new custom filter");
 		btnAddCustom.addActionListener(new ActionListener() {
 			@Override
@@ -188,7 +188,7 @@ public class FilteringPanel extends JPanel {
 		btnAddCustom.setPreferredSize(new Dimension(54,54));
 		panel_w.add(btnAddCustom);
 
-		btnAddCustomAnd = new JButton(Resources.getScaledIcon(Resources.iFilterAddCustomAnd, 40));
+		btnAddCustomAnd = new JButton(Img.FilterAddCustomAnd.getScaledIcon(40));
 		btnAddCustomAnd.setToolTipText("Add a custom filter to the existing ones, using the logical operator AND (i.e. results will be the INTERSECTION of filters)");
 		btnAddCustomAnd.addActionListener(new ActionListener() {
 			@Override
@@ -205,7 +205,7 @@ public class FilteringPanel extends JPanel {
 		btnAddCustomAnd.setVisible(false);
 		panel_w.add(btnAddCustomAnd);
 
-		btnAddCustomOr = new JButton(Resources.getScaledIcon(Resources.iFilterAddCustomOr, 40));
+		btnAddCustomOr = new JButton(Img.FilterAddCustomOr.getScaledIcon(40));
 		btnAddCustomOr.setToolTipText("Add a custom filter to the existing ones, using the logical operator OR (i.e. results will be the UNION of filters)");
 		btnAddCustomOr.addActionListener(new ActionListener() {
 			@Override
@@ -222,7 +222,7 @@ public class FilteringPanel extends JPanel {
 		btnAddCustomOr.setVisible(false);
 		panel_w.add(btnAddCustomOr);
 
-		btnAddmagic = new JButton(Resources.getScaledIcon(Resources.iFilterAddMagic, 40));
+		btnAddmagic = new JButton(Img.FilterAddMagic.getScaledIcon(40));
 		btnAddmagic.setToolTipText("Add a new magic filter");
 		btnAddmagic.addActionListener(new ActionListener() {
 			@Override
@@ -238,7 +238,7 @@ public class FilteringPanel extends JPanel {
 		btnAddmagic.setPreferredSize(new Dimension(54,54));
 		panel_w.add(btnAddmagic);
 
-		btnAddmagicAnd = new JButton(Resources.getScaledIcon(Resources.iFilterAddMagicAnd, 40));
+		btnAddmagicAnd = new JButton(Img.FilterAddMagicAnd.getScaledIcon(40));
 		btnAddmagicAnd.setToolTipText("Add a magic filter to the existing ones, using the logical operator AND (i.e. results will be the INTERSECTION of filters)");
 		btnAddmagicAnd.addActionListener(new ActionListener() {
 			@Override
@@ -255,7 +255,7 @@ public class FilteringPanel extends JPanel {
 		btnAddmagicAnd.setVisible(false);
 		panel_w.add(btnAddmagicAnd);
 
-		btnAddmagicOr = new JButton(Resources.getScaledIcon(Resources.iFilterAddMagicOr, 40));
+		btnAddmagicOr = new JButton(Img.FilterAddMagicOr.getScaledIcon(40));
 		btnAddmagicOr.setToolTipText("Add a magic filter to the existing ones, using the logical operator OR (i.e. results will be the UNION of filters)");
 		btnAddmagicOr.addActionListener(new ActionListener() {
 			@Override
@@ -274,7 +274,7 @@ public class FilteringPanel extends JPanel {
 	}
 
 	protected void initEastPanel(JPanel panel_e){
-		final JButton btnRemoveAll = new JButton(Resources.getScaledIcon(Resources.iCross, 40));
+		final JButton btnRemoveAll = new JButton(Img.Cross.getScaledIcon(40));
 		btnRemoveAll.setToolTipText("Remove all filtering criteria from the list");
 		btnRemoveAll.setPreferredSize(new Dimension(54,54));
 		btnRemoveAll.addActionListener(new ActionListener() {
@@ -290,7 +290,7 @@ public class FilteringPanel extends JPanel {
 		});
 		panel_e.add(btnRemoveAll);
 
-		final JButton btnSamples = new JButton(Resources.getScaledIcon(Resources.iPatients, 40));
+		final JButton btnSamples = new JButton(Img.Patients.getScaledIcon(40));
 		btnSamples.setToolTipText("Get number and list of samples included using current filtering criteria");
 		btnSamples.setPreferredSize(new Dimension(54,54));
 		btnSamples.addActionListener(new ActionListener() {
@@ -306,7 +306,7 @@ public class FilteringPanel extends JPanel {
 		});
 		panel_e.add(btnSamples);
 
-		final JButton btnCount = new JButton(Resources.getScaledIcon(Resources.iCount, 40));
+		final JButton btnCount = new JButton(Img.Count.getScaledIcon(40));
 		btnCount.setToolTipText("Count variants from the database using current filters");
 		btnCount.setPreferredSize(new Dimension(54,54));
 		btnCount.addActionListener(new ActionListener() {
@@ -322,7 +322,7 @@ public class FilteringPanel extends JPanel {
 		});
 		panel_e.add(btnCount);
 
-		final JButton btnApply = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 40));
+		final JButton btnApply = new JButton(Img.ButtonApply.getScaledIcon(40));
 		btnApply.setToolTipText("Fetch variants from the database using current filters");
 		btnApply.setPreferredSize(new Dimension(54,54));
 		btnApply.addActionListener(new ActionListener() {
@@ -338,10 +338,10 @@ public class FilteringPanel extends JPanel {
 		});
 		panel_e.add(btnApply);
 		/* Not so useful after all ...
-		btnAutoApply = new JToggleButton(Resources.getScaledIcon(Resources.iButtonAutoApplyGrey, 40));
-		btnAutoApply.setSelectedIcon(Resources.getScaledIcon(Resources.iButtonAutoApply, 40));
-		btnAutoApply.setRolloverIcon(Resources.getScaledIcon(Resources.iButtonAutoApply, 40));
-		btnAutoApply.setRolloverSelectedIcon(Resources.getScaledIcon(Resources.iButtonAutoApplyGrey, 40));
+		btnAutoApply = new JToggleButton(Img.ButtonAutoApplyGrey.getScaledIcon(40));
+		btnAutoApply.setSelectedIcon(Img.ButtonAutoApply.getScaledIcon(40));
+		btnAutoApply.setRolloverIcon(Img.ButtonAutoApply.getScaledIcon(40));
+		btnAutoApply.setRolloverSelectedIcon(Img.ButtonAutoApplyGrey.getScaledIcon(40));
 		btnAutoApply.setRolloverEnabled(true);
 		btnAutoApply.setToolTipText("Apply automatically each filtering criteria whenever they are created (can be slow if you plan to build a complex filter)");
 		btnAutoApply.setPreferredSize(new Dimension(54,54));
@@ -398,14 +398,14 @@ public class FilteringPanel extends JPanel {
 			if (Highlander.getLoggedUser().doesPersonalDataExists(UserData.FILTER, Highlander.getCurrentAnalysis().toString(), filterName)){
 				int yesno = JOptionPane.showConfirmDialog(new JFrame(), 
 						"You already have a filter named '"+filterName.replace("~", " -> ")+"', do you want to overwrite it ?", 
-						"Overwriting filter in your profile", JOptionPane.YES_NO_OPTION , JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iDbSave,64));
+						"Overwriting filter in your profile", JOptionPane.YES_NO_OPTION , JOptionPane.QUESTION_MESSAGE, Img.DbSave.getScaledIcon(64));
 				if (yesno == JOptionPane.NO_OPTION)	return;
 			}
 			Highlander.getLoggedUser().saveFilter(filterName, Highlander.getCurrentAnalysis(), filter, false);			
 			currentFilterName = filterName;
 		} catch (Exception ex) {
 			Tools.exception(ex);
-			JOptionPane.showMessageDialog(FilteringPanel.this, Tools.getMessage("Error", ex), "Save current criteria list in your profile", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(FilteringPanel.this, Tools.getMessage("Error", ex), "Save current criteria list in your profile", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 	}
 
@@ -439,7 +439,7 @@ public class FilteringPanel extends JPanel {
 						setFilter(Highlander.getLoggedUser().loadFilter(FilteringPanel.this, Highlander.getCurrentAnalysis(), name), name);				
 					} catch (Exception ex) {
 						Tools.exception(ex);
-						JOptionPane.showMessageDialog(FilteringPanel.this, Tools.getMessage("Error", ex), "Load criteria list from your profile", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.showMessageDialog(FilteringPanel.this, Tools.getMessage("Error", ex), "Load criteria list from your profile", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 				break;
@@ -550,7 +550,7 @@ public class FilteringPanel extends JPanel {
 		if (filter != null && !filter.checkProfileValues()){
 			JOptionPane.showMessageDialog(frame, "Cannot retreive '"+filter.getFirstInexistantProfileList()+"' value list from your profile." +
 					"\nVerify that this list has not been deleted, renamed or is empty.", "Executing query",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iUserListDelete,64));
+					JOptionPane.ERROR_MESSAGE, Img.UserListDelete.getScaledIcon(64));
 		}else if (filter != null){
 			samples = filter.getSamples();
 		}
@@ -558,7 +558,7 @@ public class FilteringPanel extends JPanel {
 		JList<String> list = new JList<>(samples.toArray(new String[0]));
 		JScrollPane scrollPane = new JScrollPane(list);
 		JOptionPane.showMessageDialog(frame, scrollPane, "Query includes " + samples.size() + " samples",
-				JOptionPane.INFORMATION_MESSAGE, Resources.getScaledIcon(Resources.iPatients,64));
+				JOptionPane.INFORMATION_MESSAGE, Img.Patients.getScaledIcon(64));
 	}
 
 	public void countVariants(){
@@ -573,15 +573,15 @@ public class FilteringPanel extends JPanel {
 			if (singleRealCustomFilter != null && !singleRealCustomFilter.checkProfileValues()){
 				JOptionPane.showMessageDialog(frame, "Cannot retreive '"+singleRealCustomFilter.getFirstInexistantProfileList()+"' value list from your profile." +
 						"\nVerify that this list has not been deleted, renamed or is empty.", "Executing query",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iUserListDelete,64));
+						JOptionPane.ERROR_MESSAGE, Img.UserListDelete.getScaledIcon(64));
 			}else if (singleRealCustomFilter != null){
 				String count = Tools.doubleToString(singleRealCustomFilter.retreiveCount(filter.getAllSamples()), 0, false);
 				JOptionPane.showMessageDialog(frame, "Your filters will retreive " + count + " variants.", "Count variants",
-						JOptionPane.INFORMATION_MESSAGE, Resources.getScaledIcon(Resources.iCount,64));
+						JOptionPane.INFORMATION_MESSAGE, Img.Count.getScaledIcon(64));
 			}else{
 				String count = Tools.doubleToString(filter.getResultIds(filter.getAllSamples()).size(), 0, false);
 				JOptionPane.showMessageDialog(frame, "Your filters will retreive " + count + " variants.", "Count variants",
-						JOptionPane.INFORMATION_MESSAGE, Resources.getScaledIcon(Resources.iCount,64));
+						JOptionPane.INFORMATION_MESSAGE, Img.Count.getScaledIcon(64));
 
 			}
 		} catch (com.mysql.cj.jdbc.exceptions.MySQLStatementCancelledException ex){
@@ -589,7 +589,7 @@ public class FilteringPanel extends JPanel {
 		}catch (Exception ex){
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(this, Tools.getMessage("Problem when executing query", ex), "Executing query",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}finally{
 			Highlander.waitingPanel.forceStop();
 		}			
@@ -601,7 +601,7 @@ public class FilteringPanel extends JPanel {
 				if(!(Highlander.getLoggedUser().compareFilter(currentFilterName, Highlander.getCurrentAnalysis(), filter))){
 					int yesno = JOptionPane.showConfirmDialog(new JFrame(), 
 							"Do you want to save the modifications of your filter '"+currentFilterName+"' ?", 
-							"Saving filter", JOptionPane.YES_NO_CANCEL_OPTION , JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iFilter,64));
+							"Saving filter", JOptionPane.YES_NO_CANCEL_OPTION , JOptionPane.QUESTION_MESSAGE, Img.Filter.getScaledIcon(64));
 					if (yesno == JOptionPane.YES_OPTION)	{
 						saveCurrentFilter(mainFrame);
 						return true;
@@ -618,7 +618,7 @@ public class FilteringPanel extends JPanel {
 		}else if (filter != null){
 			int yesno = JOptionPane.showConfirmDialog(new JFrame(), 
 					"Do you want to save your filter ?", 
-					"Saving filter", JOptionPane.YES_NO_CANCEL_OPTION , JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iFilter,64));
+					"Saving filter", JOptionPane.YES_NO_CANCEL_OPTION , JOptionPane.QUESTION_MESSAGE, Img.Filter.getScaledIcon(64));
 			if (yesno == JOptionPane.YES_OPTION)	{
 				saveCurrentFilter(mainFrame);
 				return true;

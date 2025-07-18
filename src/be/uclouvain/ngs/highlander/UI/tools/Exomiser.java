@@ -41,11 +41,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.net.URLConnection;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -66,17 +69,12 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 
-import org.apache.commons.httpclient.Credentials;
-import org.apache.commons.httpclient.HostConfiguration;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.NTCredentials;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import org.apache.commons.httpclient.methods.MultipartPostMethod;
-
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Resources.Palette;
 import be.uclouvain.ngs.highlander.Tools;
+import be.uclouvain.ngs.highlander.Tools.HttpUtility.Callback;
 import be.uclouvain.ngs.highlander.UI.dialog.AskListOfHPOTermDialog;
 import be.uclouvain.ngs.highlander.UI.misc.WaitingPanel;
 import be.uclouvain.ngs.highlander.UI.misc.WrapLayout;
@@ -459,7 +457,7 @@ public enum Mode {SAMPLE,FAMILY}
 			}catch (Exception ex){
 				Tools.exception(ex);
 				JOptionPane.showMessageDialog(Exomiser.this,  "Problem when fetching other family members", "Exomiser",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));				
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));				
 			}
 		}
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -493,7 +491,7 @@ public enum Mode {SAMPLE,FAMILY}
 
 	private void initUI(){
 		setTitle("Exomiser - " + mode + " mode");
-		setIconImage(Resources.getScaledIcon(Resources.iExomiser, 64).getImage());
+		setIconImage(Img.Exomiser.getScaledIcon(64).getImage());
 
 		setLayout(new BorderLayout());
 
@@ -509,8 +507,8 @@ public enum Mode {SAMPLE,FAMILY}
 		center.add(getPanelHPO(center), new GridBagConstraints(0, a++, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(20, 20, 0, 20), 0, 0));
 		
 		advancedParamatersPanel = getPanelAdvancedParameters();
-		final JToggleButton advancedButton = new JToggleButton("Set advanced parameters for Exomiser", Resources.getScaledIcon(Resources.iSortAsc, 24));
-		advancedButton.setSelectedIcon(Resources.getScaledIcon(Resources.iSortDesc, 24));
+		final JToggleButton advancedButton = new JToggleButton("Set advanced parameters for Exomiser", Img.SortAsc.getScaledIcon(24));
+		advancedButton.setSelectedIcon(Img.SortDesc.getScaledIcon(24));
 		advancedButton.setToolTipText("Show/Hide section");
 		advancedButton.setRolloverEnabled(false);
 		advancedButton.setSelected(false);		
@@ -571,7 +569,7 @@ public enum Mode {SAMPLE,FAMILY}
 		JPanel panel = new JPanel();
 		
 		if (mode == Mode.SAMPLE) {
-			JButton downloadReportButton = new JButton("Download all available reports", Resources.getScaledIcon(Resources.iDownload, 24));
+			JButton downloadReportButton = new JButton("Download all available reports", Img.Download.getScaledIcon(24));
 			downloadReportButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -597,14 +595,14 @@ public enum Mode {SAMPLE,FAMILY}
 													}catch(IOException ex) {
 														Tools.exception(ex);
 														JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error", ex), "Exomiser",
-																JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+																JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 													}																							
 												}
 											}
-										JOptionPane.showMessageDialog(new JFrame(), "All reports downloaded in " + txtFieldOutputDir.getText(), "Download all available reports",	JOptionPane.PLAIN_MESSAGE, Resources.getScaledIcon(Resources.iDownload,64));
+										JOptionPane.showMessageDialog(new JFrame(), "All reports downloaded in " + txtFieldOutputDir.getText(), "Download all available reports",	JOptionPane.PLAIN_MESSAGE, Img.Download.getScaledIcon(64));
 									}catch (Exception ex) {
 										Tools.exception(ex);
-										JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error", ex), "Exomiser",	JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+										JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error", ex), "Exomiser",	JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 									}
 									SwingUtilities.invokeLater(new Runnable() {
 										@Override
@@ -621,7 +619,7 @@ public enum Mode {SAMPLE,FAMILY}
 			});
 			panel.add(downloadReportButton);			
 
-			JButton runAllMissingButton = new JButton("Run Exomiser on all missing", Resources.getScaledIcon(Resources.iRun, 24));
+			JButton runAllMissingButton = new JButton("Run Exomiser on all missing", Img.Run.getScaledIcon(24));
 			runAllMissingButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -642,7 +640,7 @@ public enum Mode {SAMPLE,FAMILY}
 			panel.add(runAllMissingButton);
 		}
 	
-		JButton btnClose = new JButton("Close", Resources.getScaledIcon(Resources.iCross, 24));
+		JButton btnClose = new JButton("Close", Img.Cross.getScaledIcon(24));
 		btnClose.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -660,7 +658,7 @@ public enum Mode {SAMPLE,FAMILY}
 		panel.add(new JLabel("Download directory"), new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(2, 0, 0, 0), 0, 0));
 		txtFieldOutputDir = new JTextField(Tools.getHomeDirectory().toString());
 		panel.add(txtFieldOutputDir, new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(2, 5, 0, 5), 0, 0));
-		JButton browseDir = new JButton(Resources.getScaledIcon(Resources.iFolder, 24));
+		JButton browseDir = new JButton(Img.Folder.getScaledIcon(24));
 		browseDir.setPreferredSize(new Dimension(32,32));
 		browseDir.setToolTipText("Browse");
 		browseDir.addActionListener(new ActionListener() {
@@ -696,7 +694,7 @@ public enum Mode {SAMPLE,FAMILY}
 		panel.add(hpoTopPanel, BorderLayout.NORTH);
 		JPanel hpoCenterPanel = new JPanel(new WrapLayout(FlowLayout.LEADING));
 		panel.add(hpoCenterPanel, BorderLayout.CENTER);
-		JButton addHPOButton = new JButton("Add phenotype", Resources.getScaledIcon(Resources.i2dPlus, 24));
+		JButton addHPOButton = new JButton("Add phenotype", Img.Expand.getScaledIcon(24));
 		addHPOButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -850,7 +848,7 @@ public enum Mode {SAMPLE,FAMILY}
 			label.setToolTipText(term.getHTMLDescription());
 			panel.add(label, BorderLayout.CENTER);
 			panel.setToolTipText(term.getHTMLDescription());
-			JButton removeHPOButton = new JButton(Resources.getScaledIcon(Resources.i2dMinus, 24));
+			JButton removeHPOButton = new JButton(Img.Collapse.getScaledIcon(24));
 			removeHPOButton.setToolTipText("Remove this phenotype");
 			removeHPOButton.addActionListener(new ActionListener() {
 				@Override
@@ -878,7 +876,7 @@ public enum Mode {SAMPLE,FAMILY}
 		if (pos%2 == 0) panel.setBackground(Resources.getTableEvenRowBackgroundColor(Palette.Indigo));
 		else panel.setBackground(Resources.getTableOddRowBackgroundColor(Palette.Indigo));
 		boolean resultsAvailable = isResultsAvailable(sample);
-		JLabel label = new JLabel(sample, (resultsAvailable ? Resources.getScaledIcon(Resources.iShinyBallGreen, 24) : Resources.getScaledIcon(Resources.iShinyBallRed, 24)), SwingConstants.LEADING);
+		JLabel label = new JLabel(sample, (resultsAvailable ? Img.ShinyBallGreen.getScaledIcon(24) : Img.ShinyBallRed.getScaledIcon(24)), SwingConstants.LEADING);
 		panel.add(label, new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(2, 20, 2, 40), 0, 0));
 		setControlsButtons(panel, sample, label, resultsAvailable);
 		/*
@@ -894,7 +892,7 @@ public enum Mode {SAMPLE,FAMILY}
 		FamilyMember proband = getFamilyProband();
 		JPanel panel = getPanel(proband, -1);
 		boolean resultsAvailable = isResultsAvailable(proband.sample);
-		JLabel label = new JLabel(proband.sample, (resultsAvailable ? Resources.getScaledIcon(Resources.iShinyBallGreen, 24) : Resources.getScaledIcon(Resources.iShinyBallRed, 24)), SwingConstants.LEADING);
+		JLabel label = new JLabel(proband.sample, (resultsAvailable ? Img.ShinyBallGreen.getScaledIcon(24) : Img.ShinyBallRed.getScaledIcon(24)), SwingConstants.LEADING);
 		panel.add(label, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 20, 2, 40), 0, 0));
 		setControlsButtons(panel, proband.sample, label, isResultsAvailable(proband.sample));
 		return panel;
@@ -977,7 +975,7 @@ public enum Mode {SAMPLE,FAMILY}
 	
 	private void setControlsButtons(JPanel panel, String sample, JLabel sampleLabel, boolean resultsAvailable) {
 		if (resultsAvailable) {
-			JButton viewHTMLButton = new JButton("View results", Resources.getScaledIcon(Resources.iExomiser, 24));
+			JButton viewHTMLButton = new JButton("View results", Img.Exomiser.getScaledIcon(24));
 			viewHTMLButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -991,7 +989,7 @@ public enum Mode {SAMPLE,FAMILY}
 									}catch (Exception ex) {
 										Tools.exception(ex);
 										JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error", ex), "Exomiser",
-												JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+												JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 									}
 								}
 							}).start();
@@ -1000,7 +998,7 @@ public enum Mode {SAMPLE,FAMILY}
 				}
 			});
 			panel.add(viewHTMLButton, new GridBagConstraints(10, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
-			JButton downloadReportButton = new JButton("Download report", Resources.getScaledIcon(Resources.iDownload, 24));
+			JButton downloadReportButton = new JButton("Download report", Img.Download.getScaledIcon(24));
 			downloadReportButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -1017,12 +1015,12 @@ public enum Mode {SAMPLE,FAMILY}
 										}catch(IOException ex) {
 											Tools.exception(ex);
 											JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error", ex), "Exomiser",
-													JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+													JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 										}
 									}catch (Exception ex) {
 										Tools.exception(ex);
 										JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error", ex), "Exomiser",
-												JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+												JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 									}
 								}
 							}).start();
@@ -1032,7 +1030,7 @@ public enum Mode {SAMPLE,FAMILY}
 			});
 			panel.add(downloadReportButton, new GridBagConstraints(11, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(2, 2, 2, 30), 0, 0));
 		}else {
-			JButton launchExomiserButton = new JButton("Run Exomiser", Resources.getScaledIcon(Resources.iRun, 24));
+			JButton launchExomiserButton = new JButton("Run Exomiser", Img.Run.getScaledIcon(24));
 			launchExomiserButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -1047,17 +1045,17 @@ public enum Mode {SAMPLE,FAMILY}
 								}
 							});
 							if (runExomiser(sample)) {
-								sampleLabel.setIcon(Resources.getScaledIcon(Resources.iShinyBallPink, 24));
+								sampleLabel.setIcon(Img.ShinyBallPink.getScaledIcon(24));
 								panel.remove(launchExomiserButton);
 								missingResults.remove(launchExomiserButton);
-								JButton checkExomiserStatusButton = new JButton("Check status", Resources.getScaledIcon(Resources.iUpdater, 24));
+								JButton checkExomiserStatusButton = new JButton("Check status", Img.Updater.getScaledIcon(24));
 								runningJobs.add(checkExomiserStatusButton);
 								checkExomiserStatusButton.setToolTipText("<html>You'll be warn by email when results are available<br>You can use this button to check if results are available.<br>If they are, the ball will become green and new buttons will replace this one.<br>Exomiser can take between 20 minutes and 1 hour to finish depending on the sample.</html>");
 								checkExomiserStatusButton.addActionListener(new ActionListener() {
 									@Override
 									public void actionPerformed(ActionEvent e) {
 										if (isResultsAvailable(sample)) {
-											sampleLabel.setIcon(Resources.getScaledIcon(Resources.iShinyBallGreen, 24));
+											sampleLabel.setIcon(Img.ShinyBallGreen.getScaledIcon(24));
 											panel.remove(checkExomiserStatusButton);
 											runningJobs.remove(checkExomiserStatusButton);
 											setControlsButtons(panel, sample, sampleLabel, true);
@@ -1132,18 +1130,18 @@ public enum Mode {SAMPLE,FAMILY}
 	private boolean verifyPedigree() {
 		for (FamilyMember member : familyMembers) {
 			if (member.mother.equals(member.father) && !member.mother.equals("UNAVAILABLE")) {
-				JOptionPane.showMessageDialog(Exomiser.this, member.sample + " - mother and father cannot be the same sample", "Exomiser - verifying pedigree",	JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				JOptionPane.showMessageDialog(Exomiser.this, member.sample + " - mother and father cannot be the same sample", "Exomiser - verifying pedigree",	JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				return false;
 			}
 			if (!member.mother.equals("UNAVAILABLE")) {
 				if (!getFamilyMember(member.mother).include) {
-					JOptionPane.showMessageDialog(Exomiser.this, member.sample + " - mother set to " + member.mother + ", but you have excluded this sample from the pedigree", "Exomiser - verifying pedigree",	JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.showMessageDialog(Exomiser.this, member.sample + " - mother set to " + member.mother + ", but you have excluded this sample from the pedigree", "Exomiser - verifying pedigree",	JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					return false;					
 				}
 			}
 			if (!member.father.equals("UNAVAILABLE")) {
 				if (!getFamilyMember(member.father).include) {
-					JOptionPane.showMessageDialog(Exomiser.this, member.sample + " - father set to " + member.father + ", but you have excluded this sample from the pedigree", "Exomiser - verifying pedigree",	JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.showMessageDialog(Exomiser.this, member.sample + " - father set to " + member.father + ", but you have excluded this sample from the pedigree", "Exomiser - verifying pedigree",	JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					return false;					
 				}
 			}
@@ -1304,11 +1302,11 @@ public enum Mode {SAMPLE,FAMILY}
 
 	private boolean runExomiser(String sample) {
 		if (Highlander.getParameters().getUrlForPhpScripts() == null) {
-			JOptionPane.showMessageDialog(new JFrame(),  "Launching Exomiser impossible: you should configure 'server > php' parameter in settings.xml", "Exomiser",	JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(new JFrame(),  "Launching Exomiser impossible: you should configure 'server > php' parameter in settings.xml", "Exomiser",	JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			return false;
 		}
 		if (hpoTerms.isEmpty()) {
-			JOptionPane.showMessageDialog(new JFrame(),  "Launching Exomiser impossible: you should select at least one phenotype", "Exomiser",	JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(new JFrame(),  "Launching Exomiser impossible: you should select at least one phenotype", "Exomiser",	JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			return false;
 		}
 		if (mode == Mode.FAMILY && getIncludedFamilySize() > 1 && !verifyPedigree()) {
@@ -1319,34 +1317,6 @@ public enum Mode {SAMPLE,FAMILY}
 			File ped = File.createTempFile("nofamily", ".yml");
 			if (mode == Mode.FAMILY && getIncludedFamilySize() > 1) {
 				ped = createamilyPhenoPacket(family);
-			}			
-			HttpClient httpClient = new HttpClient();
-			boolean bypass = false;
-			if (System.getProperty("http.nonProxyHosts") != null) {
-				for (String host : System.getProperty("http.nonProxyHosts").split("\\|")) {
-					if ((Highlander.getParameters().getUrlForPhpScripts()+"/exomiser.php").toLowerCase().contains(host.toLowerCase())) bypass = true;
-				}
-			}
-			if (!bypass && System.getProperty("http.proxyHost") != null) {
-				try {
-					HostConfiguration hostConfiguration = httpClient.getHostConfiguration();
-					hostConfiguration.setProxy(System.getProperty("http.proxyHost"), Integer.parseInt(System.getProperty("http.proxyPort")));
-					httpClient.setHostConfiguration(hostConfiguration);
-					if (System.getProperty("http.proxyUser") != null && System.getProperty("http.proxyPassword") != null) {
-						// Credentials credentials = new UsernamePasswordCredentials(System.getProperty("http.proxyUser"), System.getProperty("http.proxyPassword"));
-						// Windows proxy needs specific credentials with domain ... if proxy user is in the form of domain\\user, consider it's windows
-						String user = System.getProperty("http.proxyUser");
-						Credentials credentials;
-						if (user.contains("\\")) {
-							credentials = new NTCredentials(user.split("\\\\")[1], System.getProperty("http.proxyPassword"), System.getProperty("http.proxyHost"), user.split("\\\\")[0]);
-						}else {
-							credentials = new UsernamePasswordCredentials(user, System.getProperty("http.proxyPassword"));
-						}
-						httpClient.getState().setProxyCredentials(null, System.getProperty("http.proxyHost"), credentials);
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
 			}
 			String otherSamples = "";
 			for (FamilyMember member : familyMembers) {
@@ -1354,37 +1324,43 @@ public enum Mode {SAMPLE,FAMILY}
 					otherSamples += " " + member.sample;
 				}
 			}
-			MultipartPostMethod post = new MultipartPostMethod(Highlander.getParameters().getUrlForPhpScripts()+"/exomiser.php");
-			post.addParameter("analysis", analysis.toString());
-			post.addParameter("sample", sample);
-			post.addParameter("family", otherSamples);
-			post.addParameter("mode", mode.toString().toLowerCase());
-			post.addParameter("email", Highlander.getLoggedUser().getEmail());
-			post.addParameter("yml", yml);
-			post.addParameter("ped", ped);
-			int httpRes = httpClient.executeMethod(post); 
-			if (httpRes == 200) {
-				StringBuilder sb = new StringBuilder();
-				try (InputStreamReader isr = new InputStreamReader(post.getResponseBodyAsStream())){
-					try (BufferedReader br = new BufferedReader(isr)){
-						String line = null;
-						while(((line = br.readLine()) != null)) {
-							System.out.println(line);				
-							sb.append(line+"\n");
-							if (line.contains("*exitcode^1*")) {
-								throw new Exception(sb.toString());
+
+			Map<String,String> params = new LinkedHashMap<>();
+			params.put("analysis", analysis.toString());
+			params.put("sample", sample);
+			params.put("family", otherSamples);
+			params.put("mode", mode.toString().toLowerCase());
+			params.put("email", Highlander.getLoggedUser().getEmail());
+			Map<String,File> files = new LinkedHashMap<>();
+			files.put("yml", yml);
+			files.put("ped", ped);
+			return Tools.HttpUtility.post(Highlander.getParameters().getUrlForPhpScripts()+"/exomiser.php", params, files, new Callback() {
+				@Override
+				public void OnSuccess(URLConnection connection) {
+					StringBuilder sb = new StringBuilder();
+					try (InputStreamReader isr = new InputStreamReader(connection.getInputStream())){
+						try (BufferedReader br = new BufferedReader(isr)){
+							String line = null;
+							while(((line = br.readLine()) != null)) {
+								System.out.println(line);				
+								sb.append(line+"\n");
+								if (line.contains("*exitcode^1*")) {
+									Tools.HttpUtility.setReturnValue(false);
+								}
 							}
 						}
-					}
+					} catch (IOException e) {
+						e.printStackTrace();
+					}				
 				}
-				return true;
-			}else {
-				JOptionPane.showMessageDialog(new JFrame(),  "Cannot launch Exomiser on the server, HTTP error " + httpRes, "Exomiser",	JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
-				return false;
-			}
+				@Override
+				public void OnError(int responseCode, String message) {
+					JOptionPane.showMessageDialog(new JFrame(),  "Cannot launch Exomiser on the server, HTTP error " + responseCode + " ("+message+")", "Exomiser",	JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));					
+				}
+			});
 		}catch (Exception ex){
 			Tools.exception(ex);
-			JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error", ex), "Exomiser",	JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error", ex), "Exomiser",	JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			return false;
 		}		
 	}

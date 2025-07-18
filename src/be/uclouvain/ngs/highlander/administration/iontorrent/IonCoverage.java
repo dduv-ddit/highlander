@@ -89,6 +89,7 @@ import org.apache.poi.xssf.usermodel.XSSFColor;
 
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.Resources.Palette;
 import be.uclouvain.ngs.highlander.UI.dialog.AskSamplesDialog;
@@ -154,7 +155,7 @@ public class IonCoverage extends JFrame {
 		}catch(Exception ex){
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Cannot retreive analysis panels_torrent_caller", ex), "Retreive panels_torrent_caller analysis",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 		try{
 			coverages.clear();
@@ -169,7 +170,7 @@ public class IonCoverage extends JFrame {
 		}catch(Exception ex){
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Cannot retreive coverage columns", ex), "Retreive coverage columns",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 		percent.addAll(coverages);
 		hasHeatMap.addAll(coverages);
@@ -230,14 +231,14 @@ public class IonCoverage extends JFrame {
 
 	private void initUI(){
 		setTitle("Coverage information on panel " + panelCode);
-		setIconImage(Resources.getScaledIcon(Resources.iCoverage, 64).getImage());
+		setIconImage(Img.Coverage.getScaledIcon(64).getImage());
 
 		getContentPane().setLayout(new BorderLayout());
 
 		JPanel panel = new JPanel();	
 		getContentPane().add(panel, BorderLayout.SOUTH);
 
-		JButton btnClose = new JButton(Resources.getScaledIcon(Resources.iCross, 24));
+		JButton btnClose = new JButton(Img.Cross.getScaledIcon(24));
 		btnClose.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -246,7 +247,7 @@ public class IonCoverage extends JFrame {
 		});
 		panel.add(btnClose);
 
-		JButton export = new JButton(Resources.getScaledIcon(Resources.iExcel, 24));
+		JButton export = new JButton(Img.Excel.getScaledIcon(24));
 		export.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -260,7 +261,7 @@ public class IonCoverage extends JFrame {
 		});
 		panel.add(export);
 
-		final JToggleButton colors = new JToggleButton("Germinal", Resources.getScaledIcon(Resources.iHighlighting, 24), germinal);
+		final JToggleButton colors = new JToggleButton("Germinal", Img.Highlighting.getScaledIcon(24), germinal);
 		colors.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -648,7 +649,7 @@ public class IonCoverage extends JFrame {
 		} catch (Exception ex) {
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error", ex), "Coverage information",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 	}
 
@@ -735,11 +736,11 @@ public class IonCoverage extends JFrame {
 			}catch (IOException ex){
 				Tools.exception(ex);
 				JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("I/O error when creating file", ex), "Exporting to Excel",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}catch (Exception ex){
 				Tools.exception(ex);
 				JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error during export", ex), "Exporting to Excel",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}
 		}
 	}

@@ -42,14 +42,14 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.table.JTableHeader;
 
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.misc.WrapLayout;
 import be.uclouvain.ngs.highlander.administration.UI.AdministrationTableModel;
 import be.uclouvain.ngs.highlander.administration.UI.ManagerPanel;
 import be.uclouvain.ngs.highlander.administration.UI.ProjectManager;
-import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
 
 /**
 * @author Raphael Helaers
@@ -93,7 +93,7 @@ public class PopulationsPanel extends ManagerPanel {
 		JPanel southPanel = new JPanel(new WrapLayout(FlowLayout.CENTER));
 		add(southPanel, BorderLayout.SOUTH);
 
-		JButton createNewButton = new JButton("Create new population", Resources.getScaledIcon(Resources.i3dPlus, 16));
+		JButton createNewButton = new JButton("Create new population", Img.AddMain.getScaledIcon(16));
 		createNewButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -108,7 +108,7 @@ public class PopulationsPanel extends ManagerPanel {
 		});
 		southPanel.add(createNewButton);
 
-		JButton renameButton = new JButton("Rename population", Resources.getScaledIcon(Resources.iUpdater, 16));
+		JButton renameButton = new JButton("Rename population", Img.Updater.getScaledIcon(16));
 		renameButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -124,7 +124,7 @@ public class PopulationsPanel extends ManagerPanel {
 		});
 		southPanel.add(renameButton);
 
-		JButton descriptionButton = new JButton("Set description", Resources.getScaledIcon(Resources.iUpdater, 16));
+		JButton descriptionButton = new JButton("Set description", Img.Updater.getScaledIcon(16));
 		descriptionButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -141,7 +141,7 @@ public class PopulationsPanel extends ManagerPanel {
 		});
 		southPanel.add(descriptionButton);
 		
-		JButton deleteButton = new JButton("Delete population", Resources.getScaledIcon(Resources.iCross, 16));
+		JButton deleteButton = new JButton("Delete population", Img.Cross.getScaledIcon(16));
 		deleteButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -219,13 +219,13 @@ public class PopulationsPanel extends ManagerPanel {
 	}
 
 	public void createPopulation(){
-		Object resu = JOptionPane.showInputDialog(this, "Population new name (alphanumeric caracters only and '_')", "Creating population", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.i3dPlus, 64), null, null);
+		Object resu = JOptionPane.showInputDialog(this, "Population new name (alphanumeric caracters only and '_')", "Creating population", JOptionPane.QUESTION_MESSAGE, Img.AddMain.getScaledIcon(64), null, null);
 		if (resu != null){
 			String name = resu.toString();
 			name = name.trim().replace(' ', '_').toUpperCase();
 			Pattern pat = Pattern.compile("[^a-zA-Z0-9_]");
 			if (pat.matcher(name).find()){
-				JOptionPane.showMessageDialog(this, "Population name can only contain alphanumeric caracters and '_'", "Error", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross, 64));
+				JOptionPane.showMessageDialog(this, "Population name can only contain alphanumeric caracters and '_'", "Error", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}else{
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
@@ -242,11 +242,11 @@ public class PopulationsPanel extends ManagerPanel {
 						}
 					}
 					if (count > 0){
-						JOptionPane.showMessageDialog(this, "Population already exists'", "Error", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross, 64));
+						JOptionPane.showMessageDialog(this, "Population already exists'", "Error", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}else if (name.length() > 1000){
-						JOptionPane.showMessageDialog(this, "Population is limited to 1000 characters'", "Error", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross, 64));
+						JOptionPane.showMessageDialog(this, "Population is limited to 1000 characters'", "Error", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}else{
-						Object desc = JOptionPane.showInputDialog(this, "Population full description", "Creating population", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.i3dPlus, 64), null, null);
+						Object desc = JOptionPane.showInputDialog(this, "Population full description", "Creating population", JOptionPane.QUESTION_MESSAGE, Img.AddMain.getScaledIcon(64), null, null);
 						if (desc != null){
 							ProjectManager.toConsole("-----------------------------------------------------");
 							ProjectManager.toConsole("Creating population " + name);
@@ -274,13 +274,13 @@ public class PopulationsPanel extends ManagerPanel {
 	}
 	
 	public void renamePopulation(int populationId, String population){
-		Object nameAsk = JOptionPane.showInputDialog(this, "Population new name (alphanumeric caracters only and '_')", "Renaming population", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iUpdater, 64), null, population);
+		Object nameAsk = JOptionPane.showInputDialog(this, "Population new name (alphanumeric caracters only and '_')", "Renaming population", JOptionPane.QUESTION_MESSAGE, Img.Updater.getScaledIcon(64), null, population);
 		if (nameAsk != null){
 			String name = nameAsk.toString();
 			name = name.trim().replace(' ', '_').toUpperCase();
 			Pattern p = Pattern.compile("[^a-zA-Z0-9_]");
 			if (p.matcher(name).find()){
-				JOptionPane.showMessageDialog(this, "Population name can only contain alphanumeric caracters and '_'", "Error", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross, 64));
+				JOptionPane.showMessageDialog(this, "Population name can only contain alphanumeric caracters and '_'", "Error", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}else if (!population.equals(name)){
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
@@ -297,9 +297,9 @@ public class PopulationsPanel extends ManagerPanel {
 						}
 					}
 					if (count > 0){
-						JOptionPane.showMessageDialog(this, "Population already exists'", "Error", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross, 64));
+						JOptionPane.showMessageDialog(this, "Population already exists'", "Error", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}else if (name.length() > 1000){
-						JOptionPane.showMessageDialog(this, "Population is limited to 1000 characters'", "Error", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross, 64));
+						JOptionPane.showMessageDialog(this, "Population is limited to 1000 characters'", "Error", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}else{
 						ProjectManager.toConsole("-----------------------------------------------------");
 						ProjectManager.toConsole("Renaming population " + population + " to "  + name);
@@ -326,7 +326,7 @@ public class PopulationsPanel extends ManagerPanel {
 	}
 	
 	public void setDescription(int populationId, String population, String currentDescription){
-		Object descriptionAsk = JOptionPane.showInputDialog(this, "Set description of " + population, "Set population description", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iUpdater, 64), null, currentDescription);
+		Object descriptionAsk = JOptionPane.showInputDialog(this, "Set description of " + population, "Set population description", JOptionPane.QUESTION_MESSAGE, Img.Updater.getScaledIcon(64), null, currentDescription);
 		if (descriptionAsk != null){
 			String description = descriptionAsk.toString().trim();
 			if (!currentDescription.equals(description)){
@@ -370,7 +370,7 @@ public class PopulationsPanel extends ManagerPanel {
 				}
 			}
 			if (count == 0){
-				int res = JOptionPane.showConfirmDialog(new JFrame(), "Are you SURE you want to delete population '"+population+"' ?", "Delete population", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				int res = JOptionPane.showConfirmDialog(new JFrame(), "Are you SURE you want to delete population '"+population+"' ?", "Delete population", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Img.Cross.getScaledIcon(64));
 				if (res == JOptionPane.YES_OPTION){
 					ProjectManager.toConsole("-----------------------------------------------------");
 					ProjectManager.toConsole("Deleting population " + population);
@@ -383,7 +383,7 @@ public class PopulationsPanel extends ManagerPanel {
 					});
 				}
 			}else{
-				JOptionPane.showMessageDialog(new JFrame(), count + " samples are still linked to this population.\nPlease first delete those samples or link them to another population.", "Delete population", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				JOptionPane.showMessageDialog(new JFrame(), count + " samples are still linked to this population.\nPlease first delete those samples or link them to another population.", "Delete population", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}
 		}catch(Exception ex){
 			ProjectManager.toConsole(ex);

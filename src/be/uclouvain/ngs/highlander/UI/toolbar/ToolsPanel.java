@@ -64,7 +64,7 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.broad.igv.ui.IGVAccess;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.dialog.AskBamPosDialog;
 import be.uclouvain.ngs.highlander.UI.dialog.AskSamplesDialog;
@@ -118,7 +118,7 @@ public class ToolsPanel extends JPanel {
 	private void initUI(){
 		setLayout(new BorderLayout(0,0));
 
-		JButton showAlignment = new JButton(Resources.getScaledIcon(Resources.iAlignmentSquishedOff, 40));
+		JButton showAlignment = new JButton(Img.AlignmentSquishedOff.getScaledIcon(40));
 		showAlignment.setPreferredSize(new Dimension(54,54));
 		showAlignment.setToolTipText("Alignment Viewer");
 		showAlignment.addActionListener(new ActionListener() {
@@ -133,7 +133,7 @@ public class ToolsPanel extends JPanel {
 			}
 		});
 
-		JButton showAlignmentPinned = new JButton(Resources.getScaledIcon(Resources.iAlignmentPinned, 40));
+		JButton showAlignmentPinned = new JButton(Img.AlignmentPinned.getScaledIcon(40));
 		showAlignmentPinned.setPreferredSize(new Dimension(54,54));
 		showAlignmentPinned.setToolTipText("Launch Alignment Viewer with a selection of samples already pinned");
 		showAlignmentPinned.addActionListener(new ActionListener() {
@@ -148,7 +148,7 @@ public class ToolsPanel extends JPanel {
 			}
 		});
 
-		JButton showInIGV = new JButton(Resources.getScaledIcon(Resources.iIGV, 40));
+		JButton showInIGV = new JButton(Img.IGV.getScaledIcon(40));
 		showInIGV.setPreferredSize(new Dimension(54,54));
 		showInIGV.setToolTipText("View selected variant in IGV");
 		showInIGV.addActionListener(new ActionListener() {
@@ -163,7 +163,7 @@ public class ToolsPanel extends JPanel {
 			}
 		});
 
-		JButton posInIGV = new JButton(Resources.getScaledIcon(Resources.iIGVpos, 40));
+		JButton posInIGV = new JButton(Img.IGVpos.getScaledIcon(40));
 		posInIGV.setPreferredSize(new Dimension(54,54));
 		posInIGV.setToolTipText("View selected position in IGV");
 		posInIGV.addActionListener(new ActionListener() {
@@ -194,7 +194,7 @@ public class ToolsPanel extends JPanel {
 							} catch (Exception ex) {
 								Tools.exception(ex);
 								JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Cannot retreive position for selected variant", ex), "View selected position in IGV",
-										JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+										JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 							}
 						}
 					}
@@ -202,7 +202,7 @@ public class ToolsPanel extends JPanel {
 			}
 		});
 
-		JButton viewBam = new JButton(Resources.getScaledIcon(Resources.iBamViewer, 40));
+		JButton viewBam = new JButton(Img.BamViewer.getScaledIcon(40));
 		viewBam.setPreferredSize(new Dimension(54,54));
 		viewBam.setToolTipText("<html><b>BAM Check</b><br>"
 				+ "View ALL selected positions in a selection of BAM files.<br>"
@@ -220,7 +220,7 @@ public class ToolsPanel extends JPanel {
 			}
 		});
 
-		JButton exportSequence = new JButton(Resources.getScaledIcon(Resources.iExportSequence, 40));
+		JButton exportSequence = new JButton(Img.ExportSequence.getScaledIcon(40));
 		exportSequence.setPreferredSize(new Dimension(54,54));
 		exportSequence.setToolTipText("Export mutated DNA/AA sequences of selected variant(s)");
 		exportSequence.addActionListener(new ActionListener() {
@@ -236,7 +236,7 @@ public class ToolsPanel extends JPanel {
 		});
 
 
-		JButton exportToExcelWithNormalRC = new JButton(Resources.getScaledIcon(Resources.iExcelTN, 40));
+		JButton exportToExcelWithNormalRC = new JButton(Img.ExcelTN.getScaledIcon(40));
 		exportToExcelWithNormalRC.setPreferredSize(new Dimension(54,54));
 		exportToExcelWithNormalRC.setToolTipText("Export current table content to Excel, adding columns with read count for Normal/Tumor pairs");
 		exportToExcelWithNormalRC.addActionListener(new ActionListener() {
@@ -251,7 +251,7 @@ public class ToolsPanel extends JPanel {
 			}
 		});
 
-		JButton burdenTest = new JButton(Resources.getScaledIcon(Resources.iBurdenTest, 40));
+		JButton burdenTest = new JButton(Img.BurdenTest.getScaledIcon(40));
 		burdenTest.setPreferredSize(new Dimension(54,54));
 		burdenTest.setToolTipText("<html><b>Gene burden</b><br>"
 				+ "Display a selection of genes with variants found in Highlander and a public frequency database (e.g. exac).<br>"
@@ -269,7 +269,7 @@ public class ToolsPanel extends JPanel {
 			}
 		});
 
-		JButton pedigreeChecker = new JButton(Resources.getScaledIcon(Resources.iPedigreeChecker, 40));
+		JButton pedigreeChecker = new JButton(Img.PedigreeChecker.getScaledIcon(40));
 		pedigreeChecker.setPreferredSize(new Dimension(54,54));
 		pedigreeChecker.setToolTipText("<html><b>Pedigree checker</b><br>"
 				+ "A table that displays familial relationships between a selection of samples.<br>"
@@ -287,7 +287,7 @@ public class ToolsPanel extends JPanel {
 			}
 		});
 
-		JButton coverage = new JButton(Resources.getScaledIcon(Resources.iCoverage, 40));
+		JButton coverage = new JButton(Img.Coverage.getScaledIcon(40));
 		coverage.setPreferredSize(new Dimension(54,54));
 		coverage.setToolTipText("<html><b>Gene coverage</b><br>"
 				+ "Select a set of genes and a set of sample to display their average read depth and coverage.<br>"
@@ -304,7 +304,7 @@ public class ToolsPanel extends JPanel {
 			}
 		});
 
-		JButton variantAnnotator = new JButton(Resources.getScaledIcon(Resources.iDbSearch, 40));
+		JButton variantAnnotator = new JButton(Img.DbSearch.getScaledIcon(40));
 		variantAnnotator.setPreferredSize(new Dimension(54,54));
 		variantAnnotator.setToolTipText("<html><b>Annotator</b><br>"
 				+ "Get all annotations for a specified variant.<br>"
@@ -322,7 +322,7 @@ public class ToolsPanel extends JPanel {
 			}
 		});
 		
-		JButton download = new JButton(Resources.getScaledIcon(Resources.iDownload, 40));
+		JButton download = new JButton(Img.Download.getScaledIcon(40));
 		download.setPreferredSize(new Dimension(54,54));
 		download.setToolTipText("<html><b>Download data files</b><br>"
 				+ "This tools allow you to download original data files linked to your samples.<br>"
@@ -344,7 +344,7 @@ public class ToolsPanel extends JPanel {
 			}
 		});
 
-		JButton exportToExcel = new JButton(Resources.getScaledIcon(Resources.iExcel, 40));
+		JButton exportToExcel = new JButton(Img.Excel.getScaledIcon(40));
 		exportToExcel.setPreferredSize(new Dimension(54,54));
 		exportToExcel.setToolTipText("Export current table content to Excel");
 		exportToExcel.addActionListener(new ActionListener() {
@@ -359,7 +359,7 @@ public class ToolsPanel extends JPanel {
 			}
 		});
 
-		JButton exportToTSV = new JButton(Resources.getScaledIcon(Resources.iTSV, 40));
+		JButton exportToTSV = new JButton(Img.TSV.getScaledIcon(40));
 		exportToTSV.setPreferredSize(new Dimension(54,54));
 		exportToTSV.setToolTipText("Export current table content to a 'Tab Separated Values' file");
 		exportToTSV.addActionListener(new ActionListener() {
@@ -374,7 +374,7 @@ public class ToolsPanel extends JPanel {
 			}
 		});
 
-		JButton exportToVCF = new JButton(Resources.getScaledIcon(Resources.iVCF, 40));
+		JButton exportToVCF = new JButton(Img.VCF.getScaledIcon(40));
 		exportToVCF.setPreferredSize(new Dimension(54,54));
 		exportToVCF.setToolTipText("Export current table content to a VCF (Variant Calling Format) file");
 		exportToVCF.addActionListener(new ActionListener() {
@@ -389,7 +389,7 @@ public class ToolsPanel extends JPanel {
 			}
 		});
 
-		JButton scanForM6A = new JButton(Resources.getScaledIcon(Resources.iM6A, 40));
+		JButton scanForM6A = new JButton(Img.M6A.getScaledIcon(40));
 		scanForM6A.setPreferredSize(new Dimension(54,54));
 		scanForM6A.setToolTipText("<html><b>M6A Scanner</b><br>"
 				+ "VUS in the 3'UTR may be driving change in M6A mark deposition therefore affecting mRNA stability or translation rate.<br>"
@@ -410,7 +410,7 @@ public class ToolsPanel extends JPanel {
 			}
 		});
 		
-		JButton importHGMD = new JButton(Resources.getScaledIcon(Resources.iHGMD, 40));
+		JButton importHGMD = new JButton(Img.HGMD.getScaledIcon(40));
 		importHGMD.setPreferredSize(new Dimension(54,54));
 		importHGMD.setToolTipText("<html><b>HGMD importation</b><br>"
 				+ "HGMD license doesn't allow Highlander to have their annotations in columns, but they can be saved in <i>public comments</i>.<br>"
@@ -433,7 +433,7 @@ public class ToolsPanel extends JPanel {
 			}
 		});
 		
-		JButton viewRunStatisticsDetails = new JButton(Resources.getScaledIcon(Resources.iRunStatisticsDetails, 40));
+		JButton viewRunStatisticsDetails = new JButton(Img.RunStatisticsDetails.getScaledIcon(40));
 		viewRunStatisticsDetails.setPreferredSize(new Dimension(54,54));
 		viewRunStatisticsDetails.setToolTipText("<html><b>Run statistics (table)</b><br>"
 				+ "A table displaying all available samples with general information about them and run metrics.<br>"
@@ -450,7 +450,7 @@ public class ToolsPanel extends JPanel {
 			}
 		});
 
-		JButton viewRunStatisticsCharts = new JButton(Resources.getScaledIcon(Resources.iRunStatisticsCharts, 40));
+		JButton viewRunStatisticsCharts = new JButton(Img.RunStatisticsCharts.getScaledIcon(40));
 		viewRunStatisticsCharts.setPreferredSize(new Dimension(54,54));
 		viewRunStatisticsCharts.setToolTipText("<html><b>Run statistics (charts)</b><br>"
 				+ "Make a selection of NGS runs to display series of charts (histograms) usefull for quality control.<br>"
@@ -475,7 +475,7 @@ public class ToolsPanel extends JPanel {
 			}
 		});
 
-		JButton viewVariantsDistributionCharts = new JButton(Resources.getScaledIcon(Resources.iChartDouble, 40));
+		JButton viewVariantsDistributionCharts = new JButton(Img.ChartDouble.getScaledIcon(40));
 		viewVariantsDistributionCharts.setPreferredSize(new Dimension(54,54));
 		viewVariantsDistributionCharts.setToolTipText("<html><b>Variant distribution</b><br>"
 				+ "This tool allow to make histograms and pie charts display variant distribution for a specific feature.<br>"
@@ -497,7 +497,7 @@ public class ToolsPanel extends JPanel {
 			}
 		});
 
-		JButton viewFastQC = new JButton(Resources.getScaledIcon(Resources.iFastQC, 40));
+		JButton viewFastQC = new JButton(Img.FastQC.getScaledIcon(40));
 		viewFastQC.setPreferredSize(new Dimension(54,54));
 		viewFastQC.setToolTipText("<html><b>FastQC reports</b><br>"
 				+ "Select one or more NGS runs then go through the FastQC charts of those runs.<br>"
@@ -516,7 +516,7 @@ public class ToolsPanel extends JPanel {
 			}
 		});
 
-		JButton ctdnaEstimation = new JButton(Resources.getScaledIcon(Resources.iCTDNA, 40));
+		JButton ctdnaEstimation = new JButton(Img.CTDNA.getScaledIcon(40));
 		ctdnaEstimation.setPreferredSize(new Dimension(54,54));
 		ctdnaEstimation.setToolTipText("<html><b>ctDNA estimation</b><br>"
 				+ "You can use this tool on pairs of normal/tumor samples to estimate the circulating tumoral DNA proportion (using FACETS data).</html>");
@@ -532,7 +532,7 @@ public class ToolsPanel extends JPanel {
 			}
 		});
 
-		JButton exomiser = new JButton(Resources.getScaledIcon(Resources.iExomiser, 40));
+		JButton exomiser = new JButton(Img.Exomiser.getScaledIcon(40));
 		exomiser.setPreferredSize(new Dimension(54,54));
 		exomiser.setToolTipText("<html><b>Exomiser</b><br>"
 				+ "The Exomiser is a Java program that finds potential disease-causing variants from whole-exome or whole-genome sequencing data. <br>"
@@ -558,7 +558,7 @@ public class ToolsPanel extends JPanel {
 			}
 		});
 		
-		JButton kraken = new JButton(Resources.getScaledIcon(Resources.iKraken, 40));
+		JButton kraken = new JButton(Img.Kraken.getScaledIcon(40));
 		kraken.setPreferredSize(new Dimension(54,54));
 		kraken.setToolTipText("<html><b>Kraken</b><br>"
 				+ "Kraken is a system for assigning taxonomic labels to short DNA sequences.</html>");
@@ -690,7 +690,7 @@ public class ToolsPanel extends JPanel {
 
 	public void bamView(){
 		Object res = JOptionPane.showInputDialog(mainFrame, "Select a reference genome", "Reference genome selection", 
-				JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iReference,64), Reference.getAvailableReferences().toArray(new Reference[0]), Highlander.getCurrentAnalysis().getReference());
+				JOptionPane.QUESTION_MESSAGE, Img.Reference.getScaledIcon(64), Reference.getAvailableReferences().toArray(new Reference[0]), Highlander.getCurrentAnalysis().getReference());
 		if (res != null) {
 			Reference reference = (Reference)res;
 			AskBamPosDialog ask = new AskBamPosDialog(mainFrame, reference);
@@ -707,14 +707,14 @@ public class ToolsPanel extends JPanel {
 	public void exportSequence() {
 		if (mainFrame.getVariantTable().getSelectedVariantsId().isEmpty()) {
 			JOptionPane.showMessageDialog(new JFrame(), "Please select at least 1 variant", "Export mutated sequences",
-					JOptionPane.INFORMATION_MESSAGE, Resources.getScaledIcon(Resources.iExportSequence,64));
+					JOptionPane.INFORMATION_MESSAGE, Img.ExportSequence.getScaledIcon(64));
 		}else {
 			Highlander.waitingPanel.start();
 			int selection = mainFrame.getVariantTable().getSelectedVariantsId().size();
 			Highlander.waitingPanel.setProgressString("Exporting "+Tools.doubleToString(selection, 0, false)+" sequences", false);
 			Highlander.waitingPanel.setProgressMaximum(selection);
 			Object range = JOptionPane.showInputDialog(mainFrame, "How many amino acids around the reference do you want?", "Sequence range", 
-					JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iExportSequence,64), null, 12);
+					JOptionPane.QUESTION_MESSAGE, Img.ExportSequence.getScaledIcon(64), null, 12);
 			if (range != null) {
 				try {
 					int rangeAA = Integer.parseInt(range.toString());
@@ -854,19 +854,19 @@ public class ToolsPanel extends JPanel {
 							Highlander.waitingPanel.forceStop();
 							Tools.exception(ex);
 							JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("I/O error when creating file", ex), "Export mutated sequences",
-									JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+									JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 						}catch (Exception ex){
 							Highlander.waitingPanel.forceStop();
 							Tools.exception(ex);
 							JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error during export", ex), "Export mutated sequences",
-									JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+									JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 						}
 					}	
 				}catch (NumberFormatException ex) {
 					Highlander.waitingPanel.forceStop();
 					Tools.exception(ex);
 					JOptionPane.showMessageDialog(new JFrame(),  range + " is not a valid number of amino acids", "Export mutated sequences",
-							JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+							JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}
 			}	
 			Highlander.waitingPanel.stop();
@@ -897,7 +897,7 @@ public class ToolsPanel extends JPanel {
 				}
 				if (exomes != null) {
 					Object choice = JOptionPane.showInputDialog(null,  "In which mode do you want to use Exomiser ?", "Exomiser",
-							JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iExomiser,64), 
+							JOptionPane.QUESTION_MESSAGE, Img.Exomiser.getScaledIcon(64), 
 							Mode.values(),	Mode.SAMPLE);
 					if (choice != null){
 						Mode mode = Mode.valueOf(choice.toString());
@@ -913,16 +913,16 @@ public class ToolsPanel extends JPanel {
 					}
 				}else {
 					JOptionPane.showMessageDialog(new JFrame(),  "No analysis with sequencing target 'WES' found", "Exomiser",
-							JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+							JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}
 			}else {
 				JOptionPane.showMessageDialog(new JFrame(),  "No report named 'exomiser' has been found in Highlander, please contact your administrator", "Exomiser",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}
 		}catch (Exception ex){
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error", ex), "Exomiser",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 	}
 	
@@ -946,12 +946,12 @@ public class ToolsPanel extends JPanel {
 				}
 			}else {
 				JOptionPane.showMessageDialog(new JFrame(),  "No report named 'kraken' has been found in Highlander, please contact your administrator", "Kraken",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}
 		}catch (Exception ex){
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error", ex), "Kraken",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 	}
 	
@@ -980,7 +980,7 @@ public class ToolsPanel extends JPanel {
 		if (chooser.getFile() != null) {			
 				int results = ConverterHGMD.converterHGMD(new File(chooser.getDirectory() + "/" + chooser.getFile()));
 				JOptionPane.showMessageDialog(new JFrame(),  results + " annotations have been imported from HGMD into public comments", "Importing HGMD",
-						JOptionPane.INFORMATION_MESSAGE, Resources.getScaledIcon(Resources.iHGMD,64));
+						JOptionPane.INFORMATION_MESSAGE, Img.HGMD.getScaledIcon(64));
 		}
 	}
 	
@@ -1015,18 +1015,18 @@ public class ToolsPanel extends JPanel {
 		AnalysisFull analysis = Highlander.getCurrentAnalysis();
 		if (!Highlander.getDB().hasSchema(analysis.getReference(), Schema.ENSEMBL)){
 			JOptionPane.showMessageDialog(new JFrame(),  "ENSEMBL schema is not accessible and is mandatory for using Burden test tool", "Burden test tool",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			return;			
 		}
 		if (mainFrame.getCurrentFilter() == null){
 			JOptionPane.showMessageDialog(new JFrame(),  "You must first create a custom filter.", "Burden test tool",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			return;
 		}
 		ComboFilter filter = mainFrame.getCurrentFilter();
 		if (!filter.isSimple() || filter.getFilter().getFilterType() != FilterType.CUSTOM){
 			JOptionPane.showMessageDialog(new JFrame(),  "You cannot use magic filters with burden test, please remove them first.", "Burden test tool",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			return;
 		}
 		List<Source> sources = new ArrayList<>();
@@ -1034,10 +1034,10 @@ public class ToolsPanel extends JPanel {
 		if (Highlander.getDB().hasSchema(analysis.getReference(), Schema.GONL)) sources.add(Source.GONL);
 		if (sources.isEmpty()){
 			JOptionPane.showMessageDialog(new JFrame(),  "No source schema is available in the Highlander database (e.g. EXAC)", "Burden test tool",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			return;
 		}
-		Object source = JOptionPane.showInputDialog(new JFrame(), "Select a source database", "Source data", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iBurdenTest,64), sources.toArray(new Source[0]), Source.EXAC);
+		Object source = JOptionPane.showInputDialog(new JFrame(), "Select a source database", "Source data", JOptionPane.QUESTION_MESSAGE, Img.BurdenTest.getScaledIcon(64), sources.toArray(new Source[0]), Source.EXAC);
 		if (source != null){
 			BurdenTest bt = new BurdenTest(mainFrame, (Source)source, (CustomFilter)(filter.getFilter()));
 			Tools.centerWindow(bt, true);
@@ -1073,11 +1073,11 @@ public class ToolsPanel extends JPanel {
 			}catch (IOException ex){
 				Tools.exception(ex);
 				JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("I/O error when creating file", ex), "Exporting to Excel",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}catch (Exception ex){
 				Tools.exception(ex);
 				JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error during export", ex), "Exporting to Excel",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}
 		}
 	}
@@ -1098,18 +1098,18 @@ public class ToolsPanel extends JPanel {
 			}catch (IOException ex){
 				Tools.exception(ex);
 				JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("I/O error when creating file", ex), "Exporting to TSV",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}catch (Exception ex){
 				Tools.exception(ex);
 				JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error during export", ex), "Exporting to TSV",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}
 		}
 	}
 
 	public void exportToVCF(){
 		Object sampleSplit = JOptionPane.showInputDialog(null,  "Do you want one multi-sample VCF with all samples,\nor one VCF per sample ?", "Exporting to VCF",
-				JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iVCF,64), new String[]{"Multi-sample VCF","One VCF per sample"}, "Multi-sample VCF");
+				JOptionPane.QUESTION_MESSAGE, Img.VCF.getScaledIcon(64), new String[]{"Multi-sample VCF","One VCF per sample"}, "Multi-sample VCF");
 		if (sampleSplit.toString().equals("Multi-sample VCF")){
 			FileDialog chooser = new FileDialog(new JFrame(), "Output VCF file", FileDialog.SAVE) ;
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -1126,11 +1126,11 @@ public class ToolsPanel extends JPanel {
 				}catch (IOException ex){
 					Tools.exception(ex);
 					JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("I/O error when creating file", ex), "Exporting to VCF",
-							JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+							JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}catch (Exception ex){
 					Tools.exception(ex);
 					JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error during export", ex), "Exporting to VCF",
-							JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+							JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}
 			}			
 		}else {
@@ -1164,11 +1164,11 @@ public class ToolsPanel extends JPanel {
 				}catch (IOException ex){
 					Tools.exception(ex);
 					JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("I/O error when creating file", ex), "Exporting to VCF",
-							JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+							JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}catch (Exception ex){
 					Tools.exception(ex);
 					JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error during export", ex), "Exporting to VCF",
-							JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+							JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}
 			}
 		}
@@ -1177,7 +1177,7 @@ public class ToolsPanel extends JPanel {
 	public void exportToExcelWithNormalRC(){
 		if (Highlander.getCurrentAnalysis().getVariantCaller() != VariantCaller.MUTECT) {
 			JOptionPane.showMessageDialog(new JFrame(),  "You must be in an analysis using MuTect caller", "Exporting to Excel with normal/tumor read count",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}else {
 			FileDialog chooser = new FileDialog(new JFrame(), "Output Excel file", FileDialog.SAVE) ;
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -1194,11 +1194,11 @@ public class ToolsPanel extends JPanel {
 				}catch (IOException ex){
 					Tools.exception(ex);
 					JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("I/O error when creating file", ex), "Exporting to Excel",
-							JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+							JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}catch (Exception ex){
 					Tools.exception(ex);
 					JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error during export", ex), "Exporting to Excel",
-							JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+							JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}
 			}
 		}
@@ -1259,10 +1259,10 @@ public class ToolsPanel extends JPanel {
 			}
 			if (fastqcReport != null) {
 				if (fastqcReport.getPath() == null || fastqcReport.getPath().length() == 0) {
-					JOptionPane.showMessageDialog(this, "FastQC doesn't seem to be present on the Highlander server. \nAdministrator should create a report named (exactly) 'FastQC', and unzip FastQC report in the corresponding path.", "FastQC viewer", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.showMessageDialog(this, "FastQC doesn't seem to be present on the Highlander server. \nAdministrator should create a report named (exactly) 'FastQC', and unzip FastQC report in the corresponding path.", "FastQC viewer", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}else {
 					Object choice = JOptionPane.showInputDialog(null,  "How do you want to display FastQC reports ?", "View FastQC reports",
-							JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iFastQC,64), 
+							JOptionPane.QUESTION_MESSAGE, Img.FastQC.getScaledIcon(64), 
 							new String[]{"Run selection with all samples aggregated on one window","Sample selection with one window per sample"}, 
 							"Run selection with all samples aggregated on one window");
 					if (choice != null){
@@ -1305,12 +1305,12 @@ public class ToolsPanel extends JPanel {
 				}			
 			}else {
 				JOptionPane.showMessageDialog(new JFrame(),  "No report named 'FastQC' has been found in Highlander, please contact your administrator", "View FastQC reports",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}
 		}catch (Exception ex){
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error", ex), "View FastQC reports",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 	}
 

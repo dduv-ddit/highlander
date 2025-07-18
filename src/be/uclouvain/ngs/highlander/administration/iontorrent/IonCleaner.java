@@ -67,18 +67,17 @@ import javax.swing.table.TableRowSorter;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.ChannelSftp.LsEntry;
-
-import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Parameters;
-import be.uclouvain.ngs.highlander.Resources;
-import be.uclouvain.ngs.highlander.Tools;
-import be.uclouvain.ngs.highlander.Parameters.Platform;
-import be.uclouvain.ngs.highlander.UI.misc.WaitingPanel;
-
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpATTRS;
+
+import be.uclouvain.ngs.highlander.Highlander;
+import be.uclouvain.ngs.highlander.Parameters;
+import be.uclouvain.ngs.highlander.Parameters.Platform;
+import be.uclouvain.ngs.highlander.Resources.Img;
+import be.uclouvain.ngs.highlander.Tools;
+import be.uclouvain.ngs.highlander.UI.misc.WaitingPanel;
 
 
 public class IonCleaner extends JFrame {
@@ -111,7 +110,7 @@ public class IonCleaner extends JFrame {
 	static private WaitingPanel waitingPanel;
 
 	public IonCleaner(){
-		setIconImage(Resources.getScaledIcon(Resources.iIonImporter, 32).getImage());
+		setIconImage(Img.IonImporter.getScaledIcon(32).getImage());
 		setTitle("Ion Torrent and Proton projects cleaner " + version);
 		sequencerResults.put(Platform.ION_TORRENT, "/results/analysis/output/Home");
 		sequencerResults.put(Platform.PROTON, "/results/analysis/output/Home");
@@ -222,7 +221,7 @@ public class IonCleaner extends JFrame {
 		JPanel southPanel = new JPanel();
 		getContentPane().add(southPanel, BorderLayout.SOUTH);
 
-		backupButton = new JButton("Backup", Resources.getScaledIcon(Resources.iDbAdd, 16));
+		backupButton = new JButton("Backup", Img.DbAdd.getScaledIcon(16));
 		backupButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -237,7 +236,7 @@ public class IonCleaner extends JFrame {
 		});
 		southPanel.add(backupButton);
 
-		removeButton = new JButton("Remove", Resources.getScaledIcon(Resources.iCross, 16));
+		removeButton = new JButton("Remove", Img.Cross.getScaledIcon(16));
 		removeButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -387,13 +386,13 @@ public class IonCleaner extends JFrame {
 				channelExec.disconnect();
 			}
 			JOptionPane.showMessageDialog(new JFrame(), "Backup is done. Please check the console to see if everything went well.", "Ion Importer",
-					JOptionPane.PLAIN_MESSAGE, Resources.getScaledIcon(Resources.iDbAdd,64));		      
+					JOptionPane.PLAIN_MESSAGE, Img.DbAdd.getScaledIcon(64));		      
 			disconnectFromSequencer(platform);
 			connectToSequencer(platform);
 		}catch(Exception ex){
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Backup", ex), "Ion Cleaner",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));			
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));			
 		}
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -444,13 +443,13 @@ public class IonCleaner extends JFrame {
 				channelExec.disconnect();
 			}
 			JOptionPane.showMessageDialog(new JFrame(), "Deletion is done. Please check the console to see if everything went well.", "Ion Cleaner",
-					JOptionPane.PLAIN_MESSAGE, Resources.getScaledIcon(Resources.iDbAdd,64));		      
+					JOptionPane.PLAIN_MESSAGE, Img.DbAdd.getScaledIcon(64));		      
 			disconnectFromSequencer(platform);
 			connectToSequencer(platform);
 		}catch(Exception ex){
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Remove", ex), "Ion Cleaner",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));			
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));			
 		}
 		if (raw) fillRawData(platform);
 		else fillAnalyses(platform);

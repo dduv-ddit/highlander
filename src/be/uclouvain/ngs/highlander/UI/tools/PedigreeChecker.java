@@ -44,7 +44,6 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -80,15 +79,15 @@ import org.apache.poi.xssf.usermodel.XSSFColor;
 
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Parameters;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.misc.WaitingPanel;
 import be.uclouvain.ngs.highlander.UI.table.HeatMap;
 import be.uclouvain.ngs.highlander.UI.table.HeatMap.ColorRange;
 import be.uclouvain.ngs.highlander.UI.table.HeatMap.ConversionMethod;
 import be.uclouvain.ngs.highlander.database.Field;
-import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.datatype.Analysis;
 
 public class PedigreeChecker extends JFrame {
@@ -108,9 +107,9 @@ public class PedigreeChecker extends JFrame {
 	private Map<String, HeatMap> heatMapsAdj = new TreeMap<String, HeatMap>();
 	private JTabbedPane tabbedPane;
 
-	private ImageIcon iUnknown = Resources.getScaledIcon(Resources.iHelp, 16);
-	private ImageIcon iFemale = Resources.getScaledIcon(Resources.iPedigreeFemale, 16);
-	private ImageIcon iMale = Resources.getScaledIcon(Resources.iPedigreeMale, 16);
+	private ImageIcon iUnknown = Img.Help.getScaledIcon(16);
+	private ImageIcon iFemale = Img.PedigreeFemale.getScaledIcon(16);
+	private ImageIcon iMale = Img.PedigreeMale.getScaledIcon(16);
 
 	static private WaitingPanel waitingPanel;
 
@@ -151,14 +150,14 @@ public class PedigreeChecker extends JFrame {
 
 	private void initUI(){
 		setTitle("Pedigree checker");
-		setIconImage(Resources.getScaledIcon(Resources.iPedigreeChecker, 64).getImage());
+		setIconImage(Img.PedigreeChecker.getScaledIcon(64).getImage());
 
 		setLayout(new BorderLayout());
 
 		JPanel panelTop = new JPanel(new BorderLayout());
 		int height = 150;
 		int width = (int)(2500.0 / (1250.0/height));
-		panelTop.add(new JLabel(new ImageIcon(Resources.iPedigreeCheckerCommon.getImage().getScaledInstance(width, height,  java.awt.Image.SCALE_SMOOTH))), BorderLayout.WEST);
+		panelTop.add(new JLabel(new ImageIcon(Img.PedigreeCheckerCommon.getImage().getScaledInstance(width, height,  java.awt.Image.SCALE_SMOOTH))), BorderLayout.WEST);
 		JTextArea explanation = new JTextArea();
 		explanation.append("This tool will give you some insight about the snp shared between 2 samples.\n");
 		explanation.append("It allows you to guage the degree of relatedness between pairs of sampled individuals and to determine sex.\n");
@@ -185,13 +184,13 @@ public class PedigreeChecker extends JFrame {
 		JScrollPane explScroll = new JScrollPane(explanation);
 		explScroll.setPreferredSize(new Dimension(100, 170));
 		panelTop.add(explScroll, BorderLayout.CENTER);
-		panelTop.add(new JLabel(new ImageIcon(Resources.iPedigreeCheckerAdjusted.getImage().getScaledInstance(width, height,  java.awt.Image.SCALE_SMOOTH))), BorderLayout.EAST);
+		panelTop.add(new JLabel(new ImageIcon(Img.PedigreeCheckerAdjusted.getImage().getScaledInstance(width, height,  java.awt.Image.SCALE_SMOOTH))), BorderLayout.EAST);
 		getContentPane().add(panelTop, BorderLayout.NORTH);
 
 		JPanel panel = new JPanel();	
 		getContentPane().add(panel, BorderLayout.SOUTH);
 
-		JButton export = new JButton(Resources.getScaledIcon(Resources.iExcel, 40));
+		JButton export = new JButton(Img.Excel.getScaledIcon(40));
 		export.setPreferredSize(new Dimension(54,54));
 		export.setToolTipText("Export to an Excel file");
 		export.addActionListener(new ActionListener() {
@@ -417,7 +416,7 @@ public class PedigreeChecker extends JFrame {
 		} catch (Exception ex) {
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error", ex), "Pedigree checker",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -598,11 +597,11 @@ public class PedigreeChecker extends JFrame {
 			}catch (IOException ex){
 				Tools.exception(ex);
 				JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("I/O error when creating file", ex), "Exporting to Excel",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}catch (Exception ex){
 				Tools.exception(ex);
 				JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error during export", ex), "Exporting to Excel",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}
 		}
 	}

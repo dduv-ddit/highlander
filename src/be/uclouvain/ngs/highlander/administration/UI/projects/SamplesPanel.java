@@ -65,7 +65,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.misc.SearchField;
 import be.uclouvain.ngs.highlander.UI.misc.WrapLayout;
@@ -117,7 +117,7 @@ public class SamplesPanel extends ManagerPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Object res = JOptionPane.showInputDialog(manager,  "Set if selected samples are from an index case ('false' by default)", "Index case",
-						JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), new String[]{"true","false"}, null);
+						JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), new String[]{"true","false"}, null);
 				if (res != null){
 					String item = res.toString();
 					for (int row : samplesTable.getSelectedRows()){
@@ -134,7 +134,7 @@ public class SamplesPanel extends ManagerPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Object res = JOptionPane.showInputDialog(manager,  "Set the pathology of selected samples (mandatory)", "Pathology",
-						JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), manager.listPathologies(), null);
+						JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), manager.listPathologies(), null);
 				if (res != null){
 					String item = res.toString();
 					for (int row : samplesTable.getSelectedRows()){
@@ -151,7 +151,7 @@ public class SamplesPanel extends ManagerPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Object res = JOptionPane.showInputDialog(manager,  "Set the population to which individuals of selected samples belong to", "Population",
-						JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), manager.listPopulations(), null);
+						JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), manager.listPopulations(), null);
 				if (res != null){
 					String item = res.toString();
 					for (int row : samplesTable.getSelectedRows()){
@@ -168,7 +168,7 @@ public class SamplesPanel extends ManagerPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Object res = JOptionPane.showInputDialog(manager,  "Set the type of selected samples (mandatory)", "Sample type",
-						JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), SampleType.values(), null);
+						JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), SampleType.values(), null);
 				if (res != null){
 					String item = res.toString();
 					for (int row : samplesTable.getSelectedRows()){
@@ -227,7 +227,12 @@ public class SamplesPanel extends ManagerPanel {
 		samplesTable.getTableHeader().setResizingAllowed(true);
 		samplesTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-		new ExcelAdapter(samplesTable);		
+		ExcelAdapter excelAdapter = new ExcelAdapter();
+		KeyStroke paste = KeyStroke.getKeyStroke(KeyEvent.VK_V,Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(),false);
+		samplesTable.registerKeyboardAction(excelAdapter,"Paste",paste,JComponent.WHEN_FOCUSED);
+		KeyStroke delete = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,0,false);
+		samplesTable.registerKeyboardAction(excelAdapter,"Delete",delete,JComponent.WHEN_FOCUSED);
+;		
 		samplesTable.addKeyListener(new KeyListener() {
 
 			@Override
@@ -258,7 +263,7 @@ public class SamplesPanel extends ManagerPanel {
 		JPanel southPanel = new JPanel(new FlowLayout());
 		add(southPanel, BorderLayout.SOUTH);
 
-		JButton excelButton = new JButton("Export table to Excel", Resources.getScaledIcon(Resources.iExcel, 16));
+		JButton excelButton = new JButton("Export table to Excel", Img.Excel.getScaledIcon(16));
 		excelButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -359,25 +364,14 @@ public class SamplesPanel extends ManagerPanel {
 	public class ExcelAdapter implements ActionListener {
 		private String rowstring,value;
 		private Clipboard system;
-		private JTable table ;
 		/**
 		 * The Excel Adapter is constructed with a
 		 * JTable on which it enables Copy-Paste and acts
 		 * as a Clipboard listener.
 		 */
-		public ExcelAdapter(JTable myJTable){
-			table = myJTable;
-			KeyStroke paste = KeyStroke.getKeyStroke(KeyEvent.VK_V,Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(),false);
-			table.registerKeyboardAction(this,"Paste",paste,JComponent.WHEN_FOCUSED);
-			KeyStroke delete = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,0,false);
-			table.registerKeyboardAction(this,"Delete",delete,JComponent.WHEN_FOCUSED);
+		public ExcelAdapter(){
 			system = Toolkit.getDefaultToolkit().getSystemClipboard();
 		}
-		/**
-		 * Public Accessor methods for the Table on which this adapter acts.
-		 */
-		public JTable getJTable() {return table;}
-		public void setJTable(JTable jTable1) {this.table=jTable1;}
 		/**
 		 * This method is activated on the Keystrokes we are listening to
 		 * in this implementation. Here it listens for Copy and Paste ActionCommands.
@@ -389,8 +383,8 @@ public class SamplesPanel extends ManagerPanel {
 		@Override
 		public void actionPerformed(ActionEvent e){
 			if (e.getActionCommand().compareTo("Paste")==0){
-				int startRow=(table.getSelectedRows())[0];
-				int startCol=(table.getSelectedColumns())[0];
+				int startRow=(samplesTable.getSelectedRows())[0];
+				int startCol=(samplesTable.getSelectedColumns())[0];
 				try	{
 					String trstring= ((String)(system.getContents(this).getTransferData(DataFlavor.stringFlavor))).replace("\r", "\n");
 					String[] st1= trstring.split("\n");
@@ -399,9 +393,9 @@ public class SamplesPanel extends ManagerPanel {
 						String[] st2= rowstring.split("\t");
 						for(int j=0; j < st2.length ;j++)	{
 							value= st2[j];
-							if (startRow+i< table.getRowCount()  &&
-									startCol+j< table.getColumnCount())
-								if (table.isCellEditable(startRow+i,startCol+j)) table.setValueAt(value,startRow+i,startCol+j);
+							if (startRow+i< samplesTable.getRowCount()  &&
+									startCol+j< samplesTable.getColumnCount())
+								if (samplesTable.isCellEditable(startRow+i,startCol+j)) samplesTable.setValueAt(value,startRow+i,startCol+j);
 						}
 					}
 				}	catch(Exception ex){
@@ -410,12 +404,12 @@ public class SamplesPanel extends ManagerPanel {
 				refresh();
 			}else if (e.getActionCommand().compareTo("Delete")==0){
 				try	{
-					for (int row : table.getSelectedRows()){
-						for (int col : table.getSelectedColumns()){
-							if (col != ((SamplesTableModel)(table.getModel())).getColumn("project_id") &&
-									col != ((SamplesTableModel)(table.getModel())).getColumn("run_label") &&
-									col != ((SamplesTableModel)(table.getModel())).getColumn("analyses"))
-								table.setValueAt(null,row,col);
+					for (int row : samplesTable.getSelectedRows()){
+						for (int col : samplesTable.getSelectedColumns()){
+							if (col != ((SamplesTableModel)(samplesTable.getModel())).getColumn("project_id") &&
+									col != ((SamplesTableModel)(samplesTable.getModel())).getColumn("run_label") &&
+									col != ((SamplesTableModel)(samplesTable.getModel())).getColumn("analyses"))
+								samplesTable.setValueAt(null,row,col);
 						}
 					}
 				}	catch(Exception ex){
@@ -488,11 +482,11 @@ public class SamplesPanel extends ManagerPanel {
 			}catch (IOException ex){
 				Tools.exception(ex);
 				JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("I/O error when creating file", ex), "Exporting to Excel",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}catch (Exception ex){
 				Tools.exception(ex);
 				JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error during export", ex), "Exporting to Excel",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}
 		}
 	}
@@ -543,7 +537,7 @@ public class SamplesPanel extends ManagerPanel {
 				switch(colName) {
 				case "family":
 					if (value == null) {
-						JOptionPane.showMessageDialog(new JFrame(), "Family is mandatory and cannot be deleted.", "Validate sample", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iUpdater, 64));
+						JOptionPane.showMessageDialog(new JFrame(), "Family is mandatory and cannot be deleted.", "Validate sample", JOptionPane.ERROR_MESSAGE, Img.Updater.getScaledIcon(64));
 					}else {
 						DB.update(Schema.HIGHLANDER, "UPDATE projects SET" +
 								" `family` = '"+DB.format(Schema.HIGHLANDER, value.toString().trim())+"'" +
@@ -553,7 +547,7 @@ public class SamplesPanel extends ManagerPanel {
 					break;
 				case "individual":
 					if (value == null) {
-						JOptionPane.showMessageDialog(new JFrame(), "Individual is mandatory and cannot be deleted.", "Validate sample", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iUpdater, 64));
+						JOptionPane.showMessageDialog(new JFrame(), "Individual is mandatory and cannot be deleted.", "Validate sample", JOptionPane.ERROR_MESSAGE, Img.Updater.getScaledIcon(64));
 					}else {
 						DB.update(Schema.HIGHLANDER, "UPDATE projects SET" +
 								" `individual` = '"+DB.format(Schema.HIGHLANDER, value.toString().trim())+"'" +
@@ -563,11 +557,11 @@ public class SamplesPanel extends ManagerPanel {
 					break;
 				case "sample":
 					if (value == null) {
-						JOptionPane.showMessageDialog(new JFrame(), "Sample is mandatory and cannot be deleted.", "Validate sample", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iUpdater, 64));
+						JOptionPane.showMessageDialog(new JFrame(), "Sample is mandatory and cannot be deleted.", "Validate sample", JOptionPane.ERROR_MESSAGE, Img.Updater.getScaledIcon(64));
 					}else {
 						String oldName = data[row][col].toString();
 						if (!oldName.equals(value.toString().trim())) {
-							int res = JOptionPane.showConfirmDialog(SamplesPanel.this, "Are you sure you want to rename sample " + oldName +" to " + value.toString().trim() + " ? \nFiles and directories on server will be renamed accordingly !", "Rename sample", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iQuestion,64));
+							int res = JOptionPane.showConfirmDialog(SamplesPanel.this, "Are you sure you want to rename sample " + oldName +" to " + value.toString().trim() + " ? \nFiles and directories on server will be renamed accordingly !", "Rename sample", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Img.Question.getScaledIcon(64));
 							if (res == JOptionPane.YES_OPTION){
 								DB.update(Schema.HIGHLANDER, "UPDATE projects SET" +
 										" `sample` = '"+DB.format(Schema.HIGHLANDER, value.toString().trim())+"'" +
@@ -586,7 +580,7 @@ public class SamplesPanel extends ManagerPanel {
 					break;
 				case "index_case":
 					if (value == null) {
-						JOptionPane.showMessageDialog(new JFrame(), "Index case is mandatory and cannot be deleted.", "Validate sample", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iUpdater, 64));
+						JOptionPane.showMessageDialog(new JFrame(), "Index case is mandatory and cannot be deleted.", "Validate sample", JOptionPane.ERROR_MESSAGE, Img.Updater.getScaledIcon(64));
 					}else {
 						DB.update(Schema.HIGHLANDER, "UPDATE projects SET" +
 								" `index_case` = "+Boolean.parseBoolean(value.toString().trim())+
@@ -596,7 +590,7 @@ public class SamplesPanel extends ManagerPanel {
 					break;
 				case "pathology":
 					if (value == null) {
-						JOptionPane.showMessageDialog(new JFrame(), "Pathology is mandatory and cannot be deleted.", "Validate sample", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iUpdater, 64));
+						JOptionPane.showMessageDialog(new JFrame(), "Pathology is mandatory and cannot be deleted.", "Validate sample", JOptionPane.ERROR_MESSAGE, Img.Updater.getScaledIcon(64));
 					}else {
 						int pathology_id = -1;
 						try (Results res = DB.select(Schema.HIGHLANDER, "SELECT pathology_id FROM pathologies WHERE pathology = '"+value.toString().trim()+"'")){
@@ -636,7 +630,7 @@ public class SamplesPanel extends ManagerPanel {
 					break;
 				case "sample_type":
 					if (value == null) {
-						JOptionPane.showMessageDialog(new JFrame(), "Sample type is mandatory and cannot be deleted.", "Validate sample", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iUpdater, 64));
+						JOptionPane.showMessageDialog(new JFrame(), "Sample type is mandatory and cannot be deleted.", "Validate sample", JOptionPane.ERROR_MESSAGE, Img.Updater.getScaledIcon(64));
 					}else {
 						DB.update(Schema.HIGHLANDER, "UPDATE projects SET" +
 								" `sample_type` = '"+value.toString().trim()+"'" +

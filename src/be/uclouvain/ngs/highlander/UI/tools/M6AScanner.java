@@ -86,6 +86,7 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Parameters;
 import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Resources.Palette;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.misc.AlignmentPanel;
@@ -219,14 +220,14 @@ public class M6AScanner extends JFrame {
 	
 	private void initUI(){
 		setTitle("M6A Scanner");
-		setIconImage(Resources.getScaledIcon(Resources.iM6A, 64).getImage());
+		setIconImage(Img.M6A.getScaledIcon(64).getImage());
 
 		setLayout(new BorderLayout());
 
 		JPanel south = new JPanel();	
 		getContentPane().add(south, BorderLayout.SOUTH);
 
-		JButton export = new JButton(Resources.getScaledIcon(Resources.iExcel, 40));
+		JButton export = new JButton(Img.Excel.getScaledIcon(40));
 		export.setPreferredSize(new Dimension(54,54));
 		export.setToolTipText("Export to an Excel file");
 		export.addActionListener(new ActionListener() {
@@ -501,7 +502,7 @@ public class M6AScanner extends JFrame {
 			waitingPanel.forceStop();
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error", ex), "M6A Scanner",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -696,12 +697,12 @@ public class M6AScanner extends JFrame {
 			waitingPanel.forceStop();
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("I/O error when creating file", ex), "Export M6A scanner results",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}catch (Exception ex){
 			waitingPanel.forceStop();
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error during export", ex), "Export M6A scanner results",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 	}
 	

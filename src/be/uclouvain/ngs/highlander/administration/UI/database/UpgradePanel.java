@@ -35,7 +35,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.administration.UI.ManagerPanel;
 import be.uclouvain.ngs.highlander.administration.UI.ProjectManager;
 import be.uclouvain.ngs.highlander.administration.dbpatcher.DbPatcher;
@@ -64,7 +64,7 @@ public class UpgradePanel extends ManagerPanel {
 		add(centerPanel, BorderLayout.NORTH);
 
 		JPanel southPanel = new JPanel();
-		JButton updateButton = new JButton("Update", Resources.getScaledIcon(Resources.iUpdater, 16));
+		JButton updateButton = new JButton("Update", Img.Updater.getScaledIcon(16));
 		updateButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {

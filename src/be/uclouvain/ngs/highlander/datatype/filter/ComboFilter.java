@@ -58,7 +58,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.dialog.CreateCustomFilter;
 import be.uclouvain.ngs.highlander.UI.dialog.CreateMagicFilter;
@@ -450,7 +450,7 @@ public class ComboFilter extends Filter {
 		add(west,BorderLayout.WEST);
 		buttonsPanel = new JPanel();
 		buttonsPanel.setLayout(new BorderLayout());
-		JButton removeButton = new JButton(Resources.getScaledIcon(Resources.iCross, 16));
+		JButton removeButton = new JButton(Img.Cross.getScaledIcon(16));
 		removeButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -500,14 +500,14 @@ public class ComboFilter extends Filter {
 			case AND:
 				toDisplay.get(i).setBorder(BorderFactory.createLineBorder(new Color(96,74,123),2));
 				if (i < toDisplay.size()-1){
-					JLabel labAnd = new JLabel(Resources.getScaledIcon(Resources.iFilterAnd, 16));
+					JLabel labAnd = new JLabel(Img.FilterAnd.getScaledIcon(16));
 					center.add(labAnd);
 				}
 				break;
 			case OR:
 				toDisplay.get(i).setBorder(BorderFactory.createLineBorder(new Color(244,116,20),2));
 				if (i < toDisplay.size()-1){
-					JLabel labOr = new JLabel(Resources.getScaledIcon(Resources.iFilterOr, 16));
+					JLabel labOr = new JLabel(Img.FilterOr.getScaledIcon(16));
 					center.add(labOr);
 				}
 				break;
@@ -525,7 +525,7 @@ public class ComboFilter extends Filter {
 			buttonsPanel.setLayout(new BorderLayout());
 			add(buttonsPanel,BorderLayout.EAST);
 
-			JButton removeButton = new JButton(Resources.getScaledIcon(Resources.iCross, 16));
+			JButton removeButton = new JButton(Img.Cross.getScaledIcon(16));
 			removeButton.setToolTipText("Delete filter");	
 			removeButton.addActionListener(new ActionListener() {
 				@Override
@@ -544,11 +544,11 @@ public class ComboFilter extends Filter {
 			removeButton.setMargin(new Insets(0, 0, 0, 0));
 			buttonsPanel.add(removeButton,BorderLayout.SOUTH);
 
-			JButton addButton = new JButton(Resources.getScaledIcon(Resources.i3dPlus, 16));
+			JButton addButton = new JButton(Img.AddMain.getScaledIcon(16));
 			final JPopupMenu addButtonPopupMenu = new JPopupMenu();
 			switch(logicop){
 			case OR:
-				JMenuItem itemAddCustomOr = new JMenuItem("Add a Custom Filter, using the logical operator OR (i.e. filter will be the UNION of sub-filters)",Resources.getScaledIcon(Resources.iFilterAddCustomOr, 24));
+				JMenuItem itemAddCustomOr = new JMenuItem("Add a Custom Filter, using the logical operator OR (i.e. filter will be the UNION of sub-filters)",Img.FilterAddCustomOr.getScaledIcon(24));
 				itemAddCustomOr.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -561,7 +561,7 @@ public class ComboFilter extends Filter {
 					}
 				});
 				addButtonPopupMenu.add(itemAddCustomOr);
-				JMenuItem itemAddMagicOr = new JMenuItem("Add a Magic Filter, using the logical operator OR (i.e. filter will be the UNION of sub-filters)",Resources.getScaledIcon(Resources.iFilterAddMagicOr, 24));
+				JMenuItem itemAddMagicOr = new JMenuItem("Add a Magic Filter, using the logical operator OR (i.e. filter will be the UNION of sub-filters)",Img.FilterAddMagicOr.getScaledIcon(24));
 				itemAddMagicOr.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -574,7 +574,7 @@ public class ComboFilter extends Filter {
 					}
 				});
 				addButtonPopupMenu.add(itemAddMagicOr);
-				JMenuItem itemAddProfileOr = new JMenuItem("Load a filter from your profile and add it, using the logical operator OR (i.e. filter will be the UNION of sub-filters)",Resources.getScaledIcon(Resources.iFilterLoadOr, 24));
+				JMenuItem itemAddProfileOr = new JMenuItem("Load a filter from your profile and add it, using the logical operator OR (i.e. filter will be the UNION of sub-filters)",Img.FilterLoadOr.getScaledIcon(24));
 				itemAddProfileOr.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -589,7 +589,7 @@ public class ComboFilter extends Filter {
 				addButtonPopupMenu.add(itemAddProfileOr);
 				break;
 			case AND:
-				JMenuItem itemAddCustomAnd = new JMenuItem("Add a Custom Filter, using the logical operator AND (i.e. filter will be the INTERSECTION of sub-filters)",Resources.getScaledIcon(Resources.iFilterAddCustomAnd, 24));
+				JMenuItem itemAddCustomAnd = new JMenuItem("Add a Custom Filter, using the logical operator AND (i.e. filter will be the INTERSECTION of sub-filters)",Img.FilterAddCustomAnd.getScaledIcon(24));
 				itemAddCustomAnd.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -602,7 +602,7 @@ public class ComboFilter extends Filter {
 					}
 				});
 				addButtonPopupMenu.add(itemAddCustomAnd);
-				JMenuItem itemAddMagicAnd = new JMenuItem("Add a Magic Filter, using the logical operator AND (i.e. filter will be the INTERSECTION of sub-filters)",Resources.getScaledIcon(Resources.iFilterAddMagicAnd, 24));
+				JMenuItem itemAddMagicAnd = new JMenuItem("Add a Magic Filter, using the logical operator AND (i.e. filter will be the INTERSECTION of sub-filters)",Img.FilterAddMagicAnd.getScaledIcon(24));
 				itemAddMagicAnd.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -615,7 +615,7 @@ public class ComboFilter extends Filter {
 					}
 				});
 				addButtonPopupMenu.add(itemAddMagicAnd);
-				JMenuItem itemAddProfileAnd = new JMenuItem("Load a filter from your profile and add it, using the logical operator AND (i.e. filter will be the INTERSECTION of sub-filters)",Resources.getScaledIcon(Resources.iFilterLoadAnd, 24));
+				JMenuItem itemAddProfileAnd = new JMenuItem("Load a filter from your profile and add it, using the logical operator AND (i.e. filter will be the INTERSECTION of sub-filters)",Img.FilterLoadAnd.getScaledIcon(24));
 				itemAddProfileAnd.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -783,7 +783,7 @@ public class ComboFilter extends Filter {
 				}
 			} catch (Exception ex) {
 				Tools.exception(ex);
-				JOptionPane.showMessageDialog(filteringPanel, Tools.getMessage("Error", ex), "Load criteria list from your profile", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				JOptionPane.showMessageDialog(filteringPanel, Tools.getMessage("Error", ex), "Load criteria list from your profile", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}
 		}
 	}
@@ -820,11 +820,11 @@ public class ComboFilter extends Filter {
 				comboList.add(comboFilter);
 			}
 
-			JButton addButton = new JButton(Resources.getScaledIcon(Resources.i3dPlus, 16));
+			JButton addButton = new JButton(Img.AddMain.getScaledIcon(16));
 			final JPopupMenu addButtonPopupMenu = new JPopupMenu();
 			switch(logicop){
 			case AND:
-				JMenuItem itemAddCustomOr = new JMenuItem("Add a Custom Filter, using the logical operator OR (i.e. filter will be the UNION of sub-filters)",Resources.getScaledIcon(Resources.iFilterAddCustomOr, 24));
+				JMenuItem itemAddCustomOr = new JMenuItem("Add a Custom Filter, using the logical operator OR (i.e. filter will be the UNION of sub-filters)",Img.FilterAddCustomOr.getScaledIcon(24));
 				itemAddCustomOr.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -837,7 +837,7 @@ public class ComboFilter extends Filter {
 					}
 				});
 				addButtonPopupMenu.add(itemAddCustomOr);
-				JMenuItem itemAddMagicOr = new JMenuItem("Add a Magic Filter, using the logical operator OR (i.e. filter will be the UNION of sub-filters)",Resources.getScaledIcon(Resources.iFilterAddMagicOr, 24));
+				JMenuItem itemAddMagicOr = new JMenuItem("Add a Magic Filter, using the logical operator OR (i.e. filter will be the UNION of sub-filters)",Img.FilterAddMagicOr.getScaledIcon(24));
 				itemAddMagicOr.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -850,7 +850,7 @@ public class ComboFilter extends Filter {
 					}
 				});
 				addButtonPopupMenu.add(itemAddMagicOr);
-				JMenuItem itemAddProfileOr = new JMenuItem("Load a filter from your profile and add it, using the logical operator OR (i.e. filter will be the UNION of sub-filters)",Resources.getScaledIcon(Resources.iFilterLoadOr, 24));
+				JMenuItem itemAddProfileOr = new JMenuItem("Load a filter from your profile and add it, using the logical operator OR (i.e. filter will be the UNION of sub-filters)",Img.FilterLoadOr.getScaledIcon(24));
 				itemAddProfileOr.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -865,7 +865,7 @@ public class ComboFilter extends Filter {
 				addButtonPopupMenu.add(itemAddProfileOr);
 				break;
 			case OR:
-				JMenuItem itemAddCustomAnd = new JMenuItem("Add a Custom Filter, using the logical operator AND (i.e. filter will be the INTERSECTION of sub-filters)",Resources.getScaledIcon(Resources.iFilterAddCustomAnd, 24));
+				JMenuItem itemAddCustomAnd = new JMenuItem("Add a Custom Filter, using the logical operator AND (i.e. filter will be the INTERSECTION of sub-filters)",Img.FilterAddCustomAnd.getScaledIcon(24));
 				itemAddCustomAnd.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -878,7 +878,7 @@ public class ComboFilter extends Filter {
 					}
 				});
 				addButtonPopupMenu.add(itemAddCustomAnd);
-				JMenuItem itemAddMagicAnd = new JMenuItem("Add a Magic Filter, using the logical operator AND (i.e. filter will be the INTERSECTION of sub-filters)",Resources.getScaledIcon(Resources.iFilterAddMagicAnd, 24));
+				JMenuItem itemAddMagicAnd = new JMenuItem("Add a Magic Filter, using the logical operator AND (i.e. filter will be the INTERSECTION of sub-filters)",Img.FilterAddMagicAnd.getScaledIcon(24));
 				itemAddMagicAnd.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -891,7 +891,7 @@ public class ComboFilter extends Filter {
 					}
 				});
 				addButtonPopupMenu.add(itemAddMagicAnd);
-				JMenuItem itemAddProfileAnd = new JMenuItem("Load a filter from your profile and add it, using the logical operator AND (i.e. filter will be the INTERSECTION of sub-filters)",Resources.getScaledIcon(Resources.iFilterLoadAnd, 24));
+				JMenuItem itemAddProfileAnd = new JMenuItem("Load a filter from your profile and add it, using the logical operator AND (i.e. filter will be the INTERSECTION of sub-filters)",Img.FilterLoadAnd.getScaledIcon(24));
 				itemAddProfileAnd.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {

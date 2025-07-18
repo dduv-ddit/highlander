@@ -29,12 +29,21 @@
 
 package be.uclouvain.ngs.highlander.UI.toolbar;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.dialog.CreateHeatMapCriterion;
 import be.uclouvain.ngs.highlander.UI.dialog.CreateHighlightCriterion;
@@ -46,17 +55,6 @@ import be.uclouvain.ngs.highlander.administration.users.User.UserData;
 import be.uclouvain.ngs.highlander.datatype.HeatMapCriterion;
 import be.uclouvain.ngs.highlander.datatype.HighlightCriterion;
 import be.uclouvain.ngs.highlander.datatype.HighlightingRule;
-
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-
-import javax.swing.JButton;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.FlowLayout;
-import java.util.ArrayList;
-import java.util.List;
 
 public class HighlightingPanel extends JPanel {
 	
@@ -72,7 +70,7 @@ public class HighlightingPanel extends JPanel {
 		
 		JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		
-		JButton btnSave = new JButton(Resources.getScaledIcon(Resources.iDbSave, 40));
+		JButton btnSave = new JButton(Img.DbSave.getScaledIcon(40));
 		btnSave.setToolTipText("Save current highlighting rules set in your profile");
 		btnSave.setPreferredSize(new Dimension(54,54));
 		btnSave.addActionListener(new ActionListener() {
@@ -84,7 +82,7 @@ public class HighlightingPanel extends JPanel {
 					if (Highlander.getLoggedUser().doesPersonalDataExists(UserData.HIGHLIGHTING, Highlander.getCurrentAnalysis().toString(), highlightingName)){
 						int yesno = JOptionPane.showConfirmDialog(new JFrame(), 
 								"You already have a highlighting rules set named '"+highlightingName.replace("~", " -> ")+"', do you want to overwrite it ?", 
-								"Overwriting highlighting rules set in your profile", JOptionPane.YES_NO_OPTION , JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iDbSave,64));
+								"Overwriting highlighting rules set in your profile", JOptionPane.YES_NO_OPTION , JOptionPane.QUESTION_MESSAGE, Img.DbSave.getScaledIcon(64));
 						if (yesno == JOptionPane.NO_OPTION)	return;
 					}
 					List<HighlightingRule> list = getHighlightingRules();
@@ -92,13 +90,13 @@ public class HighlightingPanel extends JPanel {
 					currentHighlightName = highlightingName;
 				} catch (Exception ex) {
 					Tools.exception(ex);
-					JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Error", ex), "Save current highlighting rules set in your profile", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Error", ex), "Save current highlighting rules set in your profile", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}
 			}
 		});
 		panel.add(btnSave);
 		
-		JButton btnLoad = new JButton(Resources.getScaledIcon(Resources.iDbLoad, 40));
+		JButton btnLoad = new JButton(Img.DbLoad.getScaledIcon(40));
 		btnLoad.setToolTipText("Load a highlighting rules set from your profile");
 		btnLoad.setPreferredSize(new Dimension(54,54));
 		btnLoad.addActionListener(new ActionListener() {
@@ -107,13 +105,13 @@ public class HighlightingPanel extends JPanel {
 				String highlightingName = ProfileTree.showProfileDialog(mainframe, Action.LOAD, UserData.HIGHLIGHTING, Highlander.getCurrentAnalysis().toString(), "Load highlighting rules set from your profile");
 				if (highlightingName != null){
 					if (table == null) {
-						JOptionPane.showMessageDialog(new JFrame(), "Table is empty, you must first generate a filter.", "No table", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.showMessageDialog(new JFrame(), "Table is empty, you must first generate a filter.", "No table", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}else{
 						try {
 							setHighlightingRules(Highlander.getLoggedUser().loadHighlighting(HighlightingPanel.this, Highlander.getCurrentAnalysis(), highlightingName), highlightingName);
 						} catch (Exception ex) {
 							Tools.exception(ex);
-							JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Error", ex), "Load highlighting rules set from your profile", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+							JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Error", ex), "Load highlighting rules set from your profile", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 						}						
 					}
 				}
@@ -121,14 +119,14 @@ public class HighlightingPanel extends JPanel {
 		});
 		panel.add(btnLoad);
 		
-		JButton button_add_highlighting = new JButton(Resources.getScaledIcon(Resources.iHighlightingAdd, 40));
+		JButton button_add_highlighting = new JButton(Img.HighlightingAdd.getScaledIcon(40));
 		button_add_highlighting.setToolTipText("Add highlighting rule");
 		button_add_highlighting.setPreferredSize(new Dimension(54,54));
 		button_add_highlighting.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (table == null) {
-					JOptionPane.showMessageDialog(new JFrame(), "Table is empty, you must first generate a filter.", "No table", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.showMessageDialog(new JFrame(), "Table is empty, you must first generate a filter.", "No table", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}else{
 					CreateHighlightCriterion cfc = new CreateHighlightCriterion(Highlander.getCurrentAnalysis(), HighlightingPanel.this);
 					Tools.centerWindow(cfc, false);
@@ -143,14 +141,14 @@ public class HighlightingPanel extends JPanel {
 		});
 		panel.add(button_add_highlighting);
 		
-		JButton button_add_heatmap = new JButton(Resources.getScaledIcon(Resources.iHeatMapAdd, 40));
+		JButton button_add_heatmap = new JButton(Img.HeatMapAdd.getScaledIcon(40));
 		button_add_heatmap.setToolTipText("Add heat map");
 		button_add_heatmap.setPreferredSize(new Dimension(54,54));
 		button_add_heatmap.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (table == null) {
-					JOptionPane.showMessageDialog(new JFrame(), "Table is empty, you must first generate a filter.", "No table", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.showMessageDialog(new JFrame(), "Table is empty, you must first generate a filter.", "No table", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}else{
 					CreateHeatMapCriterion cfc = new CreateHeatMapCriterion(Highlander.getCurrentAnalysis(), HighlightingPanel.this);
 					Tools.centerWindow(cfc, false);
@@ -172,7 +170,7 @@ public class HighlightingPanel extends JPanel {
 		flowLayout.setAlignment(FlowLayout.LEADING);
 		panel.add(highlightCriteria);
 		
-		final JButton btnRemoveAll = new JButton(Resources.getScaledIcon(Resources.iCross, 40));
+		final JButton btnRemoveAll = new JButton(Img.Cross.getScaledIcon(40));
 		btnRemoveAll.setToolTipText("Remove all filtering criteria from the list");
 		btnRemoveAll.setPreferredSize(new Dimension(54,54));
 		btnRemoveAll.addActionListener(new ActionListener() {

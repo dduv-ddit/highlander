@@ -31,7 +31,9 @@ package be.uclouvain.ngs.highlander;
 
 import java.io.File;
 import java.net.Authenticator;
+import java.net.InetSocketAddress;
 import java.net.PasswordAuthentication;
+import java.net.Proxy;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -49,6 +51,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.database.HighlanderDataSource;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.DBMS;
 
@@ -169,7 +172,7 @@ public class Parameters {
 		}
 		if (available.isEmpty()){
 			if (GUI){
-				JOptionPane.showMessageDialog(new JFrame(), "Configuration file not found", "Can't initialize Highlander", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				JOptionPane.showMessageDialog(new JFrame(), "Configuration file not found", "Can't initialize Highlander", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}else{
 				System.err.println("Can't initialize Highlander, configuration file not found");
 			}
@@ -182,7 +185,7 @@ public class Parameters {
 			config = available.keySet().iterator().next();
 		}
 		if (available.size() > 1 && GUI){
-			Object selectedOp = JOptionPane.showInputDialog(new JFrame(), "Which settings do you want to use ?", "Configuration selection", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iDb,64), available.keySet().toArray(new String[0]), "Default");
+			Object selectedOp = JOptionPane.showInputDialog(new JFrame(), "Which settings do you want to use ?", "Configuration selection", JOptionPane.QUESTION_MESSAGE, Img.Db.getScaledIcon(64), available.keySet().toArray(new String[0]), "Default");
 			if (selectedOp != null) config = selectedOp.toString();
 		}
 		selection = available.get(config);
@@ -193,7 +196,7 @@ public class Parameters {
 			Tools.exception(ex);
 			if (GUI){
 				JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Problem when reading configuration file", ex), "Reading Highlander parameters",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}
 			System.exit(-1);
 		}	
@@ -207,7 +210,7 @@ public class Parameters {
 			Tools.exception(ex);
 			if (GUI){
 				JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Problem when reading configuration file", ex), "Reading Highlander parameters",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}
 			System.exit(-1);
 		}	
@@ -325,6 +328,19 @@ public class Parameters {
 		}
 	}
 
+	public Proxy getProxy(String url) {
+		boolean bypass = false;
+		if (httpProxyHost != null) {
+			for (String host : httpProxyHost.split("\\|")) {
+				if (url.toLowerCase().contains(host.toLowerCase())) bypass = true;
+			}
+		}
+		if (!bypass && httpProxyHost != null && httpProxyPort != null) {
+			return new Proxy(Proxy.Type.HTTP, new InetSocketAddress(System.getProperty("http.proxyHost"), Integer.parseInt(System.getProperty("http.proxyPort"))));
+		}
+		return Proxy.NO_PROXY;
+	}
+	
 	private String readParameterInDatabase(String section, String setting) {
 		if (dataSource != null) {
 			try {

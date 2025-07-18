@@ -40,22 +40,21 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 
 public class HeatMap {
 
 	public enum ColorRange {
-		RGB_GREEN_TO_RED(Resources.iHeatMapRgbGR),
-		RGB_RED_TO_GREEN(Resources.iHeatMapRgbRG),
-		HSV_BLUE_TO_RED(Resources.iHeatMapHsvBR),
-		HSV_RED_TO_BLUE(Resources.iHeatMapHsvRB),
+		RGB_GREEN_TO_RED(Img.HeatMapRgbGR),
+		RGB_RED_TO_GREEN(Img.HeatMapRgbRG),
+		HSV_BLUE_TO_RED(Img.HeatMapHsvBR),
+		HSV_RED_TO_BLUE(Img.HeatMapHsvRB),
 		;
-		private ImageIcon icon;
-		private ColorRange(ImageIcon icon){this.icon = icon;}
+		private Img icon;
+		private ColorRange(Img icon){this.icon = icon;}
 		public JPanel getExampleRange(){
 			JPanel panel = new JPanel(){
 				@Override
@@ -71,7 +70,7 @@ public class HeatMap {
 			};
 			return panel;
 		}
-		public ImageIcon getIcon(){
+		public Img getImg(){
 			return icon;
 		}
 	}

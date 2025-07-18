@@ -85,8 +85,9 @@ import javax.swing.tree.TreeSelectionModel;
 
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Resources;
-import be.uclouvain.ngs.highlander.Tools;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Resources.Palette;
+import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.dialog.ProfileTree.Action;
 import be.uclouvain.ngs.highlander.UI.misc.WaitingPanel;
 import be.uclouvain.ngs.highlander.administration.users.User.UserData;
@@ -175,13 +176,13 @@ public class AskListOfHPOTermDialog extends JDialog {
 	
 	private void initUI(){
 		setTitle("Human Phenotype Ontology");
-		setIconImage(Resources.getScaledIcon(Resources.iHPO, 64).getImage());
+		setIconImage(Img.HPO.getScaledIcon(64).getImage());
 		setModal(true);
 
 		JPanel southPanel = new JPanel();
 		getContentPane().add(southPanel, BorderLayout.SOUTH);
 		
-		JButton btnCancel = new JButton(Resources.getScaledIcon(Resources.iCross, 32));
+		JButton btnCancel = new JButton(Img.Cross.getScaledIcon(32));
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -192,7 +193,7 @@ public class AskListOfHPOTermDialog extends JDialog {
 		});
 		southPanel.add(btnCancel);
 		
-		JButton btnValidate = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 32));
+		JButton btnValidate = new JButton(Img.ButtonApply.getScaledIcon(32));
 		btnValidate.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -252,7 +253,7 @@ public class AskListOfHPOTermDialog extends JDialog {
 	private JPanel getPanelAddRemove() {
 		JPanel panel = new JPanel(new GridBagLayout());
 		
-		JButton buttonAdd = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleRight, 24));
+		JButton buttonAdd = new JButton(Img.ArrowDoubleRight.getScaledIcon(24));
 		buttonAdd.setToolTipText("Add selected HPO term(s) to your selection");
 		buttonAdd.addActionListener(new ActionListener() {
 			@Override
@@ -271,7 +272,7 @@ public class AskListOfHPOTermDialog extends JDialog {
 		gbc_button.gridy = 0;
 		panel.add(buttonAdd, gbc_button);
 
-		JButton buttonRemove = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleLeft, 24));
+		JButton buttonRemove = new JButton(Img.ArrowDoubleLeft.getScaledIcon(24));
 		buttonRemove.setToolTipText("Remove selected HPO term(s) from your selection");
 		buttonRemove.addActionListener(new ActionListener() {
 			@Override
@@ -299,7 +300,7 @@ public class AskListOfHPOTermDialog extends JDialog {
 
 	private void addValues(){		
 		if (singleValue && !selection.isEmpty()){
-			JOptionPane.showMessageDialog(this, "You can only choose one HPO term.", "Too many values", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(this, "You can only choose one HPO term.", "Too many values", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}else{
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
@@ -356,7 +357,7 @@ public class AskListOfHPOTermDialog extends JDialog {
 
 	private JPanel getPanelSelectionControls() {
 		JPanel panel = new JPanel();
-		JButton btnSaveList = new JButton(Resources.getScaledIcon(Resources.iDbSave, 40));
+		JButton btnSaveList = new JButton(Img.DbSave.getScaledIcon(40));
 		btnSaveList.setToolTipText("Save current list of HPO terms in your profile");
 		btnSaveList.setPreferredSize(new Dimension(54,54));
 		btnSaveList.addActionListener(new ActionListener() {
@@ -366,7 +367,7 @@ public class AskListOfHPOTermDialog extends JDialog {
 			}
 		});
 		panel.add(btnSaveList);
-		JButton btnLoadList = new JButton(Resources.getScaledIcon(Resources.iDbLoad, 40));
+		JButton btnLoadList = new JButton(Img.DbLoad.getScaledIcon(40));
 		btnLoadList.setToolTipText("Load a list of HPO terms from your profile");
 		btnLoadList.setPreferredSize(new Dimension(54,54));
 		btnLoadList.addActionListener(new ActionListener() {
@@ -439,7 +440,7 @@ public class AskListOfHPOTermDialog extends JDialog {
 			@Override
 			public void keyPressed(KeyEvent arg0) {			}
 		});
-		panel.add(new JLabel("Search for", Resources.getScaledIcon(Resources.iHPO, 24), SwingConstants.LEADING), new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+		panel.add(new JLabel("Search for", Img.HPO.getScaledIcon(24), SwingConstants.LEADING), new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
 		panel.add(fieldQuery, new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
 		return panel;		
 	}
@@ -865,7 +866,7 @@ public class AskListOfHPOTermDialog extends JDialog {
 			if (Highlander.getLoggedUser().doesPersonalDataExists(UserData.PHENOTYPES, reference.getName(), name)){
 				int yesno = JOptionPane.showConfirmDialog(new JFrame(), 
 						"You already have a "+UserData.PHENOTYPES.getName()+" named '"+name.replace("~", " -> ")+"', do you want to overwrite it ?", 
-						"Overwriting element in your profile", JOptionPane.YES_NO_OPTION , JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iDbSave,64));
+						"Overwriting element in your profile", JOptionPane.YES_NO_OPTION , JOptionPane.QUESTION_MESSAGE, Img.DbSave.getScaledIcon(64));
 				if (yesno == JOptionPane.NO_OPTION)	return;
 			}
 
@@ -873,7 +874,7 @@ public class AskListOfHPOTermDialog extends JDialog {
 			Highlander.getLoggedUser().savePhenotypes(listName, reference, new ArrayList<>(selection));
 		} catch (Exception ex) {
 			Tools.exception(ex);
-			JOptionPane.showMessageDialog(AskListOfHPOTermDialog.this, Tools.getMessage("Error", ex), "Save current list of HPO terms in your profile", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(AskListOfHPOTermDialog.this, Tools.getMessage("Error", ex), "Save current list of HPO terms in your profile", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 	}
 
@@ -888,7 +889,7 @@ public class AskListOfHPOTermDialog extends JDialog {
 		} catch (Exception ex) {
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(AskListOfHPOTermDialog.this, Tools.getMessage("Error", ex), 
-					"Load list of HPO terms from your profile", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					"Load list of HPO terms from your profile", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 		updateSelectionTable();
 	}

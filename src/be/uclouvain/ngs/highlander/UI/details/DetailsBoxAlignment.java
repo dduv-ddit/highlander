@@ -46,6 +46,7 @@ import javax.swing.JToggleButton;
 
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.Resources.Palette;
 import be.uclouvain.ngs.highlander.UI.misc.AlignmentPanel;
@@ -149,10 +150,10 @@ public class DetailsBoxAlignment extends DetailsBox {
 		JPanel panel = new JPanel(new WrapLayout(FlowLayout.LEADING));
 		panel.setBackground(Resources.getColor(getColor(), 200, false));
 		
-		final JButton zoomin = new JButton(Resources.getScaledIcon(Resources.iZoomIn, 24));
-		final JButton zoomout = new JButton(Resources.getScaledIcon(Resources.iZoomOut, 24));
+		final JButton zoomin = new JButton(Img.ZoomIn.getScaledIcon(24));
+		final JButton zoomout = new JButton(Img.ZoomOut.getScaledIcon(24));
 
-		JButton left10 = new JButton(Resources.getScaledIcon(Resources.iArrowLeft, 24));
+		JButton left10 = new JButton(Img.ArrowLeft.getScaledIcon(24));
 		left10.setToolTipText("Move left");
 		left10.addActionListener(new ActionListener() {
 			@Override
@@ -163,7 +164,7 @@ public class DetailsBoxAlignment extends DetailsBox {
 		});
 		panel.add(left10);
 
-		JButton center = new JButton(Resources.getScaledIcon(Resources.iAlignmentCenterMutation, 24));
+		JButton center = new JButton(Img.AlignmentCenterMutation.getScaledIcon(24));
 		center.setToolTipText("Center on variant");
 		center.addActionListener(new ActionListener() {
 			@Override
@@ -174,7 +175,7 @@ public class DetailsBoxAlignment extends DetailsBox {
 		});
 		panel.add(center);
 
-		JButton right10 = new JButton(Resources.getScaledIcon(Resources.iArrowRight, 24));
+		JButton right10 = new JButton(Img.ArrowRight.getScaledIcon(24));
 		right10.setToolTipText("Move right");
 		right10.addActionListener(new ActionListener() {
 			@Override
@@ -204,7 +205,7 @@ public class DetailsBoxAlignment extends DetailsBox {
 		});
 		panel.add(zoomout);
 
-		JButton zoomcenter = new JButton(Resources.getScaledIcon(Resources.iZoomOriginal, 24));
+		JButton zoomcenter = new JButton(Img.ZoomOriginal.getScaledIcon(24));
 		zoomcenter.setToolTipText("Reset zoom");
 		zoomcenter.addActionListener(new ActionListener() {
 			@Override
@@ -236,11 +237,11 @@ public class DetailsBoxAlignment extends DetailsBox {
 		});
 		panel.add(zoomin);
 
-		JToggleButton softClippedButton = new JToggleButton(Resources.getScaledIcon(Resources.iAlignmentSoftclipOff, 24), softClipped);
-		softClippedButton.setSelectedIcon(Resources.getScaledIcon(Resources.iAlignmentSoftclipOn, 24));
+		JToggleButton softClippedButton = new JToggleButton(Img.AlignmentSoftclipOff.getScaledIcon(24), softClipped);
+		softClippedButton.setSelectedIcon(Img.AlignmentSoftclipOn.getScaledIcon(24));
 		softClippedButton.setRolloverEnabled(true);
-		softClippedButton.setRolloverIcon(Resources.getScaledIcon(Resources.iAlignmentSoftclipOn, 24));
-		softClippedButton.setRolloverSelectedIcon(Resources.getScaledIcon(Resources.iAlignmentSoftclipOff, 24));
+		softClippedButton.setRolloverIcon(Img.AlignmentSoftclipOn.getScaledIcon(24));
+		softClippedButton.setRolloverSelectedIcon(Img.AlignmentSoftclipOff.getScaledIcon(24));
 		softClippedButton.setToolTipText("Show / Hide soft-clipped reads");
 		softClippedButton.addActionListener(new ActionListener() {
 			@Override
@@ -251,11 +252,11 @@ public class DetailsBoxAlignment extends DetailsBox {
 		});
 		panel.add(softClippedButton);
 
-		JToggleButton squishedButton = new JToggleButton(Resources.getScaledIcon(Resources.iAlignmentSquishedOff, 24), squished);
-		squishedButton.setSelectedIcon(Resources.getScaledIcon(Resources.iAlignmentSquishedOn, 24));
+		JToggleButton squishedButton = new JToggleButton(Img.AlignmentSquishedOff.getScaledIcon(24), squished);
+		squishedButton.setSelectedIcon(Img.AlignmentSquishedOn.getScaledIcon(24));
 		squishedButton.setRolloverEnabled(true);
-		squishedButton.setRolloverIcon(Resources.getScaledIcon(Resources.iAlignmentSquishedOn, 24));
-		squishedButton.setRolloverSelectedIcon(Resources.getScaledIcon(Resources.iAlignmentSquishedOff, 24));
+		squishedButton.setRolloverIcon(Img.AlignmentSquishedOn.getScaledIcon(24));
+		squishedButton.setRolloverSelectedIcon(Img.AlignmentSquishedOff.getScaledIcon(24));
 		squishedButton.setToolTipText("Normal / Squished reads");
 		squishedButton.addActionListener(new ActionListener() {
 			@Override
@@ -267,11 +268,11 @@ public class DetailsBoxAlignment extends DetailsBox {
 		});
 		panel.add(squishedButton);
 
-		JToggleButton frameShiftButton = new JToggleButton(Resources.getScaledIcon(Resources.iAlignmentFrameShiftOff, 24), frameShift);
-		frameShiftButton.setSelectedIcon(Resources.getScaledIcon(Resources.iAlignmentFrameShiftOn, 24));
+		JToggleButton frameShiftButton = new JToggleButton(Img.AlignmentFrameShiftOff.getScaledIcon(24), frameShift);
+		frameShiftButton.setSelectedIcon(Img.AlignmentFrameShiftOn.getScaledIcon(24));
 		frameShiftButton.setRolloverEnabled(true);
-		frameShiftButton.setRolloverIcon(Resources.getScaledIcon(Resources.iAlignmentFrameShiftOn, 24));
-		frameShiftButton.setRolloverSelectedIcon(Resources.getScaledIcon(Resources.iAlignmentFrameShiftOff, 24));
+		frameShiftButton.setRolloverIcon(Img.AlignmentFrameShiftOn.getScaledIcon(24));
+		frameShiftButton.setRolloverSelectedIcon(Img.AlignmentFrameShiftOff.getScaledIcon(24));
 		frameShiftButton.setToolTipText("Show amino acids changes generated (only) by selected variant (substitutions and frame shifts)");
 		frameShiftButton.addActionListener(new ActionListener() {
 			@Override
@@ -295,7 +296,7 @@ public class DetailsBoxAlignment extends DetailsBox {
 		});
 		panel.add(colorByBox);
 
-		JButton copy = new JButton(Resources.getScaledIcon(Resources.iCopy, 24));
+		JButton copy = new JButton(Img.Copy.getScaledIcon(24));
 		copy.setToolTipText("Copy alignment to clipboard");
 		copy.addActionListener(new ActionListener() {
 			@Override
@@ -309,7 +310,7 @@ public class DetailsBoxAlignment extends DetailsBox {
 		});
 		panel.add(copy);
 
-		JButton export = new JButton(Resources.getScaledIcon(Resources.iExportJpeg, 24));
+		JButton export = new JButton(Img.ExportJpeg.getScaledIcon(24));
 		export.setToolTipText("Export alignment to image file");
 		export.addActionListener(new ActionListener() {
 			@Override

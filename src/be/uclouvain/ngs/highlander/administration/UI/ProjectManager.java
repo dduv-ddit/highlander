@@ -29,14 +29,30 @@
 
 package be.uclouvain.ngs.highlander.administration.UI;
 
-import javax.swing.JFrame;
-import javax.swing.JTabbedPane;
-
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.swing.InputMap;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
@@ -47,14 +63,6 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.WindowConstants;
 import javax.swing.text.DefaultEditorKit;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
-
-import javax.swing.JScrollPane;
-
-import ca.odell.glazedlists.EventList;
-import ca.odell.glazedlists.GlazedLists;
-
 import com.install4j.api.launcher.ApplicationLauncher;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
@@ -63,9 +71,9 @@ import com.jcraft.jsch.Session;
 
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Parameters;
-import be.uclouvain.ngs.highlander.Resources;
-import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.Parameters.Platform;
+import be.uclouvain.ngs.highlander.Resources.Img;
+import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.misc.WaitingPanel;
 import be.uclouvain.ngs.highlander.administration.DbBuilder;
 import be.uclouvain.ngs.highlander.administration.DbUpdater;
@@ -92,26 +100,12 @@ import be.uclouvain.ngs.highlander.administration.dbpatcher.DbPatcher;
 import be.uclouvain.ngs.highlander.administration.users.LoginBox;
 import be.uclouvain.ngs.highlander.administration.users.User;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase;
-import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.datatype.Analysis;
 import be.uclouvain.ngs.highlander.datatype.AnalysisFull;
-
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowEvent;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
-import java.io.PrintStream;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import ca.odell.glazedlists.EventList;
+import ca.odell.glazedlists.GlazedLists;
 
 public class ProjectManager extends JFrame {
 
@@ -152,7 +146,7 @@ public class ProjectManager extends JFrame {
 	private RelauncherPanel relauncherPanel;
 	
 	public ProjectManager() {
-		setIconImage(Resources.getScaledIcon(Resources.iAdminstrationTools, 32).getImage());
+		setIconImage(Img.AdminstrationTools.getScaledIcon(32).getImage());
 		setTitle("Highlander Administration Tools " + version);
 		try {
 			users = User.fetchList().toArray((new User[0]));
@@ -173,7 +167,7 @@ public class ProjectManager extends JFrame {
 					console.setLineWrap(true);
 					console.setWrapStyleWord(true);
 					consoleFrame.add(new JScrollPane(console), BorderLayout.CENTER);
-					consoleFrame.setIconImage(Resources.getScaledIcon(Resources.iAdminstrationTools,64).getImage());
+					consoleFrame.setIconImage(Img.AdminstrationTools.getScaledIcon(64).getImage());
 					consoleFrame.setTitle("Console");
 					consoleFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 					Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -305,7 +299,7 @@ public class ProjectManager extends JFrame {
 		Tools.exception(ex);
 		toConsole("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
 		JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Error", ex), "Error",
-				JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 	}
 
 	public void startRedirectSystemOut(){
@@ -359,7 +353,7 @@ public class ProjectManager extends JFrame {
 			try {
 				return new User(loginBox.getUsername(), loginBox.getEncryptedPassword()) ;
 			} catch (Exception ex) {
-				JOptionPane.showMessageDialog(new JFrame(), ex.getMessage(), "Can't login", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				JOptionPane.showMessageDialog(new JFrame(), ex.getMessage(), "Can't login", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				return null;
 			}
 		} else {
@@ -662,7 +656,7 @@ public class ProjectManager extends JFrame {
 		}catch (Exception ex){
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Problem when connecting the database", ex), "Connecting to Highlander database",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 		while(user == null){
 			if (argUser == null || argPass == null){
@@ -671,13 +665,13 @@ public class ProjectManager extends JFrame {
 				try {
 					user = new User(argUser, Tools.md5Encryption(argPass));
 				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(new JFrame(), ex.getMessage(), "Can't login", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.showMessageDialog(new JFrame(), ex.getMessage(), "Can't login", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					user = login();
 				}
 			}
 		}
 		if (!user.isAdmin()){
-			JOptionPane.showMessageDialog(new JFrame(), "Sorry, you must be administrator of the Highlander database", "Can't login", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(new JFrame(), "Sorry, you must be administrator of the Highlander database", "Can't login", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			System.exit(0);
 		}else{
 			Highlander.setLoggedUser(user);

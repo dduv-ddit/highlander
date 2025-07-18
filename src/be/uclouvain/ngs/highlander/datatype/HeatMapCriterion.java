@@ -46,7 +46,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.dialog.CreateHeatMapCriterion;
 import be.uclouvain.ngs.highlander.UI.table.HeatMap.ColorRange;
@@ -149,7 +149,7 @@ public class HeatMapCriterion extends HighlightingRule {
 			method = "position sorting";
 			break;
 		}
-		JLabel label = new JLabel(f + " ("+method+")", Resources.getScaledIcon(col.getIcon(), 16), SwingConstants.CENTER);
+		JLabel label = new JLabel(f + " ("+method+")", col.getImg().getScaledIcon(16), SwingConstants.CENTER);
 		return label;
 	}
 
@@ -178,13 +178,13 @@ public class HeatMapCriterion extends HighlightingRule {
 		label.setToolTipText(toHtmlString());		
 		add(label,BorderLayout.CENTER);
 		JPanel west = new JPanel(new GridBagLayout());
-		iconLab = new JLabel(Resources.getScaledIcon(colorRange.getIcon(), 16));		
+		iconLab = new JLabel(colorRange.getImg().getScaledIcon(16));		
 		iconLab.setOpaque(true);
 		west.add(iconLab, new GridBagConstraints(0, 0, 0, 1, 1.0, 1.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(4, 4, 4, 4), 0, 0));
 		add(west,BorderLayout.WEST);
 		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.setLayout(new GridBagLayout());
-		JButton removeButton = new JButton(Resources.getScaledIcon(Resources.iCross, 16));
+		JButton removeButton = new JButton(Img.Cross.getScaledIcon(16));
 		removeButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -289,7 +289,7 @@ public class HeatMapCriterion extends HighlightingRule {
 			String labtxt = ((field != null)?field.getName():"");
 			label.setText(labtxt);		
 			label.setToolTipText(toHtmlString());
-			iconLab.setIcon(Resources.getScaledIcon(colorRange.getIcon(), 16));
+			iconLab.setIcon(colorRange.getImg().getScaledIcon(16));
 		}
 		Highlander.getCellRenderer().addHeatMap(this);
 		highlightingPanel.refresh();		

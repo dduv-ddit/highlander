@@ -59,7 +59,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.text.JTextComponent;
 
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 
 
@@ -85,12 +85,12 @@ public class AskGeneList extends JDialog  {
 	private void initUI(){
 		setModal(true);
 		setTitle("Create gene list");
-		setIconImage(Resources.getScaledIcon(Resources.iList, 64).getImage());
+		setIconImage(Img.List.getScaledIcon(64).getImage());
 		
 		JPanel panel_2 = new JPanel();
 		getContentPane().add(panel_2, BorderLayout.NORTH);
 		
-		JButton btnFile = new JButton(Resources.getScaledIcon(Resources.iImportFile, 40));
+		JButton btnFile = new JButton(Img.ImportFile.getScaledIcon(40));
 		btnFile.setToolTipText("Import genes from a text file");
 		btnFile.setPreferredSize(new Dimension(54,54));
 		btnFile.addActionListener(new ActionListener() {
@@ -115,7 +115,7 @@ public class AskGeneList extends JDialog  {
 					} catch (Exception ex) {
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(AskGeneList.this, Tools.getMessage("Error", ex), 
-								"Import genes from a text file", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								"Import genes from a text file", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 		      btnOk.setText(getValuesCount()+" values");
 		    }
@@ -123,7 +123,7 @@ public class AskGeneList extends JDialog  {
 		});
 		panel_2.add(btnFile);
 		
-		JButton btnSort = new JButton(Resources.getScaledIcon(Resources.iSortAZ, 40));
+		JButton btnSort = new JButton(Img.SortAZ.getScaledIcon(40));
 		btnSort.setToolTipText("Sort current list alphabetically and remove duplicates");
 		btnSort.setPreferredSize(new Dimension(54,54));
 		btnSort.addActionListener(new ActionListener() {
@@ -137,7 +137,7 @@ public class AskGeneList extends JDialog  {
 		JPanel panel = new JPanel();	
 		getContentPane().add(panel, BorderLayout.SOUTH);
 		
-		btnOk = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 24));
+		btnOk = new JButton(Img.ButtonApply.getScaledIcon(24));
 		btnOk.setText("0 values");
 		btnOk.addActionListener(new ActionListener() {
 			@Override
@@ -151,7 +151,7 @@ public class AskGeneList extends JDialog  {
 		});
 		panel.add(btnOk);
 		
-		JButton btnCancel = new JButton(Resources.getScaledIcon(Resources.iCross, 24));
+		JButton btnCancel = new JButton(Img.Cross.getScaledIcon(24));
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -215,7 +215,12 @@ public class AskGeneList extends JDialog  {
 				btnOk.setText(getValuesCount()+" values");
 			}
 		});
-		new ExcelAdapter(table);
+		ExcelAdapter excelAdapter = new ExcelAdapter();
+		KeyStroke paste = KeyStroke.getKeyStroke(KeyEvent.VK_V,Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(),false);
+		table.registerKeyboardAction(excelAdapter,"Paste",paste,JComponent.WHEN_FOCUSED);
+		KeyStroke delete = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,0,false);
+		table.registerKeyboardAction(excelAdapter,"Delete",delete,JComponent.WHEN_FOCUSED);
+;
 		scrollPane.setViewportView(table);
 		
 	}
@@ -278,28 +283,17 @@ public class AskGeneList extends JDialog  {
 		
 	}
 
-	public class ExcelAdapter implements ActionListener {
+	private class ExcelAdapter implements ActionListener {
 		private String rowstring,value;
 		private Clipboard system;
-		private JTable table ;
 		/**
 		 * The Excel Adapter is constructed with a
 		 * JTable on which it enables Copy-Paste and acts
 		 * as a Clipboard listener.
 		 */
-		public ExcelAdapter(JTable myJTable){
-			table = myJTable;
-			KeyStroke paste = KeyStroke.getKeyStroke(KeyEvent.VK_V,Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(),false);
-			table.registerKeyboardAction(this,"Paste",paste,JComponent.WHEN_FOCUSED);
-			KeyStroke delete = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,0,false);
-			table.registerKeyboardAction(this,"Delete",delete,JComponent.WHEN_FOCUSED);
+		public ExcelAdapter(){
 			system = Toolkit.getDefaultToolkit().getSystemClipboard();
 		}
-		/**
-		 * Public Accessor methods for the Table on which this adapter acts.
-		 */
-		public JTable getJTable() {return table;}
-		public void setJTable(JTable jTable1) {this.table=jTable1;}
 		/**
 		 * This method is activated on the Keystrokes we are listening to
 		 * in this implementation. Here it listens for Copy and Paste ActionCommands.

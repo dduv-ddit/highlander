@@ -73,6 +73,7 @@ import javax.swing.JTree;
 import javax.swing.SortOrder;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
+import javax.swing.border.BevelBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.TreeExpansionEvent;
@@ -89,7 +90,7 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.dialog.FilteringTree.FilterTreeCellRenderer;
 import be.uclouvain.ngs.highlander.UI.dialog.FilteringTree.FilterTreeModel;
@@ -109,8 +110,6 @@ import be.uclouvain.ngs.highlander.datatype.SortingCriterion;
 import be.uclouvain.ngs.highlander.datatype.VariantsList;
 import be.uclouvain.ngs.highlander.datatype.filter.ComboFilter;
 import be.uclouvain.ngs.highlander.datatype.filter.Filter;
-
-import javax.swing.border.BevelBorder;
 
 public class ProfileTree extends JDialog implements TreeWillExpandListener {
 	
@@ -147,8 +146,8 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 	private JTextField searchField = new JTextField();
 	private Map<UserData, Map<String, List<String>>> searchResults;
 	private JLabel searchResultsNumber = new JLabel("");
-	private JButton searchPrecedent = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleLeft, 24));
-	private JButton searchNext = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleRight, 24));
+	private JButton searchPrecedent = new JButton(Img.ArrowDoubleLeft.getScaledIcon(24));
+	private JButton searchNext = new JButton(Img.ArrowDoubleRight.getScaledIcon(24));
 	private int searchResultsTotal = 0;
 	private int searchResultsCurrent = 0;
 	
@@ -179,22 +178,22 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 		switch(action){
 		case LOAD:
 			setModalityType(ModalityType.APPLICATION_MODAL);
-			setIconImage(Resources.getScaledIcon(Resources.iLoad, 64).getImage());
+			setIconImage(Img.Load.getScaledIcon(64).getImage());
 			tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 			break;
 		case SAVE:
 			setModalityType(ModalityType.APPLICATION_MODAL);
-			setIconImage(Resources.getScaledIcon(Resources.iSave, 64).getImage());
+			setIconImage(Img.Save.getScaledIcon(64).getImage());
 			tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 			break;
 		case FOLDER:
 			setModalityType(ModalityType.APPLICATION_MODAL);
-			setIconImage(Resources.getScaledIcon(Resources.iFolder, 64).getImage());
+			setIconImage(Img.Folder.getScaledIcon(64).getImage());
 			tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 			break;
 		case MANAGE:
 			setModalityType(ModalityType.MODELESS);
-			setIconImage(Resources.getScaledIcon(Resources.iUserTree, 64).getImage());
+			setIconImage(Img.UserTree.getScaledIcon(64).getImage());
 			tree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
 			tree.setDragEnabled(true);
 	    tree.setDropMode(DropMode.ON_OR_INSERT);
@@ -279,7 +278,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 		treePanel.add(scrollTree, BorderLayout.CENTER);
 		
 		JPanel searchPanel = new JPanel(new BorderLayout());
-		searchPanel.add(new JLabel(Resources.getScaledIcon(Resources.iSearch, 30)), BorderLayout.WEST);
+		searchPanel.add(new JLabel(Img.Search.getScaledIcon(30)), BorderLayout.WEST);
 		searchField.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -318,7 +317,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 		JPanel northPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
 		getContentPane().add(northPanel, BorderLayout.NORTH);
 
-		btnRename = new JButton(Resources.getScaledIcon(Resources.iEditPen, 40));
+		btnRename = new JButton(Img.EditPen.getScaledIcon(40));
 		btnRename.setToolTipText("Rename selected element");
 		btnRename.setPreferredSize(new Dimension(54,54));
 		btnRename.addActionListener(new ActionListener() {
@@ -335,7 +334,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 		});
 		northPanel.add(btnRename);
 		
-		btnEdit = new JButton(Resources.getScaledIcon(Resources.iEditWrench, 40));
+		btnEdit = new JButton(Img.EditWrench.getScaledIcon(40));
 		btnEdit.setToolTipText("Edit selected element");
 		btnEdit.setPreferredSize(new Dimension(54,54));
 		btnEdit.addActionListener(new ActionListener() {
@@ -353,7 +352,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 		northPanel.add(btnEdit);
 		if (action != Action.MANAGE) btnEdit.setVisible(false);
 		
-		btnDelete = new JButton(Resources.getScaledIcon(Resources.iCross, 40));
+		btnDelete = new JButton(Img.Cross.getScaledIcon(40));
 		btnDelete.setToolTipText("Delete selected elements");
 		btnDelete.setPreferredSize(new Dimension(54,54));
 		btnDelete.addActionListener(new ActionListener() {
@@ -371,7 +370,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 		northPanel.add(btnDelete);
 		if (action != Action.MANAGE) btnDelete.setVisible(false);
 		
-		btnCopy = new JButton(Resources.getScaledIcon(Resources.iCopy, 40));
+		btnCopy = new JButton(Img.Copy.getScaledIcon(40));
 		btnCopy.setToolTipText("Copy selected elements");
 		btnCopy.setPreferredSize(new Dimension(54,54));
 		btnCopy.addActionListener(new ActionListener() {
@@ -389,7 +388,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 		northPanel.add(btnCopy);
 		if (action != Action.MANAGE) btnCopy.setVisible(false);
 		
-		btnShare = new JButton(Resources.getScaledIcon(Resources.iUsers, 40));
+		btnShare = new JButton(Img.Users.getScaledIcon(40));
 		btnShare.setToolTipText("Share selected elements");
 		btnShare.setPreferredSize(new Dimension(54,54));
 		btnShare.addActionListener(new ActionListener() {
@@ -409,7 +408,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 									}
 								}catch(Exception ex){
 									Tools.exception(ex);
-									JOptionPane.showMessageDialog(ProfileTree.this, Tools.getMessage("Cannot share selected element", ex), "Sharing element from profile", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));				
+									JOptionPane.showMessageDialog(ProfileTree.this, Tools.getMessage("Cannot share selected element", ex), "Sharing element from profile", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));				
 								}
 							}
 					}
@@ -419,7 +418,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 		northPanel.add(btnShare);
 		if (action != Action.MANAGE) btnShare.setVisible(false);
 		
-		btnFolderNew = new JButton(Resources.getScaledIcon(Resources.iFolderNew, 40));
+		btnFolderNew = new JButton(Img.FolderNew.getScaledIcon(40));
 		btnFolderNew.setToolTipText("Create new folder under selected folder");
 		btnFolderNew.setPreferredSize(new Dimension(54,54));
 		btnFolderNew.addActionListener(new ActionListener() {
@@ -431,7 +430,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 		});
 		northPanel.add(btnFolderNew);
 		
-	  createUserValueList = new JButton(Resources.getScaledIcon(Resources.iUserListNew, 40));
+	  createUserValueList = new JButton(Img.UserListNew.getScaledIcon(40));
 	  createUserValueList.setPreferredSize(new Dimension(54,54));
 	  createUserValueList.setToolTipText("Create a new list of values (like a sample or gene list)");
 	  createUserValueList.addActionListener(new ActionListener() {
@@ -449,7 +448,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 		northPanel.add(createUserValueList);
 		if (action != Action.MANAGE) createUserValueList.setVisible(false);
 			
-	  createUserIntervalsList = new JButton(Resources.getScaledIcon(Resources.iUserIntervalsNew, 40));
+	  createUserIntervalsList = new JButton(Img.UserIntervalsNew.getScaledIcon(40));
 	  createUserIntervalsList.setPreferredSize(new Dimension(54,54));
 	  createUserIntervalsList.setToolTipText("Create a new list of genomic intervals");
 	  createUserIntervalsList.addActionListener(new ActionListener() {
@@ -467,7 +466,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 		northPanel.add(createUserIntervalsList);	  
 		if (action != Action.MANAGE) createUserIntervalsList.setVisible(false);
 		
-		createUserPhenotypesList = new JButton(Resources.getScaledIcon(Resources.iUserHPONew, 40));
+		createUserPhenotypesList = new JButton(Img.UserHPONew.getScaledIcon(40));
 		createUserPhenotypesList.setPreferredSize(new Dimension(54,54));
 		createUserPhenotypesList.setToolTipText("Create a new list of phenotypes (HPO terms)");
 		createUserPhenotypesList.addActionListener(new ActionListener() {
@@ -485,7 +484,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 		northPanel.add(createUserPhenotypesList);	  
 		if (action != Action.MANAGE) createUserPhenotypesList.setVisible(false);
 		
-		createUserTemplateList = new JButton(Resources.getScaledIcon(Resources.iUserTemplateNew, 40));
+		createUserTemplateList = new JButton(Img.UserTemplateNew.getScaledIcon(40));
 		createUserTemplateList.setPreferredSize(new Dimension(54,54));
 		createUserTemplateList.setToolTipText("Create a filters template in your profile");
 		createUserTemplateList.addActionListener(new ActionListener() {
@@ -529,7 +528,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 		});
 		if (action != Action.SAVE) userInput.setVisible(false);
 		
-		okButton = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 30));
+		okButton = new JButton(Img.ButtonApply.getScaledIcon(30));
 	  createUserIntervalsList.setToolTipText("Choose");
 		okButton.setPreferredSize(new Dimension(42,42));
 		okButton.addActionListener(new ActionListener() {
@@ -540,7 +539,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 					public void run(){
 	  				if (ProfileTree.this.action == Action.SAVE){
 	  					if (Filter.containsForbiddenCharacters(userInput.getText())) {
-	  						JOptionPane.showMessageDialog(new JFrame(), "You cannot use the following characters: "+Filter.getForbiddenCharacters(), "Saving in profile", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+	  						JOptionPane.showMessageDialog(new JFrame(), "You cannot use the following characters: "+Filter.getForbiddenCharacters(), "Saving in profile", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 	  						return;
 	  					}
 	  					ProfileNode selectedNode = (ProfileNode) tree.getLastSelectedPathComponent();
@@ -571,7 +570,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 		});
 		southPanel.add(okButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(2, 5, 2, 5), 0, 0));	  
 		
-		cancelButton = new JButton(Resources.getScaledIcon(Resources.iCross, 30));
+		cancelButton = new JButton(Img.Cross.getScaledIcon(30));
 		cancelButton.setToolTipText("Cancel");
 	  cancelButton.setPreferredSize(new Dimension(42,42));
 		cancelButton.addActionListener(new ActionListener() {
@@ -599,7 +598,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 	private void newFolder(ProfileNode node){
 		if (canCreateElement(node, UserData.FOLDER)){
 			Object res = JOptionPane.showInputDialog(ProfileTree.this,  "Folder name", "New folder",
-					JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iFolderNew,64), null, null);
+					JOptionPane.QUESTION_MESSAGE, Img.FolderNew.getScaledIcon(64), null, null);
 			if (res != null){
 				String fullPath = node.getFullPath();
 				if (fullPath.length() > 0) fullPath += "~";
@@ -613,7 +612,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 					Highlander.getLoggedUser().saveFolder(fullPath, userData, node.getCategory());
 				}catch(Exception ex){
 					Tools.exception(ex);
-					JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Error", ex), "New folder", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Error", ex), "New folder", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}
 			}
 		}
@@ -621,7 +620,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 
 	private void renameElement(ProfileNode node){
 		Object res = JOptionPane.showInputDialog(ProfileTree.this,  "New name", "Renaming",
-				JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iEditPen,64), null, node.getKey());
+				JOptionPane.QUESTION_MESSAGE, Img.EditPen.getScaledIcon(64), null, node.getKey());
 		if (res != null){
 			try{
 				switch (node.getUserData()) {
@@ -676,7 +675,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 				tree.setSelectionPath(new TreePath(model.getPathToRoot(node)));
 			}catch(Exception ex){
 				Tools.exception(ex);
-				JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Error", ex), "Renaming", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Error", ex), "Renaming", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}
 		}
 	}
@@ -702,7 +701,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 					}
 				} catch (Exception ex) {
 					Tools.exception(ex);
-					JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Cannot save your mask "+node.getKey(), ex), "Edit column mask", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));				
+					JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Cannot save your mask "+node.getKey(), ex), "Edit column mask", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));				
 				}
 			}
 			break;
@@ -725,7 +724,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 					}
 				} catch (Exception ex) {
 					Tools.exception(ex);
-					JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Cannot save your selection "+node.getKey(), ex), "Edit column selection", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));				
+					JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Cannot save your selection "+node.getKey(), ex), "Edit column selection", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));				
 				}
 			}
 			break;
@@ -760,7 +759,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 				}
 			} catch (Exception ex) {
 				Tools.exception(ex);
-				JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Cannot modify your template "+node.getKey(), ex), "Edit template", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));				
+				JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Cannot modify your template "+node.getKey(), ex), "Edit template", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));				
 			}
 			break;
 		default:
@@ -771,7 +770,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 	private void deleteElement(TreePath[] paths){
 		int res = JOptionPane.showConfirmDialog(new JFrame(), 
 				"Are you sure you want to permanently delete ALL selected elements (and all contained sub-element if any) ?", 
-				"Deleting element from profile", JOptionPane.YES_NO_CANCEL_OPTION , JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iUserDelete,64));
+				"Deleting element from profile", JOptionPane.YES_NO_CANCEL_OPTION , JOptionPane.ERROR_MESSAGE, Img.UserDelete.getScaledIcon(64));
 		if (res == JOptionPane.YES_OPTION){
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
@@ -818,7 +817,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 					model.removeNodeFromParent(node);
 				}catch(Exception ex){
 					Tools.exception(ex);
-					JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Cannot delete profile element "+node, ex), "Deleting profile element", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));				
+					JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Cannot delete profile element "+node, ex), "Deleting profile element", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));				
 				}
 			}
 			SwingUtilities.invokeLater(new Runnable() {
@@ -858,7 +857,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 			}
 		}
 		if (!users.isEmpty()){
-			JOptionPane.showMessageDialog(ProfileTree.this, paths.length+" elements have been sent,\n"+  userString + "will be notified.", "Sharing element from profile", JOptionPane.PLAIN_MESSAGE, Resources.getScaledIcon(Resources.iUsers,64));
+			JOptionPane.showMessageDialog(ProfileTree.this, paths.length+" elements have been sent,\n"+  userString + "will be notified.", "Sharing element from profile", JOptionPane.PLAIN_MESSAGE, Img.Users.getScaledIcon(64));
 		}
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -938,7 +937,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 				model.nodeChanged(nodes[i]);
 			}catch(Exception ex){
 				Tools.exception(ex);
-				JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Error", ex), "Renaming", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Error", ex), "Renaming", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}
 		}
 		tree.expandPath(new TreePath(model.getPathToRoot(destination)));
@@ -1001,7 +1000,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 					if (alreadyExists){
 						yesno = JOptionPane.showConfirmDialog(new JFrame(), 
 								"You already have an element named '"+node.getKey().replace("~", " -> ")+"', do you want to overwrite it ?", 
-								"Overwriting element in your profile", JOptionPane.YES_NO_OPTION , JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iDbSave,64));
+								"Overwriting element in your profile", JOptionPane.YES_NO_OPTION , JOptionPane.QUESTION_MESSAGE, Img.DbSave.getScaledIcon(64));
 					}
 					if (yesno == JOptionPane.YES_OPTION){
 						duplicate(node, userData, target, newFullPath, alreadyExists);
@@ -1010,7 +1009,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 						Object res = null;
 						do {
 							res = JOptionPane.showInputDialog(ProfileTree.this,  "Element already exists, give it a new name", "Renaming",
-									JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iEditPen,64), null, node.getKey());
+									JOptionPane.QUESTION_MESSAGE, Img.EditPen.getScaledIcon(64), null, node.getKey());
 							if (res != null){
 								alreadyExists = Highlander.getLoggedUser().doesPersonalDataExists(userData, target.getCategory(), newFullPath.replace(node.getKey(), res.toString()));
 							}
@@ -1022,7 +1021,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 				}catch(Exception ex){
 					Tools.exception(ex);
 					JOptionPane.showMessageDialog(this, Tools.getMessage("Error when copying " + userData.getName() + " '"+node.getKey()+"'", ex), 
-							"Copy element", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+							"Copy element", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}
 			}			
 			tree.expandPath(new TreePath(model.getPathToRoot(target)));
@@ -1189,7 +1188,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 		ask.setVisible(true);
 		if (!ask.getSelection().isEmpty()) {
 			Object res = JOptionPane.showInputDialog(ProfileTree.this,  "List name", "New value list",
-					JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iUserListNew,64), null, null);
+					JOptionPane.QUESTION_MESSAGE, Img.UserListNew.getScaledIcon(64), null, null);
 			if (res != null){
 				String fullPath = node.getFullPath();
 				if (fullPath.length() > 0) fullPath += "~";
@@ -1210,7 +1209,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 					}
 					//We are still at level 1, meaning no node of this field exists, create it
 					if (node.getLevel() == 1) {
-						ProfileNode newFieldNode = new ProfileNode(UserData.FOLDER, newField, "", newField.toString(), null, Resources.getScaledIcon(Resources.iField, 24));
+						ProfileNode newFieldNode = new ProfileNode(UserData.FOLDER, newField, "", newField.toString(), null, Img.Field.getScaledIcon(24));
 						model.insertNodeInto(newFieldNode, node, node.getChildCount());
 						linkedData.put(newFieldNode, UserData.VALUES);		
 						node = newFieldNode;
@@ -1232,7 +1231,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 		Reference reference = node.getReference();
 		if (reference == null) {
 			reference = (Reference)JOptionPane.showInputDialog(new JFrame(), "Select a reference genome", "Create list of genomic intervals", 
-					JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iReference, 64), 
+					JOptionPane.QUESTION_MESSAGE, Img.Reference.getScaledIcon(64), 
 					Reference.getAvailableReferences().toArray(new Reference[0]), 
 					Highlander.getCurrentAnalysis().getReference());
 		}
@@ -1242,7 +1241,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 			ask.setVisible(true);
 			if (!ask.getSelection().isEmpty()) {
 				Object res = JOptionPane.showInputDialog(ProfileTree.this,  "List name", "New intervals list",
-						JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iUserListNew,64), null, null);
+						JOptionPane.QUESTION_MESSAGE, Img.UserListNew.getScaledIcon(64), null, null);
 				if (res != null){
 					String fullPath = node.getFullPath();
 					if (fullPath.length() > 0) fullPath += "~";
@@ -1258,7 +1257,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 						}
 						//We are still at level 1, meaning no node of this reference exists, create it
 						if (node.getLevel() == 1) {
-							ProfileNode newFieldNode = new ProfileNode(UserData.FOLDER, reference, "", reference.toString(), null, Resources.getScaledIcon(Resources.iReference, 24));
+							ProfileNode newFieldNode = new ProfileNode(UserData.FOLDER, reference, "", reference.toString(), null, Img.Reference.getScaledIcon(24));
 							model.insertNodeInto(newFieldNode, node, node.getChildCount());
 							linkedData.put(newFieldNode, UserData.INTERVALS);
 							node = newFieldNode;
@@ -1280,7 +1279,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 		Reference reference = node.getReference();
 		if (reference == null) {
 			reference = (Reference)JOptionPane.showInputDialog(new JFrame(), "Select a reference genome", "Create list of phenotypes", 
-					JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iReference, 64), 
+					JOptionPane.QUESTION_MESSAGE, Img.Reference.getScaledIcon(64), 
 					Reference.getAvailableReferences().toArray(new Reference[0]), 
 					Highlander.getCurrentAnalysis().getReference());
 		}
@@ -1290,7 +1289,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 			ask.setVisible(true);
 			if (!ask.getSelection().isEmpty()) {
 				Object res = JOptionPane.showInputDialog(ProfileTree.this,  "List name", "New phenotypes list",
-						JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iUserListNew,64), null, null);
+						JOptionPane.QUESTION_MESSAGE, Img.UserListNew.getScaledIcon(64), null, null);
 				if (res != null){
 					String fullPath = node.getFullPath();
 					if (fullPath.length() > 0) fullPath += "~";
@@ -1306,7 +1305,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 						}
 						//We are still at level 1, meaning no node of this reference exists, create it
 						if (node.getLevel() == 1) {
-							ProfileNode newFieldNode = new ProfileNode(UserData.FOLDER, reference, "", reference.toString(), null, Resources.getScaledIcon(Resources.iReference, 24));
+							ProfileNode newFieldNode = new ProfileNode(UserData.FOLDER, reference, "", reference.toString(), null, Img.Reference.getScaledIcon(24));
 							model.insertNodeInto(newFieldNode, node, node.getChildCount());
 							linkedData.put(newFieldNode, UserData.PHENOTYPES);
 							node = newFieldNode;
@@ -1330,7 +1329,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 		ask.setVisible(true);
 		if (ask.needToSave()) {
 			Object res = JOptionPane.showInputDialog(ProfileTree.this,  "Template name", "New filters template",
-					JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iUserTemplateNew,64), null, null);
+					JOptionPane.QUESTION_MESSAGE, Img.UserTemplateNew.getScaledIcon(64), null, null);
 			if (res != null){
 				String fullPath = node.getFullPath();
 				if (fullPath.length() > 0) fullPath += "~";
@@ -1782,7 +1781,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 		for (SortingCriterion s : list){
 			JLabel label = new JLabel();
 			label.setText(s.getFieldName());
-			label.setIcon(((s.getSortOrder() == SortOrder.DESCENDING)?Resources.getScaledIcon(Resources.iSortDesc, 16):Resources.getScaledIcon(Resources.iSortAsc, 16)));
+			label.setIcon(((s.getSortOrder() == SortOrder.DESCENDING)?Img.SortDesc.getScaledIcon(16):Img.SortAsc.getScaledIcon(16)));
 			label.setToolTipText(s.getField().getDescriptionAndSource());
 			panel.add(label, new GridBagConstraints(0, row++, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
 		}
@@ -1860,7 +1859,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 	public class ProfileTreeModel extends DefaultTreeModel {
 		
 		public ProfileTreeModel(String username, UserData filterUserData, Analysis filterAnalysis, Reference filterReference, Field filterField){
-			super(new ProfileNode(UserData.FOLDER, "", username, null, Resources.getScaledIcon(Resources.iUser, 24)), true);
+			super(new ProfileNode(UserData.FOLDER, "", username, null, Img.User.getScaledIcon(24)), true);
 			for (UserData stuff : UserData.values()){
 				if (filterUserData == null || filterUserData == stuff){
 					if (stuff != UserData.FOLDER && stuff != UserData.SETTINGS && stuff != UserData.HISTORY){
@@ -1880,12 +1879,12 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 						case FIELD:
 							if (filterField == null) {
 								for (Field field : Highlander.getLoggedUser().getExistingListOfValuesFields()) {
-									ProfileNode fieldNode = new ProfileNode(UserData.FOLDER, field, "", field.toString(), null, Resources.getScaledIcon(Resources.iField, 24));
+									ProfileNode fieldNode = new ProfileNode(UserData.FOLDER, field, "", field.toString(), null, Img.Field.getScaledIcon(24));
 									userDataNode.add(fieldNode);
 									linkedData.put(fieldNode, stuff);
 								}
 							}else {
-								ProfileNode fieldNode = new ProfileNode(UserData.FOLDER, filterField, "", filterField.toString(), null, Resources.getScaledIcon(Resources.iField, 24));
+								ProfileNode fieldNode = new ProfileNode(UserData.FOLDER, filterField, "", filterField.toString(), null, Img.Field.getScaledIcon(24));
 								userDataNode.add(fieldNode);
 								linkedData.put(fieldNode, stuff);								
 							}
@@ -1893,14 +1892,14 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 						case REFERENCE:
 							if (filterReference == null) {
 								for (Reference reference : Highlander.getLoggedUser().getExistingListOfIntervalsReferences()) {
-									ProfileNode referenceNode = new ProfileNode(UserData.FOLDER, reference, "", reference.toString(), null, Resources.getScaledIcon(Resources.iReference, 24));
+									ProfileNode referenceNode = new ProfileNode(UserData.FOLDER, reference, "", reference.toString(), null, Img.Reference.getScaledIcon(24));
 									userDataNode.add(referenceNode);
 									linkedData.put(referenceNode, stuff);
 								}
 							}else {
 								for (Reference reference : Reference.getAvailableReferences()) {
 									if (filterReference.usesSameReferenceSequenceAs(reference)){
-										ProfileNode referenceNode = new ProfileNode(UserData.FOLDER, reference, "", reference.toString(), null, Resources.getScaledIcon(Resources.iReference, 24));
+										ProfileNode referenceNode = new ProfileNode(UserData.FOLDER, reference, "", reference.toString(), null, Img.Reference.getScaledIcon(24));
 										userDataNode.add(referenceNode);
 										linkedData.put(referenceNode, stuff);
 									}
@@ -2023,7 +2022,7 @@ public class ProfileTree extends JDialog implements TreeWillExpandListener {
 					}
 				}catch(Exception ex){
 					Tools.exception(ex);
-					JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Error", ex), "Fetch profile items", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Error", ex), "Fetch profile items", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}
 			}
 		}

@@ -35,6 +35,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
@@ -44,6 +46,7 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -55,7 +58,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.dialog.ProfileTree.Action;
 import be.uclouvain.ngs.highlander.UI.misc.SearchField;
@@ -65,11 +68,6 @@ import be.uclouvain.ngs.highlander.administration.users.User.UserData;
 import be.uclouvain.ngs.highlander.database.Category;
 import be.uclouvain.ngs.highlander.database.Field;
 import be.uclouvain.ngs.highlander.datatype.Analysis;
-
-import javax.swing.JComboBox;
-
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
 
 public class CreateColumnSelection extends JDialog {
 
@@ -126,7 +124,7 @@ public class CreateColumnSelection extends JDialog {
 		}catch(Exception ex){
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Unrecognized field", ex), "Columns selection",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			dispose();
 		}
 	}
@@ -137,22 +135,22 @@ public class CreateColumnSelection extends JDialog {
 		switch(userData){
 		case COLUMN_SELECTION:
 			setTitle("Create a selection of columns to fetch from the database");
-			setIconImage(Resources.getScaledIcon(Resources.iColumnSelection, 64).getImage());
+			setIconImage(Img.ColumnSelection.getScaledIcon(64).getImage());
 			name =  "selection";
 			break;
 		case COLUMN_MASK:
 			setTitle("Select columns to mask in the table");
-			setIconImage(Resources.getScaledIcon(Resources.iColumnMask, 64).getImage());
+			setIconImage(Img.ColumnMask.getScaledIcon(64).getImage());
 			name =  "mask";
 			break;
 		case SORTING:
 			setTitle("Select columns to sort in the table");
-			setIconImage(Resources.getScaledIcon(Resources.iSort, 64).getImage());
+			setIconImage(Img.Sort.getScaledIcon(64).getImage());
 			name =  "selection";
 			break;
 		case SETTINGS:
 			setTitle("Create a default selection of columns for selected analysis");
-			setIconImage(Resources.getScaledIcon(Resources.iColumnSelection, 64).getImage());
+			setIconImage(Img.ColumnSelection.getScaledIcon(64).getImage());
 			name =  "selection";
 			break;
 		default:
@@ -162,7 +160,7 @@ public class CreateColumnSelection extends JDialog {
 		JPanel panel = new JPanel();	
 		getContentPane().add(panel, BorderLayout.SOUTH);
 
-		JButton btnOk = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 24));
+		JButton btnOk = new JButton(Img.ButtonApply.getScaledIcon(24));
 		btnOk.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -174,7 +172,7 @@ public class CreateColumnSelection extends JDialog {
 						dispose();
 					}else{
 						int res = JOptionPane.showConfirmDialog(CreateColumnSelection.this, "Are you sure you want to save you changes ?", "Edit columns "+name+" in your profile",
-								JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iDbSave,64));
+								JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Img.DbSave.getScaledIcon(64));
 						if (res == JOptionPane.YES_OPTION){
 							dispose();
 						}else if (res == JOptionPane.NO_OPTION){
@@ -188,7 +186,7 @@ public class CreateColumnSelection extends JDialog {
 		});
 		panel.add(btnOk);
 
-		JButton btnCancel = new JButton(Resources.getScaledIcon(Resources.iCross, 24));
+		JButton btnCancel = new JButton(Img.Cross.getScaledIcon(24));
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -287,7 +285,7 @@ public class CreateColumnSelection extends JDialog {
 		gbl_panel_2.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		panel_middle.setLayout(gbl_panel_2);
 
-		JButton button = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleRight, 24));
+		JButton button = new JButton(Img.ArrowDoubleRight.getScaledIcon(24));
 		button.setToolTipText("Add selected column(s) to your "+name);
 		button.addActionListener(new ActionListener() {
 			@Override
@@ -301,7 +299,7 @@ public class CreateColumnSelection extends JDialog {
 		gbc_button.gridy = 0;
 		panel_middle.add(button, gbc_button);
 
-		JButton button_1 = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleLeft, 24));
+		JButton button_1 = new JButton(Img.ArrowDoubleLeft.getScaledIcon(24));
 		button_1.setToolTipText("Remove selected column(s) from your "+name);
 		button_1.addActionListener(new ActionListener() {
 			@Override
@@ -355,7 +353,7 @@ public class CreateColumnSelection extends JDialog {
 		gbl_panel_3.rowWeights = new double[]{1.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		panel_ordering.setLayout(gbl_panel_3);
 
-		JButton button_2 = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleUp, 24));
+		JButton button_2 = new JButton(Img.ArrowDoubleUp.getScaledIcon(24));
 		button_2.setToolTipText("Put selected column(s) before in order of appearance");
 		button_2.addActionListener(new ActionListener() {
 			@Override
@@ -376,7 +374,7 @@ public class CreateColumnSelection extends JDialog {
 		gbc_button_2.gridy = 1;
 		panel_ordering.add(button_2, gbc_button_2);
 
-		JButton button_3 = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleDown, 24));
+		JButton button_3 = new JButton(Img.ArrowDoubleDown.getScaledIcon(24));
 		button_3.setToolTipText("Put selected column(s) after in order of appearance");
 		button_3.addActionListener(new ActionListener() {
 			@Override
@@ -449,7 +447,7 @@ public class CreateColumnSelection extends JDialog {
 		}catch(Exception ex){
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Unrecognized field", ex), "Columns selection",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 	}
 
@@ -464,7 +462,7 @@ public class CreateColumnSelection extends JDialog {
 		}catch(Exception ex){
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Unrecognized field", ex), "Columns selection",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 	}
 
@@ -493,7 +491,7 @@ public class CreateColumnSelection extends JDialog {
 		}catch(Exception ex){
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Unrecognized field", ex), "Columns reordering",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 	}
 
@@ -522,7 +520,7 @@ public class CreateColumnSelection extends JDialog {
 		}catch(Exception ex){
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Unrecognized field", ex), "Columns reordering",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 	}
 

@@ -55,6 +55,7 @@ import javax.swing.SwingConstants;
 
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.Resources.Palette;
 import be.uclouvain.ngs.highlander.UI.table.VariantsTable;
@@ -127,39 +128,39 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 
 	private void set_of_interest_variant(String val){
 		if (val != null && (val.equals("1") || val.equalsIgnoreCase("true"))){
-			statusOfInterestVariant.setIcon(Resources.getScaledIcon(Resources.iButtonApply, 24));
+			statusOfInterestVariant.setIcon(Img.ButtonApply.getScaledIcon(24));
 			statusOfInterestVariant.setToolTipText("You have marked this variant as 'of interest'");
 		}else if (val != null && (val.equals("0") || val.equalsIgnoreCase("false"))){
-			statusOfInterestVariant.setIcon(Resources.getScaledIcon(Resources.iCross, 24));
+			statusOfInterestVariant.setIcon(Img.Cross.getScaledIcon(24));
 			statusOfInterestVariant.setToolTipText("You have marked this variant as 'not interesting'");
 		}else{
-			statusOfInterestVariant.setIcon(Resources.getScaledIcon(Resources.iQuestion, 24));
+			statusOfInterestVariant.setIcon(Img.Question.getScaledIcon(24));
 			statusOfInterestVariant.setToolTipText("You don't have marked this variant ... yet");
 		}
 	}
 
 	private void set_of_interest_gene(String val){
 		if (val != null && (val.equals("1") || val.equalsIgnoreCase("true"))){
-			statusOfInterestGene.setIcon(Resources.getScaledIcon(Resources.iButtonApply, 24));
+			statusOfInterestGene.setIcon(Img.ButtonApply.getScaledIcon(24));
 			statusOfInterestGene.setToolTipText("You have marked this gene as 'of interest'");
 		}else if (val != null && (val.equals("0") || val.equalsIgnoreCase("false"))){
-			statusOfInterestGene.setIcon(Resources.getScaledIcon(Resources.iCross, 24));
+			statusOfInterestGene.setIcon(Img.Cross.getScaledIcon(24));
 			statusOfInterestGene.setToolTipText("You have marked this gene as 'not interesting'");
 		}else{
-			statusOfInterestGene.setIcon(Resources.getScaledIcon(Resources.iQuestion, 24));
+			statusOfInterestGene.setIcon(Img.Question.getScaledIcon(24));
 			statusOfInterestGene.setToolTipText("You don't have marked this gene ... yet");
 		}
 	}
 
 	private void set_of_interest_sample(String val){
 		if (val != null && (val.equals("1") || val.equalsIgnoreCase("true"))){
-			statusOfInterestSample.setIcon(Resources.getScaledIcon(Resources.iButtonApply, 24));
+			statusOfInterestSample.setIcon(Img.ButtonApply.getScaledIcon(24));
 			statusOfInterestSample.setToolTipText("You have marked this sample as 'of interest'");
 		}else if (val != null && (val.equals("0") || val.equalsIgnoreCase("false"))){
-			statusOfInterestSample.setIcon(Resources.getScaledIcon(Resources.iCross, 24));
+			statusOfInterestSample.setIcon(Img.Cross.getScaledIcon(24));
 			statusOfInterestSample.setToolTipText("You have marked this sample as 'not interesting'");
 		}else{
-			statusOfInterestSample.setIcon(Resources.getScaledIcon(Resources.iQuestion, 24));
+			statusOfInterestSample.setIcon(Img.Question.getScaledIcon(24));
 			statusOfInterestSample.setToolTipText("You don't have marked this sample ... yet");
 		}
 	}
@@ -401,7 +402,7 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 			statusOfInterestVariant = new JButton();
 			statusOfInterestVariant.setPreferredSize(new Dimension(28,28));
 			final JPopupMenu statusInterestVariantPopupMenu = new JPopupMenu();
-			JMenuItem itemInterestVariantNull = new JMenuItem("You don't have marked this variant ... yet",Resources.getScaledIcon(Resources.iQuestion, 24));
+			JMenuItem itemInterestVariantNull = new JMenuItem("You don't have marked this variant ... yet",Img.Question.getScaledIcon(24));
 			itemInterestVariantNull.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -411,12 +412,12 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxPrivateAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
 			statusInterestVariantPopupMenu.add(itemInterestVariantNull);
-			JMenuItem itemInterestVariantTrue = new JMenuItem("You have marked this variant as 'of interest' (in all samples)",Resources.getScaledIcon(Resources.iButtonApply, 24));
+			JMenuItem itemInterestVariantTrue = new JMenuItem("You have marked this variant as 'of interest' (in all samples)",Img.ButtonApply.getScaledIcon(24));
 			itemInterestVariantTrue.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -426,12 +427,12 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxPrivateAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
 			statusInterestVariantPopupMenu.add(itemInterestVariantTrue);
-			JMenuItem itemInterestVariantFalse = new JMenuItem("You have marked this variant as 'not interesting' (in all samples)",Resources.getScaledIcon(Resources.iCross, 24));
+			JMenuItem itemInterestVariantFalse = new JMenuItem("You have marked this variant as 'not interesting' (in all samples)",Img.Cross.getScaledIcon(24));
 			itemInterestVariantFalse.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -441,7 +442,7 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxPrivateAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
@@ -472,7 +473,7 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 				statusOfInterestGene = new JButton();
 				statusOfInterestGene.setPreferredSize(new Dimension(28,28));
 				final JPopupMenu statusInterestGenePopupMenu = new JPopupMenu();
-				JMenuItem itemInterestGeneNull = new JMenuItem("You don't have marked this gene ... yet",Resources.getScaledIcon(Resources.iQuestion, 24));
+				JMenuItem itemInterestGeneNull = new JMenuItem("You don't have marked this gene ... yet",Img.Question.getScaledIcon(24));
 				itemInterestGeneNull.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -482,12 +483,12 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 						}catch(Exception ex){
 							Tools.exception(ex);
 							JOptionPane.showMessageDialog(DetailsBoxPrivateAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-									JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+									JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 						}
 					}
 				});
 				statusInterestGenePopupMenu.add(itemInterestGeneNull);
-				JMenuItem itemInterestGeneTrue = new JMenuItem("You have marked this gene as 'of interest'",Resources.getScaledIcon(Resources.iButtonApply, 24));
+				JMenuItem itemInterestGeneTrue = new JMenuItem("You have marked this gene as 'of interest'",Img.ButtonApply.getScaledIcon(24));
 				itemInterestGeneTrue.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -497,12 +498,12 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 						}catch(Exception ex){
 							Tools.exception(ex);
 							JOptionPane.showMessageDialog(DetailsBoxPrivateAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-									JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+									JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 						}
 					}
 				});
 				statusInterestGenePopupMenu.add(itemInterestGeneTrue);
-				JMenuItem itemInterestGeneFalse = new JMenuItem("You have marked this gene as 'not interesting'",Resources.getScaledIcon(Resources.iCross, 24));
+				JMenuItem itemInterestGeneFalse = new JMenuItem("You have marked this gene as 'not interesting'",Img.Cross.getScaledIcon(24));
 				itemInterestGeneFalse.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -512,7 +513,7 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 						}catch(Exception ex){
 							Tools.exception(ex);
 							JOptionPane.showMessageDialog(DetailsBoxPrivateAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-									JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+									JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 						}
 					}
 				});
@@ -543,7 +544,7 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 			statusOfInterestSample = new JButton();
 			statusOfInterestSample.setPreferredSize(new Dimension(28,28));
 			final JPopupMenu statusInterestSamplePopupMenu = new JPopupMenu();
-			JMenuItem itemInterestSampleNull = new JMenuItem("You don't have marked this sample ... yet",Resources.getScaledIcon(Resources.iQuestion, 24));
+			JMenuItem itemInterestSampleNull = new JMenuItem("You don't have marked this sample ... yet",Img.Question.getScaledIcon(24));
 			itemInterestSampleNull.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -553,12 +554,12 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxPrivateAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
 			statusInterestSamplePopupMenu.add(itemInterestSampleNull);
-			JMenuItem itemInterestSampleTrue = new JMenuItem("You have marked this sample as 'of interest'",Resources.getScaledIcon(Resources.iButtonApply, 24));
+			JMenuItem itemInterestSampleTrue = new JMenuItem("You have marked this sample as 'of interest'",Img.ButtonApply.getScaledIcon(24));
 			itemInterestSampleTrue.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -568,12 +569,12 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxPrivateAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
 			statusInterestSamplePopupMenu.add(itemInterestSampleTrue);
-			JMenuItem itemInterestSampleFalse = new JMenuItem("You have marked this sample as 'not interesting'",Resources.getScaledIcon(Resources.iCross, 24));
+			JMenuItem itemInterestSampleFalse = new JMenuItem("You have marked this sample as 'not interesting'",Img.Cross.getScaledIcon(24));
 			itemInterestSampleFalse.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -583,7 +584,7 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxPrivateAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
@@ -615,7 +616,7 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 			commentVariantTextArea.setWrapStyleWord(true);
 			commentVariantTextArea.setRows(3);
 			commentVariantTextArea.setText(val_private_comments_variant);
-			JButton submitCommentsVariantButton = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 20));
+			JButton submitCommentsVariantButton = new JButton(Img.ButtonApply.getScaledIcon(20));
 			submitCommentsVariantButton.setToolTipText("Update private comment for this variant in the database");
 			submitCommentsVariantButton.setPreferredSize(new Dimension(28,28));
 			submitCommentsVariantButton.addActionListener(new ActionListener() {
@@ -626,12 +627,12 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxPrivateAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
 
-			JButton shareCommentsVariantButton = new JButton(Resources.getScaledIcon(Resources.iUsers, 20));
+			JButton shareCommentsVariantButton = new JButton(Img.Users.getScaledIcon(20));
 			shareCommentsVariantButton.setToolTipText("Share private comment for this variant with another user");
 			shareCommentsVariantButton.setPreferredSize(new Dimension(28,28));
 			shareCommentsVariantButton.addActionListener(new ActionListener() {
@@ -640,7 +641,7 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 					try{
 						User[] users = User.fetchList().toArray((new User[0]));
 						User user = (User)JOptionPane.showInputDialog(null, "Select the user with whom you want to share comments: ", 
-								"Sharing comments from profile", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iUsers, 64), users, null);
+								"Sharing comments from profile", JOptionPane.QUESTION_MESSAGE, Img.Users.getScaledIcon(64), users, null);
 						if (user != null){
 							String[] variant = variant_sample_id_to_variant_key.get(variantSampleId).split("-");
 							int otherUserAnnotationId = -1;
@@ -675,7 +676,7 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxPrivateAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
@@ -695,7 +696,7 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 				commentGeneTextArea.setWrapStyleWord(true);
 				commentGeneTextArea.setRows(3);
 				commentGeneTextArea.setText(val_private_comments_gene);
-				JButton submitCommentsGeneButton = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 20));
+				JButton submitCommentsGeneButton = new JButton(Img.ButtonApply.getScaledIcon(20));
 				submitCommentsGeneButton.setToolTipText("Update private comment in the database");
 				submitCommentsGeneButton.setPreferredSize(new Dimension(28,28));
 				submitCommentsGeneButton.addActionListener(new ActionListener() {
@@ -706,11 +707,11 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 						}catch(Exception ex){
 							Tools.exception(ex);
 							JOptionPane.showMessageDialog(DetailsBoxPrivateAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-									JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+									JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 						}
 					}
 				});
-				JButton shareCommentsGeneButton = new JButton(Resources.getScaledIcon(Resources.iUsers, 20));
+				JButton shareCommentsGeneButton = new JButton(Img.Users.getScaledIcon(20));
 				shareCommentsGeneButton.setToolTipText("Share private comment for this gene with another user");
 				shareCommentsGeneButton.setPreferredSize(new Dimension(28,28));
 				shareCommentsGeneButton.addActionListener(new ActionListener() {
@@ -719,7 +720,7 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 						try{
 							User[] users = User.fetchList().toArray((new User[0]));
 							User user = (User)JOptionPane.showInputDialog(null, "Select the user with whom you want to share comments: ", 
-									"Sharing comments from profile", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iUsers, 64), users, null);
+									"Sharing comments from profile", JOptionPane.QUESTION_MESSAGE, Img.Users.getScaledIcon(64), users, null);
 							if (user != null){
 								int otherUserAnnotationId = -1;
 								try (Results res = DB.select(Schema.HIGHLANDER, 
@@ -748,7 +749,7 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 						}catch(Exception ex){
 							Tools.exception(ex);
 							JOptionPane.showMessageDialog(DetailsBoxPrivateAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-									JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+									JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 						}
 					}
 				});
@@ -768,7 +769,7 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 			commentSampleTextArea.setWrapStyleWord(true);
 			commentSampleTextArea.setRows(3);
 			commentSampleTextArea.setText(val_private_comments_sample);
-			JButton submitCommentsSampleButton = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 20));
+			JButton submitCommentsSampleButton = new JButton(Img.ButtonApply.getScaledIcon(20));
 			submitCommentsSampleButton.setToolTipText("Update private comment in the database");
 			submitCommentsSampleButton.setPreferredSize(new Dimension(28,28));
 			submitCommentsSampleButton.addActionListener(new ActionListener() {
@@ -779,11 +780,11 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxPrivateAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
-			JButton shareCommentsSampleButton = new JButton(Resources.getScaledIcon(Resources.iUsers, 20));
+			JButton shareCommentsSampleButton = new JButton(Img.Users.getScaledIcon(20));
 			shareCommentsSampleButton.setToolTipText("Share private comment for this sample with another user");
 			shareCommentsSampleButton.setPreferredSize(new Dimension(28,28));
 			shareCommentsSampleButton.addActionListener(new ActionListener() {
@@ -792,7 +793,7 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 					try{
 						User[] users = User.fetchList().toArray((new User[0]));
 						User user = (User)JOptionPane.showInputDialog(null, "Select the user with whom you want to share comments: ", 
-								"Sharing comments from profile", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iUsers, 64), users, null);
+								"Sharing comments from profile", JOptionPane.QUESTION_MESSAGE, Img.Users.getScaledIcon(64), users, null);
 						if (user != null){
 							int otherUserAnnotationId = -1;
 							try (Results res = DB.select(Schema.HIGHLANDER, 
@@ -821,7 +822,7 @@ public class DetailsBoxPrivateAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxPrivateAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});

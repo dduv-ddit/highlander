@@ -49,16 +49,16 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.misc.WrapLayout;
 import be.uclouvain.ngs.highlander.administration.UI.ManagerPanel;
 import be.uclouvain.ngs.highlander.administration.UI.ProjectManager;
 import be.uclouvain.ngs.highlander.database.DBUtils;
-import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.Field.Annotation;
 import be.uclouvain.ngs.highlander.database.Field.AnnotationType;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.datatype.Analysis;
 import be.uclouvain.ngs.highlander.datatype.AnalysisFull;
 
@@ -114,13 +114,13 @@ public class UpdatePanel extends ManagerPanel {
 							}
 						}
 						if (hard){
-							databaseLoadLabel.setIcon(Resources.getScaledIcon(Resources.iShinyBallRed, 24));
+							databaseLoadLabel.setIcon(Img.ShinyBallRed.getScaledIcon(24));
 							databaseLoadLabel.setText("Database is being updated, launching queries is strongly discouraged !");
 						}else if (soft){
-							databaseLoadLabel.setIcon(Resources.getScaledIcon(Resources.iShinyBallOrange, 24));
+							databaseLoadLabel.setIcon(Img.ShinyBallOrange.getScaledIcon(24));
 							databaseLoadLabel.setText("New samples are being processed by the pipeline");
 						}else{
-							databaseLoadLabel.setIcon(Resources.getScaledIcon(Resources.iShinyBallGreen, 24));
+							databaseLoadLabel.setIcon(Img.ShinyBallGreen.getScaledIcon(24));
 							databaseLoadLabel.setText("Database is ready");
 						}
 						Thread.sleep(60_000);
@@ -132,7 +132,7 @@ public class UpdatePanel extends ManagerPanel {
 		}, "UpdatePanel.databaseStatus").start();
 		panel.add(panel_north, BorderLayout.NORTH);
 		JPanel panel_south = new JPanel(new WrapLayout(FlowLayout.LEADING));
-		JButton normalButton = new JButton("Deactivate soft and hard update", Resources.getScaledIcon(Resources.iShinyBallGreen, 24));
+		JButton normalButton = new JButton("Deactivate soft and hard update", Img.ShinyBallGreen.getScaledIcon(24));
 		normalButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -150,7 +150,7 @@ public class UpdatePanel extends ManagerPanel {
 			}
 		});
 		panel_south.add(normalButton);
-		JButton softButton = new JButton("Activate soft update", Resources.getScaledIcon(Resources.iShinyBallOrange, 24));
+		JButton softButton = new JButton("Activate soft update", Img.ShinyBallOrange.getScaledIcon(24));
 		softButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -167,7 +167,7 @@ public class UpdatePanel extends ManagerPanel {
 			}
 		});
 		panel_south.add(softButton);
-		JButton hardButton = new JButton("Activate hard update", Resources.getScaledIcon(Resources.iShinyBallRed, 24));
+		JButton hardButton = new JButton("Activate hard update", Img.ShinyBallRed.getScaledIcon(24));
 		hardButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {

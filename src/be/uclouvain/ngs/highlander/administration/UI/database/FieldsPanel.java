@@ -63,6 +63,7 @@ import javax.swing.event.ListSelectionListener;
 
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Resources.Palette;
 import be.uclouvain.ngs.highlander.UI.misc.WrapLayout;
 import be.uclouvain.ngs.highlander.administration.UI.ManagerPanel;
@@ -104,7 +105,7 @@ public class FieldsPanel extends ManagerPanel {
 		JPanel southPanel = new JPanel(new WrapLayout(FlowLayout.CENTER));
 		add(southPanel, BorderLayout.SOUTH);
 
-		JButton createNewCategoryButton = new JButton("Create category", Resources.getScaledIcon(Resources.i3dPlus, 16));
+		JButton createNewCategoryButton = new JButton("Create category", Img.AddMain.getScaledIcon(16));
 		createNewCategoryButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -119,7 +120,7 @@ public class FieldsPanel extends ManagerPanel {
 		});
 		southPanel.add(createNewCategoryButton);
 
-		JButton deleteCategoryButton = new JButton("Delete category", Resources.getScaledIcon(Resources.i3dMinus, 16));
+		JButton deleteCategoryButton = new JButton("Delete category", Img.RemoveMain.getScaledIcon(16));
 		deleteCategoryButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -134,7 +135,7 @@ public class FieldsPanel extends ManagerPanel {
 		});
 		southPanel.add(deleteCategoryButton);
 		
-		JButton renameCategoryButton = new JButton("Rename category", Resources.getScaledIcon(Resources.iUpdater, 16));
+		JButton renameCategoryButton = new JButton("Rename category", Img.Updater.getScaledIcon(16));
 		renameCategoryButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -149,7 +150,7 @@ public class FieldsPanel extends ManagerPanel {
 		});
 		southPanel.add(renameCategoryButton);
 		
-		JButton enableCategoryButton = new JButton("Set category details box", Resources.getScaledIcon(Resources.iUpdater, 16));
+		JButton enableCategoryButton = new JButton("Set category details box", Img.Updater.getScaledIcon(16));
 		enableCategoryButton.setToolTipText("<html>Set wether or not this category has a generic detail box in Highlander.<br>"
 					+ "The state of the category is shown in the list with a check/cross icon if the category has/has not a generic detail box set.<br>"
 					+ "A generic detail box will simply show all fields of the category with their value, in a 2 column table.<br>"
@@ -170,7 +171,7 @@ public class FieldsPanel extends ManagerPanel {
 		});
 		southPanel.add(enableCategoryButton);
 		
-		JButton colorCategoryButton = new JButton("Set category color", Resources.getScaledIcon(Resources.iHighlighting, 16));
+		JButton colorCategoryButton = new JButton("Set category color", Img.Highlighting.getScaledIcon(16));
 		colorCategoryButton.setToolTipText("Color is used e.g. to visually regroup detail boxes with the same theme");
 		colorCategoryButton.addActionListener(new ActionListener() {
 			@Override
@@ -186,7 +187,7 @@ public class FieldsPanel extends ManagerPanel {
 		});
 		southPanel.add(colorCategoryButton);
 		
-		JButton createNewFieldButton = new JButton("Create field", Resources.getScaledIcon(Resources.i3dPlus, 16));
+		JButton createNewFieldButton = new JButton("Create field", Img.AddMain.getScaledIcon(16));
 		createNewFieldButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -201,7 +202,7 @@ public class FieldsPanel extends ManagerPanel {
 		});
 		southPanel.add(createNewFieldButton);
 		
-		deleteFieldButton = new JButton("Delete field", Resources.getScaledIcon(Resources.i3dMinus, 16));
+		deleteFieldButton = new JButton("Delete field", Img.RemoveMain.getScaledIcon(16));
 		deleteFieldButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -246,7 +247,7 @@ public class FieldsPanel extends ManagerPanel {
 		JPanel panel_category_order = new JPanel(new GridBagLayout());
 		panel_left.add(panel_category_order, BorderLayout.EAST);
 
-		JButton button_up = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleUp, 24));
+		JButton button_up = new JButton(Img.ArrowDoubleUp.getScaledIcon(24));
 		button_up.setToolTipText("Put selected category before for fields ordering (and details boxes) in Highlander");
 		button_up.addActionListener(new ActionListener() {
 			@Override
@@ -260,7 +261,7 @@ public class FieldsPanel extends ManagerPanel {
 		gbc_button.gridy = 0;
 		panel_category_order.add(button_up, gbc_button);
 
-		JButton button_down = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleDown, 24));
+		JButton button_down = new JButton(Img.ArrowDoubleDown.getScaledIcon(24));
 		button_down.setToolTipText("Put selected category after for fields ordering (and details boxes) in Highlander");
 		button_down.addActionListener(new ActionListener() {
 			@Override
@@ -296,7 +297,7 @@ public class FieldsPanel extends ManagerPanel {
 		JPanel panel_field_order = new JPanel(new GridBagLayout());
 		panel_right.add(panel_field_order, BorderLayout.EAST);
 		
-		JButton button_up_field = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleUp, 24));
+		JButton button_up_field = new JButton(Img.ArrowDoubleUp.getScaledIcon(24));
 		button_up_field.setToolTipText("Put selected field before for fields ordering in Highlander");
 		button_up_field.addActionListener(new ActionListener() {
 			@Override
@@ -310,7 +311,7 @@ public class FieldsPanel extends ManagerPanel {
 		gbc_button_2.gridy = 0;
 		panel_field_order.add(button_up_field, gbc_button_2);
 		
-		JButton button_down_field = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleDown, 24));
+		JButton button_down_field = new JButton(Img.ArrowDoubleDown.getScaledIcon(24));
 		button_down_field.setToolTipText("Put selected field after for fields ordering in Highlander");
 		button_down_field.addActionListener(new ActionListener() {
 			@Override
@@ -480,7 +481,7 @@ public class FieldsPanel extends ManagerPanel {
 									String target = source.getSelectedItem().toString();
 									if (target.equals("Add new source")){
 										Object res = JOptionPane.showInputDialog(manager,  "Set a name for the new source", "Annotation source",
-												JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), null, null);
+												JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), null, null);
 										if (res == null) return;
 										target = res.toString().trim();
 									}
@@ -499,19 +500,19 @@ public class FieldsPanel extends ManagerPanel {
 					}
 				}
 			});
-			JButton buttonSource = new JButton(Resources.getScaledIcon(Resources.iUpdater,18));
+			JButton buttonSource = new JButton(Img.Updater.getScaledIcon(18));
 			buttonSource.setToolTipText("Change source for ALL fields with same source than this field");
 			panel.add(buttonSource, new GridBagConstraints(2, row, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
 			buttonSource.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					Object res = JOptionPane.showInputDialog(manager,  "Change annotation source for all fields with '"+field.getSource()+"'", "Annotation source",
-							JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), manager.listAnnotationSources(), field.getSource());
+							JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), manager.listAnnotationSources(), field.getSource());
 					if (res != null){
 						String target = res.toString();
 						if (target.equals("Add new source")){
 							res = JOptionPane.showInputDialog(manager,  "Set a name for the new source", "Annotation source",
-									JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), null, null);
+									JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), null, null);
 							if (res == null) return;
 							target = res.toString().trim();
 						}
@@ -587,7 +588,7 @@ public class FieldsPanel extends ManagerPanel {
 						JTextField inputTxtField = (JTextField)input;
 						Field field = listFields.getSelectedValue();
 						if (!field.getSqlDatatype().equals(inputTxtField.getText())) {
-							int ans = JOptionPane.showConfirmDialog(new JFrame(), "As it is a custom field, the database tables of analyses where it exists will be altered accordingly.\nAre you sure you want to proceed with '"+inputTxtField.getText()+"' ?", "Modify SQL datatype for " + field.getName(), JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iDbStatus,64));
+							int ans = JOptionPane.showConfirmDialog(new JFrame(), "As it is a custom field, the database tables of analyses where it exists will be altered accordingly.\nAre you sure you want to proceed with '"+inputTxtField.getText()+"' ?", "Modify SQL datatype for " + field.getName(), JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Img.DbStatus.getScaledIcon(64));
 							if (ans == JOptionPane.YES_OPTION){
 								try {
 									field.update();
@@ -1000,7 +1001,7 @@ public class FieldsPanel extends ManagerPanel {
 	}
 
 	public void createCategory() {
-		Object resu = JOptionPane.showInputDialog(this, "Category name", "Creating category", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.i3dPlus, 64), null, null);
+		Object resu = JOptionPane.showInputDialog(this, "Category name", "Creating category", JOptionPane.QUESTION_MESSAGE, Img.AddMain.getScaledIcon(64), null, null);
 		if (resu != null){
 			String name = resu.toString().toLowerCase();
 			SwingUtilities.invokeLater(new Runnable() {
@@ -1018,9 +1019,9 @@ public class FieldsPanel extends ManagerPanel {
 					}
 				}
 				if (count > 0){
-					JOptionPane.showMessageDialog(this, "Category name already exists'", "Error", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross, 64));
+					JOptionPane.showMessageDialog(this, "Category name already exists'", "Error", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}else if (name.length() > 255){
-					JOptionPane.showMessageDialog(this, "Category is limited to 255 characters'", "Error", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross, 64));
+					JOptionPane.showMessageDialog(this, "Category is limited to 255 characters'", "Error", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}else{
 							ProjectManager.toConsole("-----------------------------------------------------");
 							ProjectManager.toConsole("Creating category " + name);
@@ -1058,7 +1059,7 @@ public class FieldsPanel extends ManagerPanel {
 			}
 			if (count == 0){
 				ProjectManager.setHardUpdate(true);
-				int res = JOptionPane.showConfirmDialog(new JFrame(), "Are you SURE you want to DEFINITIVELY delete category:\n"+category+" ?", "Delete category", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.i3dMinus,64));
+				int res = JOptionPane.showConfirmDialog(new JFrame(), "Are you SURE you want to DEFINITIVELY delete category:\n"+category+" ?", "Delete category", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Img.RemoveMain.getScaledIcon(64));
 				if (res == JOptionPane.CANCEL_OPTION){
 					return;
 				}else if (res == JOptionPane.YES_OPTION){
@@ -1095,7 +1096,7 @@ public class FieldsPanel extends ManagerPanel {
 				}
 				ProjectManager.setHardUpdate(false);
 			}else{
-				JOptionPane.showMessageDialog(new JFrame(), count + " fields are still linked to this category.\nPlease first delete those fields or link them to another category.", "Delete category", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				JOptionPane.showMessageDialog(new JFrame(), count + " fields are still linked to this category.\nPlease first delete those fields or link them to another category.", "Delete category", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}
 		}catch(Exception ex){
 			ProjectManager.toConsole(ex);
@@ -1103,7 +1104,7 @@ public class FieldsPanel extends ManagerPanel {
 	}
 	
 	public void renameCategory(Category category) {
-		Object resu = JOptionPane.showInputDialog(this, "Category name", "Renaming category", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iUpdater, 64), null, category);
+		Object resu = JOptionPane.showInputDialog(this, "Category name", "Renaming category", JOptionPane.QUESTION_MESSAGE, Img.Updater.getScaledIcon(64), null, category);
 		if (resu != null){
 			String name = resu.toString().toLowerCase();
 			SwingUtilities.invokeLater(new Runnable() {
@@ -1121,9 +1122,9 @@ public class FieldsPanel extends ManagerPanel {
 					}
 				}
 				if (count > 0){
-					JOptionPane.showMessageDialog(this, "Category name already exists", "Error", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross, 64));
+					JOptionPane.showMessageDialog(this, "Category name already exists", "Error", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}else if (name.length() > 255){
-					JOptionPane.showMessageDialog(this, "Category is limited to 255 characters'", "Error", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross, 64));
+					JOptionPane.showMessageDialog(this, "Category is limited to 255 characters'", "Error", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}else{
 					ProjectManager.toConsole("-----------------------------------------------------");
 					ProjectManager.toConsole("Renaming category " + category + " to "  + name);
@@ -1170,7 +1171,7 @@ public class FieldsPanel extends ManagerPanel {
 	}
 	
 	public void colorCategory(Category category) {
-		Object resu = JOptionPane.showInputDialog(this, "Category color", "Color category", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iHighlighting, 64), Palette.values(), category.getColor());
+		Object resu = JOptionPane.showInputDialog(this, "Category color", "Color category", JOptionPane.QUESTION_MESSAGE, Img.Highlighting.getScaledIcon(64), Palette.values(), category.getColor());
 		if (resu != null){
 			Palette color = (Palette)resu;
 			SwingUtilities.invokeLater(new Runnable() {
@@ -1200,15 +1201,15 @@ public class FieldsPanel extends ManagerPanel {
 	}
 	
 	public void createCustomField(){
-		Object resu = JOptionPane.showInputDialog(this, "Field name (alphanumeric caracters only and '_').", "Creating custom field", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.i3dPlus, 64), null, null);
+		Object resu = JOptionPane.showInputDialog(this, "Field name (alphanumeric caracters only and '_').", "Creating custom field", JOptionPane.QUESTION_MESSAGE, Img.AddMain.getScaledIcon(64), null, null);
 		if (resu != null){
 			String fieldStr = resu.toString();
 			fieldStr = fieldStr.trim().replace(' ', '_').toLowerCase();
 			Pattern pat = Pattern.compile("(^[0-9])|([^a-zA-Z0-9_])");
 			if (pat.matcher(fieldStr).find()){
-				JOptionPane.showMessageDialog(this, "Field name can only contain alphanumeric caracters and '_', and cannot start by a number", "Error", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross, 64));
+				JOptionPane.showMessageDialog(this, "Field name can only contain alphanumeric caracters and '_', and cannot start by a number", "Error", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}else if (Field.getAvailableFields(false).contains(new Field(fieldStr))){
-				JOptionPane.showMessageDialog(this, "Field '"+fieldStr+"' already exists", "Error", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross, 64));
+				JOptionPane.showMessageDialog(this, "Field '"+fieldStr+"' already exists", "Error", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}else{
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
@@ -1257,7 +1258,7 @@ public class FieldsPanel extends ManagerPanel {
 			return;
 		}
 		ProjectManager.setHardUpdate(true);
-		int res = JOptionPane.showConfirmDialog(new JFrame(), "Are you SURE you want to DEFINITIVELY delete custom field:\n"+field+" and ALL variant data associated with it ?", "Delete custom field", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.i3dMinus,64));
+		int res = JOptionPane.showConfirmDialog(new JFrame(), "Are you SURE you want to DEFINITIVELY delete custom field:\n"+field+" and ALL variant data associated with it ?", "Delete custom field", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Img.RemoveMain.getScaledIcon(64));
 		if (res == JOptionPane.CANCEL_OPTION){
 			return;
 		}else if (res == JOptionPane.YES_OPTION){
@@ -1354,9 +1355,9 @@ public class FieldsPanel extends ManagerPanel {
       label.setText(value.toString());
       label.setForeground(Resources.getColor(category.getColor(), 500, false));
       if (category.hasGenericDetailBox()){
-      	label.setIcon(Resources.getScaledIcon(Resources.iButtonApply, 14));
+      	label.setIcon(Img.ButtonApply.getScaledIcon(14));
       }else {
-      	label.setIcon(Resources.getScaledIcon(Resources.iCross, 14));
+      	label.setIcon(Img.Cross.getScaledIcon(14));
       }
       if (isSelected) {
         label.setBackground(new Color(57,105,138));

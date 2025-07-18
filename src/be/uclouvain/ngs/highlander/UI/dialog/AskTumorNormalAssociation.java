@@ -38,7 +38,6 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,10 +56,10 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
-import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.datatype.Analysis;
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
@@ -92,7 +91,7 @@ public class AskTumorNormalAssociation extends JDialog {
 		}catch(Exception ex){
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(this, Tools.getMessage("Can't retreive sample list", ex), "Fetching sample list",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 		initUI();
 	}
@@ -100,12 +99,12 @@ public class AskTumorNormalAssociation extends JDialog {
 	private void initUI() {
 		setModal(true);
 		setTitle("Associate 'tumor' to 'normal' samples");
-		setIconImage(Resources.getScaledIcon(Resources.iPatients, 64).getImage());
+		setIconImage(Img.Patients.getScaledIcon(64).getImage());
 
 		JPanel south = new JPanel();	
 		getContentPane().add(south, BorderLayout.SOUTH);
 
-		JButton btnOk = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 24));
+		JButton btnOk = new JButton(Img.ButtonApply.getScaledIcon(24));
 		btnOk.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -118,13 +117,13 @@ public class AskTumorNormalAssociation extends JDialog {
 				if (tumorToNormal.size() == tumorSamples.size()) {
 					dispose();
 				}else {
-					JOptionPane.showMessageDialog(new JFrame(), "You must associate each sample", "Associate 'tumor' to 'normal' samples", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iPatients, 64));
+					JOptionPane.showMessageDialog(new JFrame(), "You must associate each sample", "Associate 'tumor' to 'normal' samples", JOptionPane.ERROR_MESSAGE, Img.Patients.getScaledIcon(64));
 				}
 			}
 		});
 		south.add(btnOk);
 
-		JButton btnCancel = new JButton(Resources.getScaledIcon(Resources.iCross, 24));
+		JButton btnCancel = new JButton(Img.Cross.getScaledIcon(24));
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {

@@ -29,16 +29,29 @@
 
 package be.uclouvain.ngs.highlander.administration.users;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Frame;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.security.NoSuchAlgorithmException;
+
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
-import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.Parameters.PasswordPolicy;
-
-import java.awt.event.*;
-import java.security.NoSuchAlgorithmException;
+import be.uclouvain.ngs.highlander.Resources.Img;
+import be.uclouvain.ngs.highlander.Tools;
 
 public class LoginBox extends JDialog {
 	public boolean OKCancel = false;
@@ -58,7 +71,7 @@ public class LoginBox extends JDialog {
 	JPasswordField proxyPasswordField = new JPasswordField();
 	GridBagLayout gridBagLayout2 = new GridBagLayout();
 	GridBagLayout gridBagLayout3 = new GridBagLayout();
-	private final JLabel label = new JLabel(Resources.getScaledIcon(Resources.iUser, 64));
+	private final JLabel label = new JLabel(Img.User.getScaledIcon(64));
 
 	public LoginBox(Frame frame, String title, boolean modal) {
 		super(frame, title, modal);
@@ -78,7 +91,7 @@ public class LoginBox extends JDialog {
 	private void jbInit() throws Exception {
 		mainPanel.setLayout(gridBagLayout3);
 		OKButton.setText("Login");
-		OKButton.setIcon(Resources.getScaledIcon(Resources.iButtonApply, 16));
+		OKButton.setIcon(Img.ButtonApply.getScaledIcon(16));
 		OKButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -86,7 +99,7 @@ public class LoginBox extends JDialog {
 			}
 		});
 		cancelButton.setText("Exit");
-		cancelButton.setIcon(Resources.getScaledIcon(Resources.iExit, 16));
+		cancelButton.setIcon(Img.Exit.getScaledIcon(16));
 		cancelButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -94,7 +107,7 @@ public class LoginBox extends JDialog {
 			}
 		});
 		resetButton.setText("Reset my password");
-		resetButton.setIcon(Resources.getScaledIcon(Resources.iUserLock, 16));
+		resetButton.setIcon(Img.UserLock.getScaledIcon(16));
 		resetButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -186,22 +199,22 @@ public class LoginBox extends JDialog {
 	void resetButton_actionPerformed(ActionEvent e) {
 		try {
 			User[] users = User.fetchList().toArray((new User[0]));
-			User user = (User)JOptionPane.showInputDialog(this, "Who are you ?", "Reset password", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iUserLock, 64), users, null);
+			User user = (User)JOptionPane.showInputDialog(this, "Who are you ?", "Reset password", JOptionPane.QUESTION_MESSAGE, Img.UserLock.getScaledIcon(64), users, null);
 			if (user != null){
 				Object res = JOptionPane.showInputDialog(this, "What is your email address ?", "Reset password", JOptionPane.QUESTION_MESSAGE);
 				if (res != null) {
 					String email = res.toString();
 					if (user.getEmail().equals(email)) {
 						User.resetPassword(this, user);
-						JOptionPane.showMessageDialog(this, "An email has been sent to " + email + " with a new password.", "Reset password", JOptionPane.INFORMATION_MESSAGE, Resources.getScaledIcon(Resources.iUserLock,64));
+						JOptionPane.showMessageDialog(this, "An email has been sent to " + email + " with a new password.", "Reset password", JOptionPane.INFORMATION_MESSAGE, Img.UserLock.getScaledIcon(64));
 					}else {
-						JOptionPane.showMessageDialog(this, "Wrong email for " +user+" ("+user.getUsername()+")", "Reset password", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.showMessageDialog(this, "Wrong email for " +user+" ("+user.getUsername()+")", "Reset password", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			}
 		}catch(Exception ex) {
 			Tools.exception(ex);
-			JOptionPane.showMessageDialog(new JFrame(), "Cannot fetch the user list: " + ex.getMessage(), "Reset password", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(new JFrame(), "Cannot fetch the user list: " + ex.getMessage(), "Reset password", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 	}
 	

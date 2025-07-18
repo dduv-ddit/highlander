@@ -48,16 +48,17 @@ import javax.swing.border.EtchedBorder;
 
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Resources;
-import be.uclouvain.ngs.highlander.Tools;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Resources.Palette;
-import be.uclouvain.ngs.highlander.UI.dialog.AskListOfHPOTermDialog;
+import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.dialog.AskListOfFreeValuesDialog;
+import be.uclouvain.ngs.highlander.UI.dialog.AskListOfHPOTermDialog;
 import be.uclouvain.ngs.highlander.UI.dialog.AskListOfIntervalsDialog;
 import be.uclouvain.ngs.highlander.UI.dialog.CommentsManager;
 import be.uclouvain.ngs.highlander.UI.dialog.CreateTemplate;
 import be.uclouvain.ngs.highlander.UI.dialog.ProfileTree;
-import be.uclouvain.ngs.highlander.UI.dialog.UseTemplate;
 import be.uclouvain.ngs.highlander.UI.dialog.ProfileTree.Action;
+import be.uclouvain.ngs.highlander.UI.dialog.UseTemplate;
 import be.uclouvain.ngs.highlander.UI.misc.ToolbarScrollablePanel;
 import be.uclouvain.ngs.highlander.administration.users.User;
 import be.uclouvain.ngs.highlander.administration.users.User.Settings;
@@ -82,7 +83,7 @@ public class ProfilePanel extends JPanel {
 	private void initUI(){
 		setLayout(new BorderLayout(0,0));
 		
-	  JButton userEditUserProfile = new JButton(Resources.getScaledIcon(Resources.iUserEdit, 40));
+	  JButton userEditUserProfile = new JButton(Img.UserEdit.getScaledIcon(40));
 	  userEditUserProfile.setPreferredSize(new Dimension(54,54));
 	  userEditUserProfile.setToolTipText("Edit user profile");
 	  userEditUserProfile.addActionListener(new ActionListener() {
@@ -97,7 +98,7 @@ public class ProfilePanel extends JPanel {
       }
     });
 	  
-	  JButton userCreateUser = new JButton(Resources.getScaledIcon(Resources.iUserAdd, 40));
+	  JButton userCreateUser = new JButton(Img.UserAdd.getScaledIcon(40));
 	  userCreateUser.setPreferredSize(new Dimension(54,54));
 	  userCreateUser.setToolTipText("Create new user");
 	  userCreateUser.addActionListener(new ActionListener() {
@@ -112,7 +113,7 @@ public class ProfilePanel extends JPanel {
 	  	}
 	  });
 	  
-	  JButton userDeleteUser = new JButton(Resources.getScaledIcon(Resources.iUserDelete, 40));
+	  JButton userDeleteUser = new JButton(Img.UserDelete.getScaledIcon(40));
 	  userDeleteUser.setPreferredSize(new Dimension(54,54));
 	  userDeleteUser.setToolTipText("Delete existing user");
 	  userDeleteUser.addActionListener(new ActionListener() {
@@ -127,7 +128,7 @@ public class ProfilePanel extends JPanel {
 	  	}
 	  });
 
-	  JButton userResetPassword = new JButton(Resources.getScaledIcon(Resources.iUserLock, 40));
+	  JButton userResetPassword = new JButton(Img.UserLock.getScaledIcon(40));
 	  userResetPassword.setPreferredSize(new Dimension(54,54));
 	  userResetPassword.setToolTipText("Reset password of existing user");
 	  userResetPassword.addActionListener(new ActionListener() {
@@ -142,7 +143,7 @@ public class ProfilePanel extends JPanel {
 	  	}
 	  });
 	  
-	  JButton userPromoteUser = new JButton(Resources.getScaledIcon(Resources.iUserPromote, 40));
+	  JButton userPromoteUser = new JButton(Img.UserPromote.getScaledIcon(40));
 	  userPromoteUser.setPreferredSize(new Dimension(54,54));
 	  userPromoteUser.setToolTipText("Promote existing user to administrator");
 	  userPromoteUser.addActionListener(new ActionListener() {
@@ -157,7 +158,7 @@ public class ProfilePanel extends JPanel {
 	  	}
 	  });
 	  
-	  JButton manageProfile = new JButton(Resources.getScaledIcon(Resources.iUserTree, 40));
+	  JButton manageProfile = new JButton(Img.UserTree.getScaledIcon(40));
 	  manageProfile.setPreferredSize(new Dimension(54,54));
 	  manageProfile.setToolTipText("Manage your profile");
 	  manageProfile.addActionListener(new ActionListener() {
@@ -172,7 +173,7 @@ public class ProfilePanel extends JPanel {
 	  	}
 	  });
 	  
-	  JButton manageComments = new JButton(Resources.getScaledIcon(Resources.iComments, 40));
+	  JButton manageComments = new JButton(Img.Comments.getScaledIcon(40));
 	  manageComments.setPreferredSize(new Dimension(54,54));
 	  manageComments.setToolTipText("Manage user annotation comments");
 	  manageComments.addActionListener(new ActionListener() {
@@ -187,7 +188,7 @@ public class ProfilePanel extends JPanel {
 	  	}
 	  });
 	  
-	  JButton checkShared = new JButton(Resources.getScaledIcon(Resources.iUserCheckShare, 40));
+	  JButton checkShared = new JButton(Img.UserCheckShare.getScaledIcon(40));
 	  checkShared.setPreferredSize(new Dimension(54,54));
 	  checkShared.setToolTipText("Check for shared elements");
 	  checkShared.addActionListener(new ActionListener() {
@@ -202,7 +203,7 @@ public class ProfilePanel extends JPanel {
 	  	}
 	  });
 	  
-	  JButton createUserValueList = new JButton(Resources.getScaledIcon(Resources.iUserListNew, 40));
+	  JButton createUserValueList = new JButton(Img.UserListNew.getScaledIcon(40));
 	  createUserValueList.setPreferredSize(new Dimension(54,54));
 	  createUserValueList.setToolTipText("Create a list of values (like a gene list) in your profile");
 	  createUserValueList.addActionListener(new ActionListener() {
@@ -217,7 +218,7 @@ public class ProfilePanel extends JPanel {
 	  	}
 	  });
 	    		
-	  JButton createUserIntervalsList = new JButton(Resources.getScaledIcon(Resources.iUserIntervalsNew, 40));
+	  JButton createUserIntervalsList = new JButton(Img.UserIntervalsNew.getScaledIcon(40));
 	  createUserIntervalsList.setPreferredSize(new Dimension(54,54));
 	  createUserIntervalsList.setToolTipText("Create a list of genomic intervals in your profile");
 	  createUserIntervalsList.addActionListener(new ActionListener() {
@@ -238,7 +239,7 @@ public class ProfilePanel extends JPanel {
 	  	}
 	  });
 	  
-	  JButton createUserPhenotypesList = new JButton(Resources.getScaledIcon(Resources.iUserHPONew, 40));
+	  JButton createUserPhenotypesList = new JButton(Img.UserHPONew.getScaledIcon(40));
 	  createUserPhenotypesList.setPreferredSize(new Dimension(54,54));
 	  createUserPhenotypesList.setToolTipText("Create a list of HPO terms in your profile");
 	  createUserPhenotypesList.addActionListener(new ActionListener() {
@@ -253,7 +254,7 @@ public class ProfilePanel extends JPanel {
 	  	}
 	  });
 	  
-	  JButton createGeneListFromHPO = new JButton(Resources.getScaledIcon(Resources.iHPOToGenes, 40));
+	  JButton createGeneListFromHPO = new JButton(Img.HPOToGenes.getScaledIcon(40));
 	  createGeneListFromHPO.setPreferredSize(new Dimension(54,54));
 	  createGeneListFromHPO.setToolTipText("Create a gene list in your profile derived from a selection of HPO terms");
 	  createGeneListFromHPO.addActionListener(new ActionListener() {
@@ -268,7 +269,7 @@ public class ProfilePanel extends JPanel {
 	  	}
 	  });
 	  
-	  JButton createUserTemplateList = new JButton(Resources.getScaledIcon(Resources.iUserTemplateNew, 40));
+	  JButton createUserTemplateList = new JButton(Img.UserTemplateNew.getScaledIcon(40));
 	  createUserTemplateList.setPreferredSize(new Dimension(54,54));
 	  createUserTemplateList.setToolTipText("Create a filters template in your profile");
 	  createUserTemplateList.addActionListener(new ActionListener() {
@@ -283,7 +284,7 @@ public class ProfilePanel extends JPanel {
 	  	}
 	  });
 	  
-	  JButton userFiltersTemplate = new JButton(Resources.getScaledIcon(Resources.iTemplate, 40));
+	  JButton userFiltersTemplate = new JButton(Img.Template.getScaledIcon(40));
 	  userFiltersTemplate.setPreferredSize(new Dimension(54,54));
 	  userFiltersTemplate.setToolTipText("Create a set of filters using a template from your profile");
 	  userFiltersTemplate.addActionListener(new ActionListener() {
@@ -298,7 +299,7 @@ public class ProfilePanel extends JPanel {
 	  	}
 	  });
 	  	  
-	  JButton resetColumnWidths = new JButton(Resources.getScaledIcon(Resources.iColumnSelection, 40));
+	  JButton resetColumnWidths = new JButton(Img.ColumnSelection.getScaledIcon(40));
 	  resetColumnWidths.setPreferredSize(new Dimension(54,54));
 	  resetColumnWidths.setToolTipText("Reset all column width to default values");
 	  resetColumnWidths.addActionListener(new ActionListener() {
@@ -409,7 +410,7 @@ public class ProfilePanel extends JPanel {
 		Reference reference = null;
 		if (intervals.isEmpty()) {
 		reference = (Reference)JOptionPane.showInputDialog(new JFrame(), "Select a reference genome", "Create list of genomic intervals", 
-				JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iReference, 64), 
+				JOptionPane.QUESTION_MESSAGE, Img.Reference.getScaledIcon(64), 
 				Reference.getAvailableReferences().toArray(new Reference[0]), 
 				Highlander.getCurrentAnalysis().getReference());
 		}
@@ -424,7 +425,7 @@ public class ProfilePanel extends JPanel {
 	public static void createPhenotypesList(){
 		Reference reference = null;
 		reference = (Reference)JOptionPane.showInputDialog(new JFrame(), "Select a reference genome", "Create list of HPO terms", 
-				JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iReference, 64), 
+				JOptionPane.QUESTION_MESSAGE, Img.Reference.getScaledIcon(64), 
 				Reference.getAvailableReferences().toArray(new Reference[0]), 
 				Highlander.getCurrentAnalysis().getReference());
 		if (reference != null) {
@@ -438,7 +439,7 @@ public class ProfilePanel extends JPanel {
 	public void createGeneListFromHPO(){
 		Reference reference = null;
 		reference = (Reference)JOptionPane.showInputDialog(new JFrame(), "Select a reference genome", "Create gene list from HPO terms", 
-				JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iReference, 64), 
+				JOptionPane.QUESTION_MESSAGE, Img.Reference.getScaledIcon(64), 
 				Reference.getAvailableReferences().toArray(new Reference[0]), 
 				Highlander.getCurrentAnalysis().getReference());
 		if (reference != null) {
@@ -452,7 +453,7 @@ public class ProfilePanel extends JPanel {
 						if (Highlander.getLoggedUser().doesPersonalDataExists(UserData.VALUES, Field.gene_symbol.getName(), name)){
 							int yesno = JOptionPane.showConfirmDialog(new JFrame(), 
 									"You already have a "+UserData.VALUES.getName()+" named '"+name.replace("~", " -> ")+"', do you want to overwrite it ?", 
-									"Overwriting element in your profile", JOptionPane.YES_NO_OPTION , JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iDbSave,64));
+									"Overwriting element in your profile", JOptionPane.YES_NO_OPTION , JOptionPane.QUESTION_MESSAGE, Img.DbSave.getScaledIcon(64));
 							if (yesno == JOptionPane.NO_OPTION)	return;						
 						}
 						Map<String,String> map = new LinkedHashMap<>();
@@ -474,7 +475,7 @@ public class ProfilePanel extends JPanel {
 					}
 				} catch (Exception ex) {
 					Tools.exception(ex);
-					JOptionPane.showMessageDialog(mainFrame, Tools.getMessage("Error", ex), "Create gene list from HPO terms", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.showMessageDialog(mainFrame, Tools.getMessage("Error", ex), "Create gene list from HPO terms", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}
 			}
 		}
@@ -496,7 +497,7 @@ public class ProfilePanel extends JPanel {
 				ask.setVisible(true);
 			} catch (Exception ex) {
 				Tools.exception(ex);
-				JOptionPane.showMessageDialog(mainFrame, Tools.getMessage("Error", ex), "Load filters template from your profile", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				JOptionPane.showMessageDialog(mainFrame, Tools.getMessage("Error", ex), "Load filters template from your profile", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}
 		}
 	}
@@ -504,7 +505,7 @@ public class ProfilePanel extends JPanel {
 	public void changeTableColor(Component parentComponent, TargetColor target){
 		try{
 			Palette color = mainFrame.getVariantTable().getColor(target);
-			Object resu = JOptionPane.showInputDialog(parentComponent, "Select a color", "Table even rows color", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iHighlighting, 64), Palette.values(), color);
+			Object resu = JOptionPane.showInputDialog(parentComponent, "Select a color", "Table even rows color", JOptionPane.QUESTION_MESSAGE, Img.Highlighting.getScaledIcon(64), Palette.values(), color);
 			if (resu != null){
 				color = (Palette)resu;
 				Highlander.getLoggedUser().saveSettings(Settings.COLOR, target.toString(), color.toString());
@@ -513,17 +514,17 @@ public class ProfilePanel extends JPanel {
 			}
 		}catch(Exception ex){
 			Tools.exception(ex);
-			JOptionPane.showMessageDialog(parentComponent, Tools.getMessage("Cannot share selected user list", ex), "Sharing element from profile", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));				
+			JOptionPane.showMessageDialog(parentComponent, Tools.getMessage("Cannot share selected user list", ex), "Sharing element from profile", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));				
 		}
 	}
 
 	public void setChangeColorButtonIcon(TargetColor target) {
 		switch(target) {
 		case VARIANT_TABLE:
-			changeTableColor.setIcon(Resources.getScaledIcon(Resources.getColoredSquare(40, Resources.getColor(mainFrame.getVariantTable().getColor(target), 200, false)), 40));
+			changeTableColor.setIcon(Resources.getColoredSquare(40, Resources.getColor(mainFrame.getVariantTable().getColor(target), 200, false)));
 			break;
 		case SAME_VARIANT:
-			changeSameVariantColor.setIcon(Resources.getScaledIcon(Resources.getColoredSquare(40, Resources.getColor(mainFrame.getVariantTable().getColor(target), 200, false)), 40));
+			changeSameVariantColor.setIcon(Resources.getColoredSquare(40, Resources.getColor(mainFrame.getVariantTable().getColor(target), 200, false)));
 			break;
 		}
 		
@@ -531,7 +532,7 @@ public class ProfilePanel extends JPanel {
 	
 	public static void resetColumnWidth(Component parentComponent){
 		try{
-			int answer = JOptionPane.showOptionDialog(parentComponent, "Are you SURE you want to reset all column widths to default values ?", "Reset column widths", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iColumnSelection, 64), null, null);
+			int answer = JOptionPane.showOptionDialog(parentComponent, "Are you SURE you want to reset all column widths to default values ?", "Reset column widths", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, Img.ColumnSelection.getScaledIcon(64), null, null);
 			if (answer == JOptionPane.YES_OPTION){
 				for(String key : Highlander.getLoggedUser().loadSettings(Settings.WIDTH).keySet()){
 					Highlander.getLoggedUser().deleteData(UserData.SETTINGS, key);
@@ -539,7 +540,7 @@ public class ProfilePanel extends JPanel {
 			}
 		}catch(Exception ex){
 			Tools.exception(ex);
-			JOptionPane.showMessageDialog(parentComponent, Tools.getMessage("Cannot share selected user list", ex), "Sharing element from profile", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));				
+			JOptionPane.showMessageDialog(parentComponent, Tools.getMessage("Cannot share selected user list", ex), "Sharing element from profile", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));				
 		}
 	}
 }

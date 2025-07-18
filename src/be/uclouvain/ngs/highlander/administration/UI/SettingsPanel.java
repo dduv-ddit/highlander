@@ -41,7 +41,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.misc.WrapLayout;
 
@@ -167,7 +167,7 @@ public class SettingsPanel extends ManagerPanel {
 										tempOutput.renameTo(vmoptions.get(i));
 									}
 									String text = "Memory settings changed, you must restart Highlander Adminstration Tools before it can take effect.";
-									JOptionPane.showMessageDialog(new JFrame(), text, "Memory settings", JOptionPane.INFORMATION_MESSAGE, Resources.getScaledIcon(Resources.iMemory, 128));
+									JOptionPane.showMessageDialog(new JFrame(), text, "Memory settings", JOptionPane.INFORMATION_MESSAGE, Img.Memory.getScaledIcon(128));
 								}
 							}catch (Exception ex){
 								Tools.exception(ex);

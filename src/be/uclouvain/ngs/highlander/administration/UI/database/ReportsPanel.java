@@ -57,11 +57,11 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.administration.UI.ManagerPanel;
 import be.uclouvain.ngs.highlander.administration.UI.ProjectManager;
-import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.datatype.Analysis;
 import be.uclouvain.ngs.highlander.datatype.Report;
 
@@ -187,7 +187,7 @@ public class ReportsPanel extends ManagerPanel {
 		JPanel panel_south = new JPanel();
 		add(panel_south, BorderLayout.SOUTH);
 		
-		JButton createNewButton = new JButton("Add software", Resources.getScaledIcon(Resources.i3dPlus, 16));
+		JButton createNewButton = new JButton("Add software", Img.AddMain.getScaledIcon(16));
 		createNewButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -202,7 +202,7 @@ public class ReportsPanel extends ManagerPanel {
 		});
 		panel_south.add(createNewButton);
 
-		JButton renameButton = new JButton("Rename software", Resources.getScaledIcon(Resources.iUpdater, 16));
+		JButton renameButton = new JButton("Rename software", Img.Updater.getScaledIcon(16));
 		renameButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -217,7 +217,7 @@ public class ReportsPanel extends ManagerPanel {
 		});
 		panel_south.add(renameButton);
 
-		JButton deleteButton = new JButton("Delete software", Resources.getScaledIcon(Resources.iCross, 16));
+		JButton deleteButton = new JButton("Delete software", Img.Cross.getScaledIcon(16));
 		deleteButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -274,7 +274,7 @@ public class ReportsPanel extends ManagerPanel {
 			scrollAnalyses.setViewportView(panel_analyses);
 			JPanel panel_schemas_in = new JPanel(new GridBagLayout());
 			row = 0;
-			JButton buttonAdd = new JButton("Add file", Resources.getScaledIcon(Resources.i3dPlus, 18));
+			JButton buttonAdd = new JButton("Add file", Img.AddMain.getScaledIcon(18));
 			buttonAdd.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -289,7 +289,7 @@ public class ReportsPanel extends ManagerPanel {
 			});
 			panel_schemas_in.add(buttonAdd, new GridBagConstraints(0, row++, 3, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
 			for (final String file : report.getFiles()) {
-				JButton button = new JButton(Resources.getScaledIcon(Resources.iCross, 18));
+				JButton button = new JButton(Img.Cross.getScaledIcon(18));
 				JLabel lbl_ext = new JLabel("Extension");
 				JTextField txt_ext = new JTextField(file);
 				fileExtensions.put(txt_ext, file);
@@ -356,7 +356,7 @@ public class ReportsPanel extends ManagerPanel {
 	}
 	
 	public void createReport(){
-		Object resu = JOptionPane.showInputDialog(this, "Software name", "Add software", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.i3dPlus, 64), null, null);
+		Object resu = JOptionPane.showInputDialog(this, "Software name", "Add software", JOptionPane.QUESTION_MESSAGE, Img.AddMain.getScaledIcon(64), null, null);
 		if (resu != null){
 			String software = resu.toString();
 			SwingUtilities.invokeLater(new Runnable() {
@@ -374,9 +374,9 @@ public class ReportsPanel extends ManagerPanel {
 					}
 				}
 				if (count > 0){
-					JOptionPane.showMessageDialog(this, "Software already exists'", "Error", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross, 64));
+					JOptionPane.showMessageDialog(this, "Software already exists'", "Error", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}else if (software.length() > 255){
-					JOptionPane.showMessageDialog(this, "Software name is limited to 255 characters'", "Error", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross, 64));
+					JOptionPane.showMessageDialog(this, "Software name is limited to 255 characters'", "Error", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}else{
 							ProjectManager.toConsole("-----------------------------------------------------");
 							ProjectManager.toConsole("Creating software reports for " + software);
@@ -405,7 +405,7 @@ public class ReportsPanel extends ManagerPanel {
 	}
 	
 	public void renameReport(Report report){
-		Object resu = JOptionPane.showInputDialog(this, "Software name", "Renaming software", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iUpdater, 64), null, report);
+		Object resu = JOptionPane.showInputDialog(this, "Software name", "Renaming software", JOptionPane.QUESTION_MESSAGE, Img.Updater.getScaledIcon(64), null, report);
 		if (resu != null){
 			String software = resu.toString();
 			SwingUtilities.invokeLater(new Runnable() {
@@ -423,9 +423,9 @@ public class ReportsPanel extends ManagerPanel {
 					}
 				}
 				if (count > 0){
-					JOptionPane.showMessageDialog(this, "Software name already exists'", "Error", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross, 64));
+					JOptionPane.showMessageDialog(this, "Software name already exists'", "Error", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}else if (software.length() > 255){
-					JOptionPane.showMessageDialog(this, "Software name is limited to 255 characters'", "Error", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross, 64));
+					JOptionPane.showMessageDialog(this, "Software name is limited to 255 characters'", "Error", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}else{
 					ProjectManager.toConsole("-----------------------------------------------------");
 					ProjectManager.toConsole("Renaming software " + report.getSoftware() + " to "  + software);
@@ -447,7 +447,7 @@ public class ReportsPanel extends ManagerPanel {
 
 	public void deleteReport(Report report){
 		try{
-				int res = JOptionPane.showConfirmDialog(new JFrame(), "Are you SURE you want to delete software reports of '"+report+"' ?", "Delete software reports", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				int res = JOptionPane.showConfirmDialog(new JFrame(), "Are you SURE you want to delete software reports of '"+report+"' ?", "Delete software reports", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Img.Cross.getScaledIcon(64));
 				if (res == JOptionPane.YES_OPTION){
 					ProjectManager.toConsole("-----------------------------------------------------");
 					ProjectManager.toConsole("Deleting software reports of " + report);

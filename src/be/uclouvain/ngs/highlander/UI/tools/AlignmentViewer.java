@@ -77,13 +77,13 @@ import javax.swing.table.TableRowSorter;
 import javax.swing.text.html.HTMLEditorKit;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.dialog.AskSamplesDialog;
 import be.uclouvain.ngs.highlander.UI.misc.AlignmentPanel;
+import be.uclouvain.ngs.highlander.UI.misc.AlignmentPanel.ColorBy;
 import be.uclouvain.ngs.highlander.UI.misc.SearchField;
 import be.uclouvain.ngs.highlander.UI.misc.WrapLayout;
-import be.uclouvain.ngs.highlander.UI.misc.AlignmentPanel.ColorBy;
 import be.uclouvain.ngs.highlander.database.DBUtils;
 import be.uclouvain.ngs.highlander.datatype.AnalysisFull;
 import be.uclouvain.ngs.highlander.datatype.Gene;
@@ -164,7 +164,7 @@ public class AlignmentViewer extends JFrame {
 	
 	private void initUI(){
 		setTitle("Alignment Viewer");
-		setIconImage(Resources.getScaledIcon(Resources.iAlignmentSquishedOff, 64).getImage());
+		setIconImage(Img.AlignmentSquishedOff.getScaledIcon(64).getImage());
 
 		setLayout(new BorderLayout());
 
@@ -288,7 +288,7 @@ public class AlignmentViewer extends JFrame {
 		gbl_panel_2.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		panel_middle.setLayout(gbl_panel_2);
 		
-		JButton button = new JButton(Resources.getScaledIcon(Resources.iPin, 24));
+		JButton button = new JButton(Img.Pin.getScaledIcon(24));
 		button.setToolTipText("Pin alignment of selected sample for a multi-alignment comparison");
 		button.addActionListener(new ActionListener() {
 			@Override
@@ -331,7 +331,7 @@ public class AlignmentViewer extends JFrame {
 		mapAnalyses.put(label, analysis);
 		
 		JPanel north = new JPanel(new FlowLayout(FlowLayout.LEADING));
-		JButton button = new JButton(Resources.getScaledIcon(Resources.iUnpin, 18));
+		JButton button = new JButton(Img.Unpin.getScaledIcon(18));
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -462,7 +462,7 @@ public class AlignmentViewer extends JFrame {
 			}
 		});
 		panel.add(txtLocus);
-		JButton buttonGo = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 24));
+		JButton buttonGo = new JButton(Img.ButtonApply.getScaledIcon(24));
 		buttonGo.setToolTipText("Go to locus");
 		buttonGo.addActionListener(new ActionListener() {
 			
@@ -475,10 +475,10 @@ public class AlignmentViewer extends JFrame {
 		});
 		panel.add(buttonGo);
 		
-		final JButton zoomin = new JButton(Resources.getScaledIcon(Resources.iZoomIn, 24));
-		final JButton zoomout = new JButton(Resources.getScaledIcon(Resources.iZoomOut, 24));
+		final JButton zoomin = new JButton(Img.ZoomIn.getScaledIcon(24));
+		final JButton zoomout = new JButton(Img.ZoomOut.getScaledIcon(24));
 
-		JButton left10 = new JButton(Resources.getScaledIcon(Resources.iArrowLeft, 24));
+		JButton left10 = new JButton(Img.ArrowLeft.getScaledIcon(24));
 		left10.setToolTipText("Move left");
 		left10.addActionListener(new ActionListener() {
 			@Override
@@ -490,7 +490,7 @@ public class AlignmentViewer extends JFrame {
 		});
 		panel.add(left10);
 		
-		JButton center = new JButton(Resources.getScaledIcon(Resources.iAlignmentCenterMutation, 24));
+		JButton center = new JButton(Img.AlignmentCenterMutation.getScaledIcon(24));
 		center.setToolTipText("Center on variant");
 		center.addActionListener(new ActionListener() {
 			@Override
@@ -508,7 +508,7 @@ public class AlignmentViewer extends JFrame {
 		});
 		panel.add(center);
 		
-		JButton right10 = new JButton(Resources.getScaledIcon(Resources.iArrowRight, 24));
+		JButton right10 = new JButton(Img.ArrowRight.getScaledIcon(24));
 		right10.setToolTipText("Move right");
 		right10.addActionListener(new ActionListener() {
 			@Override
@@ -534,7 +534,7 @@ public class AlignmentViewer extends JFrame {
 		});
 		panel.add(zoomout);
 
-		JButton zoomcenter = new JButton(Resources.getScaledIcon(Resources.iZoomOriginal, 24));
+		JButton zoomcenter = new JButton(Img.ZoomOriginal.getScaledIcon(24));
 		zoomcenter.setToolTipText("Reset zoom");
 		zoomcenter.addActionListener(new ActionListener() {
 			@Override
@@ -565,11 +565,11 @@ public class AlignmentViewer extends JFrame {
 		});
 		panel.add(zoomin);
 		
-		JToggleButton softClippedButton = new JToggleButton(Resources.getScaledIcon(Resources.iAlignmentSoftclipOff, 24), softClipped);
-		softClippedButton.setSelectedIcon(Resources.getScaledIcon(Resources.iAlignmentSoftclipOn, 24));
+		JToggleButton softClippedButton = new JToggleButton(Img.AlignmentSoftclipOff.getScaledIcon(24), softClipped);
+		softClippedButton.setSelectedIcon(Img.AlignmentSoftclipOn.getScaledIcon(24));
 		softClippedButton.setRolloverEnabled(true);
-		softClippedButton.setRolloverIcon(Resources.getScaledIcon(Resources.iAlignmentSoftclipOn, 24));
-		softClippedButton.setRolloverSelectedIcon(Resources.getScaledIcon(Resources.iAlignmentSoftclipOff, 24));
+		softClippedButton.setRolloverIcon(Img.AlignmentSoftclipOn.getScaledIcon(24));
+		softClippedButton.setRolloverSelectedIcon(Img.AlignmentSoftclipOff.getScaledIcon(24));
 		softClippedButton.setToolTipText("Show / Hide soft-clipped reads");
 		softClippedButton.addActionListener(new ActionListener() {
 			@Override
@@ -580,11 +580,11 @@ public class AlignmentViewer extends JFrame {
 		});
 		panel.add(softClippedButton);
 		
-		JToggleButton squishedButton = new JToggleButton(Resources.getScaledIcon(Resources.iAlignmentSquishedOff, 24), squished);;
-		squishedButton.setSelectedIcon(Resources.getScaledIcon(Resources.iAlignmentSquishedOn, 24));
+		JToggleButton squishedButton = new JToggleButton(Img.AlignmentSquishedOff.getScaledIcon(24), squished);;
+		squishedButton.setSelectedIcon(Img.AlignmentSquishedOn.getScaledIcon(24));
 		squishedButton.setRolloverEnabled(true);
-		squishedButton.setRolloverIcon(Resources.getScaledIcon(Resources.iAlignmentSquishedOn, 24));
-		squishedButton.setRolloverSelectedIcon(Resources.getScaledIcon(Resources.iAlignmentSquishedOff, 24));
+		squishedButton.setRolloverIcon(Img.AlignmentSquishedOn.getScaledIcon(24));
+		squishedButton.setRolloverSelectedIcon(Img.AlignmentSquishedOff.getScaledIcon(24));
 		squishedButton.setToolTipText("Normal / Squished reads");
 		squishedButton.addActionListener(new ActionListener() {
 			@Override
@@ -611,7 +611,7 @@ public class AlignmentViewer extends JFrame {
 		});
 		panel.add(colorByBox);
 		
-		JButton copy = new JButton(Resources.getScaledIcon(Resources.iCopy, 24));
+		JButton copy = new JButton(Img.Copy.getScaledIcon(24));
 		copy.setToolTipText("Copy alignment to clipboard");
 		copy.addActionListener(new ActionListener() {
 			@Override
@@ -623,7 +623,7 @@ public class AlignmentViewer extends JFrame {
 		});
 		panel.add(copy);
 		
-		JButton export = new JButton(Resources.getScaledIcon(Resources.iExportJpeg, 24));
+		JButton export = new JButton(Img.ExportJpeg.getScaledIcon(24));
 		export.setToolTipText("Export alignment to image file");
 		export.addActionListener(new ActionListener() {
 			@Override
@@ -635,14 +635,14 @@ public class AlignmentViewer extends JFrame {
 		});
 		panel.add(export);
 		
-		JButton help = new JButton(Resources.getScaledIcon(Resources.iHelp, 24));
+		JButton help = new JButton(Img.Help.getScaledIcon(24));
 		help.setToolTipText(getHelpText());
 		help.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 		    JFrame dlg = new JFrame();
 		    dlg.setTitle("Alignment Viewer");
-		    dlg.setIconImage(Resources.getScaledIcon(Resources.iRegExp, 64).getImage());
+		    dlg.setIconImage(Img.RegExp.getScaledIcon(64).getImage());
 		    JScrollPane scrollPane = new JScrollPane();
 		    scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);	
 				scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);	
@@ -676,7 +676,7 @@ public class AlignmentViewer extends JFrame {
 	private boolean setCurrentLocus() {
 		String locus = txtLocus.getText().trim().replace(",", "").replace("chr", "").replace(" ", "");
 		if (locus.length() == 0) {
-			JOptionPane.showMessageDialog(this,"No locus entered", "Locus recognition", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(this,"No locus entered", "Locus recognition", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			updateLocusTextField();
 			return false;
 		}
@@ -690,19 +690,19 @@ public class AlignmentViewer extends JFrame {
 				int start = Integer.parseInt(locus.split(":")[1].split("-")[0]);
 				int stop = Integer.parseInt(locus.split(":")[1].split("-")[1]);
 				if (stop < start) {
-					JOptionPane.showMessageDialog(this,"End of interval is smaller than it's start", "Locus recognition", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.showMessageDialog(this,"End of interval is smaller than it's start", "Locus recognition", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					updateLocusTextField();
 					return false;					
 				}
 				if (start < 1 || stop < 1) {
-					JOptionPane.showMessageDialog(this,"Start/end of interval is smaller than 1", "Locus recognition", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.showMessageDialog(this,"Start/end of interval is smaller than 1", "Locus recognition", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					updateLocusTextField();
 					return false;					
 				}
 				window = (stop - start) / 2;
 				pos = start + window;
 			}catch(Exception ex) {
-				JOptionPane.showMessageDialog(this,"Start or end of interval is not a number", "Locus recognition", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				JOptionPane.showMessageDialog(this,"Start or end of interval is not a number", "Locus recognition", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				updateLocusTextField();
 				return false;					
 			}
@@ -713,7 +713,7 @@ public class AlignmentViewer extends JFrame {
 			try {
 				pos = Integer.parseInt(locus.split(":")[1]);
 			}catch(Exception ex) {
-				JOptionPane.showMessageDialog(this,"Start or end of interval is not a number", "Locus recognition", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				JOptionPane.showMessageDialog(this,"Start or end of interval is not a number", "Locus recognition", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				updateLocusTextField();
 				return false;					
 			}
@@ -735,7 +735,7 @@ public class AlignmentViewer extends JFrame {
 				window = (stop - start) / 2;
 				pos = start + window;
 			}catch(Exception ex) {
-				JOptionPane.showMessageDialog(this,"The gene '"+locus+"' you entered in locus field is not recognized", "Locus recognition", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				JOptionPane.showMessageDialog(this,"The gene '"+locus+"' you entered in locus field is not recognized", "Locus recognition", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				updateLocusTextField();
 				return false;					
 			}

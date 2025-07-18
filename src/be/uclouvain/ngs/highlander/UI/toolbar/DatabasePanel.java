@@ -29,36 +29,34 @@
 
 package be.uclouvain.ngs.highlander.UI.toolbar;
 
-import javax.swing.JPanel;
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JRadioButton;
-import javax.swing.JToggleButton;
-import javax.swing.ButtonGroup;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JToggleButton;
 import javax.swing.border.EtchedBorder;
 
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.dialog.CreateColumnSelection;
 import be.uclouvain.ngs.highlander.UI.dialog.ProfileTree;
@@ -98,7 +96,7 @@ public class DatabasePanel extends JPanel {
 		add(scrollablePanel, BorderLayout.CENTER);
 
 		for (AnalysisFull analysis : Highlander.getAvailableAnalyses()){
-			JToggleButton button = new JToggleButton(Resources.getScaledIcon(analysis.getIcon(), 40));
+			JToggleButton button = new JToggleButton(Resources.getScaledIcon(analysis.getIcon().getImage(), 40));
 			button.setToolTipText(analysis.getHtmlTooltip());
 			button.setPreferredSize(new Dimension(54,54));
 			button.setSelected(true);
@@ -126,7 +124,7 @@ public class DatabasePanel extends JPanel {
 		panel.setPreferredSize(new Dimension(2, 50));
 		center.add(panel);
 
-		JButton button_add = new JButton(Resources.getScaledIcon(Resources.iColumnSelectionNew, 40));
+		JButton button_add = new JButton(Img.ColumnSelectionNew.getScaledIcon(40));
 		button_add.setToolTipText("Create a new selection of columns for this analysis");
 		button_add.setPreferredSize(new Dimension(54,54));
 		button_add.addActionListener(new ActionListener() {
@@ -372,7 +370,7 @@ public class DatabasePanel extends JPanel {
 			}catch(Exception ex){
 				Tools.exception(ex);
 				JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Can't retreive columns selection from your profile", ex), "Retreive user column selection",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}
 		}
 		return false;
@@ -390,7 +388,7 @@ public class DatabasePanel extends JPanel {
 			}catch(Exception ex){
 				Tools.exception(ex);
 				JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Can't retreive default columns selection", ex), "Retreive default column selection",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}
 			return selection;
 		}else{
@@ -409,7 +407,7 @@ public class DatabasePanel extends JPanel {
 				if (Highlander.getLoggedUser().doesPersonalDataExists(UserData.COLUMN_SELECTION, null, selectionName)){
 					int yesno = JOptionPane.showConfirmDialog(new JFrame(), 
 							"You already have a "+UserData.COLUMN_SELECTION.getName()+" named '"+selectionName.replace("~", " -> ")+"', do you want to overwrite it ?", 
-							"Overwriting element in your profile", JOptionPane.YES_NO_OPTION , JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iDbSave,64));
+							"Overwriting element in your profile", JOptionPane.YES_NO_OPTION , JOptionPane.QUESTION_MESSAGE, Img.DbSave.getScaledIcon(64));
 					if (yesno == JOptionPane.NO_OPTION)	return;
 				}
 				List<Field> selection = ccs.getSelection();
@@ -418,7 +416,7 @@ public class DatabasePanel extends JPanel {
 			}catch(Exception ex){
 				Tools.exception(ex);
 				JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Can't save column selection list to your profile", ex), "Saving column selection list to your profile",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}
 		}
 	}

@@ -47,15 +47,14 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
-
-import javax.swing.JPanel;
 
 public class WaitingPanel extends JPanel implements Runnable {
 
@@ -104,15 +103,15 @@ public class WaitingPanel extends JPanel implements Runnable {
 		centerPanel.add(logoPanel, new GridBagConstraints(0,0,1,1,0.0,0.0,GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(5,5,5,5), 0, 0));
 		logoCardLayout = new CardLayout();
 		logoPanel.setLayout(logoCardLayout);
-		logoPanel.add(new JLabel(Resources.getScaledIcon(Resources.iWait8, 384)), "0");
-		logoPanel.add(new JLabel(Resources.getScaledIcon(Resources.iWait1, 384)), "1");
-		logoPanel.add(new JLabel(Resources.getScaledIcon(Resources.iWait2, 384)), "2");
-		logoPanel.add(new JLabel(Resources.getScaledIcon(Resources.iWait3, 384)), "3");
-		logoPanel.add(new JLabel(Resources.getScaledIcon(Resources.iWait4, 384)), "4");
-		logoPanel.add(new JLabel(Resources.getScaledIcon(Resources.iWait5, 384)), "5");
-		logoPanel.add(new JLabel(Resources.getScaledIcon(Resources.iWait6, 384)), "6");
-		logoPanel.add(new JLabel(Resources.getScaledIcon(Resources.iWait7, 384)), "7");
-		logoPanel.add(new JLabel(Resources.getScaledIcon(Resources.iWait8, 384)), "8");
+		logoPanel.add(new JLabel(Img.Wait8.getScaledIcon(384)), "0");
+		logoPanel.add(new JLabel(Img.Wait1.getScaledIcon(384)), "1");
+		logoPanel.add(new JLabel(Img.Wait2.getScaledIcon(384)), "2");
+		logoPanel.add(new JLabel(Img.Wait3.getScaledIcon(384)), "3");
+		logoPanel.add(new JLabel(Img.Wait4.getScaledIcon(384)), "4");
+		logoPanel.add(new JLabel(Img.Wait5.getScaledIcon(384)), "5");
+		logoPanel.add(new JLabel(Img.Wait6.getScaledIcon(384)), "6");
+		logoPanel.add(new JLabel(Img.Wait7.getScaledIcon(384)), "7");
+		logoPanel.add(new JLabel(Img.Wait8.getScaledIcon(384)), "8");
 
 		progress = new JProgressBar();
 		progress.setMinimum(0);
@@ -130,7 +129,7 @@ public class WaitingPanel extends JPanel implements Runnable {
 		//centerPanel.add(text, new GridBagConstraints(0,1,1,1,0.0,0.0,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(30,55,5,55), 0, 0));
 		//setText();
 
-		cancelButton = new JButton("Cancel query", Resources.getScaledIcon(Resources.iCross, 32));
+		cancelButton = new JButton("Cancel query", Img.Cross.getScaledIcon(32));
 		cancelButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -150,7 +149,7 @@ public class WaitingPanel extends JPanel implements Runnable {
 		centerPanel.add(cancelButton, new GridBagConstraints(0,2,1,1,0.0,0.0,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(30,50,5,50), 0, 0));
 		cancelButton.setVisible(false);
 		
-		sendQueryButton = new JButton("Report slow query", Resources.getScaledIcon(Resources.iEditPen, 32));
+		sendQueryButton = new JButton("Report slow query", Img.EditPen.getScaledIcon(32));
 		sendQueryButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

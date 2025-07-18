@@ -58,7 +58,7 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.dialog.CreateRunSelection;
 import be.uclouvain.ngs.highlander.UI.misc.WaitingPanel;
@@ -124,7 +124,7 @@ public class FastQCViewer extends JFrame {
 
 	private void initUI(){
 		setTitle("FastQC reports");
-		setIconImage(Resources.getScaledIcon(Resources.iFastQC, 64).getImage());
+		setIconImage(Img.FastQC.getScaledIcon(64).getImage());
 
 		setLayout(new BorderLayout());
 
@@ -133,7 +133,7 @@ public class FastQCViewer extends JFrame {
 		JPanel panel_south = new JPanel();	
 		getContentPane().add(panel_south, BorderLayout.SOUTH);
 
-		JButton export = new JButton(Resources.getScaledIcon(Resources.iExportJpeg, 24));
+		JButton export = new JButton(Img.ExportJpeg.getScaledIcon(24));
 		export.setToolTipText("Export current view to image file");
 		export.addActionListener(new ActionListener() {
 			@Override
@@ -148,7 +148,7 @@ public class FastQCViewer extends JFrame {
 		});
 		panel_south.add(export);
 
-		JButton btnClose = new JButton(Resources.getScaledIcon(Resources.iCross, 24));
+		JButton btnClose = new JButton(Img.Cross.getScaledIcon(24));
 		btnClose.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -160,7 +160,7 @@ public class FastQCViewer extends JFrame {
 		JPanel panel_north = new JPanel();
 		getContentPane().add(panel_north, BorderLayout.NORTH);
 
-		JButton btnSelect = new JButton("Select NGS runs to include in the chart",Resources.getScaledIcon(Resources.i3dPlus, 24));
+		JButton btnSelect = new JButton("Select NGS runs to include in the chart",Img.AddMain.getScaledIcon(24));
 		btnSelect.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -316,7 +316,7 @@ public class FastQCViewer extends JFrame {
 						}						
 						panel.add(new JLabel(image), BorderLayout.CENTER);
 					}else{
-						panel.add(new JLabel(Resources.iButtonApply), BorderLayout.CENTER);
+						panel.add(new JLabel(Img.ButtonApply.getScaledIcon(32)), BorderLayout.CENTER);
 					}
 					view.add(panel);
 				}
@@ -336,14 +336,14 @@ public class FastQCViewer extends JFrame {
 			repaint();
 		}catch(Exception ex){
 			Tools.exception(ex);
-			JOptionPane.showMessageDialog(this, Tools.getMessage("Error when retreiving FastQC reports", ex), "Retreiving " + field, JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(this, Tools.getMessage("Error when retreiving FastQC reports", ex), "Retreiving " + field, JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 	}
 
 	public void export(){
 		if (panel_center.getComponents().length > 0){
 			JPanel view = (JPanel)(((JScrollPane)panel_center.getComponents()[0]).getViewport().getComponents()[0]);
-			Object format = JOptionPane.showInputDialog(this, "Choose an image format: ", "Export view to image file", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iExportJpeg, 64), ImageIO.getWriterFileSuffixes(), "png");
+			Object format = JOptionPane.showInputDialog(this, "Choose an image format: ", "Export view to image file", JOptionPane.QUESTION_MESSAGE, Img.ExportJpeg.getScaledIcon(64), ImageIO.getWriterFileSuffixes(), "png");
 			if (format != null){
 				FileDialog chooser = new FileDialog(this, "Export view to image", FileDialog.SAVE) ;
 				Tools.centerWindow(chooser, false);
@@ -358,7 +358,7 @@ public class FastQCViewer extends JFrame {
 						ImageIO.write(image, format.toString(), new File(filename));
 					} catch (Exception ex) {
 						Tools.exception(ex);
-						JOptionPane.showMessageDialog(this, Tools.getMessage("Error when exporting chart", ex), "Export chart to image file", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));  			}
+						JOptionPane.showMessageDialog(this, Tools.getMessage("Error when exporting chart", ex), "Export chart to image file", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));  			}
 				}   		
 			}
 		}

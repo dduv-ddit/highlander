@@ -81,6 +81,7 @@ import javax.swing.text.JTextComponent;
 
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Resources.Palette;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.dialog.ProfileTree.Action;
@@ -168,7 +169,7 @@ public class AskListOfFreeValuesDialog extends JDialog {
 	private void initUI(){
 		setModal(true);
 		setTitle("Create value list");
-		setIconImage(Resources.getScaledIcon(Resources.iList, 64).getImage());
+		setIconImage(Img.List.getScaledIcon(64).getImage());
 
 		JPanel panel_north = new JPanel(new BorderLayout());
 		getContentPane().add(panel_north, BorderLayout.NORTH);
@@ -267,7 +268,7 @@ public class AskListOfFreeValuesDialog extends JDialog {
 		JPanel panel_2 = new JPanel();
 		panel_north.add(panel_2, BorderLayout.NORTH);
 
-		JButton btnFile = new JButton(Resources.getScaledIcon(Resources.iImportFile, 40));
+		JButton btnFile = new JButton(Img.ImportFile.getScaledIcon(40));
 		btnFile.setToolTipText("Import values from a text file");
 		btnFile.setPreferredSize(new Dimension(54,54));
 		btnFile.addActionListener(new ActionListener() {
@@ -292,7 +293,7 @@ public class AskListOfFreeValuesDialog extends JDialog {
 					} catch (Exception ex) {
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(AskListOfFreeValuesDialog.this, Tools.getMessage("Error", ex), 
-								"Import values from a text file", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								"Import values from a text file", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 					btnOk.setText(getValuesCount()+" values");
 				}
@@ -300,7 +301,7 @@ public class AskListOfFreeValuesDialog extends JDialog {
 		});
 		panel_2.add(btnFile);
 
-		JButton btnSort = new JButton(Resources.getScaledIcon(Resources.iSortAZ, 40));
+		JButton btnSort = new JButton(Img.SortAZ.getScaledIcon(40));
 		btnSort.setToolTipText("Sort current list alphabetically and remove duplicates");
 		btnSort.setPreferredSize(new Dimension(54,54));
 		btnSort.addActionListener(new ActionListener() {
@@ -311,7 +312,7 @@ public class AskListOfFreeValuesDialog extends JDialog {
 		});
 		panel_2.add(btnSort);
 
-		btnSaveList = new JButton(Resources.getScaledIcon(Resources.iDbSave, 40));
+		btnSaveList = new JButton(Img.DbSave.getScaledIcon(40));
 		btnSaveList.setToolTipText("Save current list of values in your profile");
 		btnSaveList.setPreferredSize(new Dimension(54,54));
 		btnSaveList.addActionListener(new ActionListener() {
@@ -322,7 +323,7 @@ public class AskListOfFreeValuesDialog extends JDialog {
 		});
 		panel_2.add(btnSaveList);
 
-		btnPossibleValuesDatabase = new JButton(Resources.getScaledIcon(Resources.iDbSearch, 40));
+		btnPossibleValuesDatabase = new JButton(Img.DbSearch.getScaledIcon(40));
 		btnPossibleValuesDatabase.setToolTipText("Add values among possible values found in the database");
 		btnPossibleValuesDatabase.setPreferredSize(new Dimension(54,54));
 		btnPossibleValuesDatabase.addActionListener(new ActionListener() {
@@ -344,13 +345,13 @@ public class AskListOfFreeValuesDialog extends JDialog {
 					}
 				} catch (Exception ex) {
 					Tools.exception(ex);
-					JOptionPane.showMessageDialog(AskListOfFreeValuesDialog.this, Tools.getMessage("Error retrieving selected database field", ex), "Ask for possible values", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.showMessageDialog(AskListOfFreeValuesDialog.this, Tools.getMessage("Error retrieving selected database field", ex), "Ask for possible values", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}
 			}
 		});
 		panel_2.add(btnPossibleValuesDatabase);
 		
-		btnLoadList = new JButton(Resources.getScaledIcon(Resources.iDbLoad, 40));
+		btnLoadList = new JButton(Img.DbLoad.getScaledIcon(40));
 		btnLoadList.setToolTipText("Load a list of values from your profile");
 		btnLoadList.setPreferredSize(new Dimension(54,54));
 		btnLoadList.addActionListener(new ActionListener() {
@@ -364,7 +365,7 @@ public class AskListOfFreeValuesDialog extends JDialog {
 		});
 		panel_2.add(btnLoadList);
 
-		btnValidateList = new JButton(Resources.getScaledIcon(Resources.iUserListValidate, 40));
+		btnValidateList = new JButton(Img.UserListValidate.getScaledIcon(40));
 		btnValidateList.setToolTipText("Validate the list of values from your profile");
 		btnValidateList.setPreferredSize(new Dimension(54,54));
 		btnValidateList.addActionListener(new ActionListener() {
@@ -404,7 +405,7 @@ public class AskListOfFreeValuesDialog extends JDialog {
 		JPanel panel = new JPanel();	
 		getContentPane().add(panel, BorderLayout.SOUTH);
 
-		btnOk = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 24));
+		btnOk = new JButton(Img.ButtonApply.getScaledIcon(24));
 		btnOk.setText("0 values");
 		btnOk.addActionListener(new ActionListener() {
 			@Override
@@ -418,7 +419,7 @@ public class AskListOfFreeValuesDialog extends JDialog {
 		});
 		panel.add(btnOk);
 
-		JButton btnCancel = new JButton(Resources.getScaledIcon(Resources.iCross, 24));
+		JButton btnCancel = new JButton(Img.Cross.getScaledIcon(24));
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -482,7 +483,12 @@ public class AskListOfFreeValuesDialog extends JDialog {
 				btnOk.setText(getValuesCount()+" values");
 			}
 		});
-		new ExcelAdapter(table);
+		ExcelAdapter excelAdapter = new ExcelAdapter();
+		KeyStroke paste = KeyStroke.getKeyStroke(KeyEvent.VK_V,Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(),false);
+		table.registerKeyboardAction(excelAdapter,"Paste",paste,JComponent.WHEN_FOCUSED);
+		KeyStroke delete = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,0,false);
+		table.registerKeyboardAction(excelAdapter,"Delete",delete,JComponent.WHEN_FOCUSED);
+		
 		table.getColumnModel().getColumn(0).setCellRenderer(new ErrorCellRenderer());
 		scrollPane.setViewportView(table);
 
@@ -676,28 +682,12 @@ public class AskListOfFreeValuesDialog extends JDialog {
 		}
 	}
 	
-	public class ExcelAdapter implements ActionListener {
+	private class ExcelAdapter implements ActionListener {
 		private String rowstring,value;
 		private Clipboard system;
-		private JTable table ;
-		/**
-		 * The Excel Adapter is constructed with a
-		 * JTable on which it enables Copy-Paste and acts
-		 * as a Clipboard listener.
-		 */
-		public ExcelAdapter(JTable myJTable){
-			table = myJTable;
-			KeyStroke paste = KeyStroke.getKeyStroke(KeyEvent.VK_V,Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(),false);
-			table.registerKeyboardAction(this,"Paste",paste,JComponent.WHEN_FOCUSED);
-			KeyStroke delete = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,0,false);
-			table.registerKeyboardAction(this,"Delete",delete,JComponent.WHEN_FOCUSED);
+		public ExcelAdapter(){
 			system = Toolkit.getDefaultToolkit().getSystemClipboard();
 		}
-		/**
-		 * Public Accessor methods for the Table on which this adapter acts.
-		 */
-		public JTable getJTable() {return table;}
-		public void setJTable(JTable jTable1) {this.table=jTable1;}
 		/**
 		 * This method is activated on the Keystrokes we are listening to
 		 * in this implementation. Here it listens for Copy and Paste ActionCommands.
@@ -745,8 +735,7 @@ public class AskListOfFreeValuesDialog extends JDialog {
 			}
 		}
 	}
-
-
+	
 	public List<String> getSelection(){
 		return selection;
 	}
@@ -775,7 +764,7 @@ public class AskListOfFreeValuesDialog extends JDialog {
 				if (Highlander.getLoggedUser().doesPersonalDataExists(UserData.VALUES, boxField.getSelectedItem().toString(), name)){
 					int yesno = JOptionPane.showConfirmDialog(new JFrame(), 
 							"You already have a "+UserData.VALUES.getName()+" named '"+name.replace("~", " -> ")+"', do you want to overwrite it ?", 
-							"Overwriting element in your profile", JOptionPane.YES_NO_OPTION , JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iDbSave,64));
+							"Overwriting element in your profile", JOptionPane.YES_NO_OPTION , JOptionPane.QUESTION_MESSAGE, Img.DbSave.getScaledIcon(64));
 					if (yesno == JOptionPane.NO_OPTION)	return false;
 				}
 				listName = name;
@@ -791,7 +780,7 @@ public class AskListOfFreeValuesDialog extends JDialog {
 			}
 		} catch (Exception ex) {
 			Tools.exception(ex);
-			JOptionPane.showMessageDialog(AskListOfFreeValuesDialog.this, Tools.getMessage("Error", ex), "Save current criteria list in your profile", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(AskListOfFreeValuesDialog.this, Tools.getMessage("Error", ex), "Save current criteria list in your profile", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 		return false;
 	}
@@ -809,7 +798,7 @@ public class AskListOfFreeValuesDialog extends JDialog {
 		} catch (Exception ex) {
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(AskListOfFreeValuesDialog.this, Tools.getMessage("Error", ex), 
-					"Load list of values from your profile", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					"Load list of values from your profile", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 		tmodel.fireTableDataChanged();
 		btnOk.setText(getValuesCount()+" values");

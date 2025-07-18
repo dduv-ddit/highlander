@@ -74,6 +74,7 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.Resources.Palette;
 import be.uclouvain.ngs.highlander.UI.misc.WaitingPanel;
@@ -132,7 +133,7 @@ public class CtdnaEstimation extends JFrame {
 
 	private void initUI(){
 		setTitle("ctDNA estimation");
-		setIconImage(Resources.getScaledIcon(Resources.iCTDNA, 64).getImage());
+		setIconImage(Img.CTDNA.getScaledIcon(64).getImage());
 
 		setLayout(new BorderLayout());
 
@@ -153,7 +154,7 @@ public class CtdnaEstimation extends JFrame {
 		JPanel panel = new JPanel();	
 		getContentPane().add(panel, BorderLayout.SOUTH);
 
-		JButton export = new JButton(Resources.getScaledIcon(Resources.iExcel, 40));
+		JButton export = new JButton(Img.Excel.getScaledIcon(40));
 		export.setPreferredSize(new Dimension(54,54));
 		export.setToolTipText("Export to an Excel file");
 		export.addActionListener(new ActionListener() {
@@ -706,11 +707,11 @@ public class CtdnaEstimation extends JFrame {
 			}catch (IOException ex){
 				Tools.exception(ex);
 				JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("I/O error when creating file", ex), "Exporting to Excel",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}catch (Exception ex){
 				Tools.exception(ex);
 				JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error during export", ex), "Exporting to Excel",
-						JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}
 		}
 	}

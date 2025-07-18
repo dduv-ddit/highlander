@@ -37,7 +37,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -55,18 +57,12 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 
-import org.apache.commons.httpclient.Credentials;
-import org.apache.commons.httpclient.HostConfiguration;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.NTCredentials;
-import org.apache.commons.httpclient.NameValuePair;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import org.apache.commons.httpclient.methods.PostMethod;
-
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Resources.Palette;
 import be.uclouvain.ngs.highlander.Tools;
+import be.uclouvain.ngs.highlander.Tools.HttpUtility.Callback;
 import be.uclouvain.ngs.highlander.UI.misc.WaitingPanel;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
 import be.uclouvain.ngs.highlander.database.Results;
@@ -126,14 +122,14 @@ public class Kraken extends JFrame {
 
 	private void initUI(){
 		setTitle("Kraken");
-		setIconImage(Resources.getScaledIcon(Resources.iKraken, 64).getImage());
+		setIconImage(Img.Kraken.getScaledIcon(64).getImage());
 
 		setLayout(new BorderLayout());
 
 		JPanel south = new JPanel();
 		getContentPane().add(south, BorderLayout.SOUTH);
 
-		JButton downloadReportButton = new JButton("Download all available reports", Resources.getScaledIcon(Resources.iDownload, 24));
+		JButton downloadReportButton = new JButton("Download all available reports", Img.Download.getScaledIcon(24));
 		downloadReportButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -160,15 +156,15 @@ public class Kraken extends JFrame {
 												}catch(IOException ex) {
 													Tools.exception(ex);
 													JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error", ex), "Kraken",
-															JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+															JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 												}																							
 											}
 										}
 									}
-									JOptionPane.showMessageDialog(new JFrame(), "All reports downloaded in " + txtFieldOutputDir.getText(), "Download all available reports",	JOptionPane.PLAIN_MESSAGE, Resources.getScaledIcon(Resources.iDownload,64));
+									JOptionPane.showMessageDialog(new JFrame(), "All reports downloaded in " + txtFieldOutputDir.getText(), "Download all available reports",	JOptionPane.PLAIN_MESSAGE, Img.Download.getScaledIcon(64));
 								}catch (Exception ex) {
 									Tools.exception(ex);
-									JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error", ex), "Kraken",	JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+									JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error", ex), "Kraken",	JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 								}
 								SwingUtilities.invokeLater(new Runnable() {
 									@Override
@@ -185,7 +181,7 @@ public class Kraken extends JFrame {
 		});
 		south.add(downloadReportButton);
 		
-		JButton openPavianButton = new JButton("Open Pavian", Resources.getScaledIcon(Resources.iPavian, 24));
+		JButton openPavianButton = new JButton("Open Pavian", Img.Pavian.getScaledIcon(24));
 		openPavianButton.setToolTipText("<html>Pavian is a interactive browser application for analyzing and visualization metagenomics classification results from classifiers such as Kraken 2.<br>"
 				+ "Pavian also provides an alignment viewer for validation of matches to a particular genome.<br>"
 				+ "Download reports from your samples of interest, then upload them together in Pavian.</html>");
@@ -206,7 +202,7 @@ public class Kraken extends JFrame {
 		});
 		south.add(openPavianButton);
 
-		JButton runAllMissingButton = new JButton("Run Kraken on all missing", Resources.getScaledIcon(Resources.iRun, 24));
+		JButton runAllMissingButton = new JButton("Run Kraken on all missing", Img.Run.getScaledIcon(24));
 		runAllMissingButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -226,7 +222,7 @@ public class Kraken extends JFrame {
 		});
 		south.add(runAllMissingButton);
 		
-		JButton btnClose = new JButton("Close", Resources.getScaledIcon(Resources.iCross, 24));
+		JButton btnClose = new JButton("Close", Img.Cross.getScaledIcon(24));
 		btnClose.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -246,7 +242,7 @@ public class Kraken extends JFrame {
 		outputDirPanel.add(new JLabel("Download directory"), new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(2, 0, 0, 0), 0, 0));
 		txtFieldOutputDir = new JTextField(Tools.getHomeDirectory().toString());
 		outputDirPanel.add(txtFieldOutputDir, new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(2, 5, 0, 5), 0, 0));
-		JButton browseDir = new JButton(Resources.getScaledIcon(Resources.iFolder, 24));
+		JButton browseDir = new JButton(Img.Folder.getScaledIcon(24));
 		browseDir.setPreferredSize(new Dimension(32,32));
 		browseDir.setToolTipText("Browse");
 		browseDir.addActionListener(new ActionListener() {
@@ -302,12 +298,12 @@ public class Kraken extends JFrame {
 		if (pos%2 == 0) panel.setBackground(Resources.getTableEvenRowBackgroundColor(Palette.Indigo));
 		else panel.setBackground(Resources.getTableOddRowBackgroundColor(Palette.Indigo));
 		boolean resultsAvailable = isResultsAvailable(analysis, sample);
-		JLabel label = new JLabel(sample, (resultsAvailable ? Resources.getScaledIcon(Resources.iShinyBallGreen, 24) : Resources.getScaledIcon(Resources.iShinyBallRed, 24)), SwingConstants.LEADING);
+		JLabel label = new JLabel(sample, (resultsAvailable ? Img.ShinyBallGreen.getScaledIcon(24) : Img.ShinyBallRed.getScaledIcon(24)), SwingConstants.LEADING);
 		panel.add(label, new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(2, 2, 2, 2), 0, 0));
 		if (resultsAvailable) {
 			setViewButtons(panel, analysis, sample);
 		}else {
-			JButton launchKrakenButton = new JButton("Run Kraken", Resources.getScaledIcon(Resources.iRun, 24));
+			JButton launchKrakenButton = new JButton("Run Kraken", Img.Run.getScaledIcon(24));
 			launchKrakenButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -315,17 +311,17 @@ public class Kraken extends JFrame {
 						@Override
 						public void run() {
 							if (runKraken(analysis, sample)) {
-								label.setIcon(Resources.getScaledIcon(Resources.iShinyBallPink, 24));
+								label.setIcon(Img.ShinyBallPink.getScaledIcon(24));
 								panel.remove(launchKrakenButton);
 								missingResults.remove(launchKrakenButton);
-								JButton checkKrakenStatusButton = new JButton("Check status", Resources.getScaledIcon(Resources.iUpdater, 24));
+								JButton checkKrakenStatusButton = new JButton("Check status", Img.Updater.getScaledIcon(24));
 								runningJobs.add(checkKrakenStatusButton);
 								checkKrakenStatusButton.setToolTipText("<html>You'll be warn by email when results are available<br>You can use this button to check if results are available.<br>If they are, the ball will become green and new buttons will replace this one.<br>Kraken can take between 20 minutes and 1 hour to finish depending on the sample.</html>");
 								checkKrakenStatusButton.addActionListener(new ActionListener() {
 									@Override
 									public void actionPerformed(ActionEvent e) {
 										if (isResultsAvailable(analysis, sample)) {
-											label.setIcon(Resources.getScaledIcon(Resources.iShinyBallGreen, 24));
+											label.setIcon(Img.ShinyBallGreen.getScaledIcon(24));
 											panel.remove(checkKrakenStatusButton);
 											runningJobs.remove(checkKrakenStatusButton);
 											setViewButtons(panel, analysis, sample);
@@ -347,7 +343,7 @@ public class Kraken extends JFrame {
 	}
 
 	private void setViewButtons(JPanel panel, Analysis analysis, String sample) {
-		JButton viewHTMLButton = new JButton("View results", Resources.getScaledIcon(Resources.iKraken, 24));
+		JButton viewHTMLButton = new JButton("View results", Img.Kraken.getScaledIcon(24));
 		viewHTMLButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -361,7 +357,7 @@ public class Kraken extends JFrame {
 								}catch (Exception ex) {
 									Tools.exception(ex);
 									JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error", ex), "Kraken",
-											JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+											JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 								}
 							}
 						}).start();
@@ -370,7 +366,7 @@ public class Kraken extends JFrame {
 			}
 		});
 		panel.add(viewHTMLButton, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0));
-		JButton downloadReportButton = new JButton("Download report", Resources.getScaledIcon(Resources.iDownload, 24));
+		JButton downloadReportButton = new JButton("Download report", Img.Download.getScaledIcon(24));
 		downloadReportButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -387,12 +383,12 @@ public class Kraken extends JFrame {
 									}catch(IOException ex) {
 										Tools.exception(ex);
 										JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error", ex), "Kraken",
-												JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+												JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 									}
 								}catch (Exception ex) {
 									Tools.exception(ex);
 									JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error", ex), "Kraken",
-											JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+											JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 								}
 							}
 						}).start();
@@ -436,69 +432,36 @@ public class Kraken extends JFrame {
 
 	private boolean runKraken(Analysis analysis, String sample) {
 		if (Highlander.getParameters().getUrlForPhpScripts() == null) {
-			JOptionPane.showMessageDialog(new JFrame(),  "Launching Kraken impossible: you should configure 'server > php' parameter in settings.xml", "Kraken",	JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(new JFrame(),  "Launching Kraken impossible: you should configure 'server > php' parameter in settings.xml", "Kraken",	JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			return false;
 		}
-		try {
-			HttpClient httpClient = new HttpClient();
-			boolean bypass = false;
-			if (System.getProperty("http.nonProxyHosts") != null) {
-				for (String host : System.getProperty("http.nonProxyHosts").split("\\|")) {
-					if ((Highlander.getParameters().getUrlForPhpScripts()+"/kraken.php").toLowerCase().contains(host.toLowerCase())) bypass = true;
-				}
-			}
-			if (!bypass && System.getProperty("http.proxyHost") != null) {
-				try {
-					HostConfiguration hostConfiguration = httpClient.getHostConfiguration();
-					hostConfiguration.setProxy(System.getProperty("http.proxyHost"), Integer.parseInt(System.getProperty("http.proxyPort")));
-					httpClient.setHostConfiguration(hostConfiguration);
-					if (System.getProperty("http.proxyUser") != null && System.getProperty("http.proxyPassword") != null) {
-						// Credentials credentials = new UsernamePasswordCredentials(System.getProperty("http.proxyUser"), System.getProperty("http.proxyPassword"));
-						// Windows proxy needs specific credentials with domain ... if proxy user is in the form of domain\\user, consider it's windows
-						String user = System.getProperty("http.proxyUser");
-						Credentials credentials;
-						if (user.contains("\\")) {
-							credentials = new NTCredentials(user.split("\\\\")[1], System.getProperty("http.proxyPassword"), System.getProperty("http.proxyHost"), user.split("\\\\")[0]);
-						}else {
-							credentials = new UsernamePasswordCredentials(user, System.getProperty("http.proxyPassword"));
-						}
-						httpClient.getState().setProxyCredentials(null, System.getProperty("http.proxyHost"), credentials);
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			PostMethod post = new PostMethod(Highlander.getParameters().getUrlForPhpScripts()+"/kraken.php");
-			NameValuePair[] data = {
-					new NameValuePair("analysis", analysis.toString()),
-					new NameValuePair("sample", sample),
-					new NameValuePair("email", Highlander.getLoggedUser().getEmail()),
-			};
-			post.addParameters(data);
-			int httpRes = httpClient.executeMethod(post); 
-			if (httpRes == 200) {
+		Map<String,String> params = new LinkedHashMap<>();
+		params.put("analysis", analysis.toString());
+		params.put("sample", sample);
+		params.put("email", Highlander.getLoggedUser().getEmail());
+		return Tools.HttpUtility.post(Highlander.getParameters().getUrlForPhpScripts()+"/kraken.php", params, new Callback() {
+			@Override
+			public void OnSuccess(URLConnection connection) {
 				StringBuilder sb = new StringBuilder();
-				try (InputStreamReader isr = new InputStreamReader(post.getResponseBodyAsStream())){
+				try (InputStreamReader isr = new InputStreamReader(connection.getInputStream())){
 					try (BufferedReader br = new BufferedReader(isr)){
 						String line = null;
 						while(((line = br.readLine()) != null)) {
 							System.out.println(line);				
 							sb.append(line+"\n");
 							if (line.contains("*exitcode^1*")) {
-								throw new Exception(sb.toString());
+								Tools.HttpUtility.setReturnValue(false);
 							}
 						}
 					}
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-				return true;
-			}else {
-				JOptionPane.showMessageDialog(new JFrame(),  "Cannot launch Kraken on the server, HTTP error " + httpRes, "Kraken",	JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
-				return false;
 			}
-		}catch (Exception ex){
-			Tools.exception(ex);
-			JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Error", ex), "Kraken",	JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
-			return false;
-		}		
+			@Override
+			public void OnError(int responseCode, String message) {
+				JOptionPane.showMessageDialog(new JFrame(),  "Cannot launch Kraken on the server, HTTP error " + responseCode + " ("+message+")", "Kraken",	JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
+			}
+		});
 	}
 }

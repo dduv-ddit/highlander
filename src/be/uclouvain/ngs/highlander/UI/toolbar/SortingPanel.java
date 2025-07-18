@@ -29,6 +29,26 @@
 
 package be.uclouvain.ngs.highlander.UI.toolbar;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Point;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -38,7 +58,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.dialog.CreateColumnSelection;
 import be.uclouvain.ngs.highlander.UI.dialog.ProfileTree;
@@ -48,28 +68,6 @@ import be.uclouvain.ngs.highlander.UI.table.VariantsTable;
 import be.uclouvain.ngs.highlander.administration.users.User.UserData;
 import be.uclouvain.ngs.highlander.database.Field;
 import be.uclouvain.ngs.highlander.datatype.SortingCriterion;
-
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Point;
-
-import javax.swing.JButton;
-
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.awt.dnd.DropTarget;
-import java.awt.dnd.DropTargetDragEvent;
-import java.awt.dnd.DropTargetDropEvent;
-import java.awt.dnd.DropTargetEvent;
-import java.awt.dnd.DropTargetListener;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.FlowLayout;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SortingPanel extends JPanel implements DropTargetListener {
 	
@@ -87,7 +85,7 @@ public class SortingPanel extends JPanel implements DropTargetListener {
 		
 		JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		
-		JButton btnSave = new JButton(Resources.getScaledIcon(Resources.iDbSave, 40));
+		JButton btnSave = new JButton(Img.DbSave.getScaledIcon(40));
 		btnSave.setToolTipText("Save current criteria list in your profile");
 		btnSave.setPreferredSize(new Dimension(54,54));
 		btnSave.addActionListener(new ActionListener() {
@@ -99,7 +97,7 @@ public class SortingPanel extends JPanel implements DropTargetListener {
 					if (Highlander.getLoggedUser().doesPersonalDataExists(UserData.SORTING, Highlander.getCurrentAnalysis().toString(), name)){
 						int yesno = JOptionPane.showConfirmDialog(new JFrame(), 
 								"You already have a sorting criteria list named '"+name.replace("~", " -> ")+"', do you want to overwrite it ?", 
-								"Overwriting sorting criteria list in your profile", JOptionPane.YES_NO_OPTION , JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iDbSave,64));
+								"Overwriting sorting criteria list in your profile", JOptionPane.YES_NO_OPTION , JOptionPane.QUESTION_MESSAGE, Img.DbSave.getScaledIcon(64));
 						if (yesno == JOptionPane.NO_OPTION)	return;
 					}
 					String sortingName = name;
@@ -108,13 +106,13 @@ public class SortingPanel extends JPanel implements DropTargetListener {
 					currentSortingName = sortingName;
 				} catch (Exception ex) {
 					Tools.exception(ex);
-					JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Error", ex), "Save current criteria list in your profile", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Error", ex), "Save current criteria list in your profile", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}
 			}
 		});
 		panel.add(btnSave);
 		
-		JButton btnLoad = new JButton(Resources.getScaledIcon(Resources.iDbLoad, 40));
+		JButton btnLoad = new JButton(Img.DbLoad.getScaledIcon(40));
 		btnLoad.setToolTipText("Load a criteria list from your profile");
 		btnLoad.setPreferredSize(new Dimension(54,54));
 		btnLoad.addActionListener(new ActionListener() {
@@ -126,21 +124,21 @@ public class SortingPanel extends JPanel implements DropTargetListener {
 						setSorting(Highlander.getLoggedUser().loadSorting(SortingPanel.this, Highlander.getCurrentAnalysis(), name), name);
 					} catch (Exception ex) {
 						Tools.exception(ex);
-						JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Error", ex), "Load criteria list from your profile", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Error", ex), "Load criteria list from your profile", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			}
 		});
 		panel.add(btnLoad);
 		
-		JButton button_add = new JButton(Resources.getScaledIcon(Resources.i3dPlus, 40));
+		JButton button_add = new JButton(Img.AddMain.getScaledIcon(40));
 		button_add.setToolTipText("Add sorting criterion");
 		button_add.setPreferredSize(new Dimension(54,54));
 		button_add.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (table == null) {
-					JOptionPane.showMessageDialog(new JFrame(), "Table is empty, you must first generate a filter.", "No table", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.showMessageDialog(new JFrame(), "Table is empty, you must first generate a filter.", "No table", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}else{
 					List<Field> availableColumns = table.getAvailableColumns();
 					for (Object o : sortingCriteria.getComponents()){
@@ -313,7 +311,7 @@ public class SortingPanel extends JPanel implements DropTargetListener {
 	  			}
   			}catch(Exception ex){
   				Tools.exception(ex);
-					JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Error", ex), "Sorting table", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.showMessageDialog(new JFrame(), Tools.getMessage("Error", ex), "Sorting table", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
   			}
   			Highlander.waitingPanel.stop();
   		}

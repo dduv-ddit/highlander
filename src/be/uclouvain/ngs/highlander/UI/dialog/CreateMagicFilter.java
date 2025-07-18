@@ -65,6 +65,7 @@ import org.javadev.effects.SlideAnimation;
 
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.Resources.Palette;
 import be.uclouvain.ngs.highlander.UI.misc.HighlanderObserver;
@@ -209,7 +210,7 @@ public class CreateMagicFilter extends JDialog {
 		}catch(Exception ex){
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(this, Tools.getMessage("Can't retreive sample list", ex), "Fetching sample list",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 		listap.clear();
 		try (Results res = Highlander.getDB().select(Schema.HIGHLANDER, 
@@ -223,7 +224,7 @@ public class CreateMagicFilter extends JDialog {
 		}catch(Exception ex){
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(this, Tools.getMessage("Can't retreive sample list", ex), "Fetching sample list",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 		initUI();
 		fillFields();
@@ -253,12 +254,12 @@ public class CreateMagicFilter extends JDialog {
 	private void initUI(){
 		setModal(true);
 		setTitle("Create a magic filter");
-		setIconImage(Resources.getScaledIcon(Resources.iFilterMagic, 64).getImage());
+		setIconImage(Img.FilterMagic.getScaledIcon(64).getImage());
 
 		JPanel panel = new JPanel();	
 		getContentPane().add(panel, BorderLayout.SOUTH);
 
-		btnBack = new JButton(Resources.getScaledIcon(Resources.iCross, 24));
+		btnBack = new JButton(Img.Cross.getScaledIcon(24));
 		btnBack.setToolTipText("Back");
 		btnBack.addActionListener(new ActionListener() {
 			@Override
@@ -279,7 +280,7 @@ public class CreateMagicFilter extends JDialog {
 		});
 		panel.add(btnBack);
 
-		btnNext = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleRight, 24));
+		btnNext = new JButton(Img.ArrowDoubleRight.getScaledIcon(24));
 		btnNext.setToolTipText("Next");
 		btnNext.addActionListener(new ActionListener() {
 			@Override
@@ -316,7 +317,7 @@ public class CreateMagicFilter extends JDialog {
 					} catch (Exception ex) {
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(CreateMagicFilter.this, Tools.getMessage("Cannot create filter", ex), "Creating magic filter",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			}
@@ -356,48 +357,48 @@ public class CreateMagicFilter extends JDialog {
 		if (panel.equals(VARIANTS_COMMON_TO_SAMPLES)){
 			centerCardLayout.show(centerPanel, VARIANTS_COMMON_TO_SAMPLES);						
 			currentPanel = VARIANTS_COMMON_TO_SAMPLES;
-			btnBack.setIcon(Resources.getScaledIcon(Resources.iArrowDoubleLeft, 24));
-			btnNext.setIcon(Resources.getScaledIcon(Resources.iButtonApply, 24));
+			btnBack.setIcon(Img.ArrowDoubleLeft.getScaledIcon(24));
+			btnNext.setIcon(Img.ButtonApply.getScaledIcon(24));
 		}else if (panel.equals(SAMPLE_SPECIFIC_VARIANTS)){
 			centerCardLayout.show(centerPanel, SAMPLE_SPECIFIC_VARIANTS);						
 			currentPanel = SAMPLE_SPECIFIC_VARIANTS;
-			btnBack.setIcon(Resources.getScaledIcon(Resources.iArrowDoubleLeft, 24));
-			btnNext.setIcon(Resources.getScaledIcon(Resources.iButtonApply, 24));	
+			btnBack.setIcon(Img.ArrowDoubleLeft.getScaledIcon(24));
+			btnNext.setIcon(Img.ButtonApply.getScaledIcon(24));	
 		}else if (panel.equals(COMMON_GENE_VARIANTS)){
 			centerCardLayout.show(centerPanel, COMMON_GENE_VARIANTS);						
 			currentPanel = COMMON_GENE_VARIANTS;
-			btnBack.setIcon(Resources.getScaledIcon(Resources.iArrowDoubleLeft, 24));
-			btnNext.setIcon(Resources.getScaledIcon(Resources.iButtonApply, 24));	
+			btnBack.setIcon(Img.ArrowDoubleLeft.getScaledIcon(24));
+			btnNext.setIcon(Img.ButtonApply.getScaledIcon(24));	
 		}else if (panel.equals(PATHOLOGY_FREQUENCY)){
 			centerCardLayout.show(centerPanel, PATHOLOGY_FREQUENCY);						
 			currentPanel = PATHOLOGY_FREQUENCY;
-			btnBack.setIcon(Resources.getScaledIcon(Resources.iArrowDoubleLeft, 24));
-			btnNext.setIcon(Resources.getScaledIcon(Resources.iButtonApply, 24));	
+			btnBack.setIcon(Img.ArrowDoubleLeft.getScaledIcon(24));
+			btnNext.setIcon(Img.ButtonApply.getScaledIcon(24));	
 		}else if (panel.equals(INTERVALS)){
 			centerCardLayout.show(centerPanel, INTERVALS);						
 			currentPanel = INTERVALS;
-			btnBack.setIcon(Resources.getScaledIcon(Resources.iArrowDoubleLeft, 24));
-			btnNext.setIcon(Resources.getScaledIcon(Resources.iButtonApply, 24));	
+			btnBack.setIcon(Img.ArrowDoubleLeft.getScaledIcon(24));
+			btnNext.setIcon(Img.ButtonApply.getScaledIcon(24));	
 		}else if (panel.equals(SAME_CODON)){
 			centerCardLayout.show(centerPanel, SAME_CODON);						
 			currentPanel = SAME_CODON;
-			btnBack.setIcon(Resources.getScaledIcon(Resources.iArrowDoubleLeft, 24));
-			btnNext.setIcon(Resources.getScaledIcon(Resources.iButtonApply, 24));	
+			btnBack.setIcon(Img.ArrowDoubleLeft.getScaledIcon(24));
+			btnNext.setIcon(Img.ButtonApply.getScaledIcon(24));	
 		}else if (panel.equals(MULTIPLE_NUCLEOTIDES_POLYMORPHISMS)){
 			centerCardLayout.show(centerPanel, MULTIPLE_NUCLEOTIDES_POLYMORPHISMS);						
 			currentPanel = MULTIPLE_NUCLEOTIDES_POLYMORPHISMS;
-			btnBack.setIcon(Resources.getScaledIcon(Resources.iArrowDoubleLeft, 24));
-			btnNext.setIcon(Resources.getScaledIcon(Resources.iButtonApply, 24));	
+			btnBack.setIcon(Img.ArrowDoubleLeft.getScaledIcon(24));
+			btnNext.setIcon(Img.ButtonApply.getScaledIcon(24));	
 		}else if (panel.equals(COMBINED_HETEROZYGOUS_VARIANTS)){
 			centerCardLayout.show(centerPanel, COMBINED_HETEROZYGOUS_VARIANTS);						
 			currentPanel = COMBINED_HETEROZYGOUS_VARIANTS;
-			btnBack.setIcon(Resources.getScaledIcon(Resources.iArrowDoubleLeft, 24));
-			btnNext.setIcon(Resources.getScaledIcon(Resources.iButtonApply, 24));	
+			btnBack.setIcon(Img.ArrowDoubleLeft.getScaledIcon(24));
+			btnNext.setIcon(Img.ButtonApply.getScaledIcon(24));	
 		}else if (panel.equals(FILTER_SELECTION)){
 			centerCardLayout.show(centerPanel, FILTER_SELECTION);
 			currentPanel = FILTER_SELECTION;
-			btnBack.setIcon(Resources.getScaledIcon(Resources.iCross, 24));
-			btnNext.setIcon(Resources.getScaledIcon(Resources.iArrowDoubleRight, 24));
+			btnBack.setIcon(Img.Cross.getScaledIcon(24));
+			btnNext.setIcon(Img.ArrowDoubleRight.getScaledIcon(24));
 		}
 	}
 
@@ -928,7 +929,7 @@ public class CreateMagicFilter extends JDialog {
 
 		JPanel panel_add = new JPanel(new GridBagLayout());
 		panel.add(panel_add, BorderLayout.SOUTH);
-		JButton button_add = new JButton(Resources.getScaledIcon(Resources.iFaintPlus, 24));
+		JButton button_add = new JButton(Img.AddSecondary.getScaledIcon(24));
 		button_add.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -1029,7 +1030,7 @@ public class CreateMagicFilter extends JDialog {
 
 		JPanel panel_add = new JPanel(new GridBagLayout());
 		panel.add(panel_add, BorderLayout.SOUTH);
-		JButton button_add = new JButton(Resources.getScaledIcon(Resources.iFaintPlus, 24));
+		JButton button_add = new JButton(Img.AddSecondary.getScaledIcon(24));
 		button_add.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -1066,7 +1067,7 @@ public class CreateMagicFilter extends JDialog {
 		panel_tokeep.add(scrollToKeep, BorderLayout.CENTER);
 		JPanel panelTopToKeep = new JPanel(new BorderLayout());		
 		panel_tokeep.add(panelTopToKeep, BorderLayout.NORTH);
-		final JButton addSampleToKeep = new JButton("Select sample(s) with variants to KEEP", Resources.getScaledIcon(Resources.i3dPlus, 24));
+		final JButton addSampleToKeep = new JButton("Select sample(s) with variants to KEEP", Img.AddMain.getScaledIcon(24));
 		addSampleToKeep.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -1087,9 +1088,9 @@ public class CreateMagicFilter extends JDialog {
 			}
 		});
 		panelTopToKeep.add(addSampleToKeep, BorderLayout.CENTER);
-		final JToggleButton joinSamplesButton = new JToggleButton(Resources.getScaledIcon(Resources.iFilterOr, 24));
+		final JToggleButton joinSamplesButton = new JToggleButton(Img.FilterOr.getScaledIcon(24));
 		joinSamplesButton.setToolTipText("Union or Intersection of sample variants");
-		joinSamplesButton.setSelectedIcon(Resources.getScaledIcon(Resources.iFilterAnd, 24));
+		joinSamplesButton.setSelectedIcon(Img.FilterAnd.getScaledIcon(24));
 		varCompLogicalOperator.put(critIndex, LogicalOperator.OR);
 		joinSamplesButton.addItemListener(new ItemListener() {
 			@Override
@@ -1123,7 +1124,7 @@ public class CreateMagicFilter extends JDialog {
 		panel_toexclude.add(scrollToExclude, BorderLayout.CENTER);
 		JPanel panelTopToExclude = new JPanel(new BorderLayout());		
 		panel_toexclude.add(panelTopToExclude, BorderLayout.NORTH);
-		final JButton addSampleToExclude = new JButton("Select sample(s) with variants to EXCLUDE", Resources.getScaledIcon(Resources.i3dPlus, 24));
+		final JButton addSampleToExclude = new JButton("Select sample(s) with variants to EXCLUDE", Img.AddMain.getScaledIcon(24));
 		addSampleToExclude.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -1213,7 +1214,7 @@ public class CreateMagicFilter extends JDialog {
 		JScrollPane scrollSamples = new JScrollPane(listSamples);
 		panel_genecom_main.add(scrollSamples, new GridBagConstraints(0, 3, 1, 1, 1.0, 1.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
 
-		JButton button_select = new JButton("Sample selection dialog", Resources.getScaledIcon(Resources.i3dPlus, 24));
+		JButton button_select = new JButton("Sample selection dialog", Img.AddMain.getScaledIcon(24));
 		button_select.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -1320,7 +1321,7 @@ public class CreateMagicFilter extends JDialog {
 		JScrollPane scrollSamples = new JScrollPane(listSamples);
 		panel_freqpat_main.add(scrollSamples, new GridBagConstraints(0, 2, 1, 1, 1.0, 1.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
 		
-		JButton button_select = new JButton("Sample selection dialog", Resources.getScaledIcon(Resources.i3dPlus, 24));
+		JButton button_select = new JButton("Sample selection dialog", Img.AddMain.getScaledIcon(24));
 		button_select.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -1385,7 +1386,7 @@ public class CreateMagicFilter extends JDialog {
 		scrollPane.setBorder(compoundBorder);
 		panelIntervals.add(scrollPane, BorderLayout.CENTER);
 
-		JButton button_select = new JButton("Import intervals from profile or file", Resources.getScaledIcon(Resources.i3dPlus, 24));
+		JButton button_select = new JButton("Import intervals from profile or file", Img.AddMain.getScaledIcon(24));
 		button_select.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -1409,7 +1410,7 @@ public class CreateMagicFilter extends JDialog {
 		scroll.setBorder(compoundBorder2);
 		panelSamples.add(scroll, BorderLayout.CENTER);
 
-		JButton button_select_2 = new JButton("Sample selection dialog", Resources.getScaledIcon(Resources.i3dPlus, 24));
+		JButton button_select_2 = new JButton("Sample selection dialog", Img.AddMain.getScaledIcon(24));
 		button_select_2.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -1462,7 +1463,7 @@ public class CreateMagicFilter extends JDialog {
 		main.add(scrollSamples, BorderLayout.CENTER);
 		panel.add(main, BorderLayout.CENTER);
 
-		JButton button_select = new JButton("Sample selection dialog", Resources.getScaledIcon(Resources.i3dPlus, 24));
+		JButton button_select = new JButton("Sample selection dialog", Img.AddMain.getScaledIcon(24));
 		button_select.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -1504,7 +1505,7 @@ public class CreateMagicFilter extends JDialog {
 		JScrollPane scrollSamples = new JScrollPane(listSamples);
 		main.add(scrollSamples, BorderLayout.CENTER);
 
-		JButton button_select = new JButton("Sample selection dialog", Resources.getScaledIcon(Resources.i3dPlus, 24));
+		JButton button_select = new JButton("Sample selection dialog", Img.AddMain.getScaledIcon(24));
 		button_select.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -1590,7 +1591,7 @@ public class CreateMagicFilter extends JDialog {
 				}catch(Exception ex){
 					Tools.exception(ex);
 					JOptionPane.showMessageDialog(CreateMagicFilter.this, Tools.getMessage("Can't restore prefiltering", ex), "Restoring fields",
-							JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+							JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}
 				List<VCSCriterion> criteria = ((VariantsCommonToSamples)filter).getCriteria();
 				for (int i = 0 ; i < criteria.size() ; i++){
@@ -1635,7 +1636,7 @@ public class CreateMagicFilter extends JDialog {
 				}catch(Exception ex){
 					Tools.exception(ex);
 					JOptionPane.showMessageDialog(CreateMagicFilter.this, Tools.getMessage("Can't restore prefiltering", ex), "Restoring fields",
-							JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+							JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}
 				Map<List<String>, List<String>> samplesSp = ((SampleSpecificVariants)filter).getFilterSamples();
 				Map<List<String>, LogicalOperator> log = ((SampleSpecificVariants)filter).getToKeepOperator();
@@ -1651,7 +1652,7 @@ public class CreateMagicFilter extends JDialog {
 				}catch(Exception ex){
 					Tools.exception(ex);
 					JOptionPane.showMessageDialog(CreateMagicFilter.this, Tools.getMessage("Can't restore prefiltering", ex), "Restoring fields",
-							JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+							JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}
 				Set<String> samples = ((CommonGeneVariants)filter).getIncludedSamples();
 				geneComSampleListModel.clear();
@@ -1676,7 +1677,7 @@ public class CreateMagicFilter extends JDialog {
 						}catch(Exception ex){
 							Tools.exception(ex);
 							JOptionPane.showMessageDialog(CreateMagicFilter.this, Tools.getMessage("Can't restore prefiltering", ex), "Restoring fields",
-									JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+									JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 						}
 						Set<String> freqpat_samples = ((PathologyFrequency)filter).getIncludedSamples();
 						freqpatSampleListModel.clear();
@@ -1698,7 +1699,7 @@ public class CreateMagicFilter extends JDialog {
 				}catch(Exception ex){
 					Tools.exception(ex);
 					JOptionPane.showMessageDialog(CreateMagicFilter.this, Tools.getMessage("Can't restore prefiltering", ex), "Restoring fields",
-							JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+							JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}
 				if (((Intervals)filter).isInside()){
 					intervals_inside.setSelected(true);
@@ -1723,7 +1724,7 @@ public class CreateMagicFilter extends JDialog {
 				}catch(Exception ex){
 					Tools.exception(ex);
 					JOptionPane.showMessageDialog(CreateMagicFilter.this, Tools.getMessage("Can't restore prefiltering", ex), "Restoring fields",
-							JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+							JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}
 				Set<String> sameCodonSamples = ((SameCodon)filter).getIncludedSamples();
 				same_codon_samples.clear();
@@ -1739,7 +1740,7 @@ public class CreateMagicFilter extends JDialog {
 				}catch(Exception ex){
 					Tools.exception(ex);
 					JOptionPane.showMessageDialog(CreateMagicFilter.this, Tools.getMessage("Can't restore prefiltering", ex), "Restoring fields",
-							JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+							JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}
 				Set<String> mnpSamples = ((MultipleNucleotidesPolymorphisms)filter).getIncludedSamples();
 				mnp_samples.clear();
@@ -1758,7 +1759,7 @@ public class CreateMagicFilter extends JDialog {
 						}catch(Exception ex){
 							Tools.exception(ex);
 							JOptionPane.showMessageDialog(CreateMagicFilter.this, Tools.getMessage("Can't restore prefiltering", ex), "Restoring fields",
-									JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+									JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 						}
 						combHetBoxes.get(0).setSelectedItem(((CombinedHeterozygousVariants)filter).getChild());
 						combHetBoxes.get(1).setSelectedItem(((CombinedHeterozygousVariants)filter).getFather());

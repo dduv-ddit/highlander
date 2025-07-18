@@ -38,7 +38,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -60,13 +59,13 @@ import javax.swing.SwingUtilities;
 import org.apache.commons.lang.WordUtils;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.charts.BarChart;
 import be.uclouvain.ngs.highlander.UI.dialog.CreateRunSelection;
 import be.uclouvain.ngs.highlander.UI.misc.WaitingPanel;
-import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.datatype.Analysis;
 import be.uclouvain.ngs.highlander.datatype.RunNGS;
 import ca.odell.glazedlists.EventList;
@@ -151,7 +150,7 @@ public class RunCharts extends JFrame {
 
 	private void initUI(){
 		setTitle("Run statistics charts");
-		setIconImage(Resources.getScaledIcon(Resources.iRunStatisticsCharts, 64).getImage());
+		setIconImage(Img.RunStatisticsCharts.getScaledIcon(64).getImage());
 
 		setLayout(new BorderLayout());
 
@@ -163,7 +162,7 @@ public class RunCharts extends JFrame {
 		JPanel panel_south = new JPanel();	
 		getContentPane().add(panel_south, BorderLayout.SOUTH);
 
-		JButton export = new JButton(Resources.getScaledIcon(Resources.iExportJpeg, 24));
+		JButton export = new JButton(Img.ExportJpeg.getScaledIcon(24));
 		export.setToolTipText("Export current chart to image file");
 		export.addActionListener(new ActionListener() {
 			@Override
@@ -178,7 +177,7 @@ public class RunCharts extends JFrame {
 		});
 		panel_south.add(export);
 
-		JButton btnClose = new JButton(Resources.getScaledIcon(Resources.iCross, 24));
+		JButton btnClose = new JButton(Img.Cross.getScaledIcon(24));
 		btnClose.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -190,7 +189,7 @@ public class RunCharts extends JFrame {
 		JPanel panel_north = new JPanel();
 		getContentPane().add(panel_north, BorderLayout.NORTH);
 
-		JButton btnSelect = new JButton("Select NGS runs to include in the chart",Resources.getScaledIcon(Resources.i3dPlus, 24));
+		JButton btnSelect = new JButton("Select NGS runs to include in the chart",Img.AddMain.getScaledIcon(24));
 		btnSelect.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -421,14 +420,14 @@ public class RunCharts extends JFrame {
 			repaint();
 		}catch(Exception ex){
 			Tools.exception(ex);
-			JOptionPane.showMessageDialog(this, Tools.getMessage("Error when retreiving statistics", ex), "Retreiving " + field+ " statistics", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(this, Tools.getMessage("Error when retreiving statistics", ex), "Retreiving " + field+ " statistics", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 	}
 
 	public void export(){
 		if (panel_center.getViewport().getComponents().length > 0){
 			BarChart chart = (BarChart)panel_center.getViewport().getComponents()[0];
-			Object format = JOptionPane.showInputDialog(this, "Choose an image format: ", "Export chart to image file", JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iExportJpeg, 64), ImageIO.getWriterFileSuffixes(), "png");
+			Object format = JOptionPane.showInputDialog(this, "Choose an image format: ", "Export chart to image file", JOptionPane.QUESTION_MESSAGE, Img.ExportJpeg.getScaledIcon(64), ImageIO.getWriterFileSuffixes(), "png");
 			if (format != null){
 				FileDialog chooser = new FileDialog(this, "Export chart to image", FileDialog.SAVE) ;
 				chooser.setFile(Tools.formatFilename(chart.getTitle() + "." + format));
@@ -444,7 +443,7 @@ public class RunCharts extends JFrame {
 						ImageIO.write(image, format.toString(), new File(filename));
 					} catch (Exception ex) {
 						Tools.exception(ex);
-						JOptionPane.showMessageDialog(this, Tools.getMessage("Error when exporting chart", ex), "Export chart to image file", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));  			}
+						JOptionPane.showMessageDialog(this, Tools.getMessage("Error when exporting chart", ex), "Export chart to image file", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));  			}
 				}   		
 			}
 		}

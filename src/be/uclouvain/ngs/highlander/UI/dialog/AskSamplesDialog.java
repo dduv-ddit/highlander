@@ -29,20 +29,14 @@
 
 package be.uclouvain.ngs.highlander.UI.dialog;
 
-import javax.swing.BorderFactory;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.ListSelectionModel;
-
 import java.awt.BorderLayout;
-
-import javax.swing.JButton;
-
-import java.awt.event.ActionListener;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.ItemEvent;
@@ -50,7 +44,6 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -58,28 +51,29 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
-import java.awt.Dimension;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.Toolkit;
-
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.dialog.ProfileTree.Action;
 import be.uclouvain.ngs.highlander.UI.misc.SearchField;
 import be.uclouvain.ngs.highlander.UI.misc.WaitingPanel;
 import be.uclouvain.ngs.highlander.administration.users.User.UserData;
 import be.uclouvain.ngs.highlander.database.Field;
-import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.datatype.Analysis;
 import be.uclouvain.ngs.highlander.datatype.AnalysisFull;
 
@@ -159,12 +153,12 @@ public class AskSamplesDialog extends JDialog {
 	private void initUI(){
 		setModal(true);
 		setTitle("Create a selection of samples");
-		setIconImage(Resources.getScaledIcon(Resources.iPatients, 64).getImage());
+		setIconImage(Img.Patients.getScaledIcon(64).getImage());
 
 		JPanel panel_2 = new JPanel();
 		getContentPane().add(panel_2, BorderLayout.NORTH);
 
-		JButton btnSaveList = new JButton(Resources.getScaledIcon(Resources.iDbSave, 40));
+		JButton btnSaveList = new JButton(Img.DbSave.getScaledIcon(40));
 		btnSaveList.setToolTipText("Save current list of values in your profile");
 		btnSaveList.setPreferredSize(new Dimension(54,54));
 		btnSaveList.addActionListener(new ActionListener() {
@@ -175,7 +169,7 @@ public class AskSamplesDialog extends JDialog {
 		});
 		panel_2.add(btnSaveList);
 
-		JButton btnLoadList = new JButton(Resources.getScaledIcon(Resources.iDbLoad, 40));
+		JButton btnLoadList = new JButton(Img.DbLoad.getScaledIcon(40));
 		btnLoadList.setToolTipText("Load a list of values from your profile");
 		btnLoadList.setPreferredSize(new Dimension(54,54));
 		btnLoadList.addActionListener(new ActionListener() {
@@ -189,7 +183,7 @@ public class AskSamplesDialog extends JDialog {
 		JPanel panel = new JPanel();	
 		getContentPane().add(panel, BorderLayout.SOUTH);
 
-		JButton btnOk = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 24));
+		JButton btnOk = new JButton(Img.ButtonApply.getScaledIcon(24));
 		btnOk.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {				
@@ -198,7 +192,7 @@ public class AskSamplesDialog extends JDialog {
 		});
 		panel.add(btnOk);
 
-		JButton btnCancel = new JButton(Resources.getScaledIcon(Resources.iCross, 24));
+		JButton btnCancel = new JButton(Img.Cross.getScaledIcon(24));
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -283,7 +277,7 @@ public class AskSamplesDialog extends JDialog {
 		gbl_panel_2.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		panel_middle.setLayout(gbl_panel_2);
 
-		JButton button = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleRight, 24));
+		JButton button = new JButton(Img.ArrowDoubleRight.getScaledIcon(24));
 		button.setToolTipText("Add selected sample(s) to your selection");
 		button.addActionListener(new ActionListener() {
 			@Override
@@ -297,7 +291,7 @@ public class AskSamplesDialog extends JDialog {
 		gbc_button.gridy = 0;
 		panel_middle.add(button, gbc_button);
 
-		JButton button_1 = new JButton(Resources.getScaledIcon(Resources.iArrowDoubleLeft, 24));
+		JButton button_1 = new JButton(Img.ArrowDoubleLeft.getScaledIcon(24));
 		button_1.setToolTipText("Remove selected sample(s) from your selection");
 		button_1.addActionListener(new ActionListener() {
 			@Override
@@ -395,7 +389,7 @@ public class AskSamplesDialog extends JDialog {
 
 	private void addValues(){		
 		if (singleValue && !selection.get(analysis).isEmpty()){
-			JOptionPane.showMessageDialog(this, "You can only choose one sample.", "Too many values", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(this, "You can only choose one sample.", "Too many values", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}else{
 			for (int row : tableSource.getSelectedRows()){
 				selection.get(analysis).add(tableSource.getValueAt(row, 0).toString());
@@ -422,7 +416,7 @@ public class AskSamplesDialog extends JDialog {
 			if (Highlander.getLoggedUser().doesPersonalDataExists(UserData.VALUES, "sample", name)){
 				int yesno = JOptionPane.showConfirmDialog(new JFrame(), 
 						"You already have a "+UserData.VALUES.getName()+" named '"+name.replace("~", " -> ")+"', do you want to overwrite it ?", 
-						"Overwriting element in your profile", JOptionPane.YES_NO_OPTION , JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iDbSave,64));
+						"Overwriting element in your profile", JOptionPane.YES_NO_OPTION , JOptionPane.QUESTION_MESSAGE, Img.DbSave.getScaledIcon(64));
 				if (yesno == JOptionPane.NO_OPTION)	return;
 			}
 			listName = name;
@@ -434,7 +428,7 @@ public class AskSamplesDialog extends JDialog {
 			Highlander.getLoggedUser().saveValues(listName, Field.sample, list);			
 		} catch (Exception ex) {
 			Tools.exception(ex);
-			JOptionPane.showMessageDialog(AskSamplesDialog.this, Tools.getMessage("Error", ex), "Save current list of values in your profile", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(AskSamplesDialog.this, Tools.getMessage("Error", ex), "Save current list of values in your profile", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 	}
 
@@ -453,7 +447,7 @@ public class AskSamplesDialog extends JDialog {
 			} catch (Exception ex) {
 				Tools.exception(ex);
 				JOptionPane.showMessageDialog(AskSamplesDialog.this, Tools.getMessage("Error", ex), 
-						"Load list of values from your profile", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						"Load list of values from your profile", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}
 		}
 	}

@@ -26,9 +26,9 @@ package be.uclouvain.ngs.highlander.datatype;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -55,8 +55,8 @@ import be.uclouvain.ngs.highlander.Resources;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.database.Field;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase;
-import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
 import be.uclouvain.ngs.highlander.datatype.SNPEffect.VariantType;
 
 /**
@@ -130,7 +130,7 @@ public class ExternalLink implements Comparable<ExternalLink> {
 			try{
 				Blob imagedata = res.getBlob("icon") ;
 				//Won't work on a Unix without X11, put the try/catch for the dbBuilder to work on those
-				Image img = Toolkit.getDefaultToolkit().createImage(imagedata.getBytes(1, (int)imagedata.length()));
+				BufferedImage img = ImageIO.read(imagedata.getBinaryStream());
 				icon = new ImageIcon(img);	
 			}catch(Exception ex){
 				ex.printStackTrace();
@@ -289,7 +289,7 @@ public class ExternalLink implements Comparable<ExternalLink> {
 	}
 
 	public ImageIcon getScaledIcon() {
-		return Resources.getHeightScaledIcon(icon, HEIGHT);
+		return Resources.getHeightScaledIcon(icon.getImage(), HEIGHT);
 	}
 	
 	public void addReference(Reference reference, String nameInURL) {

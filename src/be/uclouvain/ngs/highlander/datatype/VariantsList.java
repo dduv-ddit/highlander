@@ -38,7 +38,7 @@ import javax.swing.SortOrder;
 import javax.swing.SwingUtilities;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.table.VariantsTable;
 import be.uclouvain.ngs.highlander.UI.toolbar.DatabasePanel;
@@ -285,7 +285,7 @@ public class VariantsList {
 					}catch (Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(null, Tools.getMessage("Problem when restoring variants list", ex), "Restore variants list",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
@@ -294,7 +294,7 @@ public class VariantsList {
 		}catch (Exception ex){
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(null, Tools.getMessage("Problem when restoring variants list", ex), "Restore variants list",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}finally{
 			Highlander.waitingPanel.forceStop();
 		}

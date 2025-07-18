@@ -29,6 +29,13 @@
 
 package be.uclouvain.ngs.highlander.UI.toolbar;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.KeyEvent;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -36,19 +43,11 @@ import javax.swing.JToggleButton;
 import javax.swing.RowFilter;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.misc.SearchField;
 import be.uclouvain.ngs.highlander.UI.table.VariantsTable;
 import be.uclouvain.ngs.highlander.UI.table.VariantsTable.VariantsTableModel;
-
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-
-import java.awt.event.KeyEvent;
 
 public class SearchPanel extends JPanel {
 	
@@ -59,7 +58,7 @@ public class SearchPanel extends JPanel {
 		@Override
 		protected void keyListener(KeyEvent key){
 			if (table == null) {
-				JOptionPane.showMessageDialog(SearchPanel.this, "Table is empty, you must first generate a filter.", "No table", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				JOptionPane.showMessageDialog(SearchPanel.this, "Table is empty, you must first generate a filter.", "No table", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			}else{
 				if (!pressEnterButton.isSelected() || key.getKeyCode() == KeyEvent.VK_ENTER){			
 					applyFilter();
@@ -94,9 +93,9 @@ public class SearchPanel extends JPanel {
 	
 	public void setIcon(){
 		if (searchField.getText().length() > 0){
-			mainframe.tabbedPane.setIconAt(5, Resources.getScaledIcon(Resources.iSearchGlow, 32));
+			mainframe.tabbedPane.setIconAt(5, Img.SearchGlow.getScaledIcon(32));
 		}else{
-			mainframe.tabbedPane.setIconAt(5, Resources.getScaledIcon(Resources.iSearch, 32));
+			mainframe.tabbedPane.setIconAt(5, Img.Search.getScaledIcon(32));
 		}
 	}
 	
@@ -110,10 +109,10 @@ public class SearchPanel extends JPanel {
 		mainPanel.setLayout(new GridBagLayout());
 		add(mainPanel, BorderLayout.CENTER);
 		
-		pressEnterButton = new JToggleButton(Resources.getScaledIcon(Resources.iPressKey, 40));
-		pressEnterButton.setSelectedIcon(Resources.getScaledIcon(Resources.iPressEnter, 40));
-		pressEnterButton.setRolloverIcon(Resources.getScaledIcon(Resources.iPressEnter, 40));
-		pressEnterButton.setRolloverSelectedIcon(Resources.getScaledIcon(Resources.iPressKey, 40));
+		pressEnterButton = new JToggleButton(Img.PressKey.getScaledIcon(40));
+		pressEnterButton.setSelectedIcon(Img.PressEnter.getScaledIcon(40));
+		pressEnterButton.setRolloverIcon(Img.PressEnter.getScaledIcon(40));
+		pressEnterButton.setRolloverSelectedIcon(Img.PressKey.getScaledIcon(40));
 		pressEnterButton.setRolloverEnabled(true);
 		pressEnterButton.setToolTipText("Row are masked immediately as you type (can be slow with a lot of variants), or you have to press enter to apply");
 		pressEnterButton.setPreferredSize(new Dimension(54,54));		

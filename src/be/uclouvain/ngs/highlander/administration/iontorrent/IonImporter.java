@@ -57,9 +57,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -100,13 +102,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 
-import org.apache.commons.httpclient.Credentials;
-import org.apache.commons.httpclient.HostConfiguration;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.NTCredentials;
-import org.apache.commons.httpclient.NameValuePair;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.io.FileUtils;
 
 import com.install4j.api.launcher.ApplicationLauncher;
@@ -122,8 +117,9 @@ import com.jcraft.jsch.SftpProgressMonitor;
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Parameters;
 import be.uclouvain.ngs.highlander.Parameters.Platform;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
+import be.uclouvain.ngs.highlander.Tools.HttpUtility.Callback;
 import be.uclouvain.ngs.highlander.UI.dialog.ProfileTree;
 import be.uclouvain.ngs.highlander.UI.dialog.ProfileTree.Action;
 import be.uclouvain.ngs.highlander.UI.misc.WaitingPanel;
@@ -227,7 +223,7 @@ public class IonImporter extends JFrame {
 	static private int transferCount = 0;
 
 	public IonImporter(){
-		setIconImage(Resources.getScaledIcon(Resources.iIonImporter, 32).getImage());
+		setIconImage(Img.IonImporter.getScaledIcon(32).getImage());
 		setTitle("Ion Torrent and Proton projects manager " + version);
 		sequencerResults.put(Platform.ION_TORRENT, "/results/analysis/output/Home");
 		sequencerResults.put(Platform.PROTON, "/results/analysis/output/Home");
@@ -238,7 +234,7 @@ public class IonImporter extends JFrame {
 				availablePlatforms.add(platform);
 			}
 			if (availablePlatforms.isEmpty()) {
-				JOptionPane.showMessageDialog(IonImporter.this, "No platform is inaccessible, exiting", "Launching Ion Importer", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				JOptionPane.showMessageDialog(IonImporter.this, "No platform is inaccessible, exiting", "Launching Ion Importer", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				System.exit(-1);
 			}
 			platformBox = new JComboBox<Platform>(availablePlatforms.toArray(new Platform[0]));
@@ -270,7 +266,7 @@ public class IonImporter extends JFrame {
 			});
 		} catch (Exception ex) {
 			Tools.exception(ex);
-			JOptionPane.showMessageDialog(IonImporter.this, Tools.getMessage("Error", ex), "Launching Ion Importer", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(IonImporter.this, Tools.getMessage("Error", ex), "Launching Ion Importer", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 	}
 
@@ -474,7 +470,7 @@ public class IonImporter extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Object res = JOptionPane.showInputDialog(IonImporter.this,  "Set the run id: it must be the same number than on the Ion Server", "Run id",
-						JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), null, null);
+						JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), null, null);
 				if (res != null){
 					try{
 						int item = Integer.parseInt(res.toString());
@@ -484,7 +480,7 @@ public class IonImporter extends JFrame {
 						refreshTable();
 					}catch(NumberFormatException ex){
 						Tools.exception(ex);
-						JOptionPane.showMessageDialog(IonImporter.this, "You must enter a valid number", "Run id", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.showMessageDialog(IonImporter.this, "You must enter a valid number", "Run id", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			}
@@ -496,7 +492,7 @@ public class IonImporter extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Object res = JOptionPane.showInputDialog(IonImporter.this,  "Set the run date in this format: YYYY_MM_DD", "Run date",
-						JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), null, null);
+						JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), null, null);
 				if (res != null){
 					String item = res.toString();
 					if (item.length() != 10 || 
@@ -508,7 +504,7 @@ public class IonImporter extends JFrame {
 							Integer.parseInt(item.split("_")[2]) < 1 || 
 							Integer.parseInt(item.split("_")[2]) > 31 
 							){
-						JOptionPane.showMessageDialog(IonImporter.this, "You must enter a valid date in the format YYYY_MM_DD", "Run date", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));						
+						JOptionPane.showMessageDialog(IonImporter.this, "You must enter a valid date in the format YYYY_MM_DD", "Run date", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));						
 					}else{
 						for (int row=0 ; row < table.getRowCount() ; row++){
 							table.setValueAt(item, row, table.convertColumnIndexToView(model.getColumn(RUN_DATE)));
@@ -526,7 +522,7 @@ public class IonImporter extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String[] pathos = pathologies.keySet().toArray(new String[0]);
 				Object res = JOptionPane.showInputDialog(IonImporter.this,  "Set the pathology of selected samples", "Pathology",
-						JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), pathos, null);
+						JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), pathos, null);
 				if (res != null){
 					String item = res.toString();
 					for (int row : table.getSelectedRows()){
@@ -543,7 +539,7 @@ public class IonImporter extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Object res = JOptionPane.showInputDialog(IonImporter.this,  "Set YES if the individual is the index case of the family", "Index case",
-						JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), new String[] {"YES","NO"}, null);
+						JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), new String[] {"YES","NO"}, null);
 				if (res != null){
 					String item = res.toString();
 					for (int row : table.getSelectedRows()){
@@ -561,7 +557,7 @@ public class IonImporter extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String[] pathos = populations.keySet().toArray(new String[0]);
 				Object res = JOptionPane.showInputDialog(IonImporter.this,  "Set the population of selected patients", "Population",
-						JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), pathos, null);
+						JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), pathos, null);
 				if (res != null){
 					String item = res.toString();
 					for (int row : table.getSelectedRows()){
@@ -578,7 +574,7 @@ public class IonImporter extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Object res = JOptionPane.showInputDialog(IonImporter.this,  "Set the caller parameters of selected samples", "Caller parameters",
-						JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), callers, null);
+						JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), callers, null);
 				if (res != null){
 					String item = res.toString();
 					for (int row : table.getSelectedRows()){
@@ -595,7 +591,7 @@ public class IonImporter extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Object res = JOptionPane.showInputDialog(IonImporter.this,  "Set the type of selected samples", "Sample type",
-						JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), SampleType.values(), null);
+						JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), SampleType.values(), null);
 				if (res != null){
 					String item = res.toString();
 					for (int row : table.getSelectedRows()){
@@ -612,7 +608,7 @@ public class IonImporter extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Object res = JOptionPane.showInputDialog(IonImporter.this,  "Add a person in charge for selected samples", "Person in charge",
-						JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), users, null);
+						JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), users, null);
 				if (res != null){
 					String item = res.toString();
 					for (int row : table.getSelectedRows()){
@@ -633,7 +629,13 @@ public class IonImporter extends JFrame {
 
 		table = new JTable();
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-		new ExcelAdapter(table);		
+		
+		ExcelAdapter excelAdapter = new ExcelAdapter();
+		KeyStroke paste = KeyStroke.getKeyStroke(KeyEvent.VK_V,Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(),false);
+		table.registerKeyboardAction(excelAdapter,"Paste",paste,JComponent.WHEN_FOCUSED);
+		KeyStroke delete = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,0,false);
+		table.registerKeyboardAction(excelAdapter,"Delete",delete,JComponent.WHEN_FOCUSED);
+;		
 		table.addKeyListener(new KeyListener() {
 
 			@Override
@@ -668,7 +670,7 @@ public class IonImporter extends JFrame {
 		JPanel southPanel = new JPanel();
 		panel.add(southPanel, BorderLayout.SOUTH);
 
-		importAllButton = new JButton("Import ALL samples in Highlander", Resources.getScaledIcon(Resources.iDbAdd, 16));
+		importAllButton = new JButton("Import ALL samples in Highlander", Img.DbAdd.getScaledIcon(16));
 		importAllButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -683,7 +685,7 @@ public class IonImporter extends JFrame {
 		});
 		southPanel.add(importAllButton);
 		
-		importSelectedButton = new JButton("Import SELECTED samples in Highlander", Resources.getScaledIcon(Resources.iDbAdd, 16));
+		importSelectedButton = new JButton("Import SELECTED samples in Highlander", Img.DbAdd.getScaledIcon(16));
 		importSelectedButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -775,7 +777,7 @@ public class IonImporter extends JFrame {
 		JPanel south2 = new JPanel(new FlowLayout());
 		panel2.add(south2, BorderLayout.SOUTH);
 
-		JButton newPanelButton = new JButton("Create new panel", Resources.getScaledIcon(Resources.iDbAdd, 16));
+		JButton newPanelButton = new JButton("Create new panel", Img.DbAdd.getScaledIcon(16));
 		newPanelButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -790,7 +792,7 @@ public class IonImporter extends JFrame {
 		});
 		south2.add(newPanelButton);
 
-		JButton coverageButton = new JButton("View panel amplicons coverage", Resources.getScaledIcon(Resources.iCoverage, 16));
+		JButton coverageButton = new JButton("View panel amplicons coverage", Img.Coverage.getScaledIcon(16));
 		coverageButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -807,7 +809,7 @@ public class IonImporter extends JFrame {
 							 * If at some point, different torrent analyses are used (e.g. hg19 & hg38),
 							 * I would need to add support in the GUI
 							 */
-							JOptionPane.showMessageDialog(IonImporter.this, "Only Ion Torrent and Proton panels with reference hg19_lifescope are supported by this tool.\nCoverage of other platforms/references is accessible from Highlander.", "Coverage information on panel " + panelPanelList.getSelectedValue(), JOptionPane.PLAIN_MESSAGE, Resources.getScaledIcon(Resources.iCoverage, 64));
+							JOptionPane.showMessageDialog(IonImporter.this, "Only Ion Torrent and Proton panels with reference hg19_lifescope are supported by this tool.\nCoverage of other platforms/references is accessible from Highlander.", "Coverage information on panel " + panelPanelList.getSelectedValue(), JOptionPane.PLAIN_MESSAGE, Img.Coverage.getScaledIcon(64));
 						}
 					}
 				}, "IonImporter.coverageButton").start();
@@ -816,7 +818,7 @@ public class IonImporter extends JFrame {
 		});
 		south2.add(coverageButton);
 
-		JButton exportBedButton = new JButton("Export bed positions to Highlander", Resources.getScaledIcon(Resources.iUserIntervalsNew, 16));
+		JButton exportBedButton = new JButton("Export bed positions to Highlander", Img.UserIntervalsNew.getScaledIcon(16));
 		exportBedButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -834,12 +836,12 @@ public class IonImporter extends JFrame {
 							if (Highlander.getLoggedUser().doesPersonalDataExists(UserData.INTERVALS, panelReferenceList.getSelectedValue().getName(), listName)){
 								int yesno = JOptionPane.showConfirmDialog(IonImporter.this, 
 										"You already have a "+UserData.INTERVALS.getName()+" named '"+listName.replace("~", " -> ")+"', do you want to overwrite it ?", 
-										"Overwriting element in your profile", JOptionPane.YES_NO_OPTION , JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iDbSave,64));
+										"Overwriting element in your profile", JOptionPane.YES_NO_OPTION , JOptionPane.QUESTION_MESSAGE, Img.DbSave.getScaledIcon(64));
 								if (yesno == JOptionPane.NO_OPTION)	return;
 							}
 							user.saveIntervals(listName, panelReferenceList.getSelectedValue(), intervals);
 							JOptionPane.showMessageDialog(IonImporter.this, "A new list of intervals named '"+listName+"' has been created in your Highlander profile.", 
-									"Export bed positions to Highlander", JOptionPane.PLAIN_MESSAGE, Resources.getScaledIcon(Resources.iUserIntervalsNew,64));
+									"Export bed positions to Highlander", JOptionPane.PLAIN_MESSAGE, Img.UserIntervalsNew.getScaledIcon(64));
 						} catch (Exception ex) {
 							Tools.exception(ex);
 						}
@@ -850,7 +852,7 @@ public class IonImporter extends JFrame {
 		});
 		south2.add(exportBedButton);
 
-		JButton exportGeneListButton = new JButton("Export gene list to Highlander", Resources.getScaledIcon(Resources.iUserListNew, 16));
+		JButton exportGeneListButton = new JButton("Export gene list to Highlander", Img.UserListNew.getScaledIcon(16));
 		exportGeneListButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -868,12 +870,12 @@ public class IonImporter extends JFrame {
 							if (Highlander.getLoggedUser().doesPersonalDataExists(UserData.VALUES, "gene_symbol", listName)){
 								int yesno = JOptionPane.showConfirmDialog(IonImporter.this, 
 										"You already have a "+UserData.VALUES.getName()+" named '"+listName.replace("~", " -> ")+"', do you want to overwrite it ?", 
-										"Overwriting element in your profile", JOptionPane.YES_NO_OPTION , JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iDbSave,64));
+										"Overwriting element in your profile", JOptionPane.YES_NO_OPTION , JOptionPane.QUESTION_MESSAGE, Img.DbSave.getScaledIcon(64));
 								if (yesno == JOptionPane.NO_OPTION)	return;
 							}
 							user.saveValues(listName, Field.gene_symbol, genes);
 							JOptionPane.showMessageDialog(IonImporter.this, "A new list of values named '"+listName+"' has been created in your Highlander profile.", 
-									"Export gene list to Highlander", JOptionPane.PLAIN_MESSAGE, Resources.getScaledIcon(Resources.iUserListNew,64));
+									"Export gene list to Highlander", JOptionPane.PLAIN_MESSAGE, Img.UserListNew.getScaledIcon(64));
 						} catch (Exception ex) {
 							Tools.exception(ex);
 						}
@@ -907,20 +909,20 @@ public class IonImporter extends JFrame {
 			try {
 				projects.put(platform, listProjects(platform));
 			}catch(SftpException ex) {
-				JOptionPane.showMessageDialog(IonImporter.this, "Problem when trying to list project directories on "+platform+".", "Retrieving projects from " + platform, JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				JOptionPane.showMessageDialog(IonImporter.this, "Problem when trying to list project directories on "+platform+".", "Retrieving projects from " + platform, JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				return false;
 			}
 			try {
 				analyses.put(platform, listAnalyses(platform));
 			}catch(Exception ex) {
-				JOptionPane.showMessageDialog(IonImporter.this, "Problem when trying to list Highlander analyses for "+platform+".", "Retrieving analyses from " + platform, JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				JOptionPane.showMessageDialog(IonImporter.this, "Problem when trying to list Highlander analyses for "+platform+".", "Retrieving analyses from " + platform, JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				return false;
 			}
 			/*
 			try {			
 				references = listReferences(platform);
 			}catch(Exception ex) {
-				JOptionPane.showMessageDialog(IonImporter.this, "Problem when trying to list references for "+platform+".", "Retrieving references from " + platform, JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				JOptionPane.showMessageDialog(IonImporter.this, "Problem when trying to list references for "+platform+".", "Retrieving references from " + platform, JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				return false;
 			}
 			*/
@@ -1055,25 +1057,14 @@ public class IonImporter extends JFrame {
 	public class ExcelAdapter implements ActionListener {
 		private String rowstring,value;
 		private Clipboard system;
-		private JTable table ;
 		/**
 		 * The Excel Adapter is constructed with a
 		 * JTable on which it enables Copy-Paste and acts
 		 * as a Clipboard listener.
 		 */
-		public ExcelAdapter(JTable myJTable){
-			table = myJTable;
-			KeyStroke paste = KeyStroke.getKeyStroke(KeyEvent.VK_V,Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(),false);
-			table.registerKeyboardAction(this,"Paste",paste,JComponent.WHEN_FOCUSED);
-			KeyStroke delete = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,0,false);
-			table.registerKeyboardAction(this,"Delete",delete,JComponent.WHEN_FOCUSED);
+		public ExcelAdapter(){
 			system = Toolkit.getDefaultToolkit().getSystemClipboard();
 		}
-		/**
-		 * Public Accessor methods for the Table on which this adapter acts.
-		 */
-		public JTable getJTable() {return table;}
-		public void setJTable(JTable jTable1) {this.table=jTable1;}
 		/**
 		 * This method is activated on the Keystrokes we are listening to
 		 * in this implementation. Here it listens for Copy and Paste ActionCommands.
@@ -1123,11 +1114,11 @@ public class IonImporter extends JFrame {
 		for (int row = 0 ; row < model.getRowCount() ; row++){
 			int check = checkSample(row);
 			if (check == 2){
-				model.setValueAt(Resources.getScaledIcon(Resources.iQuestion, 12), row, 0);
+				model.setValueAt(Img.Question.getScaledIcon(12), row, 0);
 			}else if (check == 1){
-				model.setValueAt(Resources.getScaledIcon(Resources.iButtonApply, 12), row, 0);
+				model.setValueAt(Img.ButtonApply.getScaledIcon(12), row, 0);
 			}else{
-				model.setValueAt(Resources.getScaledIcon(Resources.iCross, 12), row, 0);				
+				model.setValueAt(Img.Cross.getScaledIcon(12), row, 0);				
 			}
 		}
 	}
@@ -1193,7 +1184,7 @@ public class IonImporter extends JFrame {
 
 	private void importSamples(boolean all){
 		if (panelBox1.getSelectedIndex() == 0){
-			JOptionPane.showMessageDialog(IonImporter.this, "You MUST select a panel before importing into Highlander !", "Importation in Highlander", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(IonImporter.this, "You MUST select a panel before importing into Highlander !", "Importation in Highlander", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 			return;
 		}
 		SwingUtilities.invokeLater(new Runnable() {
@@ -1224,10 +1215,10 @@ public class IonImporter extends JFrame {
 		}
 		int res = JOptionPane.YES_OPTION;
 		if (finalCheck == 0){
-			JOptionPane.showMessageDialog(IonImporter.this, "Some information is missing (or you use a special character other than '-' in your sample id), please fill all information for samples you want to import", "Importation in Highlander", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(IonImporter.this, "Some information is missing (or you use a special character other than '-' in your sample id), please fill all information for samples you want to import", "Importation in Highlander", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}else{ 
 			if (finalCheck == 2){
-				res = JOptionPane.showConfirmDialog(IonImporter.this, "Some samples are already present in the database, do you want to replace them?", "Importation in Highlander", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iQuestion,64));
+				res = JOptionPane.showConfirmDialog(IonImporter.this, "Some samples are already present in the database, do you want to replace them?", "Importation in Highlander", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Img.Question.getScaledIcon(64));
 			}
 			if (res == JOptionPane.YES_OPTION){
 				try{
@@ -1529,12 +1520,12 @@ public class IonImporter extends JFrame {
 						}
 						channelExec.disconnect();
 						JOptionPane.showMessageDialog(IonImporter.this, "Your samples are being imported in Highlander, you'll receive an email when they are ready.", "Ion Importer",
-								JOptionPane.PLAIN_MESSAGE, Resources.getScaledIcon(Resources.iDbAdd,64));		 
+								JOptionPane.PLAIN_MESSAGE, Img.DbAdd.getScaledIcon(64));		 
 					}
 				}catch(Exception ex){
 					Tools.exception(ex);
 					JOptionPane.showMessageDialog(IonImporter.this, Tools.getMessage("Importation", ex), "Ion Importer",
-							JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+							JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				}
 			}
 		}
@@ -1604,7 +1595,7 @@ public class IonImporter extends JFrame {
 			connected = true;
 		}catch(JSchException ex) {
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(IonImporter.this, "Platform " + platform + " is currently inaccessible, please set the server online.", "Connecting to " + platform, JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(IonImporter.this, "Platform " + platform + " is currently inaccessible, please set the server online.", "Connecting to " + platform, JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -1648,7 +1639,7 @@ public class IonImporter extends JFrame {
 			connected = true;
 		}catch(JSchException ex) {
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(IonImporter.this, "Highlander server is currently inaccessible.", "Connecting to Highlander server", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(IonImporter.this, "Highlander server is currently inaccessible.", "Connecting to Highlander server", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -1712,66 +1703,31 @@ public class IonImporter extends JFrame {
 		
 		@Override
 		public void run(){
-			try{
-				HttpClient httpClient = new HttpClient();
-				boolean bypass = false;
-				if (System.getProperty("http.nonProxyHosts") != null) {
-					for (String host : System.getProperty("http.nonProxyHosts").split("\\|")) {
-						if ((Highlander.getParameters().getUrlForPhpScripts()+"/retreive_panel_data.php").toLowerCase().contains(host.toLowerCase())) bypass = true;
-					}
-				}
-				if (!bypass && System.getProperty("http.proxyHost") != null) {
-					try {
-						HostConfiguration hostConfiguration = httpClient.getHostConfiguration();
-						hostConfiguration.setProxy(System.getProperty("http.proxyHost"), Integer.parseInt(System.getProperty("http.proxyPort")));
-						httpClient.setHostConfiguration(hostConfiguration);
-						if (System.getProperty("http.proxyUser") != null && System.getProperty("http.proxyPassword") != null) {
-							// Credentials credentials = new UsernamePasswordCredentials(System.getProperty("http.proxyUser"), System.getProperty("http.proxyPassword"));
-							// Windows proxy needs specific credentials with domain ... if proxy user is in the form of domain\\user, consider it's windows
-							String user = System.getProperty("http.proxyUser");
-							Credentials credentials;
-							if (user.contains("\\")) {
-								credentials = new NTCredentials(user.split("\\\\")[1], System.getProperty("http.proxyPassword"), System.getProperty("http.proxyHost"), user.split("\\\\")[0]);
-							}else {
-								credentials = new UsernamePasswordCredentials(user, System.getProperty("http.proxyPassword"));
-							}
-							httpClient.getState().setProxyCredentials(null, System.getProperty("http.proxyHost"), credentials);
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-				PostMethod post = new PostMethod(Highlander.getParameters().getUrlForPhpScripts()+"/retreive_panel_data.php");
-				NameValuePair[] data = {
-						new NameValuePair("sequencer", platform.toString()),
-						new NameValuePair("run", sequencerPath),
-						new NameValuePair("library", sequencerLibrary),
-						new NameValuePair("project", highlanderProject),
-						new NameValuePair("sample", highlanderSample),
-				};
-				post.addParameters(data);
-				int httpRes = httpClient.executeMethod(post); 
-				if (httpRes == 200) {			
-					try (InputStreamReader isr = new InputStreamReader(post.getResponseBodyAsStream())){
+			Map<String,String> params = new LinkedHashMap<>();
+			params.put("sequencer", platform.toString());
+			params.put("run", sequencerPath);
+			params.put("library", sequencerLibrary);
+			params.put("project", highlanderProject);
+			params.put("sample", highlanderSample);
+			Tools.HttpUtility.post(Highlander.getParameters().getUrlForPhpScripts()+"/retreive_panel_data.php", params, new Callback() {
+				@Override
+				public void OnSuccess(URLConnection connection) {
+					try (InputStreamReader isr = new InputStreamReader(connection.getInputStream())){
 						try (BufferedReader br = new BufferedReader(isr)){
 							String line = null;
 							while(((line = br.readLine()) != null)) {
 								System.out.println(line);
 							}
 						}
+					} catch (IOException e) {
+						e.printStackTrace();
 					}
-				}else {
-					//TODO error 503 plusieurs fois avec Audrey ... mettre ça dans un while et recommencer max 10x ?
-					throw new Exception("PHP script return error code " + httpRes + ".\n");
 				}
-			}catch(IOException iex){
-				iex.printStackTrace();
-				//Get sometimes 'chunked stream ended unexpectedly' with 'CRLF expected at end of chunk: -1/-1'
-				//Probably linked to the php inputstream, bash script with rsync probably not affected
-			}catch(Exception ex){
-				ex.printStackTrace();
-				JOptionPane.showMessageDialog(IonImporter.this, Tools.getMessage(highlanderSample + " could had a transfer problem, please contact Raphael with the following info:", ex), "Transfer of " + highlanderSample, JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
-			}
+				@Override
+				public void OnError(int responseCode, String message) {
+					JOptionPane.showMessageDialog(IonImporter.this, Tools.getMessage(highlanderSample + " could had a transfer problem, please contact Raphael with the following info:", new Exception("Error " + responseCode + ": " + message)), "Transfer of " + highlanderSample, JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));						
+				}
+			});
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
@@ -1884,24 +1840,24 @@ public class IonImporter extends JFrame {
 			Set<String> genes = new LinkedHashSet<String>();
 			Set<String> positions = new LinkedHashSet<String>();
 			Object res = JOptionPane.showInputDialog(IonImporter.this,  "Select the reference genome of your panel", "Reference genome",
-					JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), Reference.getAvailableReferences().toArray(new Reference[0]), Reference.getReference("hg19_lifescope"));
+					JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), Reference.getAvailableReferences().toArray(new Reference[0]), Reference.getReference("hg19_lifescope"));
 			if (res != null){
 				reference = (Reference)res;
 				res = JOptionPane.showInputDialog(IonImporter.this,  "Enter the unique code of your "+reference+" panel (max 19 characters).\n" +
 						"Please only use capital LETTERS (no space, point, coma, hyphen, underscore, etc).\n" +
 						"Don't enter the starting \"p\", it will be automatically added.\n" +
 						"e.g. KPT, LELM, LEGAPS, PTHOT, CMAVM, ...", "Panel code",
-						JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), null, null);
+						JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), null, null);
 				if (res != null){
 					code = res.toString().toUpperCase().trim();
 					Pattern p = Pattern.compile("[^A-Z0-9]");
 					Matcher m = p.matcher(code);
 					if(m.find()){
-						JOptionPane.showMessageDialog(IonImporter.this, "Please only use letters and numbers", "Panel code", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.showMessageDialog(IonImporter.this, "Please only use letters and numbers", "Panel code", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}else if(code.length() == 0){
-						JOptionPane.showMessageDialog(IonImporter.this, "Panel code is mandatory", "Panel code", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.showMessageDialog(IonImporter.this, "Panel code is mandatory", "Panel code", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}else if(code.length() > 19){
-						JOptionPane.showMessageDialog(IonImporter.this, "Panel code is limited to 19 characters", "Panel code", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.showMessageDialog(IonImporter.this, "Panel code is limited to 19 characters", "Panel code", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}else{
 						code = "p"+code;
 						boolean unique = true;
@@ -1909,27 +1865,27 @@ public class IonImporter extends JFrame {
 							if (panel.equals(code)) unique = false;
 						}
 						if (!unique){
-							JOptionPane.showMessageDialog(IonImporter.this, "Panel code already exists for "+reference+" (it must be unique)", "Panel code", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+							JOptionPane.showMessageDialog(IonImporter.this, "Panel code already exists for "+reference+" (it must be unique)", "Panel code", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 						}else{
 							res = JOptionPane.showInputDialog(IonImporter.this,  "Enter a short description of your panel (max 200 characters)", "Panel description",
-									JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), null, null);
+									JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), null, null);
 							if (res != null){
 								description = res.toString().trim();
 								if(description.length() > 200){
-									JOptionPane.showMessageDialog(IonImporter.this, "Panel description is limited to 200 characters", "Panel description", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+									JOptionPane.showMessageDialog(IonImporter.this, "Panel description is limited to 200 characters", "Panel description", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 								}else if(description.length() == 0){
-									JOptionPane.showMessageDialog(IonImporter.this, "Panel description is mandatory", "Panel description", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+									JOptionPane.showMessageDialog(IonImporter.this, "Panel description is mandatory", "Panel description", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 								}else{
 									res = JOptionPane.showInputDialog(IonImporter.this,  "Enter the name of the panel desginer", "Panel designer",
-											JOptionPane.QUESTION_MESSAGE, Resources.getScaledIcon(Resources.iPressKey,64), null, null);
+											JOptionPane.QUESTION_MESSAGE, Img.PressKey.getScaledIcon(64), null, null);
 									if (res != null){
 										designer = res.toString().trim();
 										if(designer.length() > 45){
-											JOptionPane.showMessageDialog(IonImporter.this, "Panel designer is limited to 45 characters", "Panel designer", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+											JOptionPane.showMessageDialog(IonImporter.this, "Panel designer is limited to 45 characters", "Panel designer", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 										}else if(description.length() == 0){
-											JOptionPane.showMessageDialog(IonImporter.this, "Panel designer is mandatory", "Panel designer", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+											JOptionPane.showMessageDialog(IonImporter.this, "Panel designer is mandatory", "Panel designer", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 										}else{
-											JOptionPane.showMessageDialog(IonImporter.this, "Please select the bed file defining the SEQUENCED TARGET of your panel. \nThis is the bed file named 'designed' in Ampliseq.", "Targeted BED file", JOptionPane.INFORMATION_MESSAGE, Resources.getScaledIcon(Resources.iInterval,64));
+											JOptionPane.showMessageDialog(IonImporter.this, "Please select the bed file defining the SEQUENCED TARGET of your panel. \nThis is the bed file named 'designed' in Ampliseq.", "Targeted BED file", JOptionPane.INFORMATION_MESSAGE, Img.Interval.getScaledIcon(64));
 											FileDialog chooser = new FileDialog(IonImporter.this, "Select the targeted bed file", FileDialog.LOAD);
 											chooser.setVisible(true);
 											if (chooser.getFile() != null) {
@@ -1957,10 +1913,10 @@ public class IonImporter extends JFrame {
 													}
 												}
 												if (positions.isEmpty()){
-													JOptionPane.showMessageDialog(IonImporter.this, "No position found in the bed file, perhaps it's not well formated (tab separated, each line starting by chr+start+stop and possibly other information following).", "Panel designer", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));										
+													JOptionPane.showMessageDialog(IonImporter.this, "No position found in the bed file, perhaps it's not well formated (tab separated, each line starting by chr+start+stop and possibly other information following).", "Panel designer", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));										
 												}else{
 													/* Problematic, because in the submitted AmpliSeq file, exons can be divided in multiple interval, which cause problems with convading CNV calling
-													JOptionPane.showMessageDialog(IonImporter.this, "Please select the bed file defining the FULL GENES of your panel. \nThis is the bed file named 'submitted' in Ampliseq IF you wished to cover the full genes.\nIf you only covered a few exons, please create yourself a full genes bed file !", "Full gene BED file", JOptionPane.INFORMATION_MESSAGE, Resources.getScaledIcon(Resources.iInterval,64));
+													JOptionPane.showMessageDialog(IonImporter.this, "Please select the bed file defining the FULL GENES of your panel. \nThis is the bed file named 'submitted' in Ampliseq IF you wished to cover the full genes.\nIf you only covered a few exons, please create yourself a full genes bed file !", "Full gene BED file", JOptionPane.INFORMATION_MESSAGE, Img.Interval.getScaledIcon(64));
 													chooser = new FileDialog(IonImporter.this, "Select the full genes bed file", FileDialog.LOAD);
 													chooser.setVisible(true);
 													if (chooser.getFile() != null) {
@@ -2021,7 +1977,7 @@ public class IonImporter extends JFrame {
 													JScrollPane scrollPane = new JScrollPane(textArea);
 													panel.add(scrollPane, BorderLayout.CENTER);										
 													panel.setPreferredSize(new Dimension(500,300));
-													int yesno = JOptionPane.showConfirmDialog(IonImporter.this, panel, "Panel creation", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, Resources.getScaledIcon(Resources.iButtonApply,64));									
+													int yesno = JOptionPane.showConfirmDialog(IonImporter.this, panel, "Panel creation", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, Img.ButtonApply.getScaledIcon(64));									
 													if (yesno == JOptionPane.YES_OPTION){
 														StringBuilder genelist = new StringBuilder();
 														for (String gene : genes) genelist.append(gene+";");
@@ -2106,7 +2062,7 @@ public class IonImporter extends JFrame {
 																try{Thread.sleep(1000);}catch(Exception ee){}
 															}
 															channelExec.disconnect();
-															JOptionPane.showMessageDialog(IonImporter.this, "Panel "+code+" successfuly created", "Panel creation", JOptionPane.PLAIN_MESSAGE, Resources.getScaledIcon(Resources.iButtonApply,64));
+															JOptionPane.showMessageDialog(IonImporter.this, "Panel "+code+" successfuly created", "Panel creation", JOptionPane.PLAIN_MESSAGE, Img.ButtonApply.getScaledIcon(64));
 															displayReferences();
 															panelReferenceList.setSelectedValue(reference, true);
 															panelPanelList.setSelectedValue(code, true);
@@ -2134,7 +2090,7 @@ public class IonImporter extends JFrame {
 			}			
 		}catch(Exception ex){
 			Tools.exception(ex);
-			JOptionPane.showMessageDialog(IonImporter.this, Tools.getMessage("Error", ex), "Panel creation", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(IonImporter.this, Tools.getMessage("Error", ex), "Panel creation", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 	}
 
@@ -2148,7 +2104,7 @@ public class IonImporter extends JFrame {
 			}
 		} catch (Exception ex) {
 			Tools.exception(ex);
-			JOptionPane.showMessageDialog(IonImporter.this, ex.getMessage(), "Can't display references", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(IonImporter.this, ex.getMessage(), "Can't display references", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 		panelReferenceList.setBorder(new TitledBorder(null, "References ("+panelReferenceListModel.getSize()+")", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 	}
@@ -2164,7 +2120,7 @@ public class IonImporter extends JFrame {
 			}
 		} catch (Exception ex) {
 			Tools.exception(ex);
-			JOptionPane.showMessageDialog(IonImporter.this, ex.getMessage(), "Can't display panels for reference " + ref, JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(IonImporter.this, ex.getMessage(), "Can't display panels for reference " + ref, JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 		panelPanelList.setBorder(new TitledBorder(null, "Panels ("+panelPanelListModel.getSize()+")", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 	}
@@ -2190,7 +2146,7 @@ public class IonImporter extends JFrame {
 						}
 						panelPositionList.setBorder(new TitledBorder(null, "Positions ("+panelPositionListModel.getSize()+")", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 					}else{
-						JOptionPane.showMessageDialog(IonImporter.this, "Panel "+code+" not found in the database for reference "+ref+" !", "Display selected panel", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+						JOptionPane.showMessageDialog(IonImporter.this, "Panel "+code+" not found in the database for reference "+ref+" !", "Display selected panel", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			}else {
@@ -2199,7 +2155,7 @@ public class IonImporter extends JFrame {
 			}
 		} catch (Exception ex) {
 			Tools.exception(ex);
-			JOptionPane.showMessageDialog(IonImporter.this, ex.getMessage(), "Can't display selected panel", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+			JOptionPane.showMessageDialog(IonImporter.this, ex.getMessage(), "Can't display selected panel", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 	}
 
@@ -2235,7 +2191,7 @@ public class IonImporter extends JFrame {
 			try {
 				return new User(loginBox.getUsername(), loginBox.getEncryptedPassword()) ;
 			} catch (Exception ex) {
-				JOptionPane.showMessageDialog(new JFrame(), ex.getMessage(), "Can't login", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+				JOptionPane.showMessageDialog(new JFrame(), ex.getMessage(), "Can't login", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 				return null;
 			}
 		} else {
@@ -2299,7 +2255,7 @@ public class IonImporter extends JFrame {
 		}catch (Exception ex){
 			Tools.exception(ex);
 			JOptionPane.showMessageDialog(new JFrame(),  Tools.getMessage("Problem when connecting the database", ex), "Connecting to Highlander database",
-					JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 		}
 		while(user == null){
 			if (argUser == null || argPass == null){
@@ -2308,7 +2264,7 @@ public class IonImporter extends JFrame {
 				try {
 					user = new User(argUser, Tools.md5Encryption(argPass));
 				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(new JFrame(), ex.getMessage(), "Can't login", JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+					JOptionPane.showMessageDialog(new JFrame(), ex.getMessage(), "Can't login", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					user = login();
 				}
 			}

@@ -65,7 +65,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.border.TitledBorder;
 
 import be.uclouvain.ngs.highlander.Highlander;
-import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.dialog.AskSamplesDialog;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
@@ -105,13 +105,13 @@ public class FileDownloader extends JFrame {
 
 	private void initUI(){
 		setTitle("File downloader");
-		setIconImage(Resources.getScaledIcon(Resources.iDownload, 64).getImage());
+		setIconImage(Img.Download.getScaledIcon(64).getImage());
 
 		setLayout(new BorderLayout());
 
 		JPanel south = new JPanel();	
 		getContentPane().add(south, BorderLayout.SOUTH);
-		JButton downloadButton = new JButton("Start download", Resources.getScaledIcon(Resources.iDownload, 40));
+		JButton downloadButton = new JButton("Start download", Img.Download.getScaledIcon(40));
 		downloadButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -160,7 +160,7 @@ public class FileDownloader extends JFrame {
 		outputDirPanel.add(new JLabel("Local directory"), new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(2, 0, 0, 0), 0, 0));
 		txtFieldOutputDir = new JTextField(Tools.getHomeDirectory().toString());
 		outputDirPanel.add(txtFieldOutputDir, new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(2, 5, 0, 5), 0, 0));
-		JButton browseDir = new JButton(Resources.getScaledIcon(Resources.iFolder, 24));
+		JButton browseDir = new JButton(Img.Folder.getScaledIcon(24));
 		browseDir.setPreferredSize(new Dimension(32,32));
 		browseDir.setToolTipText("Browse");
 		browseDir.addActionListener(new ActionListener() {
@@ -198,7 +198,7 @@ public class FileDownloader extends JFrame {
 		JPanel center = new JPanel(new BorderLayout());
 		getContentPane().add(center, BorderLayout.CENTER);
 		center.setBorder(new TitledBorder(null, "Samples", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		JButton selectSamples = new JButton("Select samples", Resources.getScaledIcon(Resources.iPatients, 24));
+		JButton selectSamples = new JButton("Select samples", Img.Patients.getScaledIcon(24));
 		selectSamples.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -278,7 +278,7 @@ public class FileDownloader extends JFrame {
 				message.add(new JTextField(error), new GridBagConstraints(0, i++, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0));
 			}
 		}
-		JOptionPane.showMessageDialog(new JFrame(), message, "Download original files",	JOptionPane.PLAIN_MESSAGE, Resources.getScaledIcon(Resources.iDownload,64));
+		JOptionPane.showMessageDialog(new JFrame(), message, "Download original files",	JOptionPane.PLAIN_MESSAGE, Img.Download.getScaledIcon(64));
 	}
 
 	private void download(AnalysisFull analysis, String sample, JProgressBar p) {

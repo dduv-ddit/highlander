@@ -48,6 +48,7 @@ import javax.swing.JTextArea;
 
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Resources;
+import be.uclouvain.ngs.highlander.Resources.Img;
 import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.Resources.Palette;
 import be.uclouvain.ngs.highlander.UI.table.VariantsTable;
@@ -175,7 +176,7 @@ public class DetailsBoxPublicAnnotations extends DetailsBox {
 			commentVariantTextArea.setRows(3);
 			commentVariantTextArea.setText(val_public_comments_variant);
 			
-			JButton submitCommentsButton = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 20));
+			JButton submitCommentsButton = new JButton(Img.ButtonApply.getScaledIcon(20));
 			submitCommentsButton.setToolTipText("Update public comment on variant in the database");
 			submitCommentsButton.setPreferredSize(new Dimension(28,28));
 			submitCommentsButton.addActionListener(new ActionListener() {
@@ -210,7 +211,7 @@ public class DetailsBoxPublicAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxPublicAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
@@ -229,7 +230,7 @@ public class DetailsBoxPublicAnnotations extends DetailsBox {
 				commentGeneTextArea.setRows(3);
 				commentGeneTextArea.setText(val_public_comments_gene);
 				
-				JButton submitGeneCommentsButton = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 20));
+				JButton submitGeneCommentsButton = new JButton(Img.ButtonApply.getScaledIcon(20));
 				submitGeneCommentsButton.setToolTipText("Update public comment on gene in the database");
 				submitGeneCommentsButton.setPreferredSize(new Dimension(28,28));
 				submitGeneCommentsButton.addActionListener(new ActionListener() {
@@ -264,7 +265,7 @@ public class DetailsBoxPublicAnnotations extends DetailsBox {
 						}catch(Exception ex){
 							Tools.exception(ex);
 							JOptionPane.showMessageDialog(DetailsBoxPublicAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-									JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+									JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 						}
 					}
 				});
@@ -283,7 +284,7 @@ public class DetailsBoxPublicAnnotations extends DetailsBox {
 			commentSampleTextArea.setRows(3);
 			commentSampleTextArea.setText(val_public_comments_sample);
 			
-			JButton submitSampleCommentsButton = new JButton(Resources.getScaledIcon(Resources.iButtonApply, 20));
+			JButton submitSampleCommentsButton = new JButton(Img.ButtonApply.getScaledIcon(20));
 			submitSampleCommentsButton.setToolTipText("Update public comment on sample in the database");
 			submitSampleCommentsButton.setPreferredSize(new Dimension(28,28));
 			submitSampleCommentsButton.addActionListener(new ActionListener() {
@@ -319,7 +320,7 @@ public class DetailsBoxPublicAnnotations extends DetailsBox {
 					}catch(Exception ex){
 						Tools.exception(ex);
 						JOptionPane.showMessageDialog(DetailsBoxPublicAnnotations.this,  Tools.getMessage("Cannot update database", ex), "Updating database field",
-								JOptionPane.ERROR_MESSAGE, Resources.getScaledIcon(Resources.iCross,64));
+								JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
 					}
 				}
 			});
