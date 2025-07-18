@@ -26,11 +26,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/jsch-0.1.54/jsch-0.1.54.jar" sourcepath="lib/jsch-0.1.54/src"/>
-	<classpathentry kind="lib" path="lib/hikaricp-3.4.2/HikariCP-3.4.2.jar" sourcepath="lib/hikaricp-3.4.2/HikariCP-3.4.2-sources.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/Highlander/lib/hikaricp-3.4.2/HikariCP-3.4.2-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="lib" path="lib/glazedlists-1.11.0/glazedlists-1.11.0.jar" sourcepath="lib/glazedlists-1.11.0/glazedlists-1.11.0-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:platform:/resource/Highlander/lib/glazedlists-1.11.0/glazedlists-1.11.0-javadoc.jar!/"/>
@@ -51,6 +46,11 @@
 	<classpathentry kind="lib" path="lib/Install4j10/i4jruntime.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="file:/D:/Dropbox/Projets/Highlander/highlander/lib/Install4j10/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/hikaricp-6.3.0/HikariCP-6.3.0.jar" sourcepath="lib/hikaricp-6.3.0/HikariCP-6.3.0-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/Highlander/lib/hikaricp-6.3.0/HikariCP-6.3.0-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
