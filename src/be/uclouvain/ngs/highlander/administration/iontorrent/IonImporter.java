@@ -215,10 +215,6 @@ public class IonImporter extends JFrame {
 			for (Platform platform : parameters.getAvailablePlatforms()){
 				availablePlatforms.add(platform);
 			}
-			if (availablePlatforms.isEmpty()) {
-				JOptionPane.showMessageDialog(IonImporter.this, "No platform is inaccessible, exiting", "Launching Ion Importer", JOptionPane.ERROR_MESSAGE, Img.Cross.getScaledIcon(64));
-				System.exit(-1);
-			}
 			platformBox = new JComboBox<Platform>(availablePlatforms.toArray(new Platform[0]));
 			users = listUsers();
 			pathologies = listPathologies();			
