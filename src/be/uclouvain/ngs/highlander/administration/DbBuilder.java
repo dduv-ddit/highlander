@@ -3223,7 +3223,7 @@ public class DbBuilder {
 		if (!existingLinks.contains("NCBI")) new ExternalLink("NCBI", "Gene in NCBI", "http://www.ncbi.nlm.nih.gov/gene/?term=","[gene_symbol]").insert(Highlander.class.getResourceAsStream("resources/ext_ncbi.png"));
 		if (!existingLinks.contains("Entrez")) new ExternalLink("Entrez", "Gene in Entrez", "http://www.ncbi.nlm.nih.gov/gquery/?term=","[gene_symbol]").insert(Highlander.class.getResourceAsStream("resources/ext_entrez.png"));
 		if (!existingLinks.contains("LOVD")) new ExternalLink("LOVD", "Gene in LOVD", "http://[gene_symbol].lovd.nl","").insert(Highlander.class.getResourceAsStream("resources/ext_lovd.png"));
-		if (!existingLinks.contains("DIDA")) new ExternalLink("DIDA", "Gene in DIDA", "http://dida.ibsquare.be/detail/?gene-p=","[gene_symbol]").insert(Highlander.class.getResourceAsStream("resources/ext_dida.png"));
+		if (!existingLinks.contains("OLIDA")) new ExternalLink("DIDA", "Gene in OLIDA", "https://olida.ibsquare.be/detail/Gene/","[gene_symbol]").insert(Highlander.class.getResourceAsStream("resources/ext_dida.png"));
 		if (!existingLinks.contains("Decipher")) new ExternalLink("Decipher gene", "Gene in Decipher", "https://decipher.sanger.ac.uk/search?q=gene:[gene_symbol]","").insert(Highlander.class.getResourceAsStream("resources/ext_decipher_gene.png"));
 		if (!existingLinks.contains("Decipher variant")) {
 			new ExternalLink("Decipher variant", "Variant in Decipher", "https://www.deciphergenomics.org/search/patients/results?q=[genome]:[chr]:[sv_start]-[sv_end]","").insert(Highlander.class.getResourceAsStream("resources/ext_decipher_variant.png"));
