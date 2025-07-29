@@ -1,4 +1,23 @@
 <p>
+<div style="font-size:12px"><strong>Version 18</strong> (September 2025)<br></div><br>
+<b>New features</b>
+<ul>
+<li>Export mutated sequence tool.
+	<ul>
+	<li>Export mutated DNA/AA sequences of selected variant(s) in an Excel file.</li>
+	</ul></li>
+<li>M6A Scanner tool.
+	<ul>
+	<li>VUS in the 3'UTR may be driving change in M6A mark deposition therefore affecting mRNA stability or translation rate.</li>
+	<li>The motif in mRNA that signals a potential M6A (N6-methyladenosine) mark deposition is typically the consensus sequence <code>DRACH</code>.</li>
+	<li>This motif is recognized by the methyltransferase complex responsible for adding the m6A modification to the RNA molecule.</li>
+	<li>The presence of this motif in mRNA plays a crucial role in various aspects of RNA metabolism, including stability, splicing, export, and translation.</li>
+	<li>This tool will scan the 3'UTR of all selected samples, and check if variants could destroy or create DRACH patterns.</li>
+	</ul></li>
+</ul>
+<br><br>
+
+<p>
 <div style="font-size:12px"><strong>Version 17.18</strong> (December 2022)<br></div><br>
 <b>New features</b>
 <ul>
@@ -506,7 +525,7 @@ New fields in the database
 		<li>ARIC5606: fields ARIC5606_AA_AC, ARIC5606_AA_AF, ARIC5606_EA_AC and ARIC5606_EA_AF added. Alternative allele counts/frequency in 2403 exomes of African/European Americans from the Atherosclerosis Risk in Communities Study (ARIC) cohort study.</li>
 		<li>ClinVar: fields clinvar_rs, clinvar_clnsig and clinvar_trait added. rs number from the clinvar data set and clinical significance as to the clinvar data set : 2 - Benign, 3 - Likely benign, 4 - Likely pathogenic, 5 - Pathogenic, 6 - drug response, 7 - histocompatibility. A negative score means the the score is for the ref allele.</li>
 		<li>COSMIC: fields cosmic_id and cosmic_count added. ID of the SNV at the COSMIC (Catalogue Of Somatic Mutations In Cancer) database and number of samples having this SNV in the COSMIC database.</li>
-		<li>Splicing predictions: fields is_scSNV_RefSeq, is_scSNV_Ensembl, splicing_ada_score, splicing_ada_pred, splicing_rf_score and splicing_rf_pred added. The is_scSNV fields indicate whether the SNV is a scSNV according to RefSeq/Ensembl (i.e. in splicing consensus regions, -3 to +8 at the 5’ splice site and -12 to +2 at the 3’ splice site). Scores are ensemble prediction based on ada-boost/random forests. Ranges 0 to 1. The larger the score the higher probability the scSNV will affect splicing. The suggested cutoff for a binary prediction (affecting splicing vs. not affecting splicing) is 0.6.</li>
+		<li>Splicing predictions: fields is_scSNV_RefSeq, is_scSNV_Ensembl, splicing_ada_score, splicing_ada_pred, splicing_rf_score and splicing_rf_pred added. The is_scSNV fields indicate whether the SNV is a scSNV according to RefSeq/Ensembl (i.e. in splicing consensus regions, -3 to +8 at the 5ï¿½ splice site and -12 to +2 at the 3ï¿½ splice site). Scores are ensemble prediction based on ada-boost/random forests. Ranges 0 to 1. The larger the score the higher probability the scSNV will affect splicing. The suggested cutoff for a binary prediction (affecting splicing vs. not affecting splicing) is 0.6.</li>
 	</ul></li>
 	<li><b>snpEff 4.1</b>
 	<ul>
@@ -533,7 +552,7 @@ New fields in the database
 	<li>You have two zoom levels in the graphical view: windows fit (default) and full size.</li>
 	<li>When you stop the mouse on the graph, a tooltip shows various information on variants and exons.</li>
 	<li>You can select variants in the graphical view (several using CTRL), or draw a box around them, to select them in the table.</li>
-	<li>The statistics button calculate a Chi² test for the selected gene.</li>	
+	<li>The statistics button calculate a Chiï¿½ test for the selected gene.</li>	
 	</ul></li>
 <li>New user annotation field 'check_segregation' (available in 'Variant evaluation' box). 
 This field can be used if this variant has been evaluated for segregation: SINGLE (No other sample in family), COSEG (Variant cosegregates), 
