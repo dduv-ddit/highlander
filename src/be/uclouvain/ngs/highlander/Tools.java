@@ -32,7 +32,12 @@ package be.uclouvain.ngs.highlander;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.datatransfer.DataFlavor;
@@ -41,6 +46,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.AffineTransform;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -120,6 +126,44 @@ public class Tools {
 
 	public static boolean isUnix() {
 		return (OS.indexOf("nix") >= 0 || OS.indexOf("nux") >= 0 || OS.indexOf("aix") > 0 );
+	}
+	
+	/**
+	 * Returns the scaling factor of the current screen.
+	 * For example 1.25 if the screen is at 125% zoom.
+	 * 
+	 * @return
+	 */
+	public static double getScalingFactor() {
+		GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+		GraphicsConfiguration graphicsConfig = device.getDefaultConfiguration();
+    AffineTransform tx = graphicsConfig.getDefaultTransform();
+    double scaleX = tx.getScaleX();
+    double scaleY = tx.getScaleY();
+    return Math.max(scaleX, scaleY);
+	}
+	
+	/**
+	 * Fill a rectangle with anti-aliasing disabled.
+	 * On Windows, when a fractional scaling is used (125%, 150%, etc.), anti-aliasing causes visual artifacts (a grey border around the filled rectangle).
+	 * As drawing regular rectangles doesn't benefit from anti-aliasing, the current workaround I found is to disable anti-aliasing before calling fillRect.
+	 * 
+	 * RegExp to replace in the code:
+	 * ([a-z0-9]+)\.fillRect\((.+)\);
+	 * Replace with:
+	 * Tools.fillRect($1, $2);
+	 * 
+	 * @param g
+	 * @param x
+	 * @param y
+	 * @param width
+	 * @param height
+	 */
+	public static void fillRect(Graphics2D g, int x, int y, int width, int height) {
+		Object value = g.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,	RenderingHints.VALUE_ANTIALIAS_OFF);
+		g.fillRect(x, y, width, height);
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,	value);
 	}
 	
 	public static void centerWindow(Window frame, boolean fillScreen){

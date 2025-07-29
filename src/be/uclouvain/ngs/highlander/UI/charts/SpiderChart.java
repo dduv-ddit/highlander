@@ -44,6 +44,8 @@ import java.util.Random;
 
 import javax.swing.JPanel;
 
+import be.uclouvain.ngs.highlander.Tools;
+
 public class SpiderChart extends JPanel {
 
 	public Color[] presetcolors = {
@@ -121,11 +123,10 @@ public class SpiderChart extends JPanel {
 		super.paintComponent(graphic);
     Graphics2D g = (Graphics2D) graphic;
 
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
-
-		g.setRenderingHint(RenderingHints.KEY_RENDERING,
-				RenderingHints.VALUE_RENDER_QUALITY);
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,	RenderingHints.VALUE_ANTIALIAS_ON);
+		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+		g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+		g.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,  RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 
 		Font smallFont = new Font("SansSerif", Font.PLAIN, 10);
     Font bigFont = new Font("SansSerif", Font.BOLD, 16);
@@ -152,7 +153,7 @@ public class SpiderChart extends JPanel {
 
     //Set chart background
     g.setColor(Color.WHITE);
-    g.fillRect(0, 0, width, height);
+    Tools.fillRect(g, 0, 0, width, height);
 
     // Color legend
     int hLegend = (int)g.getFontMetrics().getStringBounds("AZERTYUIOPMLKJHGFDSQWXCVBN",g).getHeight();
@@ -160,7 +161,7 @@ public class SpiderChart extends JPanel {
     for (String label : dataPoints.keySet()) {
     	y+=hLegend+3;
     	g.setColor(colors.get(label));
-    	g.fillRect(leftX+5, y, hLegend, hLegend);
+    	Tools.fillRect(g, leftX+5, y, hLegend, hLegend);
     	g.setColor(Color.BLACK);
     	g.drawString(label, leftX+5 + hLegend + 10, y+(hLegend-3));
     }

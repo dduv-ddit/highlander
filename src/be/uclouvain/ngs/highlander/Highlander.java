@@ -589,6 +589,7 @@ public class Highlander extends JFrame {
 				ex1.printStackTrace();
 			}
 		}		
+		
 		Parameters p = (argConfig == null) ? new Parameters(true) : new Parameters(true, new File(argConfig));
 		try{
 			Highlander.initialize(p, 5);

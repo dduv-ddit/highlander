@@ -189,6 +189,7 @@ public class AlignmentPanel extends JPanel {
 			new Color(255,36,0) /*Orange Red*/,
 	};
 
+	
 	public AlignmentPanel(SAMRecordIterator SAMRecords, Interval interval, int width, JProgressBar progress){
 		this(SAMRecords, interval, null, false, false, false, ColorBy.STRAND, true, width, progress);
 	}
@@ -999,7 +1000,14 @@ public class AlignmentPanel extends JPanel {
 		return image;
 	}
 
-
+	private int getLargerBaseWidth(Graphics2D g) {
+		int largerWidth = 0;
+		for (char base : new char[] {'A', 'C', 'G', 'T', 'N'}) {
+			int w = (int)Math.ceil(g.getFontMetrics().getStringBounds(""+base,g).getWidth());
+			if (w > largerWidth) largerWidth = w;
+		}
+		return largerWidth;
+	}
 
 	@Override
 	public void paintComponent(Graphics g1d) {
@@ -1025,7 +1033,7 @@ public class AlignmentPanel extends JPanel {
 				g.drawImage(cachedImageResized, 0, 0, this);				
 			}else {
 				g.setColor(Color.RED);
-				g.fillRect(0, 0, getWidth(), getHeight());
+				Tools.fillRect(g, 0, 0, getWidth(), getHeight());
 			}
 		}else {
 			drawAlignment(g);
@@ -1033,11 +1041,11 @@ public class AlignmentPanel extends JPanel {
 	}
 
 	private void drawAlignment(Graphics2D g) {
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
-
-		g.setRenderingHint(RenderingHints.KEY_RENDERING,
-				RenderingHints.VALUE_RENDER_QUALITY);
+    
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,	RenderingHints.VALUE_ANTIALIAS_ON);
+		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+		g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+		g.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,  RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 
 		tooltipsBack.clear();
 		tooltipsFront.clear();
@@ -1052,7 +1060,7 @@ public class AlignmentPanel extends JPanel {
 		g.clipRect(0, 0, neededWidth, neededHeight);
 
 		g.setColor(Color.WHITE);
-		g.fillRect(0, 0, neededWidth, neededHeight);
+		Tools.fillRect(g, 0, 0, neededWidth, neededHeight);
 		g.setColor(Color.BLACK);
 
 		int y = 5;
@@ -1062,7 +1070,7 @@ public class AlignmentPanel extends JPanel {
 		if (drawReference) {
 			for (char base : colors.keySet()){
 				g.setColor(colors.get(base));
-				g.fillRect(x, y, totalHeight/2, totalHeight);
+				Tools.fillRect(g, x, y, totalHeight/2, totalHeight);
 				x+= totalHeight/2 + 5;
 				String legend = " = " + base;
 				g.drawString(legend, x, y + totalHeight);		
@@ -1082,7 +1090,7 @@ public class AlignmentPanel extends JPanel {
 			case SAMPLE:
 				for (String key : readColors.keySet()){
 					g.setColor(readColors.get(key));
-					g.fillRect(x, y, totalHeight/2, totalHeight);
+					Tools.fillRect(g, x, y, totalHeight/2, totalHeight);
 					x+= totalHeight/2 + 5;
 					String legend = " = " + key;
 					g.drawString(legend, x, y + totalHeight);		
@@ -1091,13 +1099,13 @@ public class AlignmentPanel extends JPanel {
 				break;
 			case STRAND:
 				g.setColor(forward);
-				g.fillRect(x, y, totalHeight/2, totalHeight);
+				Tools.fillRect(g, x, y, totalHeight/2, totalHeight);
 				x+= totalHeight/2 + 5;
 				String legend = " = FORWARD";
 				g.drawString(legend, x, y + totalHeight);		
 				x += (int)g.getFontMetrics().getStringBounds(legend,g).getWidth() + 15;
 				g.setColor(reverse);
-				g.fillRect(x, y, totalHeight/2, totalHeight);
+				Tools.fillRect(g, x, y, totalHeight/2, totalHeight);
 				x+= totalHeight/2 + 5;
 				legend = " = REVERSE";
 				g.drawString(legend, x, y + totalHeight);		
@@ -1142,10 +1150,10 @@ public class AlignmentPanel extends JPanel {
 		for (char base : reference.toCharArray()){
 			if (drawReference) {
 				g.setColor(colors.get(base));
-				g.fillRect(x+1, y, baseWidth-2, baseHeight);
+				Tools.fillRect(g, x+1, y, baseWidth-2, baseHeight);
 				int w = (int)g.getFontMetrics().getStringBounds(""+base,g).getWidth();
 				int h = (int)g.getFontMetrics().getStringBounds(""+base,g).getHeight();
-				if (w < baseWidth) {
+				if (getLargerBaseWidth(g) < baseWidth) {
 					g.setColor(Color.WHITE);
 					g.drawString(""+base, x+1+((baseWidth-2-w)/2), y+baseHeight-2-((baseHeight-h)/2));
 				}
@@ -1168,7 +1176,7 @@ public class AlignmentPanel extends JPanel {
 				int drawStart = (start-interval.getStart())*baseWidth;
 				int drawEnd = drawStart + size;
 				g.setColor(read.getReadColory(true));
-				g.fillRect(drawStart, y, size, readBaseHeight);
+				Tools.fillRect(g, drawStart, y, size, readBaseHeight);
 				if (read.negativeStrandFlag == true){
 					g.fillPolygon(new int[]{drawStart,drawStart-interWidth,drawStart}, new int[]{y+readBaseHeight,y+(readBaseHeight/2),y}, 3);
 					tooltipsBack.put(new Rectangle(drawStart-interWidth, y, size, readBaseHeight), "MAPQV="+read.mapQV);
@@ -1198,10 +1206,10 @@ public class AlignmentPanel extends JPanel {
 								//Draw the base present in the read, increase index in the read, in the reference and on screen
 								if (refPos >= 0 && refPos < reference.length() && readBase != reference.charAt(refPos)){
 									g.setColor(read.getBaseColor(readPos, true));
-									g.fillRect(drawPos+1, y, baseWidth-2, readBaseHeight);
+									Tools.fillRect(g, drawPos+1, y, baseWidth-2, readBaseHeight);
 									int w = (int)g.getFontMetrics().getStringBounds(""+readBase,g).getWidth();
 									int h = (int)g.getFontMetrics().getStringBounds(""+readBase,g).getHeight();
-									if (w < baseWidth && !squished) {
+									if (getLargerBaseWidth(g) < baseWidth && !squished) {
 										g.setColor(Color.WHITE);
 										g.drawString(""+readBase, drawPos+1+((baseWidth-2-w)/2), y+baseHeight-2-((baseHeight-h)/2));
 									}
@@ -1218,9 +1226,9 @@ public class AlignmentPanel extends JPanel {
 								if (t == 0){
 									//first inserted base
 									g.setColor(insertion);
-									g.fillRect(drawPos-2, y, 4, readBaseHeight);
-									g.fillRect(drawPos-4, y-1, 8, 2);
-									g.fillRect(drawPos-4, y+readBaseHeight-1, 8, 2);
+									Tools.fillRect(g, drawPos-2, y, 4, readBaseHeight);
+									Tools.fillRect(g, drawPos-4, y-1, 8, 2);
+									Tools.fillRect(g, drawPos-4, y+readBaseHeight-1, 8, 2);
 									String tooltip = "Insertion: ";
 									for (int u=0 ; u < Integer.parseInt(times) ; u++){
 										tooltip += (readPos+u < read.bases.length) ? read.bases[readPos+u] : 'N';
@@ -1233,9 +1241,9 @@ public class AlignmentPanel extends JPanel {
 								//Deletion from the reference
 								//Draw "-", increase index in the reference and on screen
 								g.setColor(Color.WHITE);
-								g.fillRect(drawPos, y, baseWidth, readBaseHeight);
+								Tools.fillRect(g, drawPos, y, baseWidth, readBaseHeight);
 								g.setColor(Color.BLACK);
-								g.fillRect(drawPos, y+(readBaseHeight/2)-1, baseWidth, 2);
+								Tools.fillRect(g, drawPos, y+(readBaseHeight/2)-1, baseWidth, 2);
 								drawPos+= baseWidth;
 								refPos++;
 								break;
@@ -1246,10 +1254,10 @@ public class AlignmentPanel extends JPanel {
 								if (showSoftClippedBases) {
 									if (refPos >= 0 && refPos < reference.length() && readBase != reference.charAt(refPos)){
 										g.setColor(read.getBaseColor(readPos, true));
-										g.fillRect(drawPos+1, y, baseWidth-2, readBaseHeight);
+										Tools.fillRect(g, drawPos+1, y, baseWidth-2, readBaseHeight);
 										int w = (int)g.getFontMetrics().getStringBounds(""+readBase,g).getWidth();
 										int h = (int)g.getFontMetrics().getStringBounds(""+readBase,g).getHeight();
-										if (w < baseWidth && !squished) {
+										if (getLargerBaseWidth(g) < baseWidth && !squished) {
 											g.setColor(Color.WHITE);
 											g.drawString(""+readBase, drawPos+1+((baseWidth-2-w)/2), y+baseHeight-2-((baseHeight-h)/2));
 										}
@@ -1295,7 +1303,7 @@ public class AlignmentPanel extends JPanel {
 							int h = (int)g.getFontMetrics().getStringBounds(""+times,g).getHeight();
 							int delSize = Integer.parseInt(times)*baseWidth;
 							g.setColor(Color.WHITE);
-							g.fillRect(drawPos-(delSize/2)-(w/2)-1, y, w+2, readBaseHeight);
+							Tools.fillRect(g, drawPos-(delSize/2)-(w/2)-1, y, w+2, readBaseHeight);
 							g.setColor(Color.BLACK);
 							g.drawString(""+times, drawPos-(delSize/2)-(w/2), y+h-2);
 						}
@@ -1330,13 +1338,13 @@ public class AlignmentPanel extends JPanel {
 			String tooltip = "<html><b>" + gene.getGeneSymbol() + "</b><br>";
 			if (exon >= 0){
 				if (pos <= gene.getTranslationStart() || pos > gene.getTranslationEnd()){
-					g.fillRect(x, y+height/4, baseWidth, height/2);		
+					Tools.fillRect(g, x, y+height/4, baseWidth, height/2);		
 					String UTR = ((gene.isStrandPositive() && gene.isPosInLeftUTR(pos)) || (!gene.isStrandPositive() && gene.isPosInRightUTR(pos))) 
 							? "exon "+ gene.getExonRank(exon) + ((gene.isTranslated())?"<br>5' UTR":"<br>UTR") 
 									: "exon "+ gene.getExonRank(exon) + ((gene.isTranslated())?"<br>3' UTR":"<br>UTR");
 							tooltip += UTR + "<br>";
 				}else{
-					g.fillRect(x, y, baseWidth, height);
+					Tools.fillRect(g, x, y, baseWidth, height);
 					tooltip += "exon "+ gene.getExonRank(exon) +"<br>CDS<br>";
 				}
 				g.setColor(Color.WHITE);
@@ -1378,15 +1386,15 @@ public class AlignmentPanel extends JPanel {
 				char AA = AAs.charAt(0);
 				if((codonPos == 0 && gene.isStrandPositive()) || (codonPos == 2 && !gene.isStrandPositive())) {
 					g.setColor(Tools.getAminoAcidColor(AA));
-					g.fillRect(x+2, y, baseWidth, height);
+					Tools.fillRect(g, x+2, y, baseWidth, height);
 					tooltipsBack.put(new Rectangle(x+2, y, baseWidth, height), Tools.getAminoAcidName(AA));
 				}else if((codonPos == 2 && gene.isStrandPositive()) || (codonPos == 0 && !gene.isStrandPositive())) {
 					g.setColor(Tools.getAminoAcidColor(AA));
-					g.fillRect(x, y, baseWidth-2, height);
+					Tools.fillRect(g, x, y, baseWidth-2, height);
 					tooltipsBack.put(new Rectangle(x, y, baseWidth-2, height), Tools.getAminoAcidName(AA));
 				}else {
 					g.setColor(Tools.getAminoAcidColor(AA));
-					g.fillRect(x, y, baseWidth, height);
+					Tools.fillRect(g, x, y, baseWidth, height);
 					g.setColor(Color.WHITE);
 					int w = (int)g.getFontMetrics().getStringBounds(""+AA,g).getWidth();
 					int h = (int)g.getFontMetrics().getStringBounds(""+AA,g).getHeight();
@@ -1443,12 +1451,12 @@ public class AlignmentPanel extends JPanel {
 				{"panels_torrent_caller","VA-78-B.pKPT","7",91_842_418, 91_842_792},		//Ion Torrent
 				{"crap","CLP-800-3","3",128_202_653,128_202_885},												//Illumina old
 				{"exomes_lifescope","ELA-89-100","3",128_202_653,128_202_885},					//Solid Lifescope
-				{"exomes_haplotype_caller","ELA-89-100","3",128_202_653,128_202_885},	 //Solid HC
-				{"exomes_haplotype_caller","LE-59-100","3",128_202_653,128_202_885},   //BGI illumina HC
-				{"genomes_haplotype_caller","VA-1358","1",92762434,92766416},   //WGS illumina HC
+				{"exomes_hg38","ELA-89-100","3",128_202_653,128_202_885},	 //Solid HC
+				{"exomes_hg38","LE-59-100","3",128_202_653,128_202_885},   //BGI illumina HC
+				{"genomes_hg38","VA-1358","1",92762434,92766416},   //WGS illumina HC
 			};
 			int s = 8;
-			Highlander.initialize(new Parameters(false),5);
+			Highlander.initialize(new Parameters(false, new File(args[0])),5);
 			AnalysisFull analysis = null;
 			try (Results res = Highlander.getDB().select(Schema.HIGHLANDER, "SELECT * FROM analyses WHERE analysis = '"+samples[s][0]+"'")) {
 				res.next();

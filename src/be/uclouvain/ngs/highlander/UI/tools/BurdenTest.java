@@ -61,10 +61,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
-import java.time.OffsetDateTime;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -72,11 +71,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeSet;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
@@ -121,24 +120,24 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import be.uclouvain.ngs.highlander.Highlander;
 import be.uclouvain.ngs.highlander.Resources;
 import be.uclouvain.ngs.highlander.Resources.Img;
-import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.Resources.Palette;
+import be.uclouvain.ngs.highlander.Tools;
 import be.uclouvain.ngs.highlander.UI.misc.HighlanderObserver;
 import be.uclouvain.ngs.highlander.UI.misc.ToolbarScrollablePanel;
 import be.uclouvain.ngs.highlander.UI.misc.WaitingPanel;
 import be.uclouvain.ngs.highlander.UI.table.VariantsTable.VariantsTableModel;
 import be.uclouvain.ngs.highlander.database.Field;
-import be.uclouvain.ngs.highlander.database.HighlanderDatabase;
-import be.uclouvain.ngs.highlander.database.Results;
-import be.uclouvain.ngs.highlander.database.VariantResults;
 import be.uclouvain.ngs.highlander.database.Field.Annotation;
 import be.uclouvain.ngs.highlander.database.Field.JSon;
+import be.uclouvain.ngs.highlander.database.HighlanderDatabase;
 import be.uclouvain.ngs.highlander.database.HighlanderDatabase.Schema;
+import be.uclouvain.ngs.highlander.database.Results;
+import be.uclouvain.ngs.highlander.database.VariantResults;
 import be.uclouvain.ngs.highlander.datatype.AnalysisFull;
 import be.uclouvain.ngs.highlander.datatype.Gene;
-import be.uclouvain.ngs.highlander.datatype.Variant;
 import be.uclouvain.ngs.highlander.datatype.SNPEffect.VariantType;
 import be.uclouvain.ngs.highlander.datatype.SNPEffect.Zygosity;
+import be.uclouvain.ngs.highlander.datatype.Variant;
 import be.uclouvain.ngs.highlander.datatype.filter.CustomFilter;
 import be.uclouvain.ngs.highlander.datatype.filter.ListOfVariants;
 import cern.jet.stat.Probability;
@@ -866,11 +865,10 @@ public class BurdenTest extends JFrame {
 
 			Graphics2D g = (Graphics2D)g1;
 
-			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-					RenderingHints.VALUE_ANTIALIAS_ON);
-
-			g.setRenderingHint(RenderingHints.KEY_RENDERING,
-					RenderingHints.VALUE_RENDER_QUALITY);
+			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,	RenderingHints.VALUE_ANTIALIAS_ON);
+			g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+			g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+			g.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,  RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 
 			Font baseFont = g.getFont();
 			baseFont = baseFont.deriveFont(Font.PLAIN, baseFont.getSize()+2);
@@ -890,7 +888,7 @@ public class BurdenTest extends JFrame {
 			setPreferredSize(new Dimension(width, height));
 
 			g.setColor(Color.WHITE);
-			g.fillRect(0, 0, width, height);						
+			Tools.fillRect(g, 0, 0, width, height);						
 
 			g.setColor(Color.black);
 			String label = "Allele frequency";
@@ -902,7 +900,7 @@ public class BurdenTest extends JFrame {
 				double S = 0.9; // Saturation
 				double B = 0.9; // Brightness
 				g.setColor(Color.getHSBColor((float)H, (float)S, (float)B));
-				g.fillRect(x+(f*w), y, w, 20);
+				Tools.fillRect(g, x+(f*w), y, w, 20);
 				if (f%10 == 0){
 					String s = "";
 					if (f == 0){
@@ -1261,11 +1259,10 @@ public class BurdenTest extends JFrame {
 
 			Graphics2D g = (Graphics2D)g1;
 
-			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-					RenderingHints.VALUE_ANTIALIAS_ON);
-
-			g.setRenderingHint(RenderingHints.KEY_RENDERING,
-					RenderingHints.VALUE_RENDER_QUALITY);
+			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,	RenderingHints.VALUE_ANTIALIAS_ON);
+			g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+			g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+			g.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,  RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 
 			Dimension dim = this.getSize();
 			int width = dim.width;
@@ -1324,14 +1321,14 @@ public class BurdenTest extends JFrame {
 			pixHl.clear();
 
 			g.setColor(Color.WHITE);
-			g.fillRect(0, 0, width, height);
+			Tools.fillRect(g, 0, 0, width, height);
 
 			int x = 20;
 			int y = height/2;
 
 			//Draw first intron
 			g.setColor(new Color(exonColor.getRed()+40, exonColor.getGreen()+40, exonColor.getBlue()+40));
-			g.fillRect(x, y-(intronHeight/2), intronWidth, intronHeight);
+			Tools.fillRect(g, x, y-(intronHeight/2), intronWidth, intronHeight);
 			drawStrandOrientation(g, x);
 			x += intronWidth;
 
@@ -1359,23 +1356,23 @@ public class BurdenTest extends JFrame {
 				}
 				if (gene.isExonInLeftUTR(i) && gene.isExonInRightUTR(i)){
 					g.setColor(new Color(exonColor.getRed()+20, exonColor.getGreen()+20, exonColor.getBlue()+20));
-					g.fillRect(x, y-(utrHeight/2), v+1, utrHeight);
+					Tools.fillRect(g, x, y-(utrHeight/2), v+1, utrHeight);
 					g.setColor(exonColor);
 					g.fillRoundRect(x+v, y-(exonHeight/2), w, exonHeight, 20 , 20);
 					if (w > 0) drawExonNumber(g, i, x+v, y, w);
 					else drawExonNumber(g, i, x, y, v+1);
 					g.setColor(new Color(exonColor.getRed()+20, exonColor.getGreen()+20, exonColor.getBlue()+20));
-					g.fillRect(x+w+v-1, y-(utrHeight/2), u+1, utrHeight);										
+					Tools.fillRect(g, x+w+v-1, y-(utrHeight/2), u+1, utrHeight);										
 				}else if (gene.isExonInLeftUTR(i)){
 					g.setColor(new Color(exonColor.getRed()+20, exonColor.getGreen()+20, exonColor.getBlue()+20));
-					g.fillRect(x, y-(utrHeight/2), v+1, utrHeight);
+					Tools.fillRect(g, x, y-(utrHeight/2), v+1, utrHeight);
 					g.setColor(exonColor);
 					g.fillRoundRect(x+v, y-(exonHeight/2), w, exonHeight, 20 , 20);
 					if (w > 0) drawExonNumber(g, i, x+v, y, w);
 					else drawExonNumber(g, i, x, y, v+1);
 				}else if (gene.isExonInRightUTR(i)){
 					g.setColor(new Color(exonColor.getRed()+20, exonColor.getGreen()+20, exonColor.getBlue()+20));
-					g.fillRect(x+w-1, y-(utrHeight/2), v+1, utrHeight);					
+					Tools.fillRect(g, x+w-1, y-(utrHeight/2), v+1, utrHeight);					
 					g.setColor(exonColor);
 					g.fillRoundRect(x, y-(exonHeight/2), w, exonHeight, 20 , 20);
 					if (w > 0) drawExonNumber(g, i, x, y, w);
@@ -1415,7 +1412,7 @@ public class BurdenTest extends JFrame {
 				//Draw following intron
 				x += v+w+u;
 				g.setColor(new Color(exonColor.getRed()+40, exonColor.getGreen()+40, exonColor.getBlue()+40));
-				g.fillRect(x, y-(intronHeight/2), intronWidth, intronHeight);
+				Tools.fillRect(g, x, y-(intronHeight/2), intronWidth, intronHeight);
 				drawStrandOrientation(g, x);
 				x += intronWidth;
 			}			
@@ -1469,7 +1466,7 @@ public class BurdenTest extends JFrame {
 				int selectionWidth = Math.abs(startDragSelection.x-endDragSelection.x);
 				int selectionHeight = Math.abs(startDragSelection.y-endDragSelection.y);
 				g.setColor(new Color(selectionColor.getRed(), selectionColor.getGreen(), selectionColor.getBlue(), 100));
-				g.fillRect(startX, startY, selectionWidth, selectionHeight);
+				Tools.fillRect(g, startX, startY, selectionWidth, selectionHeight);
 				g.setColor(selectionColor);				
 				g.drawRect(startX, startY, selectionWidth, selectionHeight);
 				String label = getExtVariationsBetween(startDragSelection, endDragSelection).size() + " "+source+" variants";

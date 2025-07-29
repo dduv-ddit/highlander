@@ -769,7 +769,7 @@ public class BamViewer extends JFrame {
 													int exitStatus = Integer.parseInt(output[1]);
 													System.out.println("exit-status: "+exitStatus);
 													if (exitStatus != 0) {
-														//TODO exist code 126 instead of normal output ... but I still get results ????
+														//TODO With last tests I always get exit code 126 instead of normal output ... but I still get results ... WTF is happening ????
 														Tools.HttpUtility.setReturnValue(false);
 														return;
 													}
