@@ -35,9 +35,12 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.security.NoSuchAlgorithmException;
+import java.util.prefs.Preferences;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -56,6 +59,10 @@ import be.uclouvain.ngs.highlander.Tools;
 public class LoginBox extends JDialog {
 	public boolean OKCancel = false;
 
+	private static final Preferences USERNAME_PREFERENCE_NODE = Preferences.userRoot().node("highlander").node("app");
+	
+	private final String pref_username = USERNAME_PREFERENCE_NODE.get("username", "");
+
 	JPanel mainPanel = new JPanel();
 	JPanel jPanel1 = new JPanel();
 	JPanel jPanel2 = new JPanel();
@@ -67,7 +74,7 @@ public class LoginBox extends JDialog {
 	JLabel passwordLabel = new JLabel();
 	JLabel proxyPasswordLabel = new JLabel();
 	JTextField loginTextField = new JTextField();
-	JPasswordField PasswordField = new JPasswordField();
+	JPasswordField passwordField = new JPasswordField();
 	JPasswordField proxyPasswordField = new JPasswordField();
 	GridBagLayout gridBagLayout2 = new GridBagLayout();
 	GridBagLayout gridBagLayout3 = new GridBagLayout();
@@ -82,6 +89,29 @@ public class LoginBox extends JDialog {
 		catch(Exception ex) {
 			Tools.exception(ex);
 		}
+		this.addComponentListener(new ComponentListener() {
+			@Override
+			public void componentShown(ComponentEvent arg0) {
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						if (!pref_username.isEmpty()) {
+							passwordField.requestFocus();							
+						}
+					}
+				}, "LoginBox.shown").start();
+			}
+			@Override
+			public void componentResized(ComponentEvent arg0) {
+			}
+			@Override
+			public void componentMoved(ComponentEvent arg0) {
+			}
+
+			@Override
+			public void componentHidden(ComponentEvent arg0) {
+			}
+		});
 	}
 
 	public LoginBox() {
@@ -95,7 +125,7 @@ public class LoginBox extends JDialog {
 		OKButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				OKButton_actionPerformed(e);
+				OKButton_actionPerformed();
 			}
 		});
 		cancelButton.setText("Exit");
@@ -103,7 +133,7 @@ public class LoginBox extends JDialog {
 		cancelButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				cancelButton_actionPerformed(e);
+				cancelButton_actionPerformed();
 			}
 		});
 		resetButton.setText("Reset my password");
@@ -111,20 +141,20 @@ public class LoginBox extends JDialog {
 		resetButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				resetButton_actionPerformed(e);
+				resetButton_actionPerformed();
 			}
 		});
 		jPanel4.setLayout(gridBagLayout2);
 		loginTextField.setColumns(15);
-		loginTextField.setText("");
+		loginTextField.setText((!pref_username.isEmpty())? pref_username : "");
 		loginTextField.addKeyListener(new KeyAdapter(){
 			@Override
 			public void keyPressed(KeyEvent e) {
 				textFieldKeyPressed(e);
 			}
 		});
-		PasswordField.setText("");
-		PasswordField.addKeyListener(new KeyAdapter(){
+		passwordField.setText("");
+		passwordField.addKeyListener(new KeyAdapter(){
 			@Override
 			public void keyPressed(KeyEvent e) {
 				textFieldKeyPressed(e);
@@ -161,7 +191,7 @@ public class LoginBox extends JDialog {
 		gbc_passwordLabel.gridy = 1;
 		jPanel4.add(passwordLabel, gbc_passwordLabel);
 		passwordLabel.setText("Password");
-		jPanel4.add(PasswordField,   new GridBagConstraints(1, 1, 1, 1, 1.0, 0.0
+		jPanel4.add(passwordField,   new GridBagConstraints(1, 1, 1, 1, 1.0, 0.0
 				,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 0, 5), 0, 0));    
 		proxyPasswordLabel.setText("Proxy password");
 		if (Highlander.getParameters().getHttpProxyPasswordPolicy() == PasswordPolicy.ask_at_login) {
@@ -180,23 +210,25 @@ public class LoginBox extends JDialog {
 	void textFieldKeyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 			OKCancel = true;
+			USERNAME_PREFERENCE_NODE.put("username", loginTextField.getText());
 			dispose();
 		}
 	}
 
-	void OKButton_actionPerformed(ActionEvent e) {
+	void OKButton_actionPerformed() {
 		OKCancel = true;
+		USERNAME_PREFERENCE_NODE.put("username", loginTextField.getText());
 		dispose();
 	}
 
-	void cancelButton_actionPerformed(ActionEvent e) {
+	void cancelButton_actionPerformed() {
 		OKCancel = false;
 		loginTextField.setText("");
-		PasswordField.setText("");
+		passwordField.setText("");
 		dispose();
 	}
 
-	void resetButton_actionPerformed(ActionEvent e) {
+	void resetButton_actionPerformed() {
 		try {
 			User[] users = User.fetchList().toArray((new User[0]));
 			User user = (User)JOptionPane.showInputDialog(this, "Who are you ?", "Reset password", JOptionPane.QUESTION_MESSAGE, Img.UserLock.getScaledIcon(64), users, null);
@@ -223,12 +255,12 @@ public class LoginBox extends JDialog {
 	}
 
 	public String getEncryptedPassword() throws NoSuchAlgorithmException {
-		return Tools.md5Encryption(new String(PasswordField.getPassword()));
+		return Tools.md5Encryption(new String(passwordField.getPassword()));
 	}
 
 	public void setProxyPasswordIfNecessary() {
 		if (Highlander.getParameters().getHttpProxyPasswordPolicy() == PasswordPolicy.same_as_highlander) {
-			Highlander.getParameters().setHttpProxyPassword(new String(PasswordField.getPassword()));
+			Highlander.getParameters().setHttpProxyPassword(new String(passwordField.getPassword()));
 			Highlander.getParameters().setProxyLogin();
 		}else if (Highlander.getParameters().getHttpProxyPasswordPolicy() == PasswordPolicy.ask_at_login) {
 			Highlander.getParameters().setHttpProxyPassword(new String(proxyPasswordField.getPassword()));
