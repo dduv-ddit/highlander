@@ -524,6 +524,8 @@ public class M6AScanner extends JFrame {
 				+ "WHERE "+Field.sample.getQueryWhereName(Highlander.getCurrentAnalysis(), false)+" = '" + sample + "' "
 				+ "AND "+Field.snpeff_effect.getQueryWhereName(Highlander.getCurrentAnalysis(), false)+" IN ('UTR_3_DELETED','UTR_3_PRIME') "
 				+ "AND "+Field.filters.getQueryWhereName(Highlander.getCurrentAnalysis(), false)+" = 'PASS' "
+				+ "AND "+Field.allelic_depth_proportion_alt.getQueryWhereName(Highlander.getCurrentAnalysis(), false)+" >= 0.3 "
+				+ "AND "+Field.allelic_depth_alt.getQueryWhereName(Highlander.getCurrentAnalysis(), false)+" >= 10 "
 				)) {
 			while (res.next()) {
 				String chr = res.getString(Field.chr.getName());
