@@ -826,6 +826,7 @@ public class ToolsPanel extends JPanel {
 										cell = row.createCell(c++);
 										cell.setCellValue(seq.getSequence(Type.AMINO_ACIDS, true, false));
 									}else {
+										MutatedSequence seq = new MutatedSequence(variant, genome, rangeAA);
 										System.out.println(id + "\t" + sample + "\t" + variant.getChromosome() + "\t" + variant.getPosition() + "\t" + variant.getReference() + "\t" + variant.getAlternative() + "\t" + "NO GENE");
 										row = sheet.createRow(r++);								
 										int c=0;
@@ -841,6 +842,22 @@ public class ToolsPanel extends JPanel {
 										cell.setCellValue(variant.getReference());
 										cell = row.createCell(c++);
 										cell.setCellValue(variant.getAlternative());
+										cell = row.createCell(c++);
+										cell.setCellValue("");
+										cell = row.createCell(c++);
+										cell.setCellValue(seq.getVariant().getVariantType().toString());
+										cell = row.createCell(c++);
+										cell.setCellValue("");
+										cell = row.createCell(c++);
+										cell.setCellValue(hgvs);
+										cell = row.createCell(c++);
+										cell.setCellValue(eff);
+										cell = row.createCell(c++);
+										cell.setCellValue(seq.getSequence(Type.NUCLEOTIDES, false, false));
+										cell = row.createCell(c++);
+										cell.setCellValue(seq.getSequence(Type.NUCLEOTIDES, true, false));
+										cell = row.createCell(c++);
+										cell.setCellValue(seq.getSequence(Type.NUCLEOTIDES, false, true));
 									}
 								}
 								Highlander.waitingPanel.setProgressValue(selection);

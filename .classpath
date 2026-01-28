@@ -52,5 +52,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/picard-tools-1.123/ViewSam.jar"/>
+	<classpathentry kind="lib" path="lib/poi-5.0.0/lib/commons-math3-3.6.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -177,6 +177,39 @@ public class MutatedSequence {
 			}			
 		}
 	}
+	
+	//Constructor for non-coding variants
+	public MutatedSequence(Variant variant, Reference genome, int rangeAA) throws Exception {
+		this.variant = variant;
+		this.gene = null;
+		this.genome = genome;
+		this.rangeAA = rangeAA;
+		int rangeLeft = rangeAA*3;
+		int rangeRight = rangeAA*3;
+		if (variant.getVariantType() == VariantType.DEL) {
+			rangeRight += ((variant.getLength())%3);
+		}else if (variant.getVariantType() == VariantType.INS) {
+			if (variant.getLength()%3 == 1){
+				rangeRight += 2;
+			}else if (variant.getLength()%3 == 2){
+				rangeRight += 1;
+			}
+		}
+		Interval interval = new Interval(genome, variant.getChromosome(), variant.getPosition()-rangeLeft, variant.getPosition()+rangeRight);
+		nucl_ref = interval.getReferenceSequence();
+		int refpos=0;
+		for (int pos = interval.getStart() ; pos <= interval.getEnd()+1 ; pos++){
+			if (pos == variant.getPosition()) {
+				nucl_mut += variant.getAlternative();
+			} else if (variant.getVariantType() == VariantType.DEL && pos > variant.getPosition() && pos <= variant.getPosition() + variant.getLength()) {
+				//do nothing, deleted nucleotide
+			} else {
+				if (refpos < nucl_ref.length())
+					nucl_mut += nucl_ref.charAt(refpos);				
+			}
+			refpos++;
+		}
+	}
 
 	private void processReference(int pos, boolean fwd) {
 		int codonPos = gene.getCodonPos(pos);
